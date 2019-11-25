@@ -1,0 +1,492 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+
+body {
+    background-color: #2f4050;
+}
+
+.TopBox {
+    width: 100%;
+    height: 46px;
+    line-height: 45px;
+    background-color: rgb(246, 247, 249);
+    border-bottom: 1px solid #888;
+    text-align: center;
+    position: relative;
+    z-index: 999;
+}
+
+
+    .TopBox .CurriculumTitle {
+        display: inline-block;
+        margin: 0px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .TopBox .btn {
+        float: right;
+        margin: 6px;
+    }
+
+        .TopBox .btn.ApproveBtn {
+            width: 90px;
+        }
+
+    .TopBox .PageBox {
+        position: absolute;
+        top: 46px;
+        width: 100%;
+    }
+
+        .TopBox .PageBox .PageInnerBox {
+            width: 100%;
+            height: 160px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            background: #eee;
+            border: 1px solid #888;
+            border-top: none;
+            font-family: "Microsoft YaHei","宋体";
+        }
+
+        .TopBox .PageBox .ShowList {
+            width: 150px;
+            font-size: 12px;
+            height: 20px;
+            line-height: 20px;
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid #888;
+            border-top: none;
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+            background: #eee;
+        }
+
+
+        .TopBox .PageBox * {
+            margin: 0px;
+        }
+
+        .TopBox .PageBox #AddPage {
+            width: 160px;
+            height: 120px;
+            float: left;
+            margin: 10px;
+            position: relative;
+            border: 1px solid #888;
+            user-select: none;
+            cursor: pointer;
+            line-height: 26px;
+            padding: 14px;
+        }
+
+        .TopBox .PageBox .PageThumbnail {
+            width: 160px;
+            height: 120px;
+            float: left;
+            margin: 10px;
+            position: relative;
+            border: 1px solid #888;
+            background: #fff;
+            user-select: none;
+            cursor: pointer;
+        }
+
+            .TopBox .PageBox .PageThumbnail.selected {
+                border: 2px solid #ff6a00;
+            }
+
+            .TopBox .PageBox .PageThumbnail .thumbnail {
+                width: 160px;
+                height: 90px;
+            }
+
+            .TopBox .PageBox .PageThumbnail .pargerBox {
+                width: 100%;
+                height: 28px;
+                line-height: 28px;
+                text-align: center;
+                margin: 0px;
+            }
+
+                .TopBox .PageBox .PageThumbnail .pargerBox.approveType0,
+                .TopBox .PageBox .PageThumbnail .pargerBox.approveType1 {
+                    color: #000;
+                }
+
+                .TopBox .PageBox .PageThumbnail .pargerBox.approveType2 {
+                    color: #ff0000;
+                }
+
+                .TopBox .PageBox .PageThumbnail .pargerBox.approveType3 {
+                    color: #ff6a00;
+                }
+
+            .TopBox .PageBox .PageThumbnail .deletePage {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                width: 10px;
+                height: 10px;
+                border-radius: 5px;
+                background-color: #ff0000;
+                text-align: center;
+                line-height: 10px;
+                color: #fff;
+                cursor: default;
+            }
+
+            .TopBox .PageBox .PageThumbnail .move {
+                position: absolute;
+                z-index: 3;
+                text-align: center;
+                height: 20px;
+                width: 100%;
+                line-height: 20px;
+                top: 50%;
+                margin: 0px;
+                margin-top: -10px;
+            }
+
+            .TopBox .PageBox .PageThumbnail .moveleft {
+                float: left;
+                margin-left: 10px;
+            }
+
+            .TopBox .PageBox .PageThumbnail .moveright {
+                float: right;
+                margin-right: 10px;
+            }
+
+.InfoBox {
+    height: calc(100% - 46px);
+    position: relative;
+}
+
+    .InfoBox .ShowBox {
+        width: 1066px;
+        height: 600px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 20%;
+        bottom: 0px;
+        margin: auto;
+        background-color: #fff;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: auto 100%;
+    }
+
+        .InfoBox .ShowBox .ShowInfo {
+            width: 800px;
+            height: 600px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+            .InfoBox .ShowBox .ShowInfo > * {
+                position: absolute;
+            }
+
+            .InfoBox .ShowBox .ShowInfo .TextBox {
+                font-family: "Microsoft YaHei","宋体";
+                letter-spacing:0.05em;
+            }
+
+            .InfoBox .ShowBox .ShowInfo .ImgBox img {
+                width: 100%;
+                height: 100%;
+            }
+
+        .InfoBox .ShowBox .ApproveShow {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+
+    .InfoBox .SetBox {
+        width: 20%;
+        height: 100%;
+        float: right;
+        background: #fff;
+        position: relative;
+    }
+
+        .InfoBox .SetBox * {
+            margin: 0px;
+        }
+
+        .InfoBox .SetBox .tab-content {
+            height: calc(100% - 42px);
+        }
+
+            .InfoBox .SetBox .tab-content .tab-pane {
+                height: 100%;
+            }
+
+#SetInfoBox {
+    height: 100%;
+}
+
+    #SetInfoBox .PageTitle {
+        width: 100%;
+        height: 40px;
+        line-height: 30px;
+        border-bottom: 1px solid #888;
+        padding: 5px;
+    }
+
+        #SetInfoBox .PageTitle #pageRemark {
+            height: 30px;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+            padding: 5px;
+        }
+
+    #SetInfoBox .StepList {
+        height: calc(100% - 82px);
+        width: 100%;
+        overflow: auto;
+        padding: 10px;
+    }
+
+        #SetInfoBox .StepList .StepLoading {
+            margin: 200px 0px 0px;
+            text-align: center;
+        }
+
+        #SetInfoBox .StepList .Step {
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+
+            #SetInfoBox .StepList .Step.selected {
+                border: 2px solid #ff6a00;
+            }
+
+            #SetInfoBox .StepList .Step .StepTitleBox {
+                height: 30px;
+                line-height: 30px;
+                margin: 0px;
+                background: #ccc;
+            }
+
+                #SetInfoBox .StepList .Step .StepTitleBox .StepTitle {
+                    padding-left: 10px;
+                }
+
+                #SetInfoBox .StepList .Step .StepTitleBox .StepBtn {
+                    float: right;
+                    display: inline-block;
+                    height: 30px;
+                    line-height: 30px;
+                    margin: 0px;
+                }
+
+                    #SetInfoBox .StepList .Step .StepTitleBox .StepBtn i {
+                        margin-right: 6px;
+                        background-color: #fff;
+                        border-radius: 0.5em;
+                        text-align: center;
+                        cursor: pointer;
+                    }
+
+                        #SetInfoBox .StepList .Step .StepTitleBox .StepBtn i.addAction {
+                            color: #ffd800;
+                        }
+
+                        #SetInfoBox .StepList .Step .StepTitleBox .StepBtn i.deleteStep {
+                            color: #ff0000;
+                        }
+
+            #SetInfoBox .StepList .Step .Actions {
+                background: #fff;
+                margin: 0px;
+                padding: 0px;
+            }
+
+                #SetInfoBox .StepList .Step .Actions > li {
+                    min-height: 30px;
+                    border-top: 1px solid #ccc;
+                    position: relative;
+                    padding: 5px 60px 5px 5px;
+                }
+
+                    #SetInfoBox .StepList .Step .Actions > li * {
+                        margin: 0px;
+                    }
+
+                    #SetInfoBox .StepList .Step .Actions > li i {
+                        position: absolute;
+                        height: 20px;
+                        width: 20px;
+                        top: 50%;
+                        margin-top: -10px;
+                        border: 1px solid #888;
+                        text-align: center;
+                        line-height: 20px;
+                        border-radius: 3px;
+                        display: none;
+                        cursor: pointer;
+                    }
+
+                    #SetInfoBox .StepList .Step .Actions > li .PlayBtn {
+                        right: 70px;
+                    }
+
+                    #SetInfoBox .StepList .Step .Actions > li .SetBtn {
+                        right: 40px;
+                    }
+
+                    #SetInfoBox .StepList .Step .Actions > li .DeleteBtn {
+                        right: 10px;
+                    }
+
+
+            #SetInfoBox .StepList .Step.selected .Actions > li:hover .PlayBtn,
+            #SetInfoBox .StepList .Step.selected .Actions > li:hover .SetBtn,
+            #SetInfoBox .StepList .Step.selected .Actions > li:hover .DeleteBtn {
+                display: block;
+            }
+
+
+    #SetInfoBox .SetBtnBox {
+        width: 100%;
+        height: 40px;
+        padding: 3px;
+        border-top: 1px solid #888;
+        background-color: rgb(246, 247, 249);
+    }
+
+#ApproveBox {
+    height: 100%;
+    padding: 10px;
+}
+
+    #ApproveBox label {
+        margin-right: 5px;
+    }
+
+    #ApproveBox .ApproveTypes {
+        line-height: 30px;
+    }
+
+        #ApproveBox .ApproveTypes li {
+            list-style: none;
+            display: inline-block;
+        }
+
+        #ApproveBox .ApproveTypes input[type=radio] {
+            position: relative;
+            top: 2px;
+            margin-right: 2px;
+        }
+
+    #ApproveBox .ApproveInfo {
+        height: calc(100% - 30px);
+    }
+
+        #ApproveBox .ApproveInfo .ApproveText {
+            resize: none;
+            outline: none;
+            padding: 5px;
+            height: calc(100% - 40px);
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        #ApproveBox .ApproveInfo .ApproveBtn {
+            width: 100%;
+        }
+
+#ActionSet {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background: #fff;
+    display: none;
+}
+
+.showPageBox {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+}
+
+
+    .showPageBox .btn-close {
+        float: right;
+        margin: 3px 10px;
+    }
+
+    .showPageBox .NavBox {
+        width: 100%;
+        height: 40px;
+        line-height: 39px;
+        background-color: rgb(246, 247, 249);
+        border-bottom: 1px solid #888;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+        .showPageBox .NavBox .Title {
+            font-size: 16px;
+            font-weight: bolder;
+        }
+
+    .showPageBox #ShowPage {
+        width: 100%;
+        height: calc(100% - 40px);
+        border: 0px;
+        margin: 0;
+        padding: 0;
+    }
+
+#LoadingBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #333;
+    opacity: 0.8;
+    z-index: 999;
+}
+
+#LoadingText {
+    position: absolute;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    margin-top: -20px;
+    font-size: 24px;
+    z-index: 1000;
+    color: #fff;
+}

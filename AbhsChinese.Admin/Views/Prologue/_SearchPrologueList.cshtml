@@ -1,0 +1,21 @@
+﻿<form role="form" class="form-inline search-form" id="form_search_resource">
+    <input type="hidden" name="mediaType" value="5" />
+    <div class="form-group">
+        <input type="text" class="form-control" name="Id" placeholder="按编号搜索" />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="NameOrKey" placeholder="按资源名称/关键字搜索" />
+    </div>
+    <div class="form-group">
+        <select class="select2 form-control" data-ajax--url="@Url.Action("GetGrades","Select2")"
+                data-ajax--cache="true"
+                data-placeholder="请选择年级" 
+                data-allow-clear="true"
+                name="Grade">
+            <option></option>
+        </select>
+    </div>
+    <button class="btn btn-white search" type="button">
+        搜索
+    </button>
+</form>

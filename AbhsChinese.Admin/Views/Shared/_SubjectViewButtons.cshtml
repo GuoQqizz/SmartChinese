@@ -1,0 +1,27 @@
+﻿@{
+    string url = "/" + ViewBag.controller + "/" + ViewBag.action + "/" + ViewBag.id;
+}
+
+<div class="form-group row" style="display:none;" id="div_button_2">
+    <div class="col-12 text-center">
+        <button class="btn btn-primary" type="button"
+                onclick="submitForm(this)"
+                value="3">
+            合格
+        </button>
+        <button class="btn btn-danger" type="button"
+                onclick="submitForm(this)"
+                value="4">
+            不合格
+        </button>
+    </div>
+</div>
+<div class="form-group row" style="display:none;" id="div_button_4">
+    <div class="col-12 text-center">
+        <a class="btn btn-default"
+           href="@Url.Action("ListQuestions","Question")">取消</a>
+        <a class="btn btn-primary"
+           href="javascript:void(0)"
+           onclick="reEdit('@url')">重新编辑</a>
+    </div>
+</div>

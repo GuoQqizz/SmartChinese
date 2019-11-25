@@ -1,0 +1,112 @@
+@charset "utf-8";
+/*=========================Reset_start==========================*/
+body,h1,h2,h3,h4,h5,h6,div,p,dl,dt,dd,ol,ul,li,form,table,th,td,a,img,span,strong,var,em,input,textarea,select,option{margin: 0; padding: 0;-webkit-box-sizing: border-box;box-sizing: border-box;}
+html,body{font-family:"Microsoft Yahei","宋体",Arail,Tabhoma; text-align: left;}
+ul,ol{list-style: none;}
+img{border: 0;border: none;}
+input,select,textarea,button{outline:0;}
+input,button{border:none;outline: none}
+textarea{resize:none; overflow-y: auto;}
+table{border-collapse: collapse; border-spacing: 0;}
+th,strong,var,em{font-style: normal;}
+a{text-decoration: none;}
+a:link,a:visited,a:hover,a:active{text-decoration:none;} 
+/*==========================Reset_End===========================*/
+.clearfloat:before,.clearfloat:after{display:table;content:"";} 
+.clearfloat:after{clear: both;}
+.fl{float: left;}
+.fr{float: right;}
+.verticalcenter{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+	-webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.verticalbetween{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+	-webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: space-between;
+    justify-content: space-between;
+}
+.verticalaround{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+	-webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: space-around;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.verticalcenterWrap{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+	-webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    /*伸缩流方向，如果添加表示沿Y轴方向排列，不加表示沿X轴方向排列*/
+    -webkit-box-orient: vertical;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+* {
+	/*滚动条滑块按钮的颜色*/
+	scrollbar-face-color: rgba(255, 255, 255, 0);
+	/*滚动条整体颜色*/
+	scrollbar-highlight-color: rgba(255, 255, 255, 0);
+	/*滚动条轨道颜色*/
+	scrollbar-track-color: rgba(255, 255, 255, 0);
+	/*去除默认点击选中背景阴影*/
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	/*去除默认选中字体*/
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+/*滚动条整体部分,必须要设置*/
+::-webkit-scrollbar {
+	background-color: rgba(255, 255, 255, 0);
+	width: 10px;
+	height: 10px;
+}
+/*滚动条的轨道*/
+::-webkit-scrollbar-track {
+	background-color: rgba(255, 255, 255, 0);
+	border-radius: 10px;
+}
+/*滚动条的滑块按钮*/
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(212, 208, 199, 0.8);
+}

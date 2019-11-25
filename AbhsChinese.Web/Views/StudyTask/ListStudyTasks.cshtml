@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "课后任务";
+}
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("Index","LearningCenter")">学习中心</a><em><img src="~/Images/StudentInfo/back.png" /></em>
+            <a href="#">课后任务</a>
+        </div>
+        @*<div class="navigationr">
+            <span class="refurbish">
+                <img src="~/Images/StudentInfo/refurbish.png" />刷新
+            </span>
+        </div>*@
+    </div>
+    <div class="taskpage">
+        @*<div class="pageimgerror">
+                <img class="error-img" src="~/Images/StudentInfo/workerror.png" />
+            </div>*@
+        <div class="selectbox">
+            <a href="#" class="active" id="a-bll" data-task-status="1,2,3">
+                全部<span>(0)</span>
+            </a>
+            <a href="#" data-task-status="1,2">
+                未完成<span>(0)</span>
+            </a>
+            <a href="#" data-task-status="3">
+                已完成<span>(0)</span>
+            </a>
+            @*<a href="#" data-task-status="2">
+                    已超时<span>(0)</span>
+                </a>*@
+        </div>
+        <div class="tablebox" style="min-height:600px;">
+            <table class="tasktable">
+                <thead>
+                    <tr>
+                        <th style="width:160px;">时间</th>
+                        <th>对应课程</th>
+                        <th style="width:160px;">最后完成时间</th>
+                        <th style="width:100px;">题目数量</th>
+                        <th style="width:85px;">状态</th>
+                        <th style="width:85px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="pagebox"></div>
+        </div>
+    </div>
+</div>
+
+@*加载数据用的url*@
+<input type="hidden" name="loadUrl" value="@Url.Action("GetStudyTasks","StudyTask")" />
+<input type="hidden" name="loadUrlOfStatus"
+       value="@Url.Action("GetTotalRecordByStatus","StudyTask")" />
+@*1表示是课后任务*@
+<input type="hidden" id="studyTaskType" value="1" />
+
+<input type="hidden" id="historySearch" value="@ViewBag.HistorySearch" />
+
+@*模板：用于生成tr*@
+<script type="text/template" id="tr-template">
+    <tr>
+        <td>{{DisplayStartTime}}</td>
+        <td>{{CourseName}}-第{{LessonIndex}}课时课后任务</td>
+        <td>{{DisplayFinishTime}}</td>
+        <td><span>{{SubjectCount}}</span></td>
+        <td><span class="{{SpanCss}}">{{DisplyStatus}}</span></td>
+        <td><a class="check {{ButtonCss}}" onclick="toPractice({{StudyTaskId}},{{StudentTaskId}},{{Status}},'{{ViewUrl}}')" href="javascript:void(0);">{{ButtonText}}</a></td>
+    </tr>
+</script>
+
+<script type="text/template" id="tr-template-0">
+    <tr>
+        <td colspan="6">
+            <div class="pageimgerror" style="padding-bottom:200px;">
+                <img class="error-img" src="/Images/StudentInfo/workerror.png" />
+            </div>
+        </td>
+    </tr>
+</script>
+
+@section Styles{
+    <style>
+        .refurbish {
+            cursor: pointer;
+        }
+
+        body, html {
+            height: 100%;
+        }
+
+        .pageimgerror {
+            display: block;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/Scripts/parger.js"></script>
+    <script src="~/Scripts/StudyTask/studytask.list.js"></script>
+}

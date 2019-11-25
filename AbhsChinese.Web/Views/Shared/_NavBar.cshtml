@@ -1,0 +1,106 @@
+﻿@using AbhsChinese.Web.Models.StudentInfo
+@using AbhsChinese.Domain.Enum
+@{
+    LoginInfo student = LoginStudent.GetCustomerUser();
+}
+<style>
+    .config > label, .name, .message {
+        cursor: pointer;
+    }
+</style>
+<!--导航栏-->
+<div class="header">
+    <div class="headerbox">
+        <div class="headercontent">
+            <div class="hederl fl">
+                <img src="~/Images/StudentInfo/logo.png" />
+            </div>
+            <div class="headerr">
+                <div class="navlist fl">
+                    <a href="@Url.Action("Index", "LearningCenter")" class="active">
+                        <span>学习中心</span>
+                    </a>
+                    <a href="#" style="display:none;">
+                        <span>竞技中心</span>
+                    </a>
+                    <a href="#" style="display:none;">
+                        <span>奖品中心</span>
+                    </a>
+                    <a href="@Url.Action("Select", "Course")" target="_self" style="display:none;"><!--style="display:none;"-->
+                        <span>课程中心</span>
+                    </a>
+                </div>
+                <div class="config">
+                    <label onmouseenter="getInfo(this)">
+                        @{
+                            if (string.IsNullOrEmpty(student.Avatar))
+                            {
+                                if (student.Sex == (int)SexEnum.男)
+                                {
+                                    <img class="photo" style="width:43px;" src="/Images/StudentInfo/u396.png" />
+                                }
+                                else
+                                {
+                                    <img class="photo" style="width:43px;" src="/Images/StudentInfo/portrait.png" />
+                                }
+                            }
+                            else
+                            {
+                                <img class="photo" style="width:43px;" src="@student.Avatar" />
+                            }
+                        }
+                        <span class="name">
+                            @student.Name
+                            <em>
+                                <img src="/Images/StudentInfo/xl.png" />
+                                <div class="jt"><img src="/Images/StudentInfo/jterror.png" /></div>
+                                <div class="perinfobox">
+                                    <div class="percontbox">
+                                        <div class="textbox">
+                                            <div class="text1">
+                                                <div class="fl">@student.Name&nbsp;|&nbsp;<span id="school"></span></div>
+                                                <div class="info" style="display:none;"><a href="@Url.Action("StudentInfo","Student")">个人中心</a></div><!--style="display:none;"-->
+                                            </div>
+                                            <div class="text2 text3">金币数量：<span id="coins"></span>个</div>
+                                            <div class="text2">本次登录：<span id="clogin"></span></div>
+                                            <div class="text2">登录地区：<span id="area"></span></div>
+                                            <div class="text2">上次登录：<span id="llogin"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </em>
+                        </span>
+                    </label>
+                    <span class="loginout" style="cursor:pointer;" onclick="outlogin()">
+                        <img src="/Images/StudentInfo/loginout.png"/>
+                    </span>
+                    @*<span class="name" onclick="outlogin()">退出登录</span>*@
+                    @*<span class="message" style="display:none;">
+                        <img src="/Images/StudentInfo/message.png" />
+                        <em class="itemcenter">12</em>
+                    </span>*@
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chosewindow" style="display:none;">
+    <div class="showwindow"></div>
+    <div class="showwindowcontent">
+        <div class="box">
+            <div class="boxc">
+                <div class="closepaydepop1">
+                    <img class="closepaydepopimg" src="/Images/StudentInfo/c1.png" onclick="btnCan()" />
+                </div>
+                <div class="textiinfo textcenter">提示信息</div>
+                <div class="textinfo1">确定退出登录吗？</div>
+                <div class="btn">
+                    <button type="button" class="sub" onclick="btnYes()">确定</button>
+                    <button type="button" class="def" onclick="btnCan()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

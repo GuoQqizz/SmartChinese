@@ -1,0 +1,58 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "待校对-选择填空";
+    string controller = "MultipleChoiceFillInBlank";
+    ViewBag.controller = controller;
+    ViewBag.action = "EditMultipleChoiceFillInBlankSubject";
+    ViewBag.id = Model;
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <form action="@Url.Action("Approve", controller)" method="post">
+            <input type="hidden" name="subjectId" value="@Model" />
+            <input type="hidden" name="nextStatus" />
+            @Html.Partial("GetQuestionInfo")
+            @Html.Partial("_SubjectBasicReadonly")
+            @Html.Partial("_SubjectViewButtons")
+        </form>
+    </div>
+</div>
+
+@section Styles{
+    <style>
+        .table-nobordered td {
+            border-top: none !important;
+        }
+
+        .p-down p {
+            margin-top: 6px;
+        }
+    </style>
+}
+@section Scripts{
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Scripts/PageScripts/subjectreadonly.js"></script>
+    <script src="~/Scripts/PageScripts/subject.view.mark.js"></script>
+    <script src="~/Scripts/PageScripts/subject.view.reload.js"></script>
+    <script src="~/Scripts/PageScripts/subjct.subjectbasic.js"></script>
+    <script>
+        $(function () {
+            let url = '@Url.Action("GetReadonlyDetails", controller)';
+            $.getJSON(url, { id: '@Model' }, function (response) {
+                if (response.State) {
+                    let data = response.Data;
+                    
+                    renderSubjectBasicData(data);
+
+                    reloadMultipleChoiceFillBlankSubjectData(data);
+
+                    let status = data.SubjectStatus;
+                    registerEventForMark(status);
+                    $('#div_button_' + status).show();
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,302 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@using AbhsChinese.Admin.Models.Resource
+@model ResourceGroupViewModel
+@{
+    Layout = "~/Views/Shared/_Forms.cshtml";
+}
+@section Styles {
+    
+    @Styles.Render("~/bundles/css/select2Styles")
+    <link href="~/Content/ui-choose/ui-choose.css" rel="stylesheet" />
+    <style>
+        .ibox-content {
+            border: none;
+        }
+
+         .wrapper-content {
+            padding: 20px 10px 0;
+        }
+
+        .check-link {
+            display: none;
+        }
+
+        .todo-list.small-list > li:hover .check-link {
+            display: inline !important;
+        }
+    </style>
+}
+
+<input type="hidden" value="@Model.resourceType" id="resourceType" />
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-md-3" style="padding-left:35px;">
+            <div class="input-group">
+                <select id="grade" class="select2" data-ajax--url="@Url.Action("GetGrades","Select2")"
+                        data-ajax--cache="true"
+                        data-placeholder="请选择年级" data-allow-clear="true"
+                        name="Grade">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                @{
+                    if (Model.resourceType == 1)
+                    {
+                        <select id="type" class="select2" data-ajax--url="@Url.Action("GetTextType","Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择文本类型" data-allow-clear="true"
+                                name="Type">
+                            <option></option>
+                        </select>
+                    }
+                    else if (Model.resourceType == 2)
+                    {
+                        <select id="type" class="select2" data-ajax--url="@Url.Action("GetMediaTypeExceptXiaoAi","Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择多媒体类型" data-allow-clear="true"
+                                name="Type">
+                            <option></option>
+                        </select>
+                    }
+                    else if (Model.resourceType == 3)
+                    {
+                        <select id="type" class="select2" data-ajax--url="@Url.Action("GetSubjectType","Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择题目类型" data-allow-clear="true"
+                                name="Type">
+                            <option></option>
+                        </select>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                @{
+                    if (Model.resourceType == 3)
+                    {
+                        <input id="nameOrkey" type="text" class="form-control" name="NameOrKey" placeholder="按题干、编号或关键字搜索" />
+                    }
+                    else
+                    {
+                        <input id="nameOrkey" type="text" class="form-control" name="NameOrKey" placeholder="按资源名称、编号或关键字搜索" />
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-md-3" style="padding-left:55px;padding-right:25px;">
+            <div class="input-group">
+                <button id="search" class="btn btn-white search" type="button">
+                    搜索
+                </button>
+            </div>
+        </div>
+        <form id="ajaxForm" style="display: none">
+            <input type="hidden" name="Ygi_GroupId" id="groupId" value="@Model.Yrg_Id" />
+            <input type="hidden" name="Ygi_ResourceType" value="@Model.resourceType" />
+            <input type="hidden" name="Ygi_ResourceId" id="resourceId" required />
+            <button class="btn btn-primary btn-sm" type="button" id="btn_SignIn">保存</button>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="ibox ">
+                        <div class="ibox-content">
+                            <ul class="todo-list m-t small-list" id="ullist">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="ibox ">
+                        <div class="ibox-content text-left">
+                            <div id="detail" class="todo-list m-t small-list">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<label id="tip" style="position:absolute;left:45%">请选择一个文件</label>
+
+@section Scripts {
+    
+    @Scripts.Render("~/bundles/js/select2")
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+    <script src="~/Content/ui-choose/ui-choose.js"></script>
+    <script>
+        $(function () {
+            $('.select2').select2({
+                width: '200px',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                let $select = $(this);
+                let selectedValue = $select.val();
+                let $hidden = $select.parent('div.select-container')
+                    .find('input[type="hidden"]');
+                $hidden.val(selectedValue);
+                $hidden.next('label.error').remove();
+            });
+
+
+            $("#search").click(function () {
+                var grade = $("#grade option:checked").val();
+                var type = $("#type option:checked").val();
+                var nameOrkey = $("#nameOrkey").val();
+                var resourceType = $("#resourceType").val();
+
+                $.ajax({
+                    url: '/ResourceGroup/GetResourceList',
+                    type: 'get',
+                    data: {
+                        grade: grade,
+                        type: type,
+                        nameOrkey: nameOrkey,
+                        resourceType: resourceType
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        debugger;
+                        $("#ullist").empty();
+                        if (data.Code == 1) {
+                            for (var i = 0; i < data.Data.length; i++) {
+                                $("#ullist").append('<li id="li' + data.Data[i].Ytr_Id + '" onclick="choose(' + data.Data[i].Ytr_Id + ',1)"><a href="#" class="check-link"><i class="fa fa-square-o"></i></a><span class="m-l-xs">' + data.Data[i].Ytr_Name + '</span></li>');
+                            }
+                        }
+                        else if (data.Code == 2) {
+                            for (var i = 0; i < data.Data.length; i++) {
+                                $("#ullist").append('<li id="li' + data.Data[i].Ymr_Id + '" onclick="choose(' + data.Data[i].Ymr_Id + ',2)"><a href="#" class="check-link"><i class="fa fa-square-o"></i></a><span class="m-l-xs">' + data.Data[i].Ymr_Name + '</span></li>');
+                            }
+                        }
+                        else if (data.Code == 3) {
+                            for (var i = 0; i < data.Data.length; i++) {
+                                $("#ullist").append('<li id="li' + data.Data[i].Ysj_Id + '" onclick="choose(' + data.Data[i].Ysj_Id + ',3)"><a href="#" class="check-link"><i class="fa fa-square-o"></i></a><span class="m-l-xs">' + data.Data[i].Ysj_Name + '</span></li>');
+                            }
+                        }
+                        if ($("#ullist").children().length == 0) {
+                            $("#tip").show();
+                            $("#tip").text("没有符合条件的文件");
+                            $("#detail").hide();
+                        }
+                        else {
+                            $("#tip").hide();
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+            });
+
+            $("#btn_SignIn").click(function () {
+                ajaxSubmit();
+            });
+        });
+
+        function choose(id, resourceType) {
+            var $li = $("#li" + id + "").children().children();
+            var classname = $li.attr("class");
+            if (classname == "fa fa-square-o") {
+                $("li a i").each(function () {
+                    if ($(this).attr("class") == "fa fa-check-square") {
+                        $(this).removeClass("fa fa-check-square");
+                        $(this).addClass("fa fa-square-o");
+                        $(this).parent().parent().css("background", "#f3f3f4");
+                        $(this).parent().next().css("color", "#676a6c");
+                    }
+                })
+
+                $("#li" + id + "").css("background", "#1ab394");
+                $("#li" + id + "").children().next().css("color", "#fff");
+                $li.removeClass("fa fa-square-o");
+                $li.addClass("fa fa-check-square");
+            }
+            else {
+                $("#li" + id + "").css("background", "#f3f3f4");
+                $("#li" + id + "").children().next().css("color", "#676a6c");
+                id = 0;
+                $li.removeClass("fa fa-check-square");
+                $li.addClass("fa fa-square-o");
+            }
+
+            $.ajax({
+                url: '/ResourceGroup/Detail?id=' + id + '&resourceType=' + resourceType,
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    $("#detail").empty();
+                    debugger;
+                    if (data.Data != null) {
+                        if (data.ErrorCode == 1) {
+                            $("#detail").append('<textarea rows="5" cols="20"  class="form-control" style="height: 400px; resize: none;">' + data.Data.Yxo_Content + '</textarea>');
+                            $("#resourceId").val(data.Data.Ytr_Id)
+                        }
+                        else if (data.ErrorCode == 2) {
+                            if (data.Data.Ymr_MediaType == 101) {
+                                $("#detail").append('<video controls="controls"><source src="' + data.Data.Yme_Url + '" type="video/mp4" /></video>');
+                            }
+                            else if (data.Data.Ymr_MediaType == 102) {
+                                $("#detail").append('<audio controls="controls"><source src="' + data.Data.Yme_Url + '" type="audio/mp3" /></audio>');
+                            }
+                            else if (data.Data.Ymr_MediaType == 103) {
+                                $("#detail").append('<img src="' + data.Data.Yme_Url + '" style="width:400px;height:400px;"/>');
+                            }
+                            $("#resourceId").val(data.Data.Ymr_Id)
+                        }
+                        else if (data.ErrorCode == 3) {
+                            $("#detail").append('<textarea rows="5" cols="20"  class="form-control" style="height: 400px; resize: none;">' + data.Data.Ysj_Name + '</textarea>');
+                            $("#resourceId").val(data.Data.Ysj_Id)
+                        }
+                    }
+                    else
+                    {
+                        $("#resourceId").val("");
+                    }
+                },
+                error: function (data) {
+                    console.log(data)
+                }
+            });
+        }
+
+        function ajaxSubmit() {
+            if (!$("#ajaxForm").valid()) {
+                return false;
+            }
+            if ($("#resourceId").val() == "")
+            {
+                layer.alert("请选择文件");
+                return;
+            }
+
+            $.ajax({
+                url: "/ResourceGroup/AddResourceGroupItemDo",
+                type: "post",
+                data: $('#ajaxForm').serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.State) {
+                        top.window.layer.msg(data.ErrorMsg, { time: 500 }, function () { top.window.layer.closeAll(); top.window.location.reload() });
+                    } else {
+                        top.window.layer.alert(data.ErrorMsg, { icon: 2 }, function () { top.window.layer.closeAll(); });
+                    }
+                },
+                error: function (data) {
+                    top.window.layer.alert(data.ErrorMsg, { icon: 2 }, function () { top.window.layer.closeAll(); });
+                }
+            });
+        }
+    </script>
+}

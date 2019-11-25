@@ -1,0 +1,58 @@
+﻿@using AbhsChinese.Domain.Dto.Response
+@model List<DtoMediaResourceAndObject>
+@{
+    ViewBag.PageTitle = "小艾管理";
+    ViewBag.ListTitle = "小艾管理";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <link href="~/Content/showImg/xiaoaiImg.css" rel="stylesheet" />
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+    </style>
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <div class="ibox-title">
+                    <h5>
+                        <i class="fa fa-search"></i>&nbsp;@ViewBag.ListTitle
+                    </h5>
+                    <div class="ibox-tools">
+                        <div class="col">
+                            <button class="btn btn-white" type="button" id="btnAdd" onclick="javascript: location.href = '/XiaoAi/Add';">
+                                添加
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="wrapper">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="selectImgDiv" id="selectItemDiv">
+                                    @foreach (var item in Model)
+                                    {
+                                        <div class="item">
+                                            <div class="img_show">
+                                                <img src="@item.XiaoAiBUrl" />
+                                            </div>
+                                            <div class="img_title">
+                                                @item.Ymr_Name
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

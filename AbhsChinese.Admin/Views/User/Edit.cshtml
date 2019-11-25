@@ -1,0 +1,118 @@
+﻿@model AbhsChinese.Admin.Models.UserViewModel
+
+@{
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";
+}
+
+<form id="frmUserEdit" action="/User/Edit" method="post" class="form-horizontal">
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">姓名</label>
+        <div class="col-sm-10">
+            <input type="text"
+                   name="name"
+                   required
+                   class="form-control" value="@Model.Name" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">年龄</label>
+        <div class="col-sm-10">
+            <input name="age"
+                   required
+                   type="number"
+                   class="form-control"
+                   value="@Model.Age" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">手机</label>
+        <div class="col-sm-10">
+            <input name="phone"
+                   required
+                   isMobile
+                   type="text"
+                   class="form-control"
+                   value="@Model.Phone" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">邮箱</label>
+        <div class="col-sm-10">
+            <input name="email"
+                   autocomplete="email"
+                   required
+                   type="email"
+                   placeholder="Email" class="form-control"
+                   value="@Model.Email" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">简历</label>
+        <div class="col-sm-10">
+            @Html.EditorFor(m => m.Resume,
+                            new { Style = "width:100%; height:240px;" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">爱好</label>
+        <div class="col-sm-10">
+            <textarea name="hobby"
+                      placeholder="你平时喜欢做什么"
+                      class="form-control"
+                      style="height:100px;"
+                      value="@Model.Hobby"></textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="btn_save"
+                    class="btn btn-sm btn-white"
+                    type="submit"
+                    style="display:none;">
+                保存
+            </button>
+        </div>
+    </div>
+</form>
+
+@section styles{
+    <link href="~/Content/umeditor/themes/default/css/umeditor.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script src="~/Content/umeditor/umeditor.config.js"></script>
+    <script src="~/Content/umeditor/umeditor.js"></script>
+    <script src="~/Content/umeditor/lang/zh-cn/zh-cn.js"></script>
+
+    <script>
+        //$(document).ready(function () {
+        //    $('.i-checks').iCheck({
+        //        checkboxClass: 'icheckbox_square-green',
+        //        radioClass: 'iradio_square-green',
+        //    });
+
+        //});
+    </script>
+    <script>
+        //// 手机号码验证
+        //jQuery.validator.addMethod("isMobile", function (value, element) {
+        //    var length = value.length;
+        //    var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        //    return this.optional(element) || (length == 11 && mobile.test(value));
+        //}, "请正确填写您的手机号码");
+    </script>
+    <script>
+        $(function () {
+            var $editform = $("#frmUserEdit");
+            $editform.submit(function (response) {
+                if ($editform.valid()) {
+                    $editform.ajaxSubmit(function (response) {
+                        alert(response);
+                    });
+                    return false;
+                }
+            });
+        });
+    </script>
+}

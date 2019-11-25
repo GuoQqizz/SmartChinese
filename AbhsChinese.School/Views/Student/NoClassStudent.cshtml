@@ -1,0 +1,276 @@
+﻿
+@model AbhsChinese.Domain.Dto.Request.School.DtoSchoolNoClassStudentSearch
+@{
+    //ViewBag.PageTitle = "学生管理"; //ListTitle
+    ViewBag.PageTitle = "未分班学生";
+    ViewBag.HasReloadBtn = true;
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .text-danger {
+            margin-left: 15px;
+        }
+
+        .img-info {
+            width: 50px;
+            height: 50px;
+        }
+
+
+
+        .wrapper-content {
+            height: calc(100% - 80px);
+        }
+
+         #wrapper, .ibox, .table_container {
+            height: 100%;
+        }
+
+        .ibox-content {
+            /*height: calc(100% - 60px);*/
+            height: 100%;
+        }
+
+        #table_list {
+            height: calc(100% - 100px);
+        }
+
+        .spc-green {
+            color: #1ABC9C;
+        }
+
+        .spc-defaule {
+            color: #ccc;
+        }
+
+        .spc-red {
+            color: #D9001B;
+        }
+
+        .layui-layer-wrap {
+            overflow: hidden;
+        }
+
+        .assert-class-form {
+            margin-top: 30px;
+        }
+
+        #classLayer {
+            display: none;
+        }
+
+         :root {
+            --sbheight: 80px;
+        }
+        .search-box {
+            height: var(--sbheight);
+        }
+
+        @@media screen and (max-width: 1350px) {
+            :root {
+                --sbheight: 130px;
+            }
+        }
+    </style>
+
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row search-box">
+            <div class="col-12 btn-course-type-list" data-val="-1">
+            </div>
+            @Html.Partial("_SearchNoClassList", Model)
+            @Html.Partial("_PageControl")
+        </div>
+        <div class="row" style="height: calc(100% - 50px);">
+            <div class="col-12 table_container">
+                <div id="table_list"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="classLayer">
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+
+
+    <script type="text/template" id="assertClassTmp">
+        <div class="form-group row assert-class-form">
+            <label class="col-form-label col-4 text-right">姓名:</label>
+            <label class="col-form-label col-8 text-left">{{StudentName}}</label>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-4 text-right">已购课程:</label>
+            <label class="col-form-label col-8 text-left">{{CourseName}}</label>
+
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-4 text-right required">选择班级:</label>
+            <div class="col-6 text-left">
+                <select class="form-control m-b class-select " id="ClassId" required></select>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        $(function () {
+            renderSearch();
+            initTable();
+            registerEvent();
+        })
+
+        function renderSearch() {
+
+            //年级
+            $('.select2-grade').initSelectOption({
+                'source': gradeSourceArr,
+                'className': '',
+                'default': { key: '-1', value: '年级' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+            //课程类型
+            $('.btn-course-type-list').initBtns({
+                'source': courseTypeArr,
+                'className': 'course-type-item',
+                'name': 'CourseType',
+            });
+        }
+        function initTable() {
+            let columns = [
+                { label: '学号', name: 'Bst_No', align: 'center' },
+                { label: '姓名', name: 'Bst_Name', align: 'center' },
+                { label: '手机号', name: 'Bst_Phone', align: 'center' },
+                {
+                    label: '已购课程', name: 'Ycs_Name', align: 'center'
+                },
+                { label: '年级', name: 'GradeStr', align: 'center' },
+                { label: '课程类型', name: 'CourseType', align: 'center' },
+                { label: '订单编号', name: 'Yod_OrderNo', align: 'center' },
+                {
+                    label: '下单时间', name: 'OrderTime', align: 'center'
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return `<a href='javascript:void(0)' class='text-info' onclick="showAssertClass(${row.Yps_Id},${row.Yps_CourseId},'${row.Bst_Name}','${row.Ycs_Name}')">分班班级</a>`;
+                    }
+                }
+            ];
+            $('#table_list').table({
+                ajax: {
+                    url: '@Url.Action("GetNoClassList", "Student")'
+                },
+                columns: columns,
+                current: PageBase.GetPageIndex(),
+                searchBox: '#form_search'
+            });
+        }
+        function showAssertClass(yspId, courseId, studentName, courseName) {
+            //yspId = 1;
+            //courseId = 10000;
+            //studentName = '测试姓名';
+            //courseName = "测试课程";
+            var tp = document.getElementById('assertClassTmp').innerHTML;
+            var html = tp.replace('{{StudentName}}', studentName)
+                         .replace('{{CourseName}}', courseName);
+            var classLayer = $('#classLayer')
+            classLayer.html(html);
+            $.ajax({
+                url: '@Url.Action("GetSchoolClassByCourseId", "Select2")' + '?courseId=' + courseId,
+                type: 'GET',
+                success: function (res) {
+                    $('.class-select').initSelectOption({
+                        'source': res.results,
+                        'className': '',
+                        'default': { key: '-1', value: '请选择班级' },
+                        'width': '200px',
+                        'useSelect2': false,
+                    });
+                    window.layer.open({
+                        type: 1,
+                        title: "分配班级",
+                        skin: 'layui-layer-rim',
+                        scrollbar: false,
+                        area: ["30%", "35%"],
+                        btn: ['确定', '关闭'],
+                        yes: function (index, layero) {
+                            var classId = $('#ClassId').val();
+                            if (classId < 0) {
+                                window.layer.msg("请选择班级", { time: 1000 });
+                            } else {
+                                assertClass(yspId, classId);
+                            }
+                        },
+                        content: classLayer
+
+                    })
+                },
+                error: function (err) {
+                    console.log(err);
+                    window.layer.alert("加载班级失败",
+                       { icon: 2 },
+                       function () { window.layer.closeAll(); });
+                }
+            })
+        }
+        function assertClass(yspId, classId) {
+            $.ajax({
+                url: '@Url.Action("AssignClass", "Student")',
+                type: "POST",
+                data: { yspId: yspId, classId: classId },
+                beforeSend: function () {
+                    loading.showLoading('正在分配，请稍候……');// showLoading();
+                },
+                success: generateSuccessFunc(function () {
+                    window.layer.closeAll();
+                    backLocal();
+                }),
+                error: generateErrorFunc(),
+            });
+        }
+
+        function reload() {
+            window.location.reload();
+        }
+        function backLocal() {
+            PageBase.SetToPage('/Student/NoClassStudent');
+            window.location.href = '@Url.Action("NoClassStudent", "Student")';
+        }
+
+        function registerEvent() {
+            $('.course-type-item').on('click', function () {
+                //$('.course-type-item').removeClass('btn-primary')
+                //$('.course-type-item').map(function (i, v) {
+                //    $(v).removeClass('btn-primary');
+                //    if (!$(v).hasClass('btn-default')) {
+                //        $(this).addClass('btn-default');
+                //    }
+                //})
+
+                //$(this).addClass('btn-primary').removeClass('btn-default');
+
+                $(this).addClass('btn-primary').removeClass('btn-default');
+                $(this).siblings().removeClass("btn-primary").addClass("btn-default");
+                var name = $(this).data('for');
+                var item = $(`[name=${name}]`);
+                item.val($(this).data('val'));
+                $('.search').click();
+            })
+        }
+    </script>
+}

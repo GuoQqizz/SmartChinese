@@ -1,0 +1,255 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    user-select: none;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: "Microsoft YaHei","宋体";
+}
+
+input, select, textarea, button {
+    resize: none;
+    outline: none;
+}
+
+ul, ol, li dt, dd {
+    list-style: none;
+}
+
+.btn-back {
+    float: left;
+    margin: 3px 10px;
+    display: none;
+}
+
+.btn-close {
+    float: right;
+    margin: 3px 10px;
+}
+
+.NavBox {
+    width: 100%;
+    height: 40px;
+    line-height: 39px;
+    background-color: rgb(246, 247, 249);
+    border-bottom: 1px solid #888;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+    .NavBox .Title {
+        font-size: 16px;
+        font-weight: bolder;
+    }
+
+.SetBox {
+    height: calc(100% - 40px);
+    overflow: auto;
+    position: relative;
+}
+
+    .SetBox > * {
+        background: #fff;
+    }
+
+    .SetBox .LinkBox {
+        box-sizing: content-box;
+        width: 500px;
+        margin: 10px auto;
+        padding: 20px 100px;
+    }
+
+        .SetBox .LinkBox h3 {
+            color: #16c7c7;
+            line-height: 40px;
+        }
+
+        .SetBox .LinkBox p {
+            line-height: 36px;
+        }
+
+            .SetBox .LinkBox p a {
+                display: inline-block;
+                width: 120px;
+            }
+
+    .SetBox .SettingBox {
+        height: 620px;
+        width: 200px;
+        border: 1px solid #888;
+        float: left;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        margin: auto;
+    }
+
+        .SetBox .SettingBox .SettingInfo {
+            height: calc(100% - 50px);
+            width: 100%;
+            padding: 10px;
+        }
+
+        .SetBox .SettingBox .SettingBtn {
+            height: 50px;
+            width: 100%;
+            border-top: 1px solid #808080;
+            text-align: center;
+        }
+
+            .SetBox .SettingBox .SettingBtn .btn {
+                margin: 7px 5px;
+            }
+
+            .SetBox .SettingBox .SettingBtn #ShowBrn {
+                display: none;
+            }
+
+
+    .SetBox .MakeBox {
+        height: 620px;
+        width: 1086px;
+        position: absolute;
+        top: 0px;
+        left: 200px;
+        right: 0px;
+        bottom: 0px;
+        margin: auto;
+    }
+
+        .SetBox .MakeBox .kcb-list {
+            background: #fff;
+            z-index: 999;
+        }
+
+        .SetBox .MakeBox .ruler-x-box {
+            width: 1086px;
+            height: 20px;
+            background: #888;
+        }
+
+            .SetBox .MakeBox .ruler-x-box .mouse-info {
+                width: 153px;
+                height: 20px;
+                line-height: 20px;
+                font-size: 14px;
+                float: left;
+                text-align: center;
+                color: rgb(246, 247, 249);
+            }
+
+            .SetBox .MakeBox .ruler-x-box .ruler-x {
+                float: left;
+                background-image: url(../Images/ruler-x-bg.png);
+                background-repeat: repeat-x;
+                width: 800px;
+                height: 20px;
+            }
+
+        .SetBox .MakeBox .ruler-y-box {
+            width: 1086px;
+            height: 600px;
+        }
+
+        .SetBox .MakeBox .ruler-y {
+            background-image: url(../Images/ruler-y-bg.png);
+            background-repeat: repeat-y;
+            float: left;
+            width: 20px;
+            height: 600px;
+        }
+
+        .SetBox .MakeBox .plot-area {
+            float: left;
+            background-position: center;
+            background-size: auto 100%;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+            .SetBox .MakeBox .plot-area .outer-area {
+                background: #888;
+                opacity: 0.3;
+                float: left;
+                width: 133px;
+                height: 600px;
+            }
+
+            .SetBox .MakeBox .plot-area .inner-area {
+                float: left;
+                width: 800px;
+                height: 600px;
+                position: relative;
+                font-family: "Microsoft YaHei","宋体";
+            }
+
+                .SetBox .MakeBox .plot-area .inner-area > * {
+                    position: absolute;
+                }
+
+                .SetBox .MakeBox .plot-area .inner-area * {
+                    user-select: none;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .SetBox .MakeBox .plot-area .inner-area .TextBox {
+                    letter-spacing: .05em;
+                }
+
+                .SetBox .MakeBox .plot-area .inner-area .ImgBox img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+.block-box {
+    border: 1px solid #808080;
+    position: relative;
+    margin-top: 20px;
+    padding: 10px 5px 5px;
+}
+
+    .block-box:before {
+        content: '标题';
+        position: absolute;
+        top: -12px;
+        font-size: 14px;
+        left: 10px;
+        background: #fff;
+        z-index: 2;
+    }
+
+    .block-box:after {
+        content: ' ';
+        display: block;
+        width: 0px;
+        height: 0px;
+        clear: both;
+    }
+
+.selected {
+    border: 2px solid #ff6a00 !important;
+}
+
+#xiaoAiChangeImg img {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+.abhs-mark i {
+    font-size: 20px;
+}
+
+.abhs-warn {
+    color: red;
+}

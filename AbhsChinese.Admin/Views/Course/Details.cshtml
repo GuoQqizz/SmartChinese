@@ -1,0 +1,257 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "课程详情";
+    string controller = "Course";
+}
+
+<div class="ibox">
+    <div class="ibox-title">
+        <div class="ibox-tools">
+            <a href="@Url.Action("ListCurriculums", "Course")"
+               class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-sm details-container" style="table-layout:fixed">
+                    <tr>
+                        <td style="width:527px;height:359px;padding:0px;" rowspan="6">
+                            <img id="coverImage" alt="" src="" style="width:525px;height:375px;">
+                        </td>
+                        <th style="width:8%;">课程编号</th>
+                        <td name="id" style="width:8%;">@Model</td>
+                        <th style="width:8%;">课程名称</th>
+                        <td><div class="short-text" name="name"></div></td>
+                    </tr>
+                    <tr>
+                        <th>年级</th>
+                        <td name="gradeText"></td>
+                        <th>课程类型</th>
+                        <td name="courseTypeText"></td>
+                    </tr>
+                    <tr>
+                        <th>课时数量</th>
+                        <td name="lessonCount"></td>
+                        <th>负责人</th>
+                        <td><div class="short-text" name="ownerName"></div></td>
+                    </tr>
+                    <tr>
+                        <th>参与老师</th>
+                        <td name="teachers" colspan="3">
+                            <div class="short-text" name="teachers"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>课程简介</th>
+                        <td colspan="3">
+                            <div class="short-text" name="description"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>资源组</th>
+                        <td name="resourceGroupName"></td>
+                        <th>课程状态</th>
+                        <td name="statusText"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a class="nav-link" data-toggle="tab" href="#tab-1">课时列表</a>
+                            <input type="hidden" value="list" />
+                        </li>
+                        <li>
+                            <a class="nav-link" data-toggle="tab" href="#tab-2">操作日志</a>
+                            <input type="hidden" value="logs" />
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane">
+                            <div class="panel-body table_container">
+                                <form role="form" id="form_search_list">
+                                    <input type="hidden" name="courseId" value="@Model" />
+                                    <button hidden class="search" type="button">搜索</button>
+                                </form>
+                                <div id="table_list"></div>
+                                <div class="pagination"></div>
+                                <div class="row" style="margin-top:10px;">
+                                    <div class="col text-center">
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="closeCourse(@Model)"
+                                                id="btn_action_close" style="display:none">
+                                            关闭课程
+                                        </button>
+                                        <div id="div_action_status5" style="display:none;">
+                                            <button type="button" class="btn btn-danger"
+                                                    onclick="deleteCourse(@Model)">
+                                                彻底删除
+                                            </button>
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="reopenCourse(@Model)">
+                                                重新打开
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                            <div class="panel-body table_container">
+                                <form role="form" id="form_search_logs">
+                                    <input type="hidden" name="courseId" value="@Model" />
+                                    <button hidden class="search" type="button">搜索</button>
+                                </form>
+                                <div id="table_logs"></div>
+                                <div class="pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <style>
+        .table > tbody > tr > th, .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/abhsTable")
+    <script src="~/Scripts/PageScripts/details.js"></script>
+    <script>
+        $(function () {
+            initDetails();
+            initTabs();
+            $('a[href="#tab-1"]').tab('show');
+        });
+        function initTabs() {
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                let tab = $(e.target).next().val();
+                if (tab === 'list') {
+                    initLessonTable();
+                }else if (tab === 'logs') {
+                    initLogTable();
+                }
+            })
+        }
+        function initDetails() {
+            $.getJSON(
+                '@Url.Action("GetDetails", controller)',
+                { id: @Model},
+                function (response) {
+                    let data = response.Data;
+                    if (data.CoverImage) {
+                        $('#coverImage').attr('src', data.CoverImage);
+                    }
+                    $('.details-container').displayDetails(data);
+                    if (data.CoverImage) {
+                        $('.dz-image img').attr('src', data.CoverImage);
+                    }
+                    if (data.Status === 5) {
+                        $('#div_action_status5').show();
+                    }else {
+                        if (data.Status !== 3) {
+                            $('#btn_action_close').show();
+                        }
+                    }
+                });
+        }
+        function initLessonTable() {
+            let align = 'center';
+            let columns = [
+                {
+                    label: '编号', name: 'Index', align: align ,formatter:function(i,value,row){
+                        return row.CourseId+"-"+value;
+                    }
+                },
+                { label: '课时名称', name: 'Name', align: align },
+                { label: '最后编辑时间', name: 'UpdateTimeText', align: align },
+                { label: '制作人员', name: 'ProducerName', align: align },
+                { label: '审批人员', name: 'ApproverName', align: align },
+                { label: '课时状态', name: 'StatusText', align: align }
+            ];
+            $('#table_list').table({
+
+                ajax: {
+                    url: '@Url.Action("GetLessons",controller)'
+                },
+                columns: columns,
+                searchBox: '#form_search_list'
+            });
+        }
+
+        function initLogTable() {
+            let align = 'center';
+            let columns = [
+                { label: '操作日期', name: 'CreateTimeStr', align: align },
+                { label: '操作人', name: 'OperatorName', align: align },
+                { label: '操作类型', name: 'StatusStr', align: align },
+                { label: '操作记录', name: 'Remark', align: "left" }
+            ];
+            $('#table_logs').table({
+                ajax: {
+                    url: '@Url.Action("GetLessonLog", "Curriculum")',
+                    type:"post"
+                },
+                columns: columns,
+                searchBox: '#form_search_logs'
+            });
+        }
+
+        function closeCourse(courseId) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CloseCourse", "Course")',
+                data: { courseId: courseId},
+                success: function (response) {
+                    layer.msg(response.ErrorMsg, {
+                        icon: response.State === true ? 1 : 5
+                    },function () {
+                        location.href = '@Url.Action("ListCurriculums", "Course")';
+                    });
+                }
+            });
+        }
+
+        function deleteCourse(courseId) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteCourse", "Course")',
+                data: { courseId: courseId},
+                success: function (response) {
+                    layer.msg(response.ErrorMsg, {
+                        icon: response.State === true ? 1 : 5
+                    },function () {
+                        location.href = '@Url.Action("ListCurriculums", "Course")';
+                    });
+                }
+            });
+        }
+
+        function reopenCourse(courseId) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReopenCourse", "Course")',
+                data: { courseId: courseId},
+                success: function (response) {
+                    layer.msg(response.ErrorMsg, {
+                        icon: response.State === true ? 1 : 5
+                    },function () {
+                        location.href = '@Url.Action("ListCurriculums", "Course")';
+                    });
+                }
+            });
+        }
+    </script>
+}

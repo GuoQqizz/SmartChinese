@@ -1,0 +1,465 @@
+﻿@using AbhsChinese.Code.Common;
+@using AbhsChinese.Admin.Models.School;
+@model SchoolInputModel
+
+@{
+    ViewBag.PageTitle = "校区管理";
+    ViewBag.ListTitle = Model != null && Model.Bsl_Id > 0 ? "编辑校区" : "添加校区";
+}
+@section Styles {
+
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/dataPickerStyles")
+    <style type="text/css">
+        .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+        .switchery-default {
+            cursor: pointer;
+        }
+
+        .switchery > small {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icheckbox_square-green {
+            margin-right: 5px;
+        }
+
+        .input-grade {
+            display: inline-block;
+        }
+
+            .input-grade label {
+                cursor: pointer;
+            }
+
+        .input-grade, #gradeCheckBox {
+            padding-left: 7px;
+        }
+
+        #gradeCheckBox {
+            margin-bottom: 10px;
+        }
+
+            #gradeCheckBox label.error {
+                width: 200px;
+                margin-top: 85px;
+                margin-left: 20px;
+            }
+
+        .ibox {
+            position: relative;
+        }
+
+        .ibox-content {
+            min-height: 730px;
+        }
+
+        .control-group {
+            /*position: absolute;
+            width: 100%;
+            bottom: 20px;*/
+        }
+        /*下面代码可提为公用*/
+        .select2-default.error ~ .select2-container {
+            margin-bottom: 30px;
+            border: 1px dotted #cc5965;
+        }
+
+        .select2-default.error + label.error {
+            position: absolute;
+            top: 36px;
+        }
+
+        .select2-container + label.error {
+            position: absolute;
+            top: 2.25rem;
+            width: 200px;
+            left: 14px;
+        }
+
+        .input-form-addon input.error, .input-form-addon select.error {
+            margin-bottom: 20px;
+        }
+
+        .input-form-addon label.error {
+            position: absolute;
+            top: 36px;
+        }
+
+        .input-group-addon {
+            height: calc(2.25rem - 3px);
+        }
+
+        /*.select2-default + label.error {
+            position: absolute;
+            bottom: 0px;
+        }
+
+        .select-region {
+            height: 50px;
+        }
+
+            .select-region label.error {
+                position: absolute;
+                left: 0px;
+                top: 35px;
+            }*/
+    </style>
+}
+@*<div class="ibox">*@
+<div class="ibox-content">
+    <div class="row">
+        <div class="col-12">
+            <div class="ibox-title">
+                <h5>
+                    @ViewBag.ListTitle
+                </h5>
+                <div class="ibox-tools">
+                    <div class="col">
+                        <button type="button" class="btn btn-white" id="btnBack"><i class="fa fa-chevron-left"></i>&nbsp;返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <form id="school_Form" method="post">
+        <input type="hidden" name="Bsl_Id" class="form-control" value="@(Model != null ? Model.Bsl_Id : 0)" />
+        <input type="hidden" name="Bsl_SchoolMasterId" class="form-control" value="@(Model.Bsl_SchoolMasterId)" />
+        <input type="text" id="hiddentexta" style="visibility:hidden;position:absolute;z-index:-999" />
+        <input type="password" id="hiddenpassworda" style="visibility:hidden;position:absolute;z-index:-999" />
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right required">校区名称: </label>
+            <div class="col-4">
+                <input type="text" name="Bsl_SchoolName" class="form-control " value="@(Model != null ? Model.Bsl_SchoolName : string.Empty)" required maxlength="50" />
+            </div>
+
+            <label class="col-form-label col-1 text-right required">校区等级:</label>
+            <div class="col-4">
+                <select class="form-control m-b select2-default" id="selectSchoolLevel" name="Bsl_Level" data-val="@Model.Bsl_Level" required></select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right required">校长名称:</label>
+            <div class="col-4">
+                <input type="text" name="Bsl_MasterName" class="form-control no-space-input" value="@(Model != null ? Model.Bsl_MasterName : string.Empty)" required maxlength="10" />
+            </div>
+            <label class="col-form-label col-1 text-right required">校长手机:</label>
+            <div class="col-4">
+                <input type="text" name="Bsl_MasterPhone" class="form-control no-space-input" value="@(Model != null ? Model.Bsl_MasterPhone : string.Empty)" required maxlength="11" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right required">所在地区:</label>
+            <div class="col-9">
+                @Html.Partial("_AbhsRegion", new ViewDataDictionary
+                       {
+                            { "ProvinceId" , Model.Bsl_Province },
+                            { "CityId" , Model.Bsl_City },
+                            { "Width","33%"},
+                            { "CountyId" , Model.Bsl_County },
+                            { "ProvinceFieldName" , "Bsl_Province" },
+                            { "CityFieldName","Bsl_City"},
+                            { "CountyFieldName","Bsl_County"},
+                            {"ClassName","" }
+                       })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right required">详细地址:</label>
+            <div class="col-9">
+                <input type="text" name="Bsl_Address" class="form-control" value="@(Model != null ? Model.Bsl_Address : string.Empty)" required maxlength="100" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right required">签约日期:</label>
+            <div class="col-4 input-group date input-form-addon">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="Bsl_ContractDate" class="form-control input_date" placeholder="请选择日期" value="@(Model.Bsl_ContractDate != DateTime.MinValue ? Model.Bsl_ContractDate.ToString("yyyy-MM-dd") : string.Empty)" required>
+            </div>
+            <label class="col-form-label col-1 text-right required">合同到期日期:</label>
+            <div class="col-4 input-group date input-form-addon">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="Bsl_ExpiredDate" class="form-control input_date" placeholder="请选择日期" value="@(Model.Bsl_ExpiredDate != DateTime.MinValue ? Model.Bsl_ExpiredDate.ToString("yyyy-MM-dd") : string.Empty)" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right required">校区状态:</label>
+            <div class="col-4">
+                <select class="form-control m-b sex-select select2-default" name="Bsl_Status" id="selectSchoolStatus" data-val="@Model.Bsl_Status" required></select>
+            </div>
+            <label class="col-form-label col-1 text-right required">允许登录后台:</label>
+            <div class="col-4">
+                @*<input type="text" name="Bsl_IsValid" class="form-control" value="@(  Model.Bsl_IsValid?1 : 0)" required />*@
+                <input type="checkbox" class="js-switch form-control" name="IsValidStr" @(Model.IsValidStr == "on" ? "checked" : "") />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right required">后台登录手机:</label>
+            <div class="col-4">
+                <input type="text" name="LoginPhone" class="form-control no-space-input " value="@(Model != null ? Model.LoginPhone : string.Empty)" required maxlength="11" autocomplete="new-password" />
+            </div>
+            <label class="col-form-label col-1 text-right @(Model.Bsl_Id>0?"":"required")">密码:</label>
+            <div class="col-4">
+                <input type="text" onfocus="this.type='password'" name="LoginPwd" class="form-control no-space-input" value="@(Model.Bsl_Id>0 ? Model.LoginPwd : string.Empty)" maxlength="20" />
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-2 text-right">备注:</label>
+            <div class="col-9">
+                <textarea class="form-control text" name="Bsl_Remark" style="height:120px" maxlength="200">@(Model != null ? Model.Bsl_Remark : string.Empty)</textarea>
+            </div>
+        </div>
+
+        <div class="form-group row control-group pr-3">
+            <div class="col-12   text-center ">
+                <button class="btn btn-default " type="button" id="btnCancle">取消</button>
+                <button class="btn btn-primary ml-2 " type="button" id="btnSure">确认</button>
+            </div>
+        </div>
+    </form>
+</div>
+@*</div>*@
+@section Scripts {
+
+    @Scripts.Render("~/bundles/js/switchery")
+    @Scripts.Render("~/bundles/js/htmlhelper")
+    @Scripts.Render("~/bundles/js/dataPicker")
+    <script type="text/javascript">
+
+
+        $.validator.addMethod("validAccount", function (value) {
+            var returnVal = true;
+            var schoolId = @(Model==null?0:Model.Bsl_Id);
+            var oldVal = '@Model.LoginPhone';
+
+            if (value != ''&&value!=oldVal) {
+                $.ajax({
+                    url: '@Url.Action("CheckSchoolTeacherAccount", "School")',
+                    data:{ "accont": value },
+                    type: "POST",
+                    async : false,
+                    success: function (data) {
+                        returnVal = data.State ;
+                    },
+                    error: function (xhr) {
+                        returnVal=false;
+                    }
+                });
+            }
+            return returnVal;
+        }, '该账号已经被占用');
+
+
+
+
+        $(function () {
+            setMinHeight('ibox-content', 140);
+            renderHtml();
+
+            $("#school_Form").validate({
+                onfocusin: false,
+                onkeyup: false,
+                rules: {
+                    Bsl_SchoolName: {
+                        required: true,
+                    },
+                    Bsl_Level:{
+                        required: true,
+                        min:1,
+                    },
+                    Bsl_MasterName:{
+                        required:true,
+                    },
+                    Bsl_MasterPhone:{
+                        required:true,
+                        isMobile:true,
+                    },
+                    Bsl_Province:{
+                        required:true,
+                        min:1,
+                    },
+                    Bsl_City:{
+                        required:true,
+                        min:1,
+                    },
+                    Bsl_County:{
+                        required:true,
+                        min:1,
+                    },
+                    Bsl_Address:{
+                        required:true,
+                    },
+                    Bsl_ContractDate:{
+                        required:true,
+                    },
+                    Bsl_ExpiredDate:{
+                        required:true,
+                    },
+                    Bsl_Status:{
+                        required:true,
+                        min:1,
+                    },
+                    Bsl_IsValid:{
+                        required:true,
+                    },
+                    LoginPhone:{
+                        required:true,
+                        isMobile:true,
+                        validAccount:true,
+                    },
+                    LoginPwd:{
+                        required: @(Model.Bsl_Id>0? "false" : "true"),
+                        pwdlength:6,
+                    },
+                },
+                messages: {
+                    Bsl_SchoolName: {
+                        required: "请输入学校名称",
+                    },
+                    Bsl_Level:{
+                        required: "请选择学校等级",
+                        min: "请选择学校等级",
+                    },
+                    Bsl_MasterName:{
+                        required:"请输入校长名称",
+                    },
+                    Bsl_MasterPhone:{
+                        required:"请输入校长电话",
+                        isMobile:"请输入有效手机号",
+                    },
+                    Bsl_Province:{
+                        required: "请选择省份",
+                        min: "请选择学校省份",
+                    },
+                    Bsl_City:{
+                        required: "请选择城市",
+                        min: "请选择学校城市",
+                    },
+                    Bsl_County:{
+                        required: "请选择地区",
+                        min: "请选择学校地区",
+                    },
+                    Bsl_Address:{
+                        required:"请输入学校地址",
+                    },
+                    Bsl_ContractDate:{
+                        required:"请输入签约日期",
+                    },
+                    Bsl_ExpiredDate:{
+                        required:"请输入合同到期日期",
+                    },
+                    Bsl_Status:{
+                        required:"请选择校区状态",
+                        min:"请选择校区状态",
+                    },
+                    Bsl_IsValid:{
+                        required:"请选择是否允许登录",
+                    },
+                    LoginPhone:{
+                        required:"请输入登录手机",
+                        isMobile:"请有效手机号",
+                        validAccount:"该手机号已注册",
+                    },
+                    LoginPwd:{
+                        required:"请输入密码",
+                    },
+                },
+                submitHandler: throttle(function (form) {
+                    ajaxSubmit();
+                },1000),
+            });
+
+            $("#btnSure").click(throttle(function () {
+                ajaxSubmit();
+            },1000));
+            $("#btnBack").on("click", function () {
+                window.location.href = "@Url.Action("Index", "School")";
+            });
+            $("#btnCancle").on("click", function () {
+                window.location.href =  "@Url.Action("Index", "School")";
+            });
+        });
+        function renderHtml(){
+            //是否允许登录
+            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+            elems.forEach(function (ele) {
+                let switchery = new Switchery(ele, { disabled: false });
+            })
+            //校区状态
+            $('#selectSchoolStatus').initSelectOption({
+                'source': schoolStatusArr,
+                'className': '',
+                'useSelect2':true,
+            });
+            //校区等级
+            $.ajax({
+                url:'@Url.Action("GetSchoolLevelForSelect", "School")',
+                type:'GET',
+                success:function(data){
+                    $('#selectSchoolLevel').initSelectOption({
+                        'source': data,
+                        'className': '',
+                        'addDefault':true,
+                        'useSelect2':true,
+                    });
+                }
+            });
+            //时间控件
+            $(".input-group.date").datepicker({
+                autoclose: true,
+                todayBtn: "linked",
+                todayHighlight: true,
+                /*汉化*/
+                language: "cn",
+                /*日期格式*/
+                format: "yyyy-mm-dd"
+            });
+            $(".input-group.date input").on('change',function(){
+                $(this).valid()
+            });
+        }
+        function ajaxSubmit() {
+            if (!$("#school_Form").valid()) {
+                return false;
+            }
+            console.log($("#school_Form").serialize());
+            $.ajax({
+                url: '/School/SaveSchool',
+                type: 'post',
+                datatype: 'json',
+                data: $("#school_Form").serialize(),
+                success: function (data) {
+                    if(data.State){
+                        window.layer.msg(data.ErrorMsg,
+                            { time: 500 },
+                            function () {
+                                window.layer.closeAll();
+                                window.location.href='@Url.Action("Index", "School")';
+                            });
+                    }else{
+                        window.layer.alert(data.ErrorMsg,
+                           { icon: 2 },
+                           function () {  window.layer.closeAll(); });
+                    }
+
+                },
+                error:function(err){
+                    console.log(err);
+                    window.layer.alert("异常，请重试",
+                        { icon: 2 },
+                        function () {  window.layer.closeAll(); });
+                }
+            })
+        }
+
+    </script>
+}

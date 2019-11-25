@@ -1,0 +1,39 @@
+﻿@model int?
+
+@{
+    ViewBag.Title = "StudentTaskReport";
+}
+
+<h2>课程任务报告</h2>
+<input type="hidden" id="studyTaskId" name="studyTaskId" value="10000" />
+<div id="div_subject"></div>
+<hr />
+<button type="button" onclick="savePracetice()">下一题</button>
+
+@section Scripts{
+    <script>
+        $(function () {
+            getSubjects(1);
+        });
+
+        function getSubjects(pageIndex) {
+            let url = '/StudentReport/GetSubjectsToPractice';
+            let parameters = { taskId: $('#studyTaskId').val(), pageIndex: pageIndex };
+            $.getJSON(url, parameters)
+                .done(function (response) {
+                    debugger;
+                    let html = '';
+                    $.each(response.Data, function (i, o) {
+                        let js=JSON.stringify(o);
+                        console.log(js);
+                        html += `<hr /><div>${JSON.stringify(o)}</div>`;
+                    });
+                    $('#div_subject').html(html);
+                });
+        }
+
+        function savePracetice() {
+
+        }
+    </script>
+}

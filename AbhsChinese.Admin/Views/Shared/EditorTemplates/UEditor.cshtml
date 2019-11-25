@@ -1,0 +1,17 @@
+﻿@model AbhsChinese.Admin.Models.UEditor
+
+<div id="UEditor_content">
+    @Html.HiddenFor(m => m.Content)
+</div>
+<!--style给定宽度可以影响编辑器的最终宽度-->
+<script type="text/plain" id="myEditor" class="@ViewBag.Class" style="@ViewBag.Style">
+    <p>这里我可以写一些输入提示</p>
+</script>
+<script type="text/javascript">
+    //实例化编辑器
+    var um = UM.getEditor('myEditor');
+    um.addListener('blur', function () {
+        let hidUEditorContent = document.getElementById('UEditor_content').firstChild;
+        hidUEditorContent.value = UM.getEditor('myEditor').getContent();
+    });
+</script>

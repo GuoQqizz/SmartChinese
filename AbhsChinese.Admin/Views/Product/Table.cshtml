@@ -1,0 +1,265 @@
+﻿@using AbhsChinese.Domain.Entity
+@model List<Table>
+@{
+    ViewBag.Title = "Table";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <div class="ibox-tools">
+                        <input type="text" id="search_key" style="border:1px solid #ccc" /><button id="btnSearch" style="margin-left:8px">搜索</button><button id="export" onclick="javascript:location.href='/Product/Export'" style="margin-left:8px">下载</button>
+                        <button onclick="Detail()">弹框</button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table id="table1" class="table table-bordered data-table mydatatable ">
+                        <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>姓名</th>
+                                <th>年龄</th>
+                                <th>性别</th>
+                                <th>手机</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    @Styles.Render("~/Content/dataTablesStyles")
+    
+}
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    
+    <script type="text/javascript">
+        $(function () {
+            
+            //提示信息
+            var lang = {
+                "sProcessing": "<img src='/Images/ajax-loading-icon-19.jpg' style='width:50px;height:50px' />加载中...",
+                "sLengthMenu": "每页显示 _MENU_ 项",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "正在拼命加载...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                },
+                "deferRender": true
+            }
+
+            //初始化表格
+            var table = $("#table1").DataTable({
+                language: lang,  //提示信息
+                autoWidth: false,  //禁用自动调整列宽
+                stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
+                processing: true,  //隐藏加载提示,自行处理
+                serverSide: true,  //启用服务器端分页
+                searching: false,  //禁用原生搜索
+                orderMulti: true,  //启用多列排序
+                pageLength: 3, //首次加载的数据条数
+                ordering:false,//禁用排序
+                order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
+                renderer: "bootstrap",  //渲染样式：Bootstrap和jquery-ui
+                pagingType: "full_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
+                columnDefs: [{
+                    "targets": [0,1,2,3],  //列的样式名
+                    "orderable": false    //包含上样式名‘nosort’的禁止排序
+                }],
+                "aLengthMenu": [3, 6, 8, 10],
+                ajax: function (data, callback, settings) {
+                    //封装请求参数
+                    console.log(data);
+                    var param = {};
+                    param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+                    param.start = data.start;//开始的记录序号
+                    param.pageIndex = (data.start / data.length) + 1;//当前页码
+                    param.search_key = $("#search_key").val();//查询条件
+                    //param.order = data.order[0];//排序列及方式
+
+                    //console.log(param);
+                    //ajax请求数据
+                    $.ajax({
+                        type: "GET",
+                        url: "/Product/GetTable",
+                        cache: false,  //禁用缓存
+                        data: param,  //传入组装的参数
+                        dataType: "json",
+                        success: function (result) {
+                            console.log(result);
+                            //setTimeout仅为测试延迟效果
+                            setTimeout(function () {
+                                //封装返回数据
+                                var returnData = {};
+                                returnData.draw = result.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                                returnData.recordsTotal = result.total;//返回数据全部记录
+                                returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                                returnData.data = result.data;//返回的数据列表
+                                //console.log(returnData);
+                                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                                callback(returnData);
+                            }, 200);
+                        }
+                    });
+                },
+                //列表表头字段
+                columns: [
+                    { "data": "Id","width":"200px" },
+                    { "data": "Name", "width": "200px" },
+                    { "data": "Age", "width": "200px" },
+                    { "data": "Sex", "width": "200px" },
+                    { "data": "Phone", "width": "200px" },
+                    { "data": null, "width": "300px" }
+                ],
+                columnDefs: [{
+                    "targets": [2],
+                    createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
+                        $(cell).click(function () {
+                            oldvalue=$(this).html()
+                            $(this).html('<input type="text" size="16" style="width: 100%"/>');
+                            var aInput = $(this).find(":input");
+                            aInput.focus().val(cellData);
+                        });
+                        $(cell).on("blur", ":input", function () {
+                            console.log(oldvalue)
+                            var text = $(this).val();
+                            $(cell).html(text);
+                            if (oldvalue != text)
+                            {
+                                updatecell(text, rowData.Id);
+                            }
+                        })
+                    }
+                },{
+                    // 定义操作列,######以下是重点########
+                    "targets": [5],//操作按钮目标列
+                    "data": null,
+                    "render": function (data, type, row) {
+                        var id = '"' + row.Id + '"';
+                        var html = " <a href='javascript:void(0);' onclick='Detail()'  class='btn btn-default btn-xs'  ><i class='fa fa-eye'></i> 查看</a>"
+                        html += " <a href='javascript:void(0);' class='btn btn-default btn-xs'><i class='fa fa fa-edit'></i> 编辑</a>"
+                        html += " <a href='javascript:void(0);' onclick='Delete()'  class='delete btn btn-default btn-xs'><i class='fa fa-trash-o'></i> 删除</a>"
+                        html += ' <a href="javascript:void(0);"  class="up btn btn-default btn-xs"><i class="fa fa-arrow-up"></i> 上升</a>'
+                        html += ' <a href="javascript:void(0);"  class="down btn btn-default btn-xs"><i class="fa fa-arrow-down"></i> 下降</a>'
+                        return html;
+                    }
+                }]
+
+            });
+
+            //搜索
+            $("#btnSearch").click(function () {
+                $("#table1").dataTable().fnDraw(false);
+            })
+
+            // 初始化上升按钮
+            $('#table1 tbody').on('click', 'a.up', function (e) {
+                var index = $(this).parent().parent().index() //行号
+                if ((index - 1) >= 0) {
+                    //$("#table1 tbody tr:nth-child(" + index + ")").insertAfter($("#table1 tbody tr:nth-child(" + (index + 1) + ")"))
+                    var current = $(this).parent().parent();  //获取当前<tr>
+                    var prev = current.prev();   //获取当前<tr>前一个元素
+                    current.insertBefore(prev);  //插入到当前<tr>前一个元素前
+                } else {
+                    layer.msg('亲，已经到顶了', { icon: 5 });
+                }
+
+            });
+
+            // 初始化下降按钮
+            $('#table1 tbody').on('click', 'a.down', function (e) {
+                var max = table.rows().data().length;//总条数
+                var index = $(this).parent().parent().index()//行号
+                if ((index + 1) < max) {
+                    //$("#table1 tbody tr:nth-child(" + index + ")").insertAfter($("#table1 tbody tr:nth-child(" + (index - 1) + ")"))
+                    var current = $(this).parent().parent();  //获取当前<tr>
+                    var next = current.next();  //获取当前<tr>后面一个元素
+                    current.insertAfter(next);   //插入到当前<tr>后面一个元素后面
+                } else {
+                    layer.msg('亲，已经到底了', { icon: 5 });
+                }
+            });
+
+        });
+
+        //普通弹框—iframe
+        function Detail() {
+            layer.open({
+                type: 2,
+                title: "弹框",
+                skin: 'layui-layer-rim',
+                maxmin: true,
+                area: ["50%", "90%"],
+                btn: ['确定', '关闭', '无'],
+                yes:function(index)
+                {
+                    //执行代码
+
+                    layer.msg("已成功执行，5秒后关闭", { time: 5000 }, function () { layer.close(index); })
+                    
+                },
+                btn3:function(index)
+                {
+                    //loadingFlag = layer.msg('正在读取数据，请稍候……', { icon: 16, shade: 0.01, shadeClose: false, time:100 })
+                    layer.msg("暂未开放",{icon:3})
+                },
+                content: "/Product/Playiframe"
+            })
+        }
+
+        //提示弹框
+        function Delete() {
+            layer.confirm('确认删除吗?',
+            {
+                icon: 2,
+                title: '提示',
+                yes: function (index) {
+                    //确定后执行的代码
+
+                    layer.msg("删除成功", {icon:1})
+                    layer.close(index);
+                },
+                cancel: function (index, layero) {
+                    layer.close(index);
+                    reload();// 可以在这里刷新窗口
+                }
+            });
+        }
+
+        //修改行数据
+        function updatecell(obj, id) {
+            $.ajax({
+                url: '/Product/UpdateCell',
+                type: 'post',
+                data: { field: obj, id: id },
+                success: function(data) {
+                    $("#table1").dataTable().fnDraw(false);
+                }
+            });
+        }
+
+    </script>
+}

@@ -1,0 +1,27 @@
+﻿<form role="form" class="form-inline search-form col-10" id="form_search_employee">
+    <input type="hidden" name="bem_Id" value="" />
+    <div class="form-group">
+        <input type="text" class="form-control" name="AccountOrNameOrPhone" placeholder="按账号/姓名/电话搜索"  />
+    </div>                                            
+    <div class="form-group">
+        <select class="select2 normal"
+                 data-ajax--url="@Url.Action("GetRoleCode","Select2")"
+                data-ajax--cache="true"
+                data-placeholder="全部角色" 
+                data-allow-clear="true" 
+                name="Role">
+        </select>
+    </div>
+    <div class="form-group">
+        <select class="select2 normal" 
+                data-ajax--url="@Url.Action("GetEmployeeStatus","Select2")"
+                data-ajax--cache="true"
+                data-placeholder="全部状态" 
+                data-allow-clear="true"
+                name="Status">
+        </select>
+    </div>
+    <button class="btn btn-white search" type="button" ><i class="fa fa-search"></i>&nbsp;搜索</button>
+</form>
+
+ 

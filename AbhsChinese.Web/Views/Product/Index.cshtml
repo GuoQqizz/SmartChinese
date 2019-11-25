@@ -1,0 +1,12 @@
+﻿@using AbhsChinese.Web.Models
+@model List<ProductModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@foreach (ProductModel model in Model)
+{
+    <p><span>@(model.Id)</span>-<span>@(model.FullName)</span>-<span>@(model.Desc)</span></p>
+}
+

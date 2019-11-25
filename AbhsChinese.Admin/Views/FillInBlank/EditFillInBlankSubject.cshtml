@@ -1,0 +1,553 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "题目录入-填空题";
+}
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        @using (Ajax.BeginForm("EditFillInBlankSubject", "FillInBlank", new AjaxOptions
+        {
+            OnComplete = "complete"
+        }, new { id = "form", role = "form" }))
+        {
+            <input type="text" name="nextStatus" value="2" style="display:none;" />
+            <input type="hidden" id="subjectId" name="id" value="@Model" />
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">题干</label>
+                <div class="col-11">
+                    <textarea id="name" name="name" style="width:100%;"></textarea>
+                    <input type="hidden" id="plainName" name="plainName" />
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">最佳答案</label>
+                <div id="div_perfect" class="col-11"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">正确答案</label>
+                <div id="div_correct" class="col-11"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">勉强答案</label>
+                <div id="div_other" class="col-11"></div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">解析</label>
+                <div class="col-11">
+                    <textarea id="explain" name="explain" style="width:100%;"></textarea>
+                </div>
+            </div>
+            @Html.Partial("_SubjectBasic")
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    @*该隐藏域用于记录是想要做保存操作还是提交操作,默认是保存操作*@
+                    <input type="hidden" name="button" value="0" />
+                    <button class="btn btn-white"
+                            type="button" onclick="submitForm2(false)">
+                        保存
+                    </button>
+                    <button class="btn btn-primary"
+                            type="button" onclick="submitForm2(true)">
+                        提交
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+     data-backdrop="static" id="modal_editAnswer">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">编辑答案</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs" id="ul_nav"></ul>
+                    <div class="tab-content" id="div_tab_contents"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary"
+                        onclick="saveAnswersAsTemp()">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;" id="div_tagsinput_template">
+    <form class="form-horizontal">
+        <div class="form-group row">
+            <label class="col-2 col-form-label">最佳答案</label>
+            <div class="col-10">
+                <input type="text" data-answer-type="perfect" class="tagsinput special-tagsinput form-control">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-2 col-form-label">正确答案</label>
+            <div class="col-10">
+                <input type="text" data-answer-type="correct" class="tagsinput special-tagsinput form-control">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-2 col-form-label">勉强答案</label>
+            <div class="col-10">
+                <input type="text" data-answer-type="other" class="tagsinput special-tagsinput form-control">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div style="display:none">
+    <textarea id="factory" name="factory"></textarea>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .inmodal .modal-header {
+            padding: 15px;
+        }
+    </style>
+}
+@section Scripts{
+    <script src="~/Scripts/bootstrap-tagsinput/bootstrap-tagsinput.abhs.js"></script>
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/common/guid.js"></script>
+    <script src="~/Scripts/common/ueditor.config.subject.js"></script>
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.js"></script>
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.subjectbasic.js"></script>
+    <script>
+        let objs = [];
+    </script>
+    <script>
+        function submitForm2(needValid) {
+            let $form = $('#form');
+            let $hidden = $form.find(':hidden[name="button"]');
+            if (needValid)//需要进行数据校验
+            {
+
+                let vr = validatePerfect();
+                $hidden.val(2);
+                if (!$form.valid()) {//但是校验没通过
+                    return false;
+                }
+                if (!vr) {
+                    return vr;
+                }
+            } else {
+                $hidden.val(1);
+            }
+            $form.submit();
+        }
+        function validatePerfect() {
+            let es = [];
+            //验证最佳答案不能为空
+            let $hiddens = $(':hidden[name^="perfect.blanks"]')
+            $.each($hiddens, function (i, o) {
+                if (!o.value) {
+                    $(o).next().show();
+                    es.push(o);
+                }
+            });
+            return es.length === 0;
+        }
+    </script>
+    <script>
+        $(function () {
+            initUeditor();
+
+            $("#form").validate({
+                onsubmit: false,
+                ignore: "",
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    grade: {
+                        required: true
+                    },
+                    difficulty: {
+                        required: true
+                    },
+                    keywords: {
+                        required: true
+                    }
+                }
+            });
+
+            if ($('#subjectId').val() !== '0') {
+                $.getJSON('@Url.Action("GetDetails","FillInBlank")',
+                    { id: $('#subjectId').val() },
+                    function (response) {
+                        if (response.State) {
+                            let data = response.Data;
+
+                            ueditorName.ready(function () {
+                                this.setContent(data.Name);
+                                //找到挖的所有的空(编辑器里的button)
+                                //取出button中的data-num元素的值，用于筛选元素
+                                let dataNums = fetchGuids(data.Name);
+                                $.each(dataNums, function (index, dataNum) {
+                                    let obj = {
+                                        id: dataNum,
+                                        perfect: '',
+                                        correct: '',
+                                        other: ''
+                                    };
+                                    objs.push(obj);
+                                });
+
+
+                                if (data.Perfect.Blanks) {
+                                    $.each(data.Perfect.Blanks, function (index, blank) {
+                                        objs[index].perfect = blank;
+                                    });
+                                }
+
+                                if (data.Correct.Blanks) {
+                                    $.each(data.Correct.Blanks, function (index, blank) {
+                                        objs[index].correct = blank;
+                                    });
+                                }
+
+                                if (data.Other.Blanks) {
+                                    $.each(data.Other.Blanks, function (index, blank) {
+                                        objs[index].other = blank;
+                                    });
+                                }
+
+                                renderAnswers(objs);
+                            });
+
+                            setBasicData(data);
+                            setPlainNameData(data);
+
+                            setContent(ueditorExplain, data.Explain);
+                        }
+                    });
+            } else {
+                initSelectPageComponent();
+            }
+
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+
+            registerModalEvent();
+
+            registerTabsEvent();
+        });
+    </script>
+    <script>
+        function registerTabsEvent() {
+            //标签页显示时，生成tagsinput
+            $('#modal_editAnswer').on('show.bs.tab', 'a[data-toggle="tab"]', function () {
+                let idSelecter = $(this).attr('href');
+                let $tabBody = $(idSelecter + ' .panel-body');
+                if ($tabBody.html()) {
+                    return;
+                }
+                let html = $('#div_tagsinput_template').html();
+                $tabBody.html(html);
+
+                let $tagsInputs = $(idSelecter + ' .special-tagsinput');
+                $tagsInputs.tagsinput({
+                    tagClass: 'label label-primary',
+                    maxChars: 10,
+                    trimValue: true,
+                    delimiter: '|'
+                });
+
+                setPrevValueToTagsInput(idSelecter, 'perfect');
+                setPrevValueToTagsInput(idSelecter, 'correct');
+                setPrevValueToTagsInput(idSelecter, 'other');
+
+                //#tabPane_d0d4fa1f-b921-d92e-eb04-45c7d6b74559
+                let idOfObj = idSelecter.replace('#tabPane_', '');
+                //当添加完tags后，要在页面上显示出来
+                //显示数据的span标签的id的格式span_perfect_bfacd360-909a-245b-d817-070c0be3eb31
+                $tagsInputs.on('itemAdded', function (event) {
+                    let type = event.currentTarget.dataset.answerType;
+                    let v = event.currentTarget.value;
+                    $.each(objs, function (oi, oo) {
+                        if (oo.id == idOfObj) {
+                            oo[type] = v;
+                        }
+                    });
+                    syncTagsInputValueToSpan(idSelecter, type, v);                    
+                });
+
+                $tagsInputs.on('itemRemoved', function (event) {
+                    let type = event.currentTarget.dataset.answerType;
+                    let v = event.currentTarget.value;
+                    $.each(objs, function (oi, oo) {
+                        if (oo.id == idOfObj) {
+                            oo[type] = v;
+                        }
+                    });
+                    syncTagsInputValueToSpan(idSelecter, type, v);                    
+                });
+            });
+        }
+
+        //把tabsinput的数据同步到页面，进行显示
+        function syncTagsInputValueToSpan(tabsSelector, suffix, value) {
+            let span_id = getSpanSelectorByTabsSelector(tabsSelector, suffix);
+            let h_id = getHiddenSelectorByTabsSelector(tabsSelector, suffix);
+            let vToShow = value;//value.replace(/\|/g, ' | ');
+            $(span_id).text(vToShow);
+            $(h_id).val(value);
+        }
+
+        //根据tabs的id，生成存储数据的hidden的id
+        function getHiddenSelectorByTabsSelector(selecter, suffix) {
+            return selecter.replace('tabPane', 'h_' + suffix);
+        }
+
+        //根据tabs的id，生成显示数据的span的id
+        function getSpanSelectorByTabsSelector(selecter, suffix) {
+            return selecter.replace('tabPane', 'span_' + suffix);
+        }
+
+        function setPrevValueToTagsInput(tabsSelector, suffix) {
+            let h_id = getHiddenSelectorByTabsSelector(tabsSelector, suffix);
+            let val = $(h_id).val();
+            $(tabsSelector + ' input[data-answer-type="' + suffix + '"]')
+                .tagsinput('add', val);
+        }
+
+        //将表单中的答案，临时存储起来
+        function saveAnswersAsTemp() {
+            let $modal = $('#modal_editAnswer');
+            $modal.modal('hide');
+            validatePerfect();
+        }
+
+        //根据ueditor的空，过滤有用的对象
+        function filterUseFullObjsByUeditor(content) {
+            //找到挖的所有的空(编辑器里的button)
+            //取出button中的data-num元素的值，用于筛选元素
+            let dataNums = fetchGuids(content);
+            //根据编辑器的答案过滤出有用的对象
+            let useFullObjs = $.grep(objs, function (item, index) {
+                return $.inArray(item.id, dataNums) !== -1;
+            });
+
+            return useFullObjs;
+        }
+        //创建tabs组件，追加到modal中
+        function createTabsByObjs(os) {
+            let htmlOfLi = '',
+                htmlOfTabBody = '';
+            $.each(os, function (i, o) {
+                let num = i + 1;
+                let tagPaneId = 'tabPane_' + o.id;
+                htmlOfLi += `<li><a class="nav-link" data-toggle="tab" href="#${tagPaneId}">空${num}</a></li>`;
+                htmlOfTabBody += `<div id="${tagPaneId}" class="tab-pane"><div class="panel-body"></div></div>`;
+            });
+            $('#ul_nav').html(htmlOfLi);
+            $('#div_tab_contents').html(htmlOfTabBody);
+        }
+        //默认显示tab
+        function activeTab(tabId) {
+            $(`a[href="#tabPane_${tabId}"]`).tab('show');
+        }
+        function getCurrentObjByButton(idOfButton, useFullObjs) {
+            //根据点击的按钮找到按钮对应的对象
+            let filteredObjs = $.grep(useFullObjs, function (item, index) {
+                return item.id === idOfButton;
+            });
+            let currentObj = filteredObjs[0];
+            return currentObj;
+        }
+        function showDialog(element) {
+            let $dialog = $('#modal_editAnswer');
+            $dialog.modal('show');
+            ueditorName.ready(function () {
+                //获取编辑器的内容
+                let content = this.getContent();
+                //找到有用的对象
+                let useFullObjs = filterUseFullObjsByUeditor(content);
+
+                createTabsByObjs(useFullObjs);
+
+                let currentObj = getCurrentObjByButton(element.dataset.num, useFullObjs);
+                activeTab(currentObj.id);
+            });
+        }
+
+        //查看答案
+        function viewAnswers() {
+            ueditorName.ready(function () {
+                //获取编辑器的内容
+                let content = this.getContent();
+                //找到挖的所有的空(编辑器里的button)
+                //取出button中的data-num元素的值，用于筛选元素
+                let dataNums = fetchGuids(content);
+                //从临时存储的答案中，筛选出有效的，显示在页面
+                let result = getAnswers(dataNums);
+                renderAnswers(result);
+            });
+        }
+
+        //根据data-num属性，过滤出有效的答案
+        function getAnswers(dataNums) {
+            let filteredObjs = [];
+            $.each(objs, function (index, obj) {
+                $.each(dataNums, function (index, dataNum) {
+                    if (obj.id === dataNum) {
+                        filteredObjs.push(obj);
+                    }
+                });
+            });
+            return filteredObjs;
+        }
+
+        function generateHtmlOfAnswers(containerSuffix) {
+            let answersTemplate = '<p class="form-control-plaintext"><span>空${num}&nbsp;&nbsp;&nbsp;</span><span id="${id}">${answer}</span></p><input id="${hid}" type="hidden" name="${inputName}" value="${hiddenValue}" /><label style="color:#cc5965;display:none;">这是必填字段</label>';
+            let $div_perfect = $('#div_' + containerSuffix);
+            $div_perfect.empty();
+            $.each(objs, function (index, obj) {
+                let num = index + 1;
+                let p_id = 'span_' + containerSuffix + '_' + obj.id;//显示答案的p标签的id
+                let h_id = 'h_' + containerSuffix + '_' + obj.id;//保存答案的hidden的id
+                let perfectAnswer = answersTemplate.replace('${num}', num)
+                                                .replace('${id}', p_id)
+                                                .replace('${hid}', h_id)
+                                                .replace('${inputName}', containerSuffix + '.blanks[' + index + ']');
+                if (obj[containerSuffix]) {
+                    //替换"|"为" | "，是为了显示的时候看的清楚
+                    //obj[containerSuffix] = obj[containerSuffix].replace(/\|/g, ' | ');
+                    perfectAnswer = perfectAnswer.replace('${answer}', obj[containerSuffix])
+                                                .replace('${hiddenValue}', obj[containerSuffix]);
+
+                } else {
+                    perfectAnswer = perfectAnswer.replace('${answer}', '')
+                                                .replace('${hiddenValue}', '');
+                }
+                $div_perfect.append(perfectAnswer);
+            });
+        }
+
+        //在页面上渲染答案
+        function renderAnswers(objs) {
+            generateHtmlOfAnswers('perfect');
+            generateHtmlOfAnswers('correct');
+            generateHtmlOfAnswers('other');
+        }
+
+        function registerModalEvent() {
+            //id为modal_editAnswer的modal的隐藏事件
+            $('#modal_editAnswer').on('hidden.bs.modal', function () {
+                let $modal = $(this);
+                //当modal隐藏时，清空数据
+                let $inputs = $modal.find('.tagsinput');
+                $.each($inputs, function (index, input) {
+                    let $input = $(input);
+                    $input.tagsinput('removeAll');
+                });
+            });
+        }
+        /*删除存储的某个blank对象
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         *@@param{String}id guid
+         */
+        function removeBlank(content) {
+            let ids = fetchGuids(content);
+            let newBlankCollection = {};
+            $.each(ids, function (i, o) {
+                newBlankCollection[o] = blankCollection[o];
+            });
+            blankCollection = newBlankCollection;
+        }
+    </script>
+    <script>
+        function orderObjsByContent(content) {
+            let ids = fetchGuids(content);
+            let orderedObjs = [];
+            $.each(ids, function (ii, io) {
+                $.each(objs, function (oi, oo) {
+                    if (io == oo.id) {
+                        orderedObjs.push(oo);
+                    }
+                });
+            });
+
+            objs = orderedObjs;
+        }
+        let ueditorExplain = null;
+        let ueditorName = null;
+        function initUeditor() {
+            ueditorName = UE.getEditor('name', ueConfigForTitle);
+            ueditorName.ready(function () {
+                this.addListener('afterinsertbland', function (eventName, btnIndex) {
+                    objs.push({ id: btnIndex, perfect: '', correct: '', other: '' });
+                    let content = this.getContent();
+                    orderObjsByContent(content);
+                    viewAnswers();
+                });
+                this.addListener('keyup', function () {
+                    let content = this.getContent();
+                    let ids = fetchGuids(content);
+                    if (!ids) {
+                        ids = [];
+                    }
+                    let newObjs = [];
+                    if (ids.length > 0) {//按钮多，对象少
+                        let idsOfObjs = $.map(objs, function (o) {
+                            return o.id;
+                        });
+                        $.each(ids, function (ii, io) {
+                            if ($.inArray(io, idsOfObjs) !== -1) {
+                                $.each(objs, function (oi, oo) {
+                                    if (oo.id == io) {
+                                        newObjs.push(oo);
+                                    }
+                                });
+                            } else {
+                                newObjs.push({ id: io, perfect: '', correct: '', other: '' });
+                            }
+                        });
+                    }
+
+                    objs = newObjs;
+                    orderObjsByContent(content);
+                    viewAnswers();
+                });
+                replaceFormat(this);
+            });
+
+            ueditorExplain = UE.getEditor('explain', ueConfigOfExplain);
+        }
+        function setContent(ueditor, content) {
+            if (content) {
+                ueditor.ready(function () {
+                    this.setContent(content);
+                });
+            }
+        }
+    </script>
+}

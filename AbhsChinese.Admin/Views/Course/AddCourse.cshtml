@@ -1,0 +1,326 @@
+﻿@{
+    ViewBag.PageTitle = "添加课程";
+    string controller = "Course"; 
+}
+
+<div class="ibox">
+    <div class="ibox-title">
+        <div class="ibox-tools">
+            <a href="@Url.Action("ListCurriculums", "Course")"
+               class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        @using (Ajax.BeginForm("AddCourse", controller, new AjaxOptions
+        {
+            OnComplete = "redirect",
+            HttpMethod = "POST"
+        }, new { id = "form", role = "form", @class = "wizard-big" }))
+        {
+            <input type="hidden" name="Status" value="1" />
+            <h1>课程信息</h1>
+            <fieldset>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">课程名称</label>
+                    <div class="col-10">
+                        <input name="name" type="text" class="form-control">
+                        @Html.Partial("_ValidateMessage", "name")
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">课程类型</label>
+                    <div class="col-10">
+                        <select name="courseType"
+                                class="select2 form-control"
+                                data-ajax--url="@Url.Action("GetCourseTypes", "Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择课程类型" data-allow-clear="true"></select>
+                        @Html.Partial("_ValidateMessage", "courseType")
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">年级</label>
+                    <div class="col-10">
+                        @Html.Partial("_Grade")
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">课时数量</label>
+                    <div class="col-10">
+                        <input name="lessonCount" type="number" min="1" class="form-control">
+                        @Html.Partial("_ValidateMessage", "lessonCount")
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">负责人</label>
+                    <div class="col-10">
+                        <select name="owner"
+                                class="select2 form-control"
+                                data-ajax--url="@Url.Action("GetOwners", "Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择负责人" data-allow-clear="true"></select>
+                        @Html.Partial("_ValidateMessage", "owner")
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">请选择资源组</label>
+                    <div class="col-10">
+                        <select name="resourceGroupId"
+                                class="select2 form-control"
+                                data-ajax--url="@Url.Action("GetResourceGroups", "Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择资源组" data-allow-clear="true"></select>
+                        @Html.Partial("_ValidateMessage", "resourceGroupId")
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">请选择老师</label>
+                    <div class="col-10">
+                        <select name="employees"
+                                disabled
+                                class="form-control"
+                                data-ajax--url="@Url.Action("GetTeachers", "Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择老师"
+                                data-allow-clear="true"
+                                multiple></select>
+                        @Html.Partial("_ValidateMessage", "employees")
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-right required">课程描述</label>
+                    <div class="col-10">
+                        <textarea name="description" class="form-control rows-5"></textarea>
+                        @Html.Partial("_ValidateMessage", "description")
+                    </div>
+                </div>
+            </fieldset>
+            <h1>课时信息</h1>
+            <fieldset></fieldset>
+        }
+    </div>
+</div>
+
+<div class="abhs-template">
+    <div class="form-group row">
+        <label class="col-2 col-form-label text-right required">第$number课时名称</label>
+        <div class="col-10">
+            <input name="lessons[$]" type="text" class="form-control"
+                   oninput="validate(this)" onblur="validate(this)" />
+            @Html.Partial("_ValidateMessage", "lessons[$]")
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/wizardStepsStyles")
+    <style>
+        .wizard > .content > .body label.error {
+            margin-left: 0px;
+        }
+
+        .wizard > .content > .body {
+            position: static;
+        }
+
+            .wizard > .content > .body input {
+                border: 1px solid #e5e6e7;
+            }
+
+        .wizard > .content {
+            background: none;
+        }
+
+        .select2-search__field {
+            border: none !important;
+        }
+
+        .form-control.error {
+            border: 1px dotted #cc5965 !important;
+            background: none !important;
+            color: none !important;
+        }
+
+        label.error {
+            color: #cc5965 !important;
+            display: inline-block;
+            margin-left: 5px;
+        }
+    </style>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/wizardSteps")
+    <script>
+        $(function () {
+            $("#form").steps({
+                labels: {
+                    next: '下一步',
+                    previous: '上一步',
+                    finish: '完成'
+                },
+                bodyTag: "fieldset",
+                onStepChanging: function (event, currentIndex, newIndex) {
+                    //始终允许后退，即使当前步骤包含无效字段!
+                    if (currentIndex > newIndex) {
+                        return true;
+                    }
+
+                    var form = $(this);
+
+                    //如果用户退回上一步骤了，清除验证信息
+                    if (currentIndex < newIndex) {
+                        // To remove error styles
+                        $(".body:eq(" + newIndex + ") label.error", form).remove();
+                        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                    }
+
+                    //对所有元素进行验证
+                    form.validate().settings.ignore = ":disabled,:hidden";
+
+                    //进行验证
+                    let valid = form.valid();
+                    if (valid) {
+                        if ($('input[name="lessonCount"]').val()) {
+                            let lessonCount = parseInt($('input[name="lessonCount"]').val());
+                            let reg = /\$/g;
+                            let reg1 = /\$number/g;
+                            let $fieldSet = form.find('fieldSet').eq(1);
+                            let $existLessons = $fieldSet.children('div.row');
+                            let numOfAdd = lessonCount - $existLessons.length;
+                            let number = $existLessons.length;
+                            if (numOfAdd > 0) {
+                                for (var i = 0; i < numOfAdd; i++) {
+                                    let template = getTemplate();
+                                    template = template.replace(reg1, ++number)
+                                                       .replace(reg, --number);
+                                    $(template).appendTo($fieldSet);
+                                    number++;
+                                }
+                            } else if (numOfAdd < 0) {
+                                for (var i = 0; i < (-numOfAdd) ; i++) {
+                                    $fieldSet.children('div.row').last().remove();
+                                }
+                            }
+                        }
+                    }
+                    return valid;
+                },
+                onFinishing: function (event, currentIndex) {
+                    var form = $(this);
+                    //对所有元素进行验证
+                    form.validate().settings.ignore = "";
+                    let lessons = $('#form-p-1 [name^="lessons"]');
+                    let errors = [];
+                    $.each(lessons, function (index, lesson) {
+                        let $currentLesson = $(lesson);
+                        if ($currentLesson.val().length === 0) {
+                            $currentLesson.next().text('课时不能为空').show();
+                            errors.push($currentLesson);
+                        }
+                    });
+                    // Start validation; Prevent form submission if false
+                    return errors.length === 0;
+                },
+                onFinished: function (event, currentIndex) {
+                    var form = $(this);
+
+                    //提交表单
+                    form.submit();
+                }
+            }).validate({
+                rules: {
+                    name: {
+                        required: true,
+                        maxlength: 100,
+                        isBlank: true
+                    },
+                    courseType: {
+                        required: true
+                    },
+                    grade: {
+                        required: true
+                    },
+                    lessonCount: {
+                        required: true,
+                        min: 1
+                    },
+                    owner: {
+                        required: true
+                    },
+                    resourceGroupId: {
+                        required: true
+                    },
+                    employees: {
+                        required: true
+                    },
+                    description: {
+                        required: true,
+                        maxlength: 200,
+                        isBlank: true
+                    }
+                }
+            });
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+
+            setMenuActive();
+
+            let $sel_teachers = $('select[name="employees"]');
+            $('select[name="grade"]').on('change', function () {
+                let v = $(this).val();
+                /*清空“请选择老师”下拉列表的值
+                 *触发change事件时，会进行数据验证，此处不需要数据验证
+                  需要清空数据验证的值*/
+                $sel_teachers.val('').trigger('change');
+                $('label[for="employees"]').hide();
+                if (v) {
+                    $sel_teachers.prop('disabled', false);
+                } else {
+                    $sel_teachers.prop('disabled', true);
+                }
+            });
+
+            $sel_teachers.select2({
+                width: '100%',
+                ajax: {
+                    data: function (params) {
+                        var query = {
+                            grade: $('select[name="grade"]').select2('val')
+                        }
+                        console.log(query);
+                        return query;
+                    }
+                }
+            });
+
+        });
+
+        function getTemplate() {
+            return $('.abhs-template').html();
+        }
+
+        function validate(element) {
+            let $input = $(element);
+            if ($input.val().trim().length === 0) {
+                $input.next().text('课时不能为空').show();
+                return;
+            }
+            if ($input.val().trim().length > 50) {
+                $input.next().text('课时名字最多为50字符').show();
+                return;
+            }
+            if ($input.val().trim().length > 0 && $input.val().trim().length <= 50) {
+                $input.next().text('').hide();
+            }
+        }
+        function setMenuActive() {
+            $('a[href="/Course/ListCurriculums"]').parent().addClass('active');
+        }
+    </script>
+}

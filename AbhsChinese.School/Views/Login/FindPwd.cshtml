@@ -1,0 +1,261 @@
+﻿
+@{
+    Layout = null;
+}
+@model string
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>橙同学大语文校区后台</title>
+
+    <link href="~/Content/login.css" rel="stylesheet" />
+
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 100%;
+            background: url(/Images/schoolmaster.jpg) no-repeat center bottom #89e0ce;
+            background-size: 100% auto;
+        }
+
+        .popwindow, #errorAuthCode {
+            display: none;
+        }
+
+        .close img {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    @*<form action="" method="post" id="repwd">*@
+    <div class="loginpage">
+        <div class="login login1">
+            <div class="box">
+                <div class="title">登录</div>
+                <div class="inpbox">
+                    <div class="inputbox"><input id="mobile" type="text" name="phone" placeholder="请输入手机号" maxlength="11" /></div>
+                </div>
+                <div class="errorinfo"><span>请输入正确的手机号吗</span></div>
+                <div class="inpbox inpbox">
+                    <div class="inputbox inputbox1">
+                        <input id="codenum" type="text" name="code" placeholder="发送短信验证码" />
+                        <div class="code"><span status="1" class="feachBtn" id="sendmobile">发送验证码</span></div>
+                    </div>
+                </div>
+                <div class="errorinfo"><span>请输入验证码</span></div>
+                <div class="inpbox">
+                    <div class="inputbox"><input id="pass" type="password" placeholder="请输入新密码" maxlength="20" /></div>
+                </div>
+                <div class="errorinfo"><span>请最少输入6位密码</span></div>
+                <div class="inpbox">
+                    <div class="inputbox"><input type="password" id="pass1" placeholder="请再次输入密码" maxlength="20" /></div>
+                </div>
+                <div class="errorinfo"><span>密码不一致</span></div>
+                <div class="btns">
+                    <button class="subbtn" id="subbtn">确认</button>
+                </div>
+                <div class="config">已有账号？<a href="@Url.Action("Index","Login")">去登录></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="popwindow">
+        <div class="popbox">
+            <div class="close"><img src="/Images/clsoe1.png" /></div>
+            <div class="inp"><input type="text" name="authcode" maxlength="4" /></div>
+            <div class="inp"><img id="AuthCode" src="" /><a href="#" id="reActhCode">看不清,换一张</a></div>
+            <div class="inp" id="errorAuthCode"><span>验证码错误</span></div>
+            <div class="inp"><button id="subcode">确定</button></div>
+        </div>
+    </div>
+    @*</form>*@
+    @Scripts.Render("~/bundles/js/common")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/layer/layer.js"></script>
+    <script>
+        let AuthCodeUrl = "@Url.Action("GetAuthCode", "Login")";
+        let SendCodeUrl = "@Url.Action("SendValidCode", "Sms")"
+        let FindPwdUrl = "@Url.Action("FindPwd","Login")";
+        let LoginUrl = '@Url.Action("Index","Login")';
+        let btnobj, phone, code, imgCode, pwd, repwd;
+        let sendStatus = false;
+        function isPoneAvailable(val) {
+            var mobile = /^^1[3456789]\d{9}$/;
+            if (!mobile.test(val)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        function showcode() {
+            $('#subcode').html('确定');
+            phone = $('[name=phone]').val();
+            if (isPoneAvailable(phone)) {
+                $('[name=authcode]').val('');
+                $('#mobile').parents('.inpbox').next('.errorinfo').find('span').hide();
+                $('#AuthCode').attr('src', AuthCodeUrl + '?r=' + new Date().getTime());
+                $('.popwindow').show();
+            } else {
+                $('#mobile').parents('.inpbox').next('.errorinfo').find('span').show();
+            }
+        }
+        //function sendCode() {
+        //    obj = btnobj;
+        //    phone = $('[name=phone]').val();
+        //    imgCode = $('[name=authcode]').val();
+        //    if (isPoneAvailable(phone) && imgCode.length == 4) {
+        //        $('#mobile').parents('.inpbox').next('.errorinfo').find('span').hide();
+        //        doSendCode();
+        //    } else {
+        //        $('#mobile').parents('.inpbox').next('.errorinfo').find('span').show();
+        //    }
+        //}
+
+        function doSendCode() {
+            obj = btnobj;
+            $('#subcode').html('发送中');
+            $.ajax({
+                type: "POST",
+                //async: false,
+                url: SendCodeUrl,
+                data: {
+                    phone: $('[name=phone]').val(),
+                    type: 7,
+                    authCode: $('[name=authcode]').val(),
+                },
+                success: function (res) {
+                    if (res.Status == 1) {
+                        handleSuccessAuthCode();
+                        window.layer.msg("发送成功", { time: 1500 })
+                        var num = 61;
+                        var timer = setInterval(function () {
+                            if (num > 1) {
+                                num--;
+                                obj.html("重新发送(" + num + ")").attr("status", "0");
+                                obj.addClass('disable');
+                                obj.css('color', '#707070');
+                            } else {
+                                obj.html("获取验证码").removeAttr("status", '1');
+                                obj.css('color', '#48b0a7');
+                                obj.removeClass('disable');
+                                clearInterval(timer);
+                            }
+                        }, 1000)
+                    } else {
+                        if (res.ErrorCode == 10007) {
+                            handleErrorAuthCode();
+                        } else {
+                            var index = window.layer.alert(res.ErrorMsg,
+                             { icon: 0 },
+                             function () { window.layer.close(index); });
+                        }
+
+                    }
+                }
+            })
+        }
+
+        function handleErrorAuthCode() {
+            $('#errorAuthCode').show();
+            showcode();
+        }
+        function handleSuccessAuthCode() {
+            $('#errorAuthCode').hide();
+            $('.popwindow').hide();
+        }
+
+        $(function () {
+            registerEvent();
+        })
+        function registerEvent() {
+            //找回密码
+            $('#subbtn').click(function () {
+                var lock = true;
+                phone = $('#mobile').val();
+                code = $('#codenum').val();
+                pwd = $('#pass').val();
+                repwd = $('#pass1').val();
+                if (!isPoneAvailable(phone)) {
+                    $('#mobile').parents('.inpbox').next('.errorinfo').find('span').show();
+                    lock = false;
+                } else {
+                    $('#mobile').parents('.inpbox').next('.errorinfo').find('span').hide();
+                }
+
+                if (code.length < 1) {
+                    lock = false;
+                    $('#codenum').parents('.inpbox').next('.errorinfo').find('span').show();
+                } else {
+                    $('#codenum').parents('.inpbox').next('.errorinfo').find('span').hide();
+                }
+                if (pwd.length < 6) {
+                    lock = false;
+                    $('#pass').parents('.inpbox').next('.errorinfo').find('span').show();
+                } else {
+                    $('#pass').parents('.inpbox').next('.errorinfo').find('span').hide();
+                }
+                if (pwd != '' && repwd != '' && pwd == repwd) {
+                    $('#pass1').parents('.inpbox').next('.errorinfo').find('span').hide();
+                } else {
+                    lock = false;
+                    $('#pass1').parents('.inpbox').next('.errorinfo').find('span').show();
+                }
+                //提交找回密码
+                if (lock) {
+                    $.ajax({
+                        type: "POST",
+                        url: FindPwdUrl,
+                        async: true,
+                        data: {
+                            phone: phone,
+                            code: code,
+                            pwd: pwd,
+                            repwd: repwd,
+                        },
+                        success: generateSuccessFunc(function () {
+                            window.location.href = LoginUrl;
+                        }, 2)
+                    })
+                }
+            })
+
+            //发送短信验证码-(显示图片验证码)
+            $('#sendmobile').click(function (e) {
+                btnobj = $(this);
+                if (btnobj.attr('status') == '0') {
+                    return false;
+                }
+                showcode();
+                stopDefault(e);
+            })
+            //重新获取图片验证码
+            $('#reActhCode').click(throttle(function () {
+                showcode();
+            }, 600));
+
+            $('.close img').click(function () {
+                $('.popwindow').hide();
+            })
+            //图片验证码确定
+            $('#subcode').click(function (e) {
+                var authcode = $('[name=authcode]').val();
+                if (authcode.length != 4) {
+                    $('#errorAuthCode').show();
+                } else {
+                    //$('#errorAuthCode').hide();
+                    //$('.popwindow').hide();
+                    doSendCode();
+                }
+                stopDefault(e);
+            })
+        }
+    </script>
+</body>
+</html>

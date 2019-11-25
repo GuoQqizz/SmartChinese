@@ -1,0 +1,236 @@
+﻿@using AbhsChinese.Web.Models.StudentInfo
+@using AbhsChinese.Domain.Enum
+@using System.Text.RegularExpressions;
+@model StudentInfoViewModel
+@{
+    ViewBag.Title = "个人中心";
+    ViewBag.Active = StudentMenus.个人信息;
+}
+@section Styles{
+    <link href="~/Content/layer/theme/default/layer.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/Content/layer/layer.js"></script>
+    <script src="~/Scripts/StudentInfo/LeftBar.js"></script>
+    <script>
+        //打开绑定学校弹窗
+        $('.bindschool').click(function () {
+            $('.bindsch').show();
+        });
+
+        $('#btnok').click(function () {
+            var mobile = $("#teaPhone").val();
+            if (mobile == "")
+            {
+                return;
+            }
+            if (!isPoneAvailable(mobile)) {
+                $("#phoneStr").html("请输入正确的手机号");
+                $(".errormsg").show();
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("BindSchool","Student")',
+                type: "post",
+                data: { phone: mobile },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.State == true) {
+                        $('.bindsch').hide();
+                        $('.bindschoolbox1').show();
+
+                        //更改所属校区状态
+                        $('#schoolName').html('已申请 ' + data.Data.Bsl_SchoolName + '&nbsp;&nbsp;&nbsp;&nbsp;<em class="bindschool" onclick="bind()">重新申请</em>')
+                    }
+                    else
+                    {
+                        $("#phoneStr").html("手机号码不正确，请核对。");
+                        $(".errormsg").show();
+                    }
+                }
+            });
+        });
+        $("#teaPhone").on("input propertychange", function () {
+            $(".errormsg").hide();
+            $('#info').html("");
+            var phone = $(this).val();
+            if(phone.length==11)
+            {
+                $.ajax({
+                    url: '@Url.Action("GetSchoolName", "Student")',
+                    type: "post",
+                    data: { phone: phone },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.State == true) {
+                            $('#info').html(data.Data);
+                        }
+                    }
+                });
+            }
+        })
+
+        //关闭绑定学校弹窗
+        $('.closepaydepopimg').click(function () {
+            closeBind();
+        });
+
+        function closeBind() {
+            $('.bindschoolbox').hide();
+        }
+
+        function bind() {
+            $('.bindsch').show();
+        }
+
+        function isPoneAvailable(val) {
+            var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+            if (!myreg.test(val)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+}
+<div class="bodycontent">
+    <!--header -->
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("StudentInfo","Student")">个人中心</a><em><img src="/Images/StudentInfo/back.png"></em><a href="#">个人信息</a>
+        </div>
+        <div class="navigationr"></div>
+    </div>
+    <div class="contentbox">
+       @Html.Partial("_LeftBar")
+        <div class="contentright">
+            <div class="ctrbox">
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_top.png"/></div>
+                <div class="contrbox">
+                    <div class="conttitle">个人信息<a href="@Url.Action("EditStudentInfo","Student")">修改</a></div>
+                    <div class="conflist">
+                        <ul>
+                            <li>
+                                <span class="textname fl">学号：</span>
+                                <span class="textcont">@Model.Bst_No</span>
+                            </li>
+                            <li>
+                                <span class="textname fl">昵称：</span>
+                                <span class="textcont">@Model.Bst_NickName</span>
+                            </li>
+                            <li>
+                                <span class="textname fl">姓名：</span>
+                                <span class="textcont">@Model.Bst_Name</span>
+                            </li>
+                            <li>
+                                <span class="textname fl">性别：</span>
+                                <span class="textcont">@Model.Sex</span>
+                            </li>
+                            <li>
+                                <span class="textname fl">生日：</span>
+                                <span class="textcont">@(Model.Birthday=="1900年01月01日"?"": Model.Birthday)</span>
+                            </li>
+                            <li>
+                                <span class="textname fl">年级：</span>
+                                <span class="textcont">@Model.Grade</span>
+                            </li>
+                            <li>
+                                <span class="textname fl">所属校区：</span>
+                                @{
+                                    if (Model.Bst_SchoolId > 0)
+                                    {
+                                        <span class="textcont" id="schoolName">@Model.SchoolName</span>
+                                    }
+                                    else
+                                    {
+                                        if (Model.ApplyStatus == (int)ApplyStatusEnum.申请)
+                                        {
+                                            <span class="textcont" id="schoolName">已申请 @Model.ApplySchoolName&nbsp;&nbsp;&nbsp;&nbsp;<em class="bindschool">重新申请</em></span>
+                                        }
+                                        else if (Model.ApplyStatus == (int)ApplyStatusEnum.拒绝)
+                                        {
+                                            <span class="textcont" id="schoolName">@Model.ApplySchoolName 已拒绝&nbsp;&nbsp;&nbsp;&nbsp;<em class="bindschool">重新申请</em></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="textcont" id="schoolName"><em class="bindschool">点击绑定校区</em></span>
+                                        }
+                                    }
+                                }
+                            </li>
+                            <li>
+                                <span class="textname fl">联系电话：</span>
+                                <span class="textcont">@Regex.Replace(Model.Bst_Phone, "(\\d{3})\\d{4}(\\d{4})", "$1****$2")</span>
+                            </li>
+                            <li>
+                                <span class="textname fl">在读学校：</span>
+                                <span class="textcont">@Model.Bst_StudySchool</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_bottom.png" /></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+
+<div class="bindschoolbox bindsch" style="display: none;">
+    <div class="showwindow"></div>
+    <div class="binbbox">
+        <div class="boxc">
+            <div class="closepaydepop">
+                <img class="closepaydepopimg" src="~/Images/StudentInfo/c1.png" />
+            </div>
+            @*<div class="bindtitle">绑定校区</div>*@
+            <div class="bindcont">
+                <div class="list">
+                    <img src="~/Images/StudentInfo/bindd.png" />
+                </div>
+                <div class="list">
+                    <span class="fl">申请绑定</span>
+                    <span class="fr">校长审批</span>
+                </div>
+                <div class="listinp">
+                    <input type="text" placeholder="请输入校长或老师手机号" id="teaPhone" maxlength="11"/>
+                </div>
+                <div class="errormsg" style="display:none;">@*<img src="~/Images/StudentInfo/error.png" />*@<span id="phoneStr">手机号码不正确</span></div>
+                @*<div class="error mobileerror" style="display:none;padding-left: 35px;padding-top:2px;"><span class="mobileerror mobileerror"><img src="~/Images/StudentInfo/error.png" /> <span id="phoneStr" class="mobileerror" style="color:red;">请输入正确的手机号</span></span></div>*@
+                <div class="info" id="info"></div>
+                <button class="winsub" id="btnok">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bindschoolbox bindschoolbox1" style="display: none;">
+    <div class="showwindow"></div>
+    <div class="binbbox">
+        <div class="boxc">
+            <div class="closepaydepop">
+                <img class="closepaydepopimg" src="~/Images/StudentInfo/c1.png" />
+            </div>
+            <div class="bindcont">
+                <div class="list">
+                    <img src="~/Images/StudentInfo/success1.png" />
+                </div>
+                <div class="list">
+                    <div class="info">校长第一时间会处理您的申请</div>
+                </div>
+                <button class="winsub" onclick="closeBind()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

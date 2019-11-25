@@ -1,0 +1,2333 @@
+/** { touch-action: pan-y; }*/
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-size: cover;
+    font-size: 16px;
+}
+body {
+    background-image: url(../img/maskLeftImg.png),url(../img/maskRightImg.png),url(../img/maskBg.png);
+    background-position: bottom left,bottom right,center center;
+    background-size: 18.8% auto,18.8% auto,100% 100%;
+    background-repeat: no-repeat,no-repeat,no-repeat;
+}
+/*------页面开始弹出询问------*/
+.inquireMask {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 999;
+    background-image: url(../img/maskLeftImg.png),url(../img/maskRightImg.png),url(../img/maskBg.png);
+    background-position: bottom left,bottom right,center center;
+    background-size: 18.8% auto,18.8% auto,100% 100%;
+    background-repeat: no-repeat,no-repeat,no-repeat;
+}
+
+.inquireMaskContent {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.inquire {
+    width: 600px;
+    height: 210px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background: url(../img/inquire.png) no-repeat center;
+    background-size: cover;
+}
+
+.close_inquire {
+    font-size: 36px;
+    color: #5dac9b;
+    position: absolute;
+    top: -30px;
+    right: 50px;
+    cursor: pointer;
+}
+
+.inquireContent {
+    width: 386px;
+    height: 194px;
+    margin: 8px 0 0 126px;
+}
+
+.inquireTitle {
+    width: 100%;
+    height: 120px;
+    text-align: center;
+    line-height: 120px;
+    font-size: 16px;
+    color: #666;
+}
+
+.inquireBtn {
+    width: 100%;
+}
+
+.inquireLeftBtn {
+    display: none;
+    width: 98px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    background: url(../img/revoke.png) no-repeat center;
+    background-size: 100% 100%;
+    margin-right: 20px;
+}
+
+.inquireRightBtn {
+    display: none;
+    width: 98px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    background: url(../img/btnBg.png) no-repeat center;
+    background-size: 100% 100%;
+}
+/*------错误弹窗弹出询问------*/
+.errorMask {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1000;
+    background-image: url(../img/maskLeftImg.png),url(../img/maskRightImg.png),url(../img/maskBg.png);
+    background-position: bottom left,bottom right,center center;
+    background-size: 18.8% auto,18.8% auto,100% 100%;
+    background-repeat: no-repeat,no-repeat,no-repeat;
+}
+
+.errorMaskContent {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.errors {
+    width: 600px;
+    height: 210px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background: url(../img/inquire.png) no-repeat center;
+    background-size: cover;
+}
+
+.errorContent {
+    width: 386px;
+    height: 194px;
+    margin: 8px 0 0 126px;
+}
+
+.errorTitle {
+    width: 100%;
+    height: 120px;
+    text-align: center;
+    line-height: 120px;
+    font-size: 16px;
+    color: #666;
+}
+
+.errorBtn {
+    width: 98px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    background: url(../img/btnBg.png) no-repeat center;
+    background-size: 100% 100%;
+    margin: 0 auto;
+}
+
+/*---返回界面按钮---*/
+.backToParent {
+    width: 60px;
+    height: 60px;
+    background: url(../img/exit.png) no-repeat center;
+    background-size: 100% 100%;
+    position: absolute;
+    z-index: 99;
+    top: 40px;
+    left: 50px;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.CurriculumPage {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 100%;
+}
+
+.CurriculumPageBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.TextBox {
+    position: absolute;
+    font-family: "Microsoft YaHei","宋体";
+    letter-spacing: .05em;
+}
+
+.ImgBox {
+    position: absolute;
+}
+
+    .ImgBox img {
+        width: 100%;
+        height: 100%;
+    }
+/*-------学习模块弹层-------*/
+.mask {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    z-index: 100;
+}
+
+.maskContent {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-image: url(../img/maskLeftImg.png),url(../img/maskRightImg.png),url(../img/maskBg.png);
+    background-position: bottom left,bottom right,center center;
+    background-size: 18.8% auto,18.8% auto,100% 100%;
+    background-repeat: no-repeat,no-repeat,no-repeat;
+}
+/*---------开场白样式-------*/
+.kcbTitle {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #696969;
+    font-size: 16px;
+    width: auto;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 7%;
+}
+
+    .kcbTitle img {
+        display: block;
+        width: 40px;
+    }
+
+    .kcbTitle span {
+        margin-left: 5px;
+    }
+
+/*------------------学习中心-------------------*/
+.learnCenterBox {
+    height: 68%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.learnCenterBgImg {
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.subMit {
+    width: 120px;
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    color: #fff;
+    font-size: 18px;
+    background: url(../img/btnBg.png) no-repeat center;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8%;
+    margin: 0 auto;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.playBox {
+    width: 85%;
+    height: 75%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow-y: auto;
+}
+
+.baseTitle {
+    width: 122px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #696969;
+    background: url(../img/baseTitleBg.png) no-repeat;
+    background-size: cover;
+    margin: 30px 0 0 40px;
+    letter-spacing: 6px;
+}
+
+.learnCenterStem {
+    padding: 20px 40px 0;
+    color: #8c601b;
+    font-size: 20px !important;
+}
+
+.jian {
+    display: block;
+    width: 14px;
+    height: 14px;
+    background: url(../img/jian.png) no-repeat center;
+    background-size: cover;
+    margin-top: 8px;
+}
+
+.learnCenterStemContent {
+    display: block;
+    padding-left: 24px;
+    line-height: 30px;
+    word-wrap: break-word;
+}
+
+.learnCenterStem .learnCenterStemSJContent {
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 16px !important;
+    padding-left: 10px;
+}
+
+.learnCenterStem img {
+    display: block;
+    width: 350px;
+    height: 170px;
+    margin: 0 auto;
+}
+/*------------学习音频-------------*/
+.nothingTitle {
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    color: #696969;
+    font-size: 18px;
+    text-align: center;
+    line-height: 60px;
+}
+
+.audioImgBox {
+    display: block;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+}
+
+    .audioImgBox.rotates {
+        -webkit-animation: run 6s linear 0s infinite;
+        -moz-animation: run 6s linear 0s infinite;
+        animation: run 6s linear 0s infinite;
+    }
+
+.audioTextBox {
+    width: 35%;
+    height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    text-align: center;
+}
+
+    .audioTextBox .readContent {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        color: #fff;
+        font-size: 18px;
+        line-height: 40px;
+        position: relative;
+        top: 200px;
+    }
+
+.audioTextBox2 {
+    width: 35%;
+    height: calc(100% - 240px);
+    margin: 20px auto 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+    .audioTextBox2 .readContent {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        color: #8e5f19;
+        font-size: 18px;
+        line-height: 40px;
+        position: relative;
+        top: 0;
+    }
+
+.lyricContent {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+}
+
+.audio2 {
+    display: block;
+    width: 600px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    margin: 0 auto;
+    outline: none;
+}
+
+
+@-webkit-keyframes run {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes run {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes run {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+/*----------学习视频---------*/
+.videoBox {
+    width: 1000px;
+    height: 565px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+}
+
+    .videoBox .kcbTitle {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        z-index: 11;
+    }
+
+    .videoBox .videos {
+        display: block;
+        width: 1000px;
+        height: 565px;
+        position: absolute;
+        top: -50px;
+    }
+
+.playVideo {
+    width: 60px;
+    height: 60px;
+    background: url(../img/videoPlay.png) no-repeat center;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -50px;
+    margin: 0 auto;
+}
+
+    .playVideo.active {
+        background: url(../img/videoPause.png) no-repeat center;
+        background-size: cover;
+    }
+/*学习图文*/
+.articleImgBox {
+    display: block;
+    height: 62%;
+    margin: 20px auto;
+    border-radius: 50%;
+}
+
+.articleImgBox2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.articleTextBox {
+    width: 80%;
+    text-align: left;
+    height: auto;
+    margin: 40px auto 20px;
+    line-height: 30px;
+    color: #8e5f19;
+    font-size: 18px;
+}
+
+.articleTextBox2 {
+    height: 100%;
+    overflow-y: auto;
+}
+/*------------学习朗读--------------*/
+.recitationTextBox {
+    width: 80%;
+    text-align: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0 auto;
+    padding-top: 10%;
+    line-height: 30px;
+    color: #8e5f19;
+    font-size: 18px;
+}
+
+.todos {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: -14%;
+}
+
+.todoList {
+    cursor: pointer;
+}
+
+    .todoList a, .todoList span {
+        display: block;
+    }
+
+    .todoList span {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 12px;
+        color: #4fb8b3;
+    }
+
+.startLY .beginRecordImg {
+    width: 176px;
+    height: 60px;
+    background: url(../img/beginRecord.png) no-repeat center;
+    background-size: contain;
+}
+
+.startLY.active .beginRecordImg {
+    width: 176px;
+    height: 60px;
+    background: url(../img/recording.gif) no-repeat center;
+    background-size: cover;
+}
+
+.startLY.active span {
+    color: #bce1df;
+}
+
+.startLY.contRecord .beginRecordImg{
+ width: 176px;
+    height: 60px;
+    background: url(../img/contRecord.png) no-repeat center;
+    background-size: cover;
+}
+.startLY.contRecord span{
+ color: #bce1df;
+}
+
+.doneLY {
+    margin-left: 100px;
+    position: relative;
+}
+
+    .doneLY .uploadImg {
+        width: 60px;
+        height: 60px;
+        background: url(../img/upload.png) no-repeat center;
+        background-size: cover;
+    }
+
+    .doneLY span {
+        color: #8eccc9;
+    }
+
+    .doneLY.active .uploadImg {
+        width: 60px;
+        height: 60px;
+        background: url(../img/upload_active.png) no-repeat center;
+        background-size: cover;
+    }
+
+    .doneLY.active span {
+        color: #4fb8b3;
+    }
+
+    .doneLY.uploading .uploadImg {
+        width: 60px;
+        height: 60px;
+        background: url(../img/uploading.gif) no-repeat center;
+        background-size: cover;
+    }
+
+    .doneLY.uploading span {
+        color: #4fb8b3;
+    }
+
+.learnCenter_Recitation {
+    display: none;
+}
+
+.myRecitationScore {
+    width: 50%;
+    margin: 0 auto;
+}
+
+#myScore {
+    width: 100%;
+    height: 12%;
+    font-size: 30px;
+    color: #4fb8b3;
+    margin-top: 10%;
+}
+#beyondAllCountry {
+    width: 100%;
+    height: 8%;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #696969;
+}
+
+    #beyondAllCountry span {
+        color: #e6a390;
+    }
+
+#scoreDistribution {
+    width: 100%;
+    height: 270px;
+    margin-top: 10%;
+}
+
+/*------快速阅读-简单------*/
+.fastReadEasyPlayBox {
+    width: 63%;
+    height: 56%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.fastReadEasyReadList {
+    width: 40%;
+    height: 100%;
+    border: 1px dashed #ebdfc9;
+    z-index: 3;
+}
+
+    .fastReadEasyReadList.active {
+        border: 1px dashed #d9c5a4;
+        z-index: 4;
+    }
+
+.fastReadEasyReadListContent {
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+    color: #8b601b;
+}
+
+.fastReadEasyReadList:nth-child(odd) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+}
+
+.fastReadEasyReadList:nth-child(even) {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+}
+
+/*---------快速阅读---------*/
+.fastReadPlayBox {
+    width: 66%;
+    height: 56%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 1px dashed #d9c5a4;
+}
+
+    .fastReadPlayBox .fastReadList1 {
+        width: 100%;
+        height: 25%;
+        text-align: center;
+        position: absolute;
+        left: 0;
+        font-size: 24px;
+        letter-spacing: 5px;
+        color: #8b601b;
+        display: none;
+    }
+
+    .fastReadPlayBox .fastReadList2 {
+        width: 50%;
+        height: 25%;
+        text-align: center;
+        position: absolute;
+        font-size: 24px;
+        color: #8b601b;
+        letter-spacing: 5px;
+        display: none;
+    }
+
+/*------错题——判断题-----*/
+
+.learnCenter_judgmentOption {
+    width: 100%;
+    margin-top: 100px;
+    height: 40px;
+}
+
+.learnCenter_wrongOption {
+    margin-right: 120px;
+    cursor: pointer;
+}
+
+    .learnCenter_wrongOption .sign {
+        width: 41px;
+        height: 33px;
+        background: url(../img/judgment/wrongSign_normal.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_wrongOption.active .sign {
+        background: url(../img/judgment/wrongSign_right.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_wrongOption.right .sign {
+        background: url(../img/judgment/wrongSign_right.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_wrongOption.wrong .sign {
+        background: url(../img/judgment/wrongSign_wrong.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_wrongOption .signCont {
+        color: #8c601b;
+        font-size: 20px;
+    }
+
+    .learnCenter_wrongOption.active .signCont {
+        color: #499d90;
+    }
+
+    .learnCenter_wrongOption.right .signCont {
+        color: #499d90;
+    }
+
+    .learnCenter_wrongOption.wrong .signCont {
+        color: #e85743;
+    }
+
+.learnCenter_rightOption {
+    cursor: pointer;
+}
+
+    .learnCenter_rightOption .sign {
+        width: 41px;
+        height: 33px;
+        background: url(../img/judgment/rightSign_normal.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_rightOption.active .sign {
+        background: url(../img/judgment/rightSign_right.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_rightOption.right .sign {
+        background: url(../img/judgment/rightSign_right.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_rightOption.wrong .sign {
+        background: url(../img/judgment/rightSign_wrong.png) no-repeat;
+        background-size: cover;
+    }
+
+    .learnCenter_rightOption .signCont {
+        color: #8c601b;
+        font-size: 20px;
+    }
+
+    .learnCenter_rightOption.active .signCont {
+        color: #499d90;
+    }
+
+    .learnCenter_rightOption.right .signCont {
+        color: #499d90;
+    }
+
+    .learnCenter_rightOption.wrong .signCont {
+        color: #e85743;
+    }
+
+/*--------------选择题-------------------------*/
+/*选项为图片*/
+.learnCenter_OptionOption1 {
+    width: 100%;
+    margin-top: 60px;
+}
+
+.learnCenter_OptionOptionList1 {
+    width: 126px;
+    height: 120px;
+    cursor: pointer;
+    margin: 0 30px;
+}
+
+    .learnCenter_OptionOptionList1 img {
+        display: block;
+        width: 126px;
+        height: 80px;
+        margin-bottom: 20px;
+        border: 1px solid #a8854d;
+        box-sizing: border-box;
+    }
+
+    .learnCenter_OptionOptionList1 .optionNum {
+        display: block;
+        width: 13px;
+        height: 20px;
+        margin: 0 auto;
+    }
+
+    .learnCenter_OptionOptionList1.active img {
+        border: 1px solid #499d90;
+        box-sizing: border-box;
+    }
+
+    .learnCenter_OptionOptionList1.right img {
+        border: 1px solid #499d90;
+        box-sizing: border-box;
+    }
+
+    .learnCenter_OptionOptionList1.wrong img {
+        border: 1px solid #e85743;
+        box-sizing: border-box;
+    }
+
+    .learnCenter_OptionOptionList1 .optionNum0 {
+        background: url(../img/option/A_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.active .optionNum0 {
+        background: url(../img/option/A_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.right .optionNum0 {
+        background: url(../img/option/A_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.wrong .optionNum0 {
+        background: url(../img/option/A_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1 .optionNum1 {
+        background: url(../img/option/B_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.active .optionNum1 {
+        background: url(../img/option/B_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.right .optionNum1 {
+        background: url(../img/option/B_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.wrong .optionNum1 {
+        background: url(../img/option/B_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1 .optionNum2 {
+        background: url(../img/option/C_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.active .optionNum2 {
+        background: url(../img/option/C_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.right .optionNum2 {
+        background: url(../img/option/C_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.wrong .optionNum2 {
+        background: url(../img/option/C_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1 .optionNum3 {
+        background: url(../img/option/D_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.active .optionNum3 {
+        background: url(../img/option/D_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.right .optionNum3 {
+        background: url(../img/option/D_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList1.wrong .optionNum3 {
+        background: url(../img/option/D_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+.learnCenter_OptionContent {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.learnCenter_OptionStem {
+    width: 50%;
+}
+
+    .learnCenter_OptionStem img {
+        display: block;
+        width: 350px;
+        height: 170px;
+    }
+
+.learnCenter_OptionOption2 {
+    width: 50%;
+}
+
+.learnCenter_OptionOptionList2 {
+    width: 100%;
+    line-height: 30px !important;
+    margin: 10px 0;
+    color: #8c601b;
+    font-size: 16px !important;
+    cursor: pointer;
+}
+
+    .learnCenter_OptionOptionList2.active {
+        color: #499d90;
+    }
+
+    .learnCenter_OptionOptionList2.right {
+        color: #499d90;
+    }
+
+    .learnCenter_OptionOptionList2.wrong {
+        color: #e85743;
+    }
+
+    .learnCenter_OptionOptionList2 span {
+        display: block;
+    }
+
+    .learnCenter_OptionOptionList2 .optionNum {
+        width: 13px;
+        height: 20px;
+        margin-top: 15px;
+    }
+
+    .learnCenter_OptionOptionList2 .optionNum0 {
+        background: url(../img/option/A_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.active .optionNum0 {
+        background: url(../img/option/A_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.right .optionNum0 {
+        background: url(../img/option/A_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.wrong .optionNum0 {
+        background: url(../img/option/A_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2 .optionNum1 {
+        background: url(../img/option/B_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.active .optionNum1 {
+        background: url(../img/option/B_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.right .optionNum1 {
+        background: url(../img/option/B_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.wrong .optionNum1 {
+        background: url(../img/option/B_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2 .optionNum2 {
+        background: url(../img/option/C_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.active .optionNum2 {
+        background: url(../img/option/C_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.right .optionNum2 {
+        background: url(../img/option/C_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.wrong .optionNum2 {
+        background: url(../img/option/C_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2 .optionNum3 {
+        background: url(../img/option/D_normol.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.active .optionNum3 {
+        background: url(../img/option/D_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.right .optionNum3 {
+        background: url(../img/option/D_right.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2.wrong .optionNum3 {
+        background: url(../img/option/D_wrong.png) no-repeat center;
+        background-size: 100% 100%;
+    }
+
+    .learnCenter_OptionOptionList2 .optionPont {
+        width: 14px;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .learnCenter_OptionOptionList2 .optionCon {
+        display: block;
+        padding-left: 27px;
+        line-height: 50px !important;
+        word-wrap: break-word;
+    }
+
+        .learnCenter_OptionOptionList2 .optionCon * {
+            word-wrap: break-word;
+            line-height: 50px !important;
+            font-size: 16px !important;
+        }
+
+.learnCenter_OptionOption3 {
+    margin-top: 20px;
+    padding: 0 64px;
+}
+
+.learnCenter_AnswerOptionOption {
+    margin-top: 0;
+    padding: 0 24px;
+}
+
+
+/*-------------填空题------------------*/
+.learnCenter_fillStem {
+    font-size: 18px !important;
+    padding: 20px 40px;
+    height: 80%;
+    overflow-y: auto;
+}
+
+
+.learnCenter_fillStemText {
+    color: #8c601b;
+    line-height: 60px !important;
+    font-size: 18px !important;
+}
+
+    .learnCenter_fillStemText * {
+        line-height: 60px !important;
+        font-size: 18px !important;
+    }
+
+    .learnCenter_fillStemText input {
+        display: inline-block;
+        height: 60px !important;
+        line-height: 60px !important;
+        text-align: center;
+        background: none !important;
+        color: #8c601b;
+    }
+
+.learnCenter_fillAnswerStem {
+    margin: 20px auto;
+}
+
+
+.learnCenter_fillAnswerStemText {
+    color: #8c601b;
+    line-height: 60px !important;
+    font-size: 18px !important;
+}
+
+    .learnCenter_fillAnswerStemText * {
+        line-height: 60px !important;
+        font-size: 18px !important;
+    }
+
+    .learnCenter_fillAnswerStemText input {
+        display: inline-block;
+        height: 60px !important;
+        line-height: 60px !important;
+        text-align: center;
+        background: none !important;
+    }
+
+/*--------------选择填空-----------------*/
+
+.learnCenter_OptionFillStem {
+    width: 780px;
+    height: 140px;
+    overflow-y: auto;
+    border-bottom: 1px solid #e7d8c1;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 16px !important;
+    color: #8c601b;
+}
+
+.learnCenter_OptionFillStemText {
+    display: inline-block;
+    height: 56px;
+    line-height: 56px;
+    margin-top: 5px;
+}
+
+    .learnCenter_OptionFillStemText * {
+        line-height: 56px !important;
+        font-size: 16px !important;
+    }
+
+/*题干选项样式*/
+
+.learnCenter_OptionFillStemList {
+    display: inline-block;
+    width: 130px;
+    text-align: center;
+    height: 56px;
+    line-height: 50px;
+    margin: 5px 20px 0;
+    font-size: 16px !important;
+    position: relative;
+}
+
+    .learnCenter_OptionFillStemList * {
+        width: 122px;
+        height: 56px;
+        line-height: 56px !important;
+        font-size: 16px !important;
+    }
+
+    .learnCenter_OptionFillStemList:before {
+        content: '\ff08';
+        position: absolute;
+        left: -18px;
+        top: 0px;
+    }
+
+    .learnCenter_OptionFillStemList:after {
+        content: '\ff09';
+        position: absolute;
+        right: -18px;
+        top: 0px;
+    }
+
+    .learnCenter_OptionFillStemList img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+
+
+/*拖拽选项样式*/
+.learnCenter_OptionList {
+    width: 780px;
+    margin: 20px auto 0;
+    height: 130px;
+    position: relative;
+    text-align: center;
+    touch-action: none;
+}
+
+.learnCenter_FillOptionList {
+    display: inline-block;
+    width: 122px;
+    text-align: center;
+    height: 56px;
+    line-height: 56px;
+    font-size: 16px !important;
+    color: #8c601b;
+    border: 1px solid #e7d8c1;
+    box-sizing: border-box;
+    margin: 0px 10px 15px;
+    cursor: move;
+}
+
+    .learnCenter_FillOptionList * {
+        width: 122px;
+        height: 56px;
+        white-space: nowrap !important;
+        overflow: hidden;
+        line-height: 56px !important;
+        font-size: 16px !important;
+    }
+
+    .learnCenter_FillOptionList img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+
+/*插入题干内的元素样式*/
+
+.learnCenter_newfillBox {
+    width: 122px;
+    text-align: center;
+    height: 56px;
+    line-height: 56px;
+    font-size: 16px !important;
+    color: #8c601b;
+    border: 1px solid #e7d8c1;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+    .learnCenter_newfillBox * {
+        width: 122px;
+        height: 56px;
+        white-space: nowrap !important;
+        overflow: hidden;
+        line-height: 56px !important;
+        font-size: 16px !important;
+    }
+
+    .learnCenter_newfillBox img {
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+
+.fillAnswerBox {
+    width: 100%;
+    margin-top: 40px;
+    line-height: 60px;
+    font-size: 16px !important;
+    color: #8c601b;
+}
+
+    .fillAnswerBox .answerFillBox {
+        display: inline-block;
+        width: 122px;
+        height: 56px;
+        line-height: 56px;
+        position: relative;
+        text-align: center;
+        margin: 0 20px;
+    }
+
+        .fillAnswerBox .answerFillBox * {
+            width: 122px !important;
+            height: 56px !important;
+            white-space: nowrap !important;
+            overflow: hidden;
+            line-height: 56px !important;
+            font-size: 16px !important;
+        }
+
+        .fillAnswerBox .answerFillBox:before {
+            content: "\ff08";
+            position: absolute;
+            top: 0px;
+            left: -18px;
+        }
+
+        .fillAnswerBox .answerFillBox:after {
+            content: "\ff09";
+            position: absolute;
+            top: 0px;
+            right: -18px;
+        }
+
+.trueAnswerContent {
+    height: auto;
+}
+
+    .trueAnswerContent .answerFillBox {
+        display: inline-block;
+        width: 66px;
+        height: 30px;
+        line-height: 30px;
+        position: relative;
+        margin: 0 20px;
+    }
+
+        .trueAnswerContent .answerFillBox * {
+            width: 66px !important;
+            height: 30px !important;
+            text-align: center;
+            white-space: nowrap !important;
+            overflow: hidden;
+            line-height: 30px !important;
+            font-size: 12px !important;
+        }
+
+        .trueAnswerContent .answerFillBox:before {
+            content: "\ff08";
+            position: absolute;
+            top: 0px;
+            left: -18px;
+        }
+
+        .trueAnswerContent .answerFillBox:after {
+            content: "\ff09";
+            position: absolute;
+            top: 0px;
+            right: -18px;
+        }
+
+.fillBoxs {
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    color: #8c601b;
+    border: 1px solid #e7d8c1;
+    box-sizing: border-box;
+}
+
+.trueAnswerContent .answerFillBox .fillBoxs {
+    font-size: 12px !important;
+}
+
+.fillBoxs.right {
+    color: #499d90;
+    border: 1px solid #499d90;
+}
+
+.fillBoxs.wrong {
+    color: #e85743;
+    border: 1px solid #e85743;
+}
+
+.answerFillBox img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/*-----------------连线题---------------------*/
+
+
+.learnCenter_linkingPart {
+    width: 500px;
+    margin: 20px auto 0;
+    height: auto;
+    position: relative;
+    z-index: 50;
+}
+
+    .learnCenter_linkingPart .show {
+        position: relative;
+        width: 100%;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .learnCenter_linkingPart .showleft {
+        float: left;
+        width: 110px;
+    }
+
+    .learnCenter_linkingPart .showright {
+        float: right;
+        width: 110px;
+    }
+
+    .learnCenter_linkingPart .show .showitem {
+        width: 110px;
+        height: 50px;
+        overflow: hidden;
+        display: block;
+        margin: 5px 0;
+        font-size: 14px !important;
+        background: #fffaee;
+        color: #8c601b;
+        text-align: center;
+        line-height: 50px;
+        border: 1px solid #8c601b;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+        .learnCenter_linkingPart .show .showitem * {
+            width: 110px !important;
+            height: 50px !important;
+            white-space: nowrap !important;
+            line-height: 50px !important;
+            text-align: center;
+            font-size: 14px !important;
+        }
+
+    .learnCenter_linkingPart .show span.addstyle {
+        background: #fffaee;
+    }
+
+    .learnCenter_linkingPart .show .showitem img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .learnCenter_linkingPart .canvas {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: -1;
+    }
+
+    .learnCenter_linkingPart .backcanvas {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: -2;
+    }
+
+.Todos {
+    width: 100%;
+    height: 46px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -14%;
+    margin: 0 auto;
+}
+
+.TodosRevoke {
+    width: 120px;
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    color: #fff;
+    font-size: 18px;
+    background: url(../img/revoke.png) no-repeat center;
+    background-size: 100% 100%;
+    margin-right: 50px;
+    cursor: pointer;
+}
+
+.TodosSubmit {
+    width: 120px;
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    color: #fff;
+    font-size: 18px;
+    background: url(../img/btnBg.png) no-repeat center;
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+
+.learnCenter_LinkingAnswer {
+    width: 100%;
+    margin: 20px auto 0;
+}
+
+
+.contrast {
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e7d8c1;
+}
+
+.StandardPart {
+    width: 50%;
+}
+
+.StandardPartTitle {
+    width: 38px;
+    height: 122px;
+    writing-mode: tb-rl;
+    text-align: center;
+    line-height: 38px;
+    font-size: 16px;
+    color: #499D90;
+    background: url(../img/trueAnswerBg2.png) no-repeat;
+    background-size: cover;
+}
+
+
+.StandardContent {
+    width: 72%;
+    margin-left: 4%;
+    line-height: 28px;
+    font-size: 16px;
+    color: #499D90;
+    position: relative;
+}
+
+
+
+.mySubAnswer {
+    width: 50%;
+    height: 100%;
+}
+
+.mySubAnswerTitle {
+    width: 38px;
+    height: 122px;
+    writing-mode: tb-rl;
+    text-align: center;
+    line-height: 38px;
+    font-size: 16px;
+    color: #8c601b;
+    background: url(../img/AnalysisBg2.png) no-repeat;
+    background-size: cover;
+}
+
+.mySubAnswerContent {
+    width: 72%;
+    margin-left: 4%;
+    line-height: 28px;
+    font-size: 16px;
+    color: #8c601b;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.questitem {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 110px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 14px;
+    color: #8c601b;
+    border: 1px solid #8c601b;
+    box-sizing: border-box;
+    background: #fffaee;
+    overflow: hidden;
+}
+
+.questitem2 {
+    color: #499D90;
+    border: 1px solid #499D90;
+}
+
+.questitem * {
+    width: 110px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px !important;
+    font-size: 14px !important;
+}
+
+.questitem img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.questitem:nth-child(odd) {
+    left: 0;
+}
+
+
+.rotate {
+    height: 2px;
+    transform-origin: 0% 0%;
+    background: #499D90;
+    position: absolute;
+}
+/*------------主观题--------------------*/
+
+.textAreaBox {
+    padding: 60px 50px 0 64px;
+}
+
+.learnCenter_subjectiveTextarea {
+    width: 100%;
+    background: rgba(255,255,255,0.38);
+    border: 1px solid #8c601b;
+    display: block;
+    padding: 10px;
+    height: 120px;
+    line-height: 24px;
+    font-size: 14px;
+    color: #8c601b;
+    overflow-y: auto;
+}
+
+.StandardMask {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.showStandard {
+    height: 68%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10;
+}
+
+.subjectiveBgImg {
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.learnCenter_subjectiveAnswer {
+    width: 85%;
+    height: 75%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow-y: auto;
+}
+
+.learnCenter_subLinkingAnswer {
+    margin-top: 80px;
+}
+
+.subjective_contrast {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 60px;
+}
+
+    .subjective_contrast .StandardContent * {
+        line-height: 28px !important;
+        font-size: 14px !important;
+        word-break: break-word;
+    }
+
+
+.starsScoreBox {
+    width: 80%;
+    margin: 50px auto 0;
+    height: 56px;
+    padding-top: 20px;
+    border-top: 1px solid #e7d8c1;
+}
+
+    .starsScoreBox img {
+        width: 40px;
+        height: 40px;
+        margin: 0 10px;
+    }
+
+.subjectiveSure {
+    width: 120px;
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    color: #fff;
+    font-size: 16px;
+    background: url(../img/djsBg.png) no-repeat center;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8%;
+    margin: 0 auto;
+    cursor: pointer;
+    z-index: 10;
+}
+
+    .subjectiveSure.active {
+        background: url(../img/btnBg.png) no-repeat center;
+        background-size: 100% 100%;
+        font-size: 16px;
+    }
+
+.remindP {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: #696969;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+/*------------圈点批注-标色---------------*/
+.learnCenter_AnnotationContents {
+    padding: 0 40px;
+    line-height: 32px;
+    color: #8c601b;
+    font-size: 0px;
+    margin-top: 40px;
+    touch-action: none;
+    text-align: left;
+}
+
+.learnCenter_normalText {
+    font-size: 16px;
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    line-height: 32px;
+    color: #8c601b;
+    background: none;
+    cursor: url(../img/shuazi.cur),auto;
+}
+
+.learnCenter_specialText {
+    color: #fff;
+    background: #35acff;
+}
+
+.StandardPart .answerNormalText {
+    line-height: 24px;
+    margin-top: 4px;
+    color: #499D90;
+    font-size: 16px;
+    background: none;
+}
+
+.StandardPart .trueSpecialText {
+    font-size: 16px;
+    color: #fff;
+    background: #35acff;
+}
+
+.StandardPart .mySpecialText {
+    font-size: 16px;
+    color: #fff;
+    background: #f77565;
+}
+
+.mySubAnswerContent .answerNormalText {
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 4px;
+    color: #8c601b;
+    background: none;
+}
+
+.mySubAnswerContent .trueSpecialText {
+    font-size: 16px;
+    color: #fff;
+    background: #35acff;
+}
+
+.mySubAnswerContent .mySpecialText {
+    font-size: 16px;
+    color: #fff;
+    background: #f77565;
+}
+
+/*--------圈点批注-断句--------*/
+
+.learnCenter_Annotation2Contents {
+    padding: 0 40px;
+    line-height: 32px;
+    font-size: 0px;
+    color: #8c601b;
+    margin-top: 40px;
+    touch-action: none;
+    text-align: center;
+}
+
+.learnCenter_Annotation2NormalText {
+    display: inline-block;
+    line-height: 24px;
+    font-size: 18px;
+    margin-top: 4px;
+    color: #8c601b;
+    background: none;
+    cursor: url(../img/maobi32.cur),auto;
+    padding-right: 1em;
+    position: relative;
+}
+
+.learnCenter_Annotation2Hide {
+    display: block;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+}
+
+.learnCenter_Annotation2SpecialText {
+    color: #fff;
+    background: #35acff;
+}
+
+
+.learnCenter_Annotation2Contents .truncation:after {
+    content: "/";
+    position: absolute;
+    right: 0.08em;
+    font-size: 30px;
+}
+
+.rightGap {
+    color: #499D90;
+    font-size: 26px;
+}
+
+.wrongGap {
+    color: #f77565;
+    font-size: 26px;
+}
+
+.learnCenter_Annotation2Answer .StandardContent, .learnCenter_Annotation2Answer .mySubAnswerContent {
+    font-size: 16px;
+}
+
+
+
+
+
+/*答题结果样式*/
+.checkAnswerBox {
+    display: none;
+    width: 60%;
+    height: 62%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10;
+    background: url(../img/answerBg.png) no-repeat center;
+    background-size: 100% 100%;
+}
+
+/*答题结果框右上角、左下角、右下角*/
+.answerBoxBg {
+    /*display: none;*/
+    width: 98%;
+    height: 90%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    background: url(../img/answerBg_top.png) no-repeat right top,url(../img/answerBg_left.png) no-repeat left bottom,url(../img/answerBg_right.png) no-repeat right bottom;
+}
+
+.sureBtn {
+    width: 120px;
+    height: 46px;
+    text-align: center;
+    line-height: 46px;
+    color: #fff;
+    font-size: 18px;
+    background: url(../img/btnBg.png) no-repeat center;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -14%;
+    margin: 0 auto;
+    cursor: pointer;
+    z-index: 10;
+}
+/*答题得分星星区域*/
+.honor {
+    width: 330px;
+    height: 192px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -147px;
+    margin: 0 auto;
+}
+
+.honorStatus {
+    width: 270px;
+    height: 99px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    z-index: 11;
+}
+
+.honorStatus0, .honorStatus1 {
+    background: url(../img/honor0.png) no-repeat center;
+    background-size: 100% 100%;
+}
+
+.honorStatus2 {
+    background: url(../img/honor2.png) no-repeat center;
+    background-size: 100% 100%;
+}
+
+.honorStatus3 {
+    background: url(../img/honor3.png) no-repeat center;
+    background-size: 100% 100%;
+}
+
+.honorStatus4 {
+    background: url(../img/honor4.png) no-repeat center;
+    background-size: 100% 100%;
+}
+
+.honorStatus5 {
+    background: url(../img/honor5.png) no-repeat center;
+    background-size: 100% 100%;
+}
+
+.honorLight {
+    display: block;
+    width: 370px;
+    height: 198px;
+    position: absolute;
+    left: -20px;
+    top: 10px;
+    z-index: 10;
+    background: url(../img/light.png) no-repeat center;
+    background-size: 100%;
+}
+
+.allStars {
+    position: absolute;
+    width: 330px;
+    height: 120px;
+    left: 0;
+    top: 10px;
+    z-index: 12;
+}
+
+    .allStars span {
+        display: block;
+        position: absolute;
+        background: url(../img/bigStar.png) no-repeat center;
+        background-size: 100%;
+        z-index: 5;
+    }
+
+        .allStars span:nth-child(1) {
+            width: 44px;
+            height: 44px;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            margin: auto 0;
+        }
+
+        .allStars span:nth-child(2) {
+            width: 52px;
+            height: 52px;
+            top: 12px;
+            left: 64px;
+        }
+
+        .allStars span:nth-child(3) {
+            width: 64px;
+            height: 64px;
+            top: -8px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+        }
+
+        .allStars span:nth-child(4) {
+            width: 52px;
+            height: 52px;
+            top: 12px;
+            right: 64px;
+        }
+
+        .allStars span:nth-child(5) {
+            width: 44px;
+            height: 44px;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto 0;
+        }
+
+    .allStars ._starActive {
+        display: block;
+        position: absolute;
+        background: url(../img/bigStar_active.png) no-repeat center;
+        background-size: 100%;
+        z-index: 10;
+        opacity: 0;
+    }
+
+    .allStars ._starActive0 {
+        width: 44px;
+        height: 44px;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        margin: auto 0;
+        animation-delay: 0.25s;
+    }
+
+    .allStars ._starActive1 {
+        width: 52px;
+        height: 52px;
+        top: 12px;
+        left: 64px;
+        animation-delay: 0.75s;
+    }
+
+    .allStars ._starActive2 {
+        width: 64px;
+        height: 64px;
+        top: -8px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        animation-delay: 1.25s;
+    }
+
+    .allStars ._starActive3 {
+        width: 52px;
+        height: 52px;
+        top: 12px;
+        right: 64px;
+        animation-delay: 1.75s;
+    }
+
+    .allStars ._starActive4 {
+        width: 44px;
+        height: 44px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto 0;
+        animation-delay: 2.25s;
+    }
+
+
+
+    .allStars ._starActive.animation2 {
+        animation: beat 0.4s ease-in;
+        -webkit-animation: beat 0.4s ease-in;
+        opacity: 1;
+    }
+
+@keyframes beat {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(2.0);
+    }
+
+    40% {
+        opacity: 1;
+        -webkit-transform: scale(1.1);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale(0.7);
+    }
+
+    80% {
+        opacity: 1;
+        -webkit-transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+    }
+}
+
+@-webkit-keyframes beat {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(2.0);
+    }
+
+    40% {
+        opacity: 1;
+        -webkit-transform: scale(1.1);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale(0.7);
+    }
+
+    80% {
+        opacity: 1;
+        -webkit-transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+    }
+}
+
+
+/*答案显示区域样式*/
+.checkAnswerPlayBox {
+    width: 98%;
+    height: 90%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    z-index: 3;
+    overflow-y: auto;
+}
+
+.answerShowPart {
+    width: 90%;
+    margin: 0 auto;
+}
+
+    .answerShowPart .baseTitle {
+        margin-left: 0;
+    }
+
+    .answerShowPart .learnCenterStem {
+        padding: 20px 0;
+    }
+/*参考答案*/
+.trueAnswer {
+    width: 100%;
+    margin-top: 30px;
+    border-top: 1px solid #e7d8c1;
+}
+
+.trueAnswerTitle {
+    width: 122px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #499d90;
+    background: url(../img/trueAnswerBg1.png) no-repeat;
+    background-size: cover;
+    margin: 20px 20px 0 0;
+}
+
+.trueAnswerContent {
+    line-height: 38px;
+    font-size: 16px;
+    color: #499d90;
+    margin-top: 20px;
+    padding-left: 142px;
+}
+/*题目解析*/
+.Analysis {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.AnalysisTitle {
+    width: 122px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #8c601b;
+    background: url(../img/AnalysisBg1.png) no-repeat;
+    background-size: cover;
+    margin-right: 20px;
+}
+
+.AnalysisContent {
+    line-height: 38px;
+    font-size: 16px;
+    color: #8c601b;
+    padding-left: 142px;
+}
+
+    .AnalysisContent * {
+        font-size: 16px !important;
+        line-height: 38px;
+    }
+
+.ScrollDown {
+    display: none;
+    width: 76px;
+    height: 60px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(19% + 30px);
+    margin: 0 auto;
+    background: url(../img/ScrollDown.gif) no-repeat center;
+    background-size: cover;
+    cursor: pointer;
+    cursor: default;
+}
+
+
+#xiaoAiChangeImg img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+@media screen and (max-device-width: 1366px) and (min-device-height:900px) {
+    .checkAnswerBox {
+        width: 85%;
+    }
+}
+
+@media screen and (max-device-width: 1024px) and (max-device-height:768px) {
+    .checkAnswerBox {
+        width: 85%;
+    }
+}

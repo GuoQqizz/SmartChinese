@@ -1,0 +1,137 @@
+﻿@using System.Web.UI.WebControls
+@using AbhsChinese.Domain.Entity
+@model Yw_MediaResource
+@{
+    ViewBag.PageTitle = "添加资源组";
+    Layout = "~/Views/Shared/_Forms.cshtml";
+}
+@section Styles{
+    <link href="~/Content/layer/theme/default/layer.css" rel="stylesheet" />
+    <style>
+        .verifyTip {
+            color: red;
+        }
+
+        .wrapper-content {
+            padding: 20px 10px 0px;
+        }
+    </style>
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox" style="margin-bottom: 0px;">
+                <div class="ibox-content" style="border:none">
+                    <form id="ajaxForm" method="post">
+                        <input type="hidden" name="Yrg_Status" class="form-control" value="1">
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label"><span class="verifyTip">*</span>名称：</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="Yrg_Name" class="form-control" placeholder="请输入资源组名称"  required>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"><span class="verifyTip">*</span>年级：</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="Yrg_Grade" required>
+                                    <option value="">全部年级</option>
+                                    <option value="1">一年级</option>
+                                    <option value="2">二年级</option>
+                                    <option value="4">三年级</option>
+                                    <option value="8">四年级</option>
+                                    <option value="16">五年级</option>
+                                    <option value="32">六年级</option>
+                                    <option value="64">初一</option>
+                                    <option value="128">初二</option>
+                                    <option value="256">初三</option>
+                                    <option value="512">高一</option>
+                                    <option value="1024">高二</option>
+                                    <option value="2048">高三</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 col-sm-offset-10"> </div>
+                            <div class="col-sm-2 col-sm-offset-2">
+                                <button class="btn btn-primary btn-sm" type="button" id="btn_SignIn" style="display:none">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Content/layer/layer.js"></script>
+    <script>
+        $(function () {
+            $('#ajaxForm').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    Grade: {
+                        required: true
+                    }
+                },
+                messages: {
+                    Name: {
+                        required: "请输入名称",
+                        maxlength: "长度不能大于50个字符"
+                    },
+                    Grade: {
+                        required: "请选择年级"
+                    }
+                },
+                submitHandler: function (form) {
+                    ajaxSubmit();
+                }
+            });
+
+            $("#btn_SignIn").click(function () {
+                ajaxSubmit();
+            });
+        });
+
+        function ajaxSubmit() {
+            if (!$("#ajaxForm").valid()) {
+                return false;
+            }
+
+            $.ajax({
+                url: "/ResourceGroup/AddResourceGroupDo",
+                type: "post",
+                data: $('#ajaxForm').serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.State) {
+                        top.window.layer.msg(data.ErrorMsg,
+                            { time: 500 },
+                            function () {
+                                top.window.layer.closeAll();
+                                top.window.location.reload();
+                            });
+                    } else {
+                        top.window.layer.alert(data.ErrorMsg,
+                            { icon: 2 },
+                            function () { top.window.layer.closeAll(); });
+                    }
+                },
+                error: function (data) {
+                    top.window.layer.alert(data.ErrorMsg, { icon: 2 }, function () { top.window.layer.closeAll(); });
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+
+

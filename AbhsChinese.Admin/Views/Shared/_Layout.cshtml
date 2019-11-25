@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="" />
+    @Styles.Render("~/font-awesome/css")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/bundles/css/select2Styles")
+    @Styles.Render("~/bundles/css/iCheckStyles")
+    <title>艾上大语文管理后台</title>
+
+    <style>
+        .nav-header {
+            padding: 10px 24px;
+            /*background-size: cover;*/
+        }
+
+        .nav.metismenu > li {
+            background-color: #2f4050;
+        }
+
+        .navbar-title {
+            margin-left: 250px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-top {
+            height: 54px;
+            overflow: hidden;
+        }
+
+            .nav-top .navbar, .nav-top .navbar .nav {
+                height: 100%;
+            }
+
+        .ibox-title {
+            border-top-width: 1px;
+        }
+
+        .wrapper-content {
+            padding-top: 10px;
+        }
+
+        #page-wrapper {
+            height: calc(100% - 54px);
+        }
+
+        .search-row {
+            margin-top: -10px;
+        }
+         .spc-green {
+            color: #1ABC9C;
+        }
+
+        .spc-defaule {
+            color: #ccc;
+        }
+
+        .spc-red {
+            color: #D9001B;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div id="wrapper" class="@Html.PageClass()">
+        @Html.Partial("_Navigation")
+        @Html.Partial("_TopNavbar")
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+
+            <div class="wrapper wrapper-content">
+                @RenderBody()
+            </div>
+            @Html.Partial("_Footer")
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js/slimScroll")
+    @Scripts.Render("~/bundles/js/inspinia")
+    @Scripts.Render("~/bundles/js/select2")
+    @Scripts.Render("~/bundles/js/icheck")
+    @Scripts.Render("~/bundles/js/common")
+
+    <script src="~/Content/layer/layer.js"></script>
+
+    <script>
+        function setMinHeight(targetClassName, offset) {
+            offset = offset || 140;
+            $(`.${targetClassName}`).css("min-height", ($(window).height() - offset) + "px");
+        }
+        function signOut() {
+            window.layer.confirm("确定退出登录?", function () {
+                window.location.href = "/Login/SignOut";
+            })
+        }
+        $(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            }).on('ifChecked', function () {
+                let name = this.name;
+                $('label[for=' + name + ']').text('');
+            });
+
+            //日期关闭自动提示
+            $('.input-group.date input').attr('autocomplete', 'off');
+            //关闭自动提示
+            $('.no-autocomplete').attr('autocomplete', 'off');
+            //输入删除前后空格
+            $('form').on('input', '.no-space-input', function (e) {
+                var val = e.target.value;
+                if (val.startsWith(' ')) {
+                    e.target.value = val.trim();
+                }
+            })
+            $('form').on('change', '.no-space-input', function (e) {
+                var val = e.target.value;
+                if (val.startsWith(' ') || val.endsWith(' ')) {
+                    e.target.value = val.trim();
+                }
+            })
+
+
+            //导航选中
+            let pathName = document.location.pathname;
+            let $a = $(`.nav-second-level a[href="${pathName}"]`);
+            if ($a && $a.length > 0) {
+                $a.parent().addClass('active');
+                $a.parent().parent().addClass('in');
+                $a.parent().parent().parent().addClass('active');
+            } else {
+                let $beforeName = window.sessionStorage.getItem('before');
+                $a = $(`.nav-second-level a[href="${$beforeName}"]`);
+                if ($a && $a.length > 0) {
+                    $a.parent().addClass('active');
+                    $a.parent().parent().addClass('in');
+                    $a.parent().parent().parent().addClass('active');
+                }
+            }
+        });
+
+        window.onbeforeunload = function (e) {
+            window.sessionStorage.setItem('before', window.location.pathname);
+        }
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

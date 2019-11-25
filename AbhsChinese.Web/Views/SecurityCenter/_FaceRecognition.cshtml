@@ -1,0 +1,78 @@
+﻿@using System.Text.RegularExpressions;
+
+<div class="itemlist">
+    <!-- 开启 -->
+    <div class="cbox step1">
+        <input type="hidden" value="@ViewBag.Mobile" id="originalmobile" />
+        <div class="cllogin">开启人脸识别登录</div>
+        <div class="username">账号：@Regex.Replace(ViewBag.Mobile, "(\\d{3})\\d{4}(\\d{4})", "$1****$2")</div>
+        <div class="inpbox"><input id="stepCode" placeholder="请输入短信验证码" type="text" maxlength="4" /><span status="1" class="feachBtn" id="stepBtn">发送验证码</span></div>
+        <div class="error"><span class="mobileerror faceerror"><img src="~/Images/StudentInfo/error.png" /> <span class="codemsg">验证码不正确</span></span></div>
+        <div class="textinfo" style="margin-top:10px;">点击开启表示你已阅读并同意<span>《人脸识别协议》</span></div>
+        <div class="inpbox1"><button type="button" class="stepfun1">开启</button></div>
+    </div>
+    <!-- 采集图像 -->
+    <div class="cbox facecontent step2 stepother" style="display: none;">
+        <div class="cllogin">人脸识别样本采集</div>
+        <div class="face">
+            <div id="face-box" class="facebox">
+                <div class="bg">
+                    <div class="pane"></div>
+                    <div id="my_camera"></div>
+                </div>
+            </div>
+        </div>
+        <div class="faceinfo textcenter">请将脸移入框内,点击"采集"进行人脸采集</div>
+        <div class="inpbox1"><button type="button" class="stepfun2">采集</button></div>
+    </div>
+    <!-- 关闭 -->
+    <div class="cbox step3 stepother" style="display: none;">
+        <div class="cllogin">人脸识别样本采集</div>
+        <div class="face">
+            <img src="~/Images/StudentInfo/faceclose.png" class="clface" />
+            <img class="faceimg" src="" />
+        </div>
+        <div class="faceinfo textcenter"><img src="~/Images/StudentInfo/success.png" id="imgstatus" /> <span class="texttip">人脸样本采集成功</span></div>
+        <div class="inpbox1 stepfun3_1"><button type="button" style="display:none;" class="nextcj">重新采集</button></div>
+        <div class="inpbox1 stepfun3"><button type="button" class="nextcj">下一步</button></div>
+    </div>
+    <div class="cbox step4 stepother" style="display: none;">
+        <div class="cllogin"><img src="~/Images/StudentInfo/success1.png" /></div>
+        <div class="cllogin cllogin1">人脸识别登录已开启</div>
+        <div class="faceinfo textcenter" style="padding: 0;">您可以使用人脸识别登录</div>
+        <div class="inpbox1"><button class="stepfun4" type="button">更新人脸识别样本</button></div>
+        <div class="faceinfo textcenter stepfun5" style="padding:25px 0 0 0;color: #49aeaa;">关闭人脸识别登录></div>
+    </div>
+    <!-- 关闭 -->
+    <div class="cbox step5 stepother" style="display: none;">
+        <div class="cllogin">关闭人脸识别登录</div>
+        <div class="username">账号：@Regex.Replace(ViewBag.Mobile, "(\\d{3})\\d{4}(\\d{4})", "$1****$2")</div>
+        <div class="inpbox"><input id="code" placeholder="请输入短信验证码" type="text" maxlength="4" /><span status="1" class="feachBtn" id="stepBtn2">发送验证码</span></div>
+        <div class="error closeerror"><span class="mobileerror closeerror"><img src="~/Images/StudentInfo/error.png" /><span class="codemsg">验证码不正确</span></span></div>
+        <div class="inpbox1"><button class="stepfun6" type="button">关闭</button></div>
+    </div>
+    <div class="cbox step6 stepother" style="display: none;">
+        <div class="cllogin"><img src="~/Images/StudentInfo/success1.png" /></div>
+        <div class="cllogin cllogin1">人脸识别登录已关闭</div>
+        <div class="inpbox1"><button class="stepfun7" type="button">关闭</button></div>
+    </div>
+</div>
+
+<div class="chosewindow2" style="display:none;">
+    <div class="showwindow"></div>
+    <div class="showwindowcontent">
+        <div class="box">
+            <div class="boxc">
+                <div class="closepaydepop1">
+                    <img class="closepaydepopimg" src="/Images/StudentInfo/c1.png" onclick="closeVideo()" />
+                </div>
+                <div class="textiinfo textcenter">提示信息</div>
+                <div class="textinfo1">浏览器不支持访问摄像头</div>
+                <div class="btn" style="text-align:center;">
+                    @*<button type="button" class="sub" onclick="btnYes()">确定</button>*@
+                    <button type="button" class="codepopsub" style="float:initial;" onclick="closeVideo()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

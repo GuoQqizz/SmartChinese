@@ -1,0 +1,96 @@
+﻿
+@{
+    Layout = null;
+}
+@model string
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>教师登录</title>
+
+    <link href="~/Content/login.css" rel="stylesheet" />
+
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 100%;
+            background: url(/Images/loginbj.png) no-repeat center bottom #89e0ce;
+            background-size: 100% auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="loginpage">
+        <form action="" method="post" id="loginForm">
+            <input type="hidden" name="redirect" value="@ViewBag.Redirect" />
+            <div class="login">
+                <img class="logoimg" src="~/Images/loginbj1.png" />
+                <div class="inpbox">
+                    <div class="fl"><img src="~/Images/user.png" /></div>
+                    <div class="inputbox fr"><input id="username" name="account" type="text" placeholder="请输入用户名" maxlength="20" /></div>
+                </div>
+                <div class="errorinfo"><span>请输入用户名</span></div>
+                <div class="inpbox">
+                    <div class="fl"><img src="~/Images/pass.png" /></div>
+                    <div class="inputbox fr"><input type="password" id="pass" name="pwd" placeholder="请输入密码" maxlength="20" /></div>
+                </div>
+                <div class="errorinfo"><span>请输入密码</span></div>
+                @*<div class="inpbox inboxa">
+                        <a href="#">忘记密码？</a>
+                    </div>*@
+                <div class="btns">
+                    <button class="subbtn" id="login">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    @Scripts.Render("~/bundles/js/common")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/layer/layer.js"></script>
+    <script>
+        var redirect = '@Model' || '@Url.Action("Index", "Employee")';
+        $(function () {
+            $('#login').on('click', function () {
+                var lock = true;
+                var username = $('#username').val();
+                var pass = $('#pass').val();
+                if (username.length < 1) {
+                    $('#username').parents('.inpbox').next('.errorinfo').find('span').show();
+
+                } else {
+                    lock = false;
+                    $('#username').parents('.inpbox').next('.errorinfo').find('span').hide();
+                }
+                if (pass.length < 1) {
+
+                    $('#pass').parents('.inpbox').next('.errorinfo').find('span').show();
+                } else {
+                    lock = false;
+                    $('#pass').parents('.inpbox').next('.errorinfo').find('span').hide();
+                }
+                if (!lock) {
+                    $.ajax({
+                        url: '/Login/Login',
+                        type: 'POST',
+                        data: $('#loginForm').serialize(),
+                        dataType: "json",
+                        success: generateSuccessFunc(function () {
+                            window.location.href = redirect;
+                        }),
+                        error: generateErrorFunc()
+                    });
+                }
+                return false;
+            })
+
+        })
+    </script>
+</body>
+</html>

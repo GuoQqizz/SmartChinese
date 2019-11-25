@@ -1,0 +1,43 @@
+﻿@using AbhsChinese.Admin.Helpers
+@{
+    var currentUser = LoginCookieHelper.GetCurrentUser();
+    var header = "/Images/profile_small.jpg";
+    var name = currentUser.UserName;
+}
+<div class="row border-bottom nav-top">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        @*<div class="navbar-header">
+            
+        </div>*@
+        <div class="nav navbar-top-links navbar-left navbar-title"  >
+            <h3 class="page-title">@ViewBag.PageTitle</h3>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a href="javascript:void(0);" class="float-left"
+                   style="padding:15px 10px; cursor:default;">
+                    <img class="rounded-circle"
+                         style="width:31px;height:31px;"
+                         src="@header" alt="@name" />
+                    <span>&nbsp;@name</span>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:signOut();" style="">
+                    <i class="fa fa-power-off"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+@*<div class="row" style="margin-bottom:10px;">
+    <div class="col-12">
+        <div class="border-bottom">
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <h3 class="page-title">@ViewBag.PageTitle</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@

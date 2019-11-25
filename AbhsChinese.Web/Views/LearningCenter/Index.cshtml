@@ -1,0 +1,304 @@
+﻿@using AbhsChinese.Domain.Dto.Response.Student
+
+@model DtoSumStudent
+@{
+    ViewBag.Title = "学习中心";
+}
+@section Styles{
+    <style>
+        html,body {
+            height:100%;
+        }
+        .courseType {
+            cursor: pointer;
+        }
+    </style>
+}
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="#">学习中心</a>
+        </div>
+        <div class="navigationr"></div>
+    </div>
+    <div class="contentbox persontpage">
+        <div class="contentbox1left fl">
+            <div class="ctrbox">
+                <div class="topbj"><img src="/Images/StudentInfo/bodyl_top.png" /></div>
+                <div class="contrbox">
+                    <div class="praticepageperson" style="min-height: 690px;">
+                        <div class="ptitle">
+                            <div class="info fl"><span>我的课程</span></div>
+                            <div class="tab fr">
+                                <a class="fr courseType">已学完</a>
+                                <a class="fr courseType active">学习中</a>
+                            </div>
+                        </div>
+                        <div id="courseList" class="listbox">
+                            @*<div class="item">
+                                    <div class="leb">同步课</div>
+                                    <div class="itemttitle">
+                                        <div class="fl">三年级暑期课程（共20课时）</div>
+                                        <div class="info1">20/20</div>
+                                    </div>
+                                    <div class="infobox">
+                                        <span>适用：三年级</span>
+                                        <span>教材版本：部编版</span>
+                                        <span>校区班级：七年级同步班</span>
+                                    </div>
+                                    <div class="pinfo">
+                                        <div class="fl">
+                                            <img src="/Images/StudentInfo/choiceimg1.png" />
+                                            <span>周芷若</span>
+                                            <em>班主任</em>
+                                        </div>
+                                        <div class="pinfor"><a href="#">再次学习</a></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="leb leb1">专题课</div>
+                                    <div class="itemttitle">
+                                        <div class="fl">三年级暑期课程（共20课时）</div>
+                                        <div class="info3">未学习</div>
+                                    </div>
+                                    <div class="infobox">
+                                        <span>适用：三年级</span>
+                                        <span>教材版本：部编版</span>
+                                        <span>校区班级：七年级同步班</span>
+                                    </div>
+                                    <div class="pinfo">
+                                        <div class="fl">
+                                            <img src="/Images/StudentInfo/choiceimg1.png" />
+                                            <span>周芷若</span>
+                                            <em>班主任</em>
+                                        </div>
+                                        <div class="pinfor"><a href="#">开始学习</a></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="leb leb2">复习课</div>
+                                    <div class="itemttitle">
+                                        <div class="fl">三年级暑期课程（共20课时）</div>
+                                        <div class="info1">20/20</div>
+                                    </div>
+                                    <div class="infobox">
+                                        <span>适用：三年级</span>
+                                        <span>教材版本：部编版</span>
+                                        <span>校区班级：七年级同步班</span>
+                                    </div>
+                                    <div class="pinfo">
+                                        <div class="fl">
+                                            <img src="/Images/StudentInfo/choiceimg1.png" />
+                                            <span>周芷若</span>
+                                            <em>班主任</em>
+                                        </div>
+                                        <div class="pinfor"><a href="#">再次学习</a></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="leb leb3">文学课</div>
+                                    <div class="itemttitle">
+                                        <div class="fl">三年级暑期课程（共20课时）</div>
+                                        <div class="info1">20/20</div>
+                                    </div>
+                                    <div class="infobox">
+                                        <span>适用：三年级</span>
+                                        <span>教材版本：部编版</span>
+                                        <span>校区班级：七年级同步班</span>
+                                    </div>
+                                    <div class="pinfo">
+                                        <div class="fl">
+                                            <img src="/Images/StudentInfo/choiceimg1.png" />
+                                            <span>周芷若</span>
+                                            <em>班主任</em>
+                                        </div>
+                                        <div class="pinfor"><a href="#">再次学习</a></div>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="loaddatapage" style="display:none;">
+                            <img class="loadimg" src="/Images/StudentInfo/loadimg.jpg" />
+                            <div class="texterr">内容加载中，请稍后...</div>
+                        </div>
+                        <div class="pageimgerror" style="display:none;"><img class="error-img" src="/Images/StudentInfo/curriculumerror.png" /></div>
+                        <div class="pagebox">
+                        </div>
+                    </div>
+                </div>
+                <div class="topbj"><img src="/Images/StudentInfo/bodyl_bottom.png" /></div>
+            </div>
+        </div>
+
+        <div class="contentbox1right">
+            @Html.Partial("_StudentInfo", Model)
+            <div class="bjboxbox" style="margin-top: 20px;">
+                <div class="bjboxboxtop"><img src="/Images/StudentInfo/tbjtop.png" /></div>
+                <div class="bjboxboxcenter" style="height: 405px;">
+                    <div class="infopersonconfig">
+                        <a class="configitem" href="@Url.Action("ListStudyTasks","StudyTask")">
+                            <div class="imgdiv"><img src="/Images/StudentInfo/configming1.png" /></div>
+                            <div class="text">课后任务</div>
+                        </a>
+                        <a class="configitem" href="@Url.Action("ListCourses","StudentPractice")">
+                            <div class="imgdiv"><img src="/Images/StudentInfo/configming2.png" /></div>
+                            <div class="text">课后练习</div>
+                        </a>
+                        <a class="configitem" href="@Url.Action("Index","WrongBook")">
+                            <div class="imgdiv"><img src="/Images/StudentInfo/configming3.png" /></div>
+                            <div class="text">错题本</div>
+                        </a>
+                        <a class="configitem" href="@Url.Action("StudentReportList", "StudentReport")">
+                            <div class="imgdiv"><img src="/Images/StudentInfo/configming4.png" /></div>
+                            <div class="text">学习报告</div>
+                        </a>
+                        <a class="configitem disabled">
+                            <div class="imgdiv"><img src="/Images/StudentInfo/configimg5.png" /></div>
+                            <div class="text">互相学习</div>
+                        </a>
+                        <a class="configitem disabled">
+                            <div class="imgdiv"><img src="/Images/StudentInfo/configimg6.png" /></div>
+                            <div class="text">排行榜</div>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="bjboxboxtop"><img src="/Images/StudentInfo/tbjbottom.png" /></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@if (Model.ShowTicket)
+{
+    @Html.Action("GetHaveRegisterVoucherView", "OwnCashVoucher")
+}
+@section Scripts{
+    <script src="~/Scripts/parger.js"></script>
+    <script id="listTemplate" type="text/template">
+        <div class="item">
+            <div class="leb {{CourseTypeClass}}">{{CourseTypeStr}}</div>
+            <div class="itemttitle">
+                <div class="fl">{{CourseName}}（共{{LessonsNum}}课时）</div>
+                <div class="{{LessonsFinishedStyle}}">{{LessonsFinishedType}}</div>
+            </div>
+            <div class="infobox">
+                <span>适用：{{GradeStr}}</span>
+                <span>教材版本：部编版</span>
+                <span>校区班级：{{ClassName}}</span>
+            </div>
+            <div class="pinfo">
+                <div class="fl" {{HasTeacher}}>
+                    <img src="{{TeacherImg}}" />
+                    <span>{{TeacherName}}</span>
+                    <em>班主任</em>
+                </div>
+                <div class="pinfor"><a href="/LearningCenter/CoruseInfo/{{CourseID}}">{{BtnName}}</a></div>
+            </div>
+        </div>
+    </script>
+    <script>
+        /*生成课时内容方法*/
+        function makeCourse(data) {
+            var template = $("#listTemplate").html();
+            var _data = {
+                CourseTypeClass: data.CourseType,
+                CourseTypeStr: data.CourseTypeStr,
+                CourseID: data.CourseID,
+                CourseName: data.CourseName,
+                LessonsNum: data.LessonsNum,
+                LessonsFinishedType: data.LessonsFinishedNum > 0 ? `${data.LessonsFinishedNum}/${data.LessonsNum}` : "未学习",
+                LessonsFinishedStyle: data.LessonsFinishedNum > 0 ? "info1" : "info3",
+                GradeStr: data.GradeStr,
+                ClassName: data.ClassName ? data.ClassName : `未分班级<em><img class="quesimg" src="/Images/StudentInfo/w.jpg" /><div class="jt"><img src="/Images/StudentInfo/jt1.png" /></div><div class="quesbox">请联系校区,进行班级分配</div></em>`,
+                HasTeacher: data.TeacherID ? "" : "style='display:none;'",
+                TeacherImg: data.TeacherImg,
+                TeacherName: data.TeacherName,
+                BtnName: data.CourseFinshed ? "再次学习" : "开始学习"
+            }
+            var html = template;
+            for (var i in _data) {
+                var r = new RegExp(`{{\s*${i}\s*}}`, "g");
+                html = html.replace(r, _data[i] ? _data[i] : "");
+            }
+            return html;
+        }
+
+        var isFinished = false, pagesize = 10;
+        /*加载根据页码加载数据*/
+        function LoadCourse(page) {
+            $("#courseList").hide();
+            $(".pagebox").hide();
+            $(".pageimgerror").hide();
+            $(".loaddatapage").show();
+            $.ajax({
+                url: "/LearningCenter/GetCourseByPage",
+                type: "post",
+                data: { IsFinished: isFinished, Pagination: { PageIndex: page, PageSize: pagesize } },
+                dataType: "json",
+                async: false,//同步做
+                success: function (data) {
+                    $(".loaddatapage").hide();
+                    if (data.State) {
+                        var totel = data.Data.totel;//总条数
+                        if (totel > 0) {
+                            $("#courseList").show();
+                            $(".pagebox").show();
+                            $(".pageimgerror").hide();
+                            var pages = Math.ceil(totel / pagesize); //得到总页数
+                            var list = data.Data.list;
+                            var html = "";
+                            for (var i in list) {
+                                html += makeCourse(list[i]);
+                            }
+                            $("#courseList").html(html);
+                            parger($(".pagebox"), pages, page, LoadCourse);
+                        }
+                        else {
+                            $("#courseList").hide();
+                            $(".pagebox").hide();
+                            $(".pageimgerror").show();
+                        }
+                    }
+                },
+                error: function (e) {
+                    $(".loaddatapage").hide();
+                    $("#courseList").hide();
+                    $(".pagebox").hide();
+                    $(".pageimgerror").show();
+                }
+            });
+        }
+
+        $(function () {
+            $.ajax({
+                url: "/LearningCenter/GetCourserCount?r=" + Math.floor(Math.random() * 10000),
+                type: "post",
+                dataType: "json",
+                async:false,
+                success: function (data) {
+                    if (data.State)
+                    {
+                        data = data.Data;
+                        if (data.finished > 0 && data.notFinish == 0)
+                        {
+                            isFinished = true;
+                            $(".courseType").removeClass("active");
+                            $(".courseType").eq(0).addClass("active");
+                        }
+                    }
+                },
+                error: function (e) {
+                }
+            })
+            LoadCourse(1);
+            $(".courseType").click(function () {
+                $(".courseType").removeClass("active");
+                $(this).addClass("active");
+                isFinished = $(this).text() == "已学完";
+                LoadCourse(1);
+            });
+        })
+    </script>
+}

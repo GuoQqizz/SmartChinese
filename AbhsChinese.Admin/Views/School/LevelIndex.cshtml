@@ -1,0 +1,131 @@
+﻿
+@using AbhsChinese.Admin.Models.Advertising;
+@model AdvertisingSearch
+
+@{
+    ViewBag.PageTitle = "校区管理";
+    ViewBag.ListTitle = "校区等级";
+
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    
+    @Styles.Render("~/bundles/css/select2Styles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .text-info + .text-info {
+            margin-left: 15px;
+        }
+
+        .pagination {
+            display: none;
+        }
+
+        .wrapper-content {
+            height: calc(100% - 80px);
+        }
+
+         #wrapper, .ibox, .table_container {
+            height: 100%;
+        }
+
+        .ibox-content {
+            height: calc(100% - 60px);
+        }
+
+        #table_school_level {
+            height: calc(100% - 50px);
+        }
+    </style>
+
+}
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>
+            <i class="fa fa-table"></i>&nbsp;@ViewBag.ListTitle
+        </h5>
+        <div class="ibox-tools">
+            <div class="col">
+                <button class="btn btn-white" type="button" onclick="edit(0)">
+                    <i class="fa fa-plus"></i>&nbsp;添加等级
+                </button>
+                <button class="btn btn-white" type="button" onclick="reload()">
+                    <i class="fa fa-refresh"></i>&nbsp;刷新
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row" style="height:0;">
+            <form role="form" class="form-inline search-form" id="form_search_schoollevel">
+                <input type="hidden" class="btn btn-white search" />
+            </form>
+        </div>
+        <div class="row" style="height: 100%;">
+            <div class="col-12 table_container">
+                <div id="table_school_level"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+
+
+    <script>
+        $(function () {
+            initTable();
+        })
+
+
+        function initTable() {
+            let columns = [
+                { label: '编号', name: 'Bhl_Id', align: 'center' },
+                { label: '校区等级', name: 'Bhl_Name', align: 'center' },
+                {
+                    label: '总部分成比例', name: 'Bap_Code', align: 'center',
+                    formatter: function (index, value, row) {
+                        return `${row['Bhl_DividePercent']}%`;
+                    }
+                },
+                { label: '备注', name: 'Bhl_Remark', align: 'center' },
+
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return "<a href='javascript:void(0)' class='text-info' onclick='edit(" + row.Bhl_Id + ")'>编辑</a>";
+                    }
+                }
+            ];
+
+            $('#table_school_level').table({
+                ajax: {
+                    url: '@Url.Action("GetSchoolLevel", "School")'
+                },
+                columns: columns,
+                searchBox: '#form_search_schoollevel'
+
+            });
+        }
+        function edit(bhlId) {
+            window.location.href = '@Url.Action("EditLevel", "School")' + '?bhlId=' + bhlId;
+        }
+        function reload() {
+            window.location.reload();
+        }
+
+    </script>
+}

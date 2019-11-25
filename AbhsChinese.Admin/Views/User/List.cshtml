@@ -1,0 +1,72 @@
+﻿@using AbhsChinese.Domain.Entity
+@model List<Table>
+@{
+    ViewBag.Title = "Users";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <div class="ibox-tools">
+                        <input type="text" id="search_key" style="border:1px solid #ccc" />
+                        <button id="btnSearch" style="margin-left:8px">搜索</button>
+                        <button data-target="#modal_add" data-toggle="modal"
+                                class="btn btn-default btn-sm">
+                            添加
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table id="table1" class="table table-bordered data-table mydatatable ">
+                        <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>姓名</th>
+                                <th>年龄</th>
+                                <th>手机</th>
+                                <th>邮箱</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("modal_add", "添加用户"))
+{
+    Html.RenderPartial("_UserAddAndEdit", new ViewDataDictionary
+                    {
+                        { "Action" , "/User/Add" }
+                    });
+}
+
+@using (Html.BeginForm("modal_edit", "修改用户"))
+{
+    Html.RenderPartial("_UserAddAndEdit", new ViewDataDictionary
+                    {
+                        { "Action" , "/User/Edit" }
+                    });
+}
+
+@section Styles {
+    @Styles.Render("~/Content/dataTablesStyles")
+    
+    @Styles.Render("~/bundles/css/cropperStyles")
+    <link href="~/Content/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/select2/select2.patch.css" rel="stylesheet" />
+}
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    
+    @Scripts.Render("~/bundles/js/cropper")
+    <script src="~/Scripts/PageScripts/user.js"></script>
+    <script src="~/Content/select2/select2.js"></script>
+    <script src="~/Content/select2/select2.main.js"></script>
+
+}

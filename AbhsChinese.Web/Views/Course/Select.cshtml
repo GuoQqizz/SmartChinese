@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "选课中心";
+}
+@section Styles{
+    <link href="~/Content/swiper.css" rel="stylesheet" />
+    <style>
+        body, html {
+            height: auto;
+        }
+
+        body {
+            overflow: auto;
+            background: linear-gradient(#f6f7f9, #fff);
+        }
+
+        .bodycontent {
+            height: auto;
+        }
+    </style>
+}
+@model AbhsChinese.Web.Models.Course.CourseSelectViewModel
+
+<div class="bodycontent">
+
+    <!-- /.navbar-header -->
+    @Html.Partial("_NavBar")
+
+    <div class="indexpage">
+        @if (Model.AdvertisingList?.Count > 0)
+        {
+            <div class="banner">
+                <div class="swiper-container swiper-container1">
+                    <div class="swiper-wrapper">
+                        @foreach (AbhsChinese.Web.Models.Course.CourseSelectAdvertisingViewModel ad in Model.AdvertisingList)
+                        {
+                            <div class="swiper-slide"><a class="courseListAd" href="javascript:void(0)" data-courseId="@ad.CourseId" data-aid="@ad.Ad_Id" data-href="@ad.LinkUrl" target="_self"><img src="@ad.ImageUrl"></a></div>
+                        }
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination swiper-pagination1"></div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <style>
+                .indexpage .seleciton {
+                    margin-top: 100px;
+                }
+            </style>
+        }
+
+        <div class="seleciton">
+            <div class="selectbox">
+                <div class="selectboxl fl">年级:</div>
+                <div class="selectboxr">
+                    <div class="listitem active"><a href="javascript:void(0);" data-grade="0">全部年级</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="1">一年级</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="2">二年级</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="4">三年级</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="8">四年级</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="16">五年级</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="32">六年级</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="64">初一</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="128">初二</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="256">初三</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="512">高一</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="1024">高二</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-grade="2048">高三</a></div>
+                </div>
+            </div>
+            <div class="selectbox">
+                <div class="selectboxl fl">课程:</div>
+                <div class="selectboxr">
+                    <div class="listitem active"><a href="javascript:void(0);" data-ct="0">全部类型</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-ct="1">同步课</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-ct="2">专项课</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-ct="5">文学史</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-ct="3">复习课</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-ct="4">整本书阅读</a></div>
+                </div>
+            </div>
+            <div class="selectbox">
+                <div class="selectboxl fl">排序:</div>
+                <div class="selectboxr">
+                    <div class="listitem active"><a href="javascript:void(0);" data-orderby="1">默认排序</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-orderby="2">最新课程</a></div>
+                    <div class="listitem"><a href="javascript:void(0);" data-orderby="3">最受欢迎</a></div>
+                </div>
+            </div>
+            <div class="showselect showselection" r='1'>收起<img src="~/Images/Course/hide.png" /></div>
+        </div>
+        <div class="goodslist">
+            <div class="nogoods" style="display:none;">
+                <img src="~/Images/Course/nop.png" />
+            </div>
+            <div class="moredata">加载更多</div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script language="javascript">
+        var studentId = @Model.StudentId;
+        var searchData = @Html.Raw(Model.SearchInfo);
+    </script>
+    <script src="~/Scripts/swiper.min.js"></script>
+    <script src="~/Scripts/Course/imagesloaded.pkgd.min.js"></script>
+    @Scripts.Render("~/bundles/courseSelect")
+}
+

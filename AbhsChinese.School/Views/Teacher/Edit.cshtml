@@ -1,0 +1,323 @@
+﻿@using AbhsChinese.Code.Common;
+@using AbhsChinese.School.Models;
+@model SchoolTeacherInputModel
+
+@{
+    ViewBag.PageTitle = "老师管理"; //ListTitle
+    ViewBag.HasBackBtn = true;
+    ViewBag.PageTitle = Model != null && Model.Yoh_Id > 0 ? "编辑老师" : "添加老师";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/datePickerStyles")
+    <style type="text/css">
+        .icheckbox_square-green {
+            margin-right: 5px;
+        }
+
+        .input-grade {
+            display: inline-block;
+        }
+
+            .input-grade label {
+                cursor: pointer;
+            }
+
+        .input-grade, #gradeCheckBox {
+            padding-left: 7px;
+        }
+
+        #gradeCheckBox {
+            margin-bottom: 10px;
+        }
+
+            #gradeCheckBox label.error {
+                width: 200px;
+                margin-top: 85px;
+                margin-left: 20px;
+            }
+
+        .ibox {
+            position: relative;
+        }
+
+        .ibox-content {
+            min-height: 730px;
+        }
+
+        .control-group {
+            /*position: absolute;
+            width: 100%;
+            bottom: 20px;*/
+        }
+
+        .img-label {
+            position: relative;
+        }
+
+            .img-label em {
+                position: absolute;
+                top: 25px;
+                right: 0px;
+                font-style: normal;
+                font-size: 80%;
+                color: #b3b3b3;
+            }
+    </style>
+}
+<div class="ibox">
+    <div class="ibox-content">
+        @*<div class="row">
+                <div class="col-12">
+                    <div class="ibox-title">
+                        <h5>
+                            @ViewBag.ListTitle
+                        </h5>
+                        <div class="ibox-tools">
+                            <div class="col">
+                                <button type="button" class="btn btn-white" id="btnBack"><i class="fa fa-chevron-left"></i>&nbsp;返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />*@
+        <form id="edit_Form" method="post" class="form-within">
+            <input type="hidden" name="Yoh_SchoolId" class="form-control" value="@( Model.Yoh_SchoolId)" />
+            <input type="hidden" name="Yoh_IsSchoolMaster" class="form-control" value="@( Model.Yoh_IsSchoolMaster)" />
+            <input type="hidden" name="Yoh_Id" class="form-control" value="@( Model.Yoh_Id)" />
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">手机号: </label>
+                <div class="col-4">
+                    <input type="text" name="Yoh_Phone" class="form-control sms-phone no-space-input" value="@Model.Yoh_Phone" required maxlength="11" @(Model.Yoh_Id > 0 ? "readonly" : "") />
+                </div>
+                @if (Model.Yoh_Id == 0)
+                {
+                    <label class="col-form-label col-1 text-right required">验证码:</label>
+                    <div class="col-4 input-group input-form-addon">
+                        <input type="text" name="VerificationCode" class="form-control no-space-input" value="@Model.VerificationCode" required maxlength="4" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary send-sms" onclick="sendMsg(this,3)" data-from="sms-phone" type="button">发送验证码</button>
+                        </span>
+                    </div>
+                }
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">姓名:</label>
+                <div class="col-4">
+                    <input type="text" name="Yoh_Name" class="form-control no-space-input" value="@Model.Yoh_Name" required maxlength="20" />
+                </div>
+                <label class="col-form-label col-1 text-right required">性别:</label>
+                <div class="col-4">
+                    <select class="form-control m-b sex-select select2-default" name="Yoh_Sex" data-val="@Model.Yoh_Sex" required></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required img-label">头像:</label>
+                <div class="col-4">
+                    @{
+                        Html.RenderPartial("_FileUpload", new ViewDataDictionary
+                                        {
+                                           { "FilePathVal" , Model.Yoh_Avatar },//当前文件数据库地址
+                                           { "FilePath" , Model.Yoh_AvatarShow },//当前文件访问地址
+                                           { "FieldName" , "Yoh_Avatar" },//表单元素name
+                                           { "FileType" , 3 },//文件类型  1视频 2 音频 3 图片 4 zip
+                                           { "FileExtension" , "" },//支持的文件格式
+                                           { "FileSize","2m"},//文件大小
+                                           { "ImgWidth","0"},//图片宽 0表示不限制
+                                           { "ImgHeight","0"}//图片高 0表示不限制
+                                        });
+                    }
+                </div>
+                <label class="col-form-label col-1 text-right  @(Model.Yoh_Id>0? "" : "required")">密码:</label>
+                <div class="col-4">
+                    <input type="password" name="Yoh_Password" class="form-control no-space-input" value="" required maxlength="20" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right ">邮箱:</label>
+                <div class="col-4">
+                    <input type="text" name="Yoh_Email" class="form-control no-space-input" value="@Model.Yoh_Email" maxlength="100" />
+                </div>
+                <label class="col-form-label col-1 text-right required">状态:</label>
+                <div class="col-4">
+                    <select class="m-b status-select select2-default" name="Yoh_Status" data-val="@Model.Yoh_Status" required></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">年级:</label>
+                <div id="gradeCheckBox" class="col-9">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right">备注:</label>
+                <div class="col-9">
+                    <textarea class="form-control text" name="Yoh_Remark" style="height:120px" maxlength="200">@(Model != null ? Model.Yoh_Remark : string.Empty)</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row control-group pr-3">
+                <div class="col-12   text-center ">
+                    <button class="btn btn-default " type="button" id="btnCancle">取消</button>
+                    <button class="btn btn-primary ml-2 " type="button" id="btnSure">确认</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/js/switchery")
+    @Scripts.Render("~/bundles/js/datePicker")
+    <script type="text/javascript">
+        $(function () {
+            setMinHeight('ibox-content',150);
+            renderHtml();
+
+            $("#edit_Form").validate({
+                ignore: '',
+                onfocusin: false,
+                onkeyup: false,
+                rules: {
+                    Yoh_Name: {
+                        required: true,
+                    },
+                    Yoh_Phone:{
+                        required: true,
+                        isMobile:true,
+                        validSchoolTeacherAccount:@(Model.Yoh_Id>0? "false" : "true"),
+                    },
+                    Yoh_Password:{
+                        required: @(Model.Yoh_Id>0? "false" : "true"),
+                        pwdlength:6,
+                    },
+                    Yoh_Sex:{
+                        required:true,
+                        min:1,
+                    },
+                    Yoh_Avatar:{
+                        required:true,
+                    },
+                    Yoh_Email:{
+                        required:false,
+                        email:true,
+                    },
+                    Yoh_Status:{
+                        required:true,
+                        min:1,
+                    },
+                    Grades:{
+                        required:true,
+                        min:1,
+                    },
+
+                    VerificationCode:{
+                        required:@(Model.Yoh_Id>0? "false" : "true"),
+                    },
+                },
+                messages: {
+                    Yoh_Name: {
+                        required: "请输入姓名",
+                    },
+                    Yoh_Phone:{
+                        required: "请输入手机号",
+                        isMobile:"请输入正确手机号",
+                        validSchoolTeacherAccount:"该账号已注册",
+                    },
+                    Yoh_Password:{
+                        required: "请输入密码",
+                        minlength:"最少6位密码"
+                    },
+                    Yoh_Sex:{
+                        required:"请选择性别",
+                        min:"请选择性别",
+                    },
+                    Yoh_Avatar:{
+                        required:"请上传头像",
+                    },
+                    Yoh_Email:{
+                        email:"请输入正确的邮箱",
+                    },
+                    Yoh_Status:{
+                        required:"请选择状态",
+                        min:"请选择状态",
+                    },
+                    Grades:{
+                        required:"请选择年级",
+                        min:"请选择年级",
+                    },
+                    VerificationCode:{
+                        required:"请输入验证码",
+                    },
+                },
+                submitHandler: throttle(function(form){
+                    ajaxSubmit();
+                },1000)
+            });
+
+            $("#btnSure").click(throttle(function(){
+                ajaxSubmit();
+            },1000));
+
+            $("#btnCancle").on("click", function () {
+                //PageBase.SetToPage('/Teacher/Index');
+                //window.location.href =  "@Url.Action("Index", "Teacher")";
+                backLocal();
+            });
+        });
+        function renderHtml(){
+            var totalGrades =@Model.Yoh_Grade;
+            let selectedGrades = [];
+            gradeSourceArr.map(function(s){
+                if((s.key&totalGrades)==s.key){
+                    selectedGrades.push(s.key);
+                }
+            })
+            $('#gradeCheckBox').initICheck({
+                'source': gradeSourceArr,
+                'selected': selectedGrades,
+                'name': 'Grades',
+                'className': 'input-grade col-3',
+            })
+            $('.sex-select').initSelectOption({
+                'source': sexSourceArr,
+                'className': '',
+                'useSelect2':true,
+                'width':'100%'
+            });
+            $('.status-select').initSelectOption({
+                'source': statusSourceArr,
+                'className': '',
+                'useSelect2':true,
+                'width':'100%'
+            });
+        }
+        function ajaxSubmit() {
+            if (!$("#edit_Form").valid()) {
+                return false;
+            }
+            //console.log($("#edit_Form").serialize());
+            $.ajax({
+                url: '/Teacher/SaveTeacher',
+                type: 'post',
+                datatype: 'json',
+                data: $("#edit_Form").serialize(),
+                beforeSend: function () {
+                    loading.showLoading('正在保存数据，请稍候……');
+                },
+                success: generateSuccessFunc(function () {
+                    window.layer.closeAll();
+                    backLocal();
+                }),
+                error: generateErrorFunc(),
+            })
+        }
+
+        function backLocal(){
+            PageBase.SetToPage('/Teacher/Index');
+            window.location.href='@Url.Action("Index", "Teacher")';
+        }
+
+    </script>
+}

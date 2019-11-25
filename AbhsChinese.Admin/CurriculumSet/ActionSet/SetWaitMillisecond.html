@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>等候</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <style>
+        .TimeSettingBox {
+            width: 500px;
+            height: 300px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+
+            .TimeSettingBox p {
+                margin: 100px 0px 0px;
+                text-align: center;
+                line-height: 30px;
+                height: 30px;
+            }
+
+                .TimeSettingBox p span {
+                    padding: 5px 10px;
+                }
+
+        .SettingBtn {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        $(function () {
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+
+                //创建默认的动作
+                var action = new top.SetWaitMillisecond({
+                    stop: 0
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                page.selecter = "#InnerArea";
+                page.draw(CurriculumInfo.selectStep.stepNum);
+                //加载数据
+                (function LoadData() {
+                    if (CurriculumInfo.selectAction instanceof top.SetWaitMillisecond) {//如果是修改的动作
+                        action = new top.SetWaitMillisecond(CurriculumInfo.selectAction);
+                        //给自己的元素设置移动样式
+                        $("#WaitTime").val(action.stop);
+                    }
+                })();
+                //只允许输入数字
+                $("#WaitTime").keyup(function (e) {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.stop = val;
+                })
+
+                $("#OkBtn").click(function () {
+                    if (CurriculumInfo.selectAction instanceof top.SetWaitMillisecond) {
+                        CurriculumInfo.SetAction(action);
+                    }
+                    else {
+                        CurriculumInfo.AddAction(action);
+                    }
+                    var frame = top.frames["ActionSet"];
+                    if (frame) {
+                        $(frame).hide();
+                    }
+                })
+
+            }
+        })
+
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">等候</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="TimeSettingBox">
+            <p><span>等候时长：</span><input id="WaitTime" type="text" value="" /><span>(毫秒)</span></p>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button></div>
+        </div>
+
+    </div>
+</body>
+</html>

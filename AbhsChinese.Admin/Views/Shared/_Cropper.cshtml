@@ -1,0 +1,23 @@
+﻿<div class="col-sm-5">
+    <div class="image-crop">
+        <img src="~/Images/picture.jpg">
+    </div>
+</div>
+<div class="col-sm-5">
+    <h4>Preview image</h4>
+    <div class="img-preview img-preview-sm"></div>
+    <div class="btn-group">
+        <label title="Upload image file" for="inputImage" class="btn btn-primary">
+            <input type="hidden" name="@ViewBag.ProfilePicture" value="" />
+            <input type="file" accept="image/*" name="file" id="inputImage" class="hide">
+            选择文件
+        </label>
+        <label title="Donload image" name="upload" class="btn btn-primary">保存</label>
+    </div>
+    <div class="btn-group">
+        @*<button class="btn btn-white" id="zoomIn" type="button">放大</button>
+        <button class="btn btn-white" id="zoomOut" type="button">缩小</button>
+        <button class="btn btn-white" id="rotateLeft" type="button">旋转</button>
+        <button class="btn btn-white" id="rotateRight" type="button">旋转</button>*@
+    </div>
+</div>

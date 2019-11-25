@@ -1,0 +1,112 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@using AbhsChinese.Admin.Models.Resource
+
+@model ResourceIdAndType
+
+@{
+    ViewBag.Title = "SubjectView";
+    Layout = "~/Views/Shared/_Forms.cshtml";
+}
+
+@section Styles {
+    <style>
+        .ibox-content {
+            border: none;
+        }
+
+        .wrapper-content {
+            padding: 20px 10px 0;
+        }
+    </style>
+}
+
+<input type="hidden" value="@Model.Id" id="id" />
+<input type="hidden" value="@Model.Type" id="type" />
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox" style="margin-bottom:0px;">
+            <div class="ibox-content text-left">
+                <h2 style="margin-left:5%;margin-bottom:15px;" id="subjectType">选择填空</h2>
+                <div id="detail" class="m-t">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/Scripts/PageScripts/subject.view.reload.js"></script>
+    <script src="/Scripts/PageScripts/subject.view.content.js"></script>
+    <script>
+
+        $(function () {
+            var id = $("#id").val();
+            var type = parseInt($("#type").val());
+
+            switch (type) {
+                case 1:
+                    $.get("/MultipleChoice/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("选择题");
+                        loadData(id, 1);
+                    });
+                    break;
+
+                case 2:
+                    $.get("/TrueFalse/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("判断题");
+                        loadData(id, 2);
+                    })
+                    break;
+                case 3:
+                    $.get("/FillInBlank/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("填空题");
+                        loadData(id, 3);
+                    })
+                    break;
+                case 4:
+                    $.get("/MultipleChoiceFillInBlank/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("选择填空");
+                        loadData(id, 4);
+                    })
+                    break;
+                case 5:
+                    $.get("/Match/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("连线题");
+                        loadData(id, 5);
+                    })
+                    break;
+                case 6:
+                    $.get("/Free/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("主观题");
+                        loadData(id, 6);
+                    })
+                    break;
+                case 7:
+                    $.get("/Mark/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("圈点批注标色");
+                        loadData(id, 7);
+                    })
+                    break;
+                case 8:
+                    $.get("/Mark2/GetQuestionInfo/0", function (data) {
+                        $("#detail").html(data);
+                        $("#subjectType").text("圈点批注断句");
+                        loadData(id, 8);
+                    })
+                    break;
+            }
+
+        });
+    </script>
+}
+

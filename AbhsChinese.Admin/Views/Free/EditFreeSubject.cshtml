@@ -1,0 +1,172 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "题目录入-主观题";
+    string controller = "Free";
+    string action = "EditFreeSubject";
+}
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        @using (Ajax.BeginForm(action, controller, new AjaxOptions
+        {
+            OnComplete = "complete"
+        }, new { id = "form", role = "form" }))
+        {
+            <input type="text" name="nextStatus" value="2" style="display:none;" />
+            <input type="hidden" id="subjectId" name="id" value="@Model" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" checked class="onoffswitch-checkbox"
+                                   name="stemType"
+                                   onchange="changeType(this)"
+                                   value="1"
+                                   id="switch_stemType">
+                            <label class="onoffswitch-label" for="switch_stemType">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">题干</label>
+                <div class="col-11">
+                    <textarea id="name" name="name" style="width:100%;"></textarea>
+                    <input type="hidden" id="plainName" name="plainName" />
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">参考答案</label>
+                <div class="col-11">
+                    <textarea id="answer" name="answer" style="width:100%;"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">打分标准</label>
+                <div class="col-11">
+                    <textarea id="scoreRules" name="scoreRules" style="width:100%;"></textarea>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">解析</label>
+                <div class="col-11">
+                    <textarea id="explain" name="explain" style="width:100%;"></textarea>
+                </div>
+            </div>
+            @Html.Partial("_SubjectBasic")
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    @*该隐藏域用于记录是想要做保存操作还是提交操作,默认是保存操作*@
+                    <input type="hidden" name="button" value="0" />
+                    <button class="btn btn-white"
+                            type="button" onclick="submitForm(false)">
+                        保存
+                    </button>
+                    <button class="btn btn-primary"
+                            type="button" onclick="submitForm(true)">
+                        提交
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div style="display:none">
+    <textarea id="factory" name="factory"></textarea>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.js"></script>
+    <script src="~/Scripts/common/ueditor.config.subject.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.subjectbasic.js"></script>
+    <script>
+        $(function () {
+            initSelect2();
+            $.when(initUeditor(dtd)).then(function () {
+                loadData();
+            });
+            enableValidate();
+        });
+    </script>
+    <script>
+        function loadData() {
+            if ($('#subjectId').val() !== '0') {
+                $.getJSON('@Url.Action("GetDetails",controller)', { id: $('#subjectId').val() },
+                    function (response) {
+                        if (response.State) {
+                            let data = response.Data;
+                            if (data.StemType === 0) {
+                                $('#switch_stemType').click();
+                            }
+
+                            setContent(ueditorName, data.Name);
+                            setContent(ueditorAnswer, data.Answer);
+                            setContent(ueditorScoreRules, data.Answer);
+                            setContent(ueditorExplain, data.Explain);
+
+                            setBasicData(data);
+                            setPlainNameData(data);
+                        }
+                    });
+            } else {
+                initSelectPageComponent();
+            }
+        }
+    </script>
+    <script>
+        var dtd = $.Deferred(); // 新建一个deferred对象
+        function initSelect2() {
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+        }
+        let ueditorExplain = null;
+        let ueditorName = null;
+        let ueditorAnswer = null;
+        let ueditorScoreRules = null;
+        function initUeditor() {
+            ueditorName = UE.getEditor('name', ueConfigOfName);
+            ueditorName.ready(function () {
+                $('div#name').find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+                replaceFormat(this);
+                dtd.resolve();
+            });
+
+            ueditorAnswer = UE.getEditor('answer', ueConfigOfExplain);
+
+            ueditorScoreRules = UE.getEditor('scoreRules', ueConfigOfExplain);
+
+            ueditorExplain = UE.getEditor('explain', ueConfigOfExplain);
+            return dtd;
+        }
+        function setContent(ueditor, content) {
+            if (content) {
+                ueditor.ready(function () {
+                    this.setContent(content);
+                });
+            }
+        }
+    </script>
+}

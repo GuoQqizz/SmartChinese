@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "AuthCode";
+}
+
+<div class="row">
+    <input id="txt_code" maxlength="4" type="text" placeholder="验证码" style="width: 190px; float: left;">
+    <div style="width: 110px; float: right; padding-top: 14px; padding-left: 14px;">
+        看不清？<a id="switchCode" href="javascript:void();" style="text-decoration: none;">换一张</a>
+        <img id="imgcode" class="authcode" src="~/Login/GetAuthCode" width="80" height="25" />
+    </div>
+
+    <button onclick="aa()">11111</button>
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(function () {
+        $("#switchCode").click(function () {
+            $("#imgcode").attr("src", "/Login/GetAuthCode?time=" + Math.random());
+        });
+    })
+
+    function aa() {
+        $.ajax({
+            url: "/OwnCashVoucher/TakeStudentCashVoucher",
+            type: 'post',
+            dataType: 'json',
+            success:function(data)
+            {
+                console.log(data)
+            },
+            error:function(data)
+            {
+                alert("error")
+            }
+        })
+    }
+</script>
+

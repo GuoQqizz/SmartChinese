@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2EE0A1D9-478B-471A-8FE5-30143057A007}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AbhsChinese.Domain</RootNamespace>
+    <AssemblyName>AbhsChinese.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbhsException\AbhsAdvancedException.cs" />
+    <Compile Include="AbhsException\AbhsException.cs" />
+    <Compile Include="AbhsResource\AbhsErrorMsg.cs" />
+    <Compile Include="AbhsResource\AbhsProtocolConst.cs" />
+    <Compile Include="Common\ComplexEntity.cs" />
+    <Compile Include="Dto\Request\DtoKnowledgeRequest.cs" />
+    <Compile Include="Dto\Request\DtoSimpleStuRecentSub.cs" />
+    <Compile Include="Dto\Request\StudentWrong\DtoStudentWrongSearch.cs" />
+    <Compile Include="Dto\Request\Student\DtoStudnetUnitSubmit.cs" />
+    <Compile Include="Dto\Request\StudyPractice\DtoSubjectSearch.cs" />
+    <Compile Include="Dto\Request\StudentWrong\DtoStudentWrongBook.cs" />
+    <Compile Include="Dto\Request\StudyTask\DtoStudyTaskListItem.cs" />
+    <Compile Include="Dto\Request\StudyTask\DtoStudyTaskSearch.cs" />
+    <Compile Include="Dto\Request\CurriculumSearch.cs" />
+    <Compile Include="Dto\Request\DtoApplyStudentSearch.cs" />
+    <Compile Include="Dto\Request\DtoApproveLessonSearch.cs" />
+    <Compile Include="Dto\Request\DtoCashVoucherRequest.cs" />
+    <Compile Include="Dto\Request\DtoCourse.cs" />
+    <Compile Include="Dto\Request\DtoCoursePricing.cs" />
+    <Compile Include="Dto\Request\DtoCourseSelectCondition.cs" />
+    <Compile Include="Dto\Request\DtoCoursesSearch.cs" />
+    <Compile Include="Dto\Request\DtoLessonUnitSearch.cs" />
+    <Compile Include="Dto\Request\DtoKnowledgeSearch.cs" />
+    <Compile Include="Dto\Request\DtoResourceRequest.cs" />
+    <Compile Include="Dto\Request\DtoSimpleCourse.cs" />
+    <Compile Include="Dto\Request\School\DtoSchoolClassSearch.cs" />
+    <Compile Include="Dto\Request\School\DtoSchoolNoClassStudentSearch.cs" />
+    <Compile Include="Dto\Request\School\DtoSchoolSearch.cs" />
+    <Compile Include="Dto\Request\School\DtoSchoolStudentSearch.cs" />
+    <Compile Include="Dto\Request\School\DtoSchoolTeacherSearch.cs" />
+    <Compile Include="Dto\Request\DtoSearch.cs" />
+    <Compile Include="Dto\Request\Student\DtoStudentCourseSearch.cs" />
+    <Compile Include="Dto\Request\Student\DtoStudentRegister.cs" />
+    <Compile Include="Dto\Request\StudyTask\StudyTaskPracticeResult.cs" />
+    <Compile Include="Dto\Request\Subject\DtoQuestionSearch.cs" />
+    <Compile Include="Dto\Request\Employees\DtoEmployeeSearch.cs" />
+    <Compile Include="Dto\Response\DtoAdvertisingIndex.cs" />
+    <Compile Include="Dto\Response\DtoAdvertisingPos.cs" />
+    <Compile Include="Dto\Response\DtoAudioResource.cs" />
+    <Compile Include="Dto\Response\DtoCourseDetails.cs" />
+    <Compile Include="Dto\Response\DtoCourseListItem.cs" />
+    <Compile Include="Dto\Response\DtoCoursePriceListItem.cs" />
+    <Compile Include="Dto\Response\DtoLesTaskSubject.cs" />
+    <Compile Include="Dto\Response\DtoMediaForKnowledge.cs" />
+    <Compile Include="Dto\Response\DtoMediaObject.cs" />
+    <Compile Include="Dto\Response\DtoMediaResourceAndObject.cs" />
+    <Compile Include="Dto\Response\DtoCashVoucher.cs" />
+    <Compile Include="Dto\Response\DtoCourse.cs" />
+    <Compile Include="Dto\Response\DtoEmployee.cs" />
+    <Compile Include="Dto\Response\DtoKeyValue.cs" />
+    <Compile Include="Dto\Response\DtoKnowledge.cs" />
+    <Compile Include="Dto\Response\DtoLessonApprove.cs" />
+    <Compile Include="Dto\Response\DtoLessonLog.cs" />
+    <Compile Include="Dto\Response\DtoLessonWithProcess.cs" />
+    <Compile Include="Dto\Response\DtoLesson.cs" />
+    <Compile Include="Dto\Response\DtoLessonUnit.cs" />
+    <Compile Include="Dto\Response\DtoMediaResource.cs" />
+    <Compile Include="Dto\Response\DtoMediaResourceToCourse.cs" />
+    <Compile Include="Dto\Response\DtoPreOrderPay.cs" />
+    <Compile Include="Dto\Response\DtoProductCategory.cs" />
+    <Compile Include="Dto\Response\DtoRegion.cs" />
+    <Compile Include="Dto\Response\DtoResourceGroupItem.cs" />
+    <Compile Include="Dto\Response\DtoSelectCenterCourseDetailObject.cs" />
+    <Compile Include="Dto\Response\DtoSelectCenterCourseDetailResult.cs" />
+    <Compile Include="Dto\Response\DtoSelectCenterCourseObject.cs" />
+    <Compile Include="Dto\Response\DtoSelectCenterOrderResult.cs" />
+    <Compile Include="Dto\Response\DtoSelectCenterResult.cs" />
+    <Compile Include="Dto\Response\DtoStudentOrderPay.cs" />
+    <Compile Include="Dto\Response\DtoStudentReport.cs" />
+    <Compile Include="Dto\Response\DtoStudentReportList.cs" />
+    <Compile Include="Dto\Response\DtoVoucherForUserCourse.cs" />
+    <Compile Include="Dto\Response\School\DtoSchool.cs" />
+    <Compile Include="Dto\Response\School\DtoSchoolClass.cs" />
+    <Compile Include="Dto\Response\School\DtoSchoolNoClassStudent.cs" />
+    <Compile Include="Dto\Response\School\DtoSchoolStudent.cs" />
+    <Compile Include="Dto\Response\School\DtoSchoolTeacher.cs" />
+    <Compile Include="Dto\Response\School\DtoStudentApplySchool.cs" />
+    <Compile Include="Dto\Response\DtoStudentCashVoucher.cs" />
+    <Compile Include="Dto\Response\DtoTextResource.cs" />
+    <Compile Include="Dto\Response\DtoSubject.cs" />
+    <Compile Include="Dto\Response\DtoSubjectKnowledge.cs" />
+    <Compile Include="Dto\Response\StudentPractice\DtoCourse.cs" />
+    <Compile Include="Dto\Response\StudentPractice\DtoStatusTotalRecord.cs" />
+    <Compile Include="Dto\Response\StudentPractice\DtoSubjectCountToPractice.cs" />
+    <Compile Include="Dto\Response\Student\DtoAvailableVoucher.cs" />
+    <Compile Include="Dto\Response\Student\DtoOwnCashVoucher.cs" />
+    <Compile Include="Dto\Response\Student\DtoSimpleCachVoucher.cs" />
+    <Compile Include="Dto\Response\Student\DtoStudentCourseInfo.cs" />
+    <Compile Include="Dto\Response\Student\DtoStudentInfo.cs" />
+    <Compile Include="Dto\Response\Student\DtoStudentLessonInfo.cs" />
+    <Compile Include="Dto\Response\Student\DtoStudentOrder.cs" />
+    <Compile Include="Dto\Response\Student\DtoStudentWrongBookInfo.cs" />
+    <Compile Include="Dto\Response\Student\DtoStudentWrongSubjectInfo.cs" />
+    <Compile Include="Dto\Response\Student\DtoSumStudent.cs" />
+    <Compile Include="Dto\Response\Student\DtoSumStudentTip.cs" />
+    <Compile Include="Dto\Response\Subject\DtoMark2SubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoSelectFillInBlankSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoSelectSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoFillInBlankSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoMatchSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoFreeSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoMarkSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoDefaultSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoTrueFalseSubjectContent.cs" />
+    <Compile Include="Dto\Response\Subject\DtoSubjectContent.cs" />
+    <Compile Include="Dto\Response\Teachers\DtoTeacher.cs" />
+    <Compile Include="Entity\AuditTrail.cs" />
+    <Compile Include="Entity\Bas_Advertising.cs" />
+    <Compile Include="Entity\Bas_AdvertisingPos.cs" />
+    <Compile Include="Entity\Bas_Employee.cs" />
+    <Compile Include="Entity\Bas_EmployeeRole.cs" />
+    <Compile Include="Entity\Bas_Region.cs" />
+    <Compile Include="Entity\Bas_Role.cs" />
+    <Compile Include="Entity\Bas_StudentLogin.cs" />
+    <Compile Include="Entity\Bas_Student.cs" />
+    <Compile Include="Entity\Bas_StudentPassport.cs" />
+    <Compile Include="Entity\School\Bas_School.cs" />
+    <Compile Include="Entity\School\Bas_SchoolLevel.cs" />
+    <Compile Include="Entity\ChangeTrackExt.cs" />
+    <Compile Include="Entity\DapperAttribute.cs" />
+    <Compile Include="Entity\EntityBase.cs" />
+    <Compile Include="Entity\IJsonTranslator.cs" />
+    <Compile Include="Entity\StudentLessonAnswer\StuLesAnsFactory.cs" />
+    <Compile Include="Entity\StudentLessonAnswer\Yw_StudentLessonAnswerExt.cs" />
+    <Compile Include="Entity\StudentWrong\StuWrongSubjectFactory.cs" />
+    <Compile Include="Entity\StudentWrong\Yw_StudentWrongSubjectExt.cs" />
+    <Compile Include="Entity\StudyTaskAnswer\StuTaskAnsFactory.cs" />
+    <Compile Include="Entity\StudyTaskAnswer\Yw_StudentStudyTaskAnswerExt.cs" />
+    <Compile Include="Entity\Subject\Yw_MatchContent.cs" />
+    <Compile Include="Entity\Subject\MultipleChoiceFillInBlankContent.cs" />
+    <Compile Include="Entity\Subject\SubjectContentFactory.cs" />
+    <Compile Include="Entity\Subject\Yw_SubjectContent.cs" />
+    <Compile Include="Entity\Subject\Yw_SubjectMark2Content.cs" />
+    <Compile Include="Entity\Subject\Yw_SubjectMarkContent.cs" />
+    <Compile Include="Entity\Subject\Yw_SubjectFreeContent.cs" />
+    <Compile Include="Entity\Subject\Yw_TrueFalseContent.cs" />
+    <Compile Include="Entity\Subject\Yw_FillInBlankContent.cs" />
+    <Compile Include="Entity\Subject\Yw_SubjectSelectContent.cs" />
+    <Compile Include="Entity\Sum_Student.cs" />
+    <Compile Include="Entity\Sum_StudyFactDaily.cs" />
+    <Compile Include="Entity\Sum_StudyFactDateCycle.cs" />
+    <Compile Include="Entity\UnitStep\UnitStepFactory.cs" />
+    <Compile Include="Entity\UnitStep\Yw_LessonUnitStep.cs" />
+    <Compile Include="Entity\UnitStep\Yw_LessonUnitStepActions.cs" />
+    <Compile Include="Entity\User.cs" />
+    <Compile Include="Entity\ICaching.cs" />
+    <Compile Include="Entity\IChangeTrack.cs" />
+    <Compile Include="Entity\Product.cs" />
+    <Compile Include="Entity\Table.cs" />
+    <Compile Include="Entity\Subject\Yw_Subject.cs" />
+    <Compile Include="Entity\School\Yw_SchoolClass.cs" />
+    <Compile Include="Entity\School\Yw_SchoolClassSchedule.cs" />
+    <Compile Include="Entity\School\Yw_SchoolTeacher.cs" />
+    <Compile Include="Entity\Yw_CourseIntroduction.cs" />
+    <Compile Include="Entity\Yw_CoursePriceAudit.cs" />
+    <Compile Include="Entity\Yw_CourseProcess.cs" />
+    <Compile Include="Entity\Yw_MediaObject.cs" />
+    <Compile Include="Entity\Yw_ReadRecord.cs" />
+    <Compile Include="Entity\Yw_StudentApplySchool.cs" />
+    <Compile Include="Entity\Yw_StudentCoinTransaction.cs" />
+    <Compile Include="Entity\Yw_StudentCourseProgress.cs" />
+    <Compile Include="Entity\Yw_StudentGetCashVoucher.cs" />
+    <Compile Include="Entity\Yw_CashVoucherIndex.cs" />
+    <Compile Include="Entity\Yw_CourseLesson.cs" />
+    <Compile Include="Entity\Yw_CourseLessonProcess.cs" />
+    <Compile Include="Entity\Yw_CourseLessonUnit.cs" />
+    <Compile Include="Entity\Yw_CourseLessonUnitProcess.cs" />
+    <Compile Include="Entity\Yw_CoursePrice.cs" />
+    <Compile Include="Entity\Yw_CourseSubjectRelation.cs" />
+    <Compile Include="Entity\Yw_PayLog.cs" />
+    <Compile Include="Entity\Yw_StudentCashVoucher.cs" />
+    <Compile Include="Entity\Yw_Course.cs" />
+    <Compile Include="Entity\Yw_Knowledge.cs" />
+    <Compile Include="Entity\Yw_KnowledgeIndex.cs" />
+    <Compile Include="Entity\StudentLessonAnswer\Yw_StudentLessonAnswer.cs" />
+    <Compile Include="Entity\Yw_StudentLessonProgress.cs" />
+    <Compile Include="Entity\Yw_StudentOrder.cs" />
+    <Compile Include="Entity\Yw_StudentOrderPay.cs" />
+    <Compile Include="Entity\StudyTaskAnswer\Yw_StudentStudyTaskAnswer.cs" />
+    <Compile Include="Entity\Yw_StudentRecentSubject.cs" />
+    <Compile Include="Entity\Yw_StudentTask.cs" />
+    <Compile Include="Entity\StudentWrong\Yw_StudentWrongBook.cs" />
+    <Compile Include="Entity\StudentWrong\Yw_StudentWrongSubject.cs" />
+    <Compile Include="Entity\Yw_StudyTask.cs" />
+    <Compile Include="Entity\Yw_SubjectGroup.cs" />
+    <Compile Include="Entity\Yw_SubjectIndex.cs" />
+    <Compile Include="Entity\Yw_SubjectKnowledge.cs" />
+    <Compile Include="Entity\Yw_SubjectProcess.cs" />
+    <Compile Include="Entity\Yw_CashVoucher.cs" />
+    <Compile Include="Entity\Yw_TextObject.cs" />
+    <Compile Include="Entity\Yw_TextResource.cs" />
+    <Compile Include="Entity\Yw_MediaResource.cs" />
+    <Compile Include="Entity\Yw_ResourceIndex.cs" />
+    <Compile Include="Entity\Yw_ResourceGroupItem.cs" />
+    <Compile Include="Entity\Yw_ResourceGroup.cs" />
+    <Compile Include="Enum\AccessCheckKeyEnum.cs" />
+    <Compile Include="Enum\AdvertisingEnum.cs" />
+    <Compile Include="Enum\AlignmentEnum.cs" />
+    <Compile Include="Enum\CashVoucherTypeEnum.cs" />
+    <Compile Include="Enum\CourseReportEnum.cs" />
+    <Compile Include="Enum\StuAcountVerifyTypeEnum.cs" />
+    <Compile Include="Enum\StudentMenus.cs" />
+    <Compile Include="Enum\StudentReportEnum.cs" />
+    <Compile Include="Enum\SubjectColorEnum.cs" />
+    <Compile Include="Enum\CommonEnum.cs" />
+    <Compile Include="Enum\CourseEnum.cs" />
+    <Compile Include="Enum\ErrorCodeEnum.cs" />
+    <Compile Include="Enum\FormSubmitButton.cs" />
+    <Compile Include="Enum\GradeEnum.cs" />
+    <Compile Include="Enum\DifficultyEnum.cs" />
+    <Compile Include="Enum\KnowledgeEnum.cs" />
+    <Compile Include="Enum\LessonActionTypeEnum.cs" />
+    <Compile Include="Enum\LessonStatusActionEnum.cs" />
+    <Compile Include="Enum\LessonStatusEnum.cs" />
+    <Compile Include="Enum\OrderEnum.cs" />
+    <Compile Include="Enum\SchoolEnum.cs" />
+    <Compile Include="Enum\SmsErrorEnum.cs" />
+    <Compile Include="Enum\StatusEnum.cs" />
+    <Compile Include="Enum\StudentEnum.cs" />
+    <Compile Include="Enum\StudentInfoEnum.cs" />
+    <Compile Include="Enum\SubjectStatusEnum.cs" />
+    <Compile Include="Enum\ResourceTypeEnum.cs" />
+    <Compile Include="Enum\StepActionEnum.cs" />
+    <Compile Include="Enum\SubjectActionEnum.cs" />
+    <Compile Include="Enum\SubjectTypeEnum.cs" />
+    <Compile Include="Enum\StudentTaskEnum.cs" />
+    <Compile Include="Enum\UeditorType.cs" />
+    <Compile Include="Enum\UnitProcessStatusEnum.cs" />
+    <Compile Include="Enum\MessageEnum.cs" />
+    <Compile Include="JsonEntity\Answer\AnswerFactory.cs" />
+    <Compile Include="JsonEntity\Answer\StuBlankAnswer.cs" />
+    <Compile Include="JsonEntity\Answer\StudentAnswerBase.cs" />
+    <Compile Include="JsonEntity\Answer\StudentAnswerCard.cs" />
+    <Compile Include="JsonEntity\Answer\StuFreeAnswer.cs" />
+    <Compile Include="JsonEntity\Answer\StuMarkColorAnswer.cs" />
+    <Compile Include="JsonEntity\Answer\StuMarkCutAnswer.cs" />
+    <Compile Include="JsonEntity\Answer\StuMatchAnswer.cs" />
+    <Compile Include="JsonEntity\Answer\StuSelectAnswer.cs" />
+    <Compile Include="JsonEntity\Answer\StuSelectBlankAnswer.cs" />
+    <Compile Include="JsonEntity\Answer\StuTrueFalseAnswer.cs" />
+    <Compile Include="JsonEntity\Coin\StuLessonCoinItem.cs" />
+    <Compile Include="JsonEntity\Coin\StuLessonCoinRecord.cs" />
+    <Compile Include="JsonEntity\Subject\MultipleChoiceFillInBlankContentObj.cs" />
+    <Compile Include="JsonEntity\Subject\FillInBlankContentObj.cs" />
+    <Compile Include="JsonEntity\Subject\FillInBlankAnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\MatchAnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\MultipleChoiceFillInBlankAnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\MatchContentObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectFreeContentObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectMark2AnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectMarkAnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectFreeAnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectMarkContentObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectMark2ContentObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectOption.cs" />
+    <Compile Include="JsonEntity\Subject\TrueFalseContentObj.cs" />
+    <Compile Include="JsonEntity\Subject\TrueFalseAnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectSelectAnswerObj.cs" />
+    <Compile Include="JsonEntity\Subject\SubjectSelectContentObj.cs" />
+    <Compile Include="JsonEntity\UnitStep\HideDom.cs" />
+    <Compile Include="JsonEntity\UnitStep\InsertImg.cs" />
+    <Compile Include="JsonEntity\UnitStep\InsertText.cs" />
+    <Compile Include="JsonEntity\UnitStep\IQuestion.cs" />
+    <Compile Include="JsonEntity\UnitStep\MoveDom.cs" />
+    <Compile Include="JsonEntity\UnitStep\ScaleDom.cs" />
+    <Compile Include="JsonEntity\UnitStep\SetBackground.cs" />
+    <Compile Include="JsonEntity\UnitStep\SetTitle.cs" />
+    <Compile Include="JsonEntity\UnitStep\SetWaitMillisecond.cs" />
+    <Compile Include="JsonEntity\UnitStep\StepAction.cs" />
+    <Compile Include="JsonEntity\UnitStep\Step.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyAnnotation2.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyAnnotation.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyArticle.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyAudio.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyCalligraphy.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyFastRead.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyFastReadEasy.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyFill.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyJudgment.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyLinking.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyOption.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyOptionFill.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyRecitation.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudySubjective.cs" />
+    <Compile Include="JsonEntity\UnitStep\StudyVideo.cs" />
+    <Compile Include="JsonEntity\UnitStep\TwinkleDom.cs" />
+    <Compile Include="JsonEntity\UnitStep\XiaoAiChange.cs" />
+    <Compile Include="JsonEntity\UnitStep\XiaoAiSay.cs" />
+    <Compile Include="JsonTranslator\FreeContentTransaltor.cs" />
+    <Compile Include="JsonTranslator\Mark2ContentTransaltor.cs" />
+    <Compile Include="JsonTranslator\MarkContentTransaltor.cs" />
+    <Compile Include="JsonTranslator\MatchContentTransaltor.cs" />
+    <Compile Include="JsonTranslator\MultipleChoiceFillInBlankContentTransaltor.cs" />
+    <Compile Include="JsonTranslator\FillInBlankContentTransaltor.cs" />
+    <Compile Include="JsonTranslator\ITranslator.cs" />
+    <Compile Include="JsonTranslator\SelectContentTransaltor.cs" />
+    <Compile Include="JsonTranslator\StuLessonAnsTranslator.cs" />
+    <Compile Include="JsonTranslator\StuStudyTaskAnsTranslator.cs" />
+    <Compile Include="JsonTranslator\StuWrongAnsTranslator.cs" />
+    <Compile Include="JsonTranslator\SubjectAnswerObjectBuilder.cs" />
+    <Compile Include="JsonTranslator\SubjectContentDtoBuilder.cs" />
+    <Compile Include="JsonTranslator\SubjectContentDtoBuilder2.cs" />
+    <Compile Include="JsonTranslator\TranslatorFactory.cs" />
+    <Compile Include="JsonTranslator\TrueFalseContentTranslator.cs" />
+    <Compile Include="JsonTranslator\UeditorContentFactory.cs" />
+    <Compile Include="JsonTranslator\UntiStepTranslator.cs" />
+    <Compile Include="Message\CourseStudyMessage.cs" />
+    <Compile Include="Message\CourseStudyPractiseMessage.cs" />
+    <Compile Include="Message\CourseStudyTaskMessage.cs" />
+    <Compile Include="Message\MessageBase.cs" />
+    <Compile Include="Message\MessageBody.cs" />
+    <Compile Include="Message\PayOrderMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\bas_Class.cs" />
+    <Compile Include="Test\bas_Region.cs" />
+    <Compile Include="Test\bas_Role.cs" />
+    <Compile Include="Test\bas_School.cs" />
+    <Compile Include="Test\bas_Student.cs" />
+    <Compile Include="Test\sum_AssessmentDetail.cs" />
+    <Compile Include="Test\sum_AssessmentSummarize.cs" />
+    <Compile Include="Test\sum_GrammarDetail.cs" />
+    <Compile Include="Test\sum_GrammarSummarize.cs" />
+    <Compile Include="Test\sum_PKSummarize.cs" />
+    <Compile Include="Test\sum_ReadDetail.cs" />
+    <Compile Include="Test\sum_ReadSummarize.cs" />
+    <Compile Include="Test\sum_ReciteTextDetail.cs" />
+    <Compile Include="Test\sum_ReciteTextSummarize.cs" />
+    <Compile Include="Test\sum_SpeakingDetail.cs" />
+    <Compile Include="Test\sum_SpeakingSummarize.cs" />
+    <Compile Include="Test\sum_StructureDetail.cs" />
+    <Compile Include="Test\sum_StructureSummarize.cs" />
+    <Compile Include="Test\sum_StudySummarize.cs" />
+    <Compile Include="Test\sum_StudySummarizeDay.cs" />
+    <Compile Include="Test\sum_TestDetail.cs" />
+    <Compile Include="Test\sum_TestSummarize.cs" />
+    <Compile Include="Test\sum_WordDetail.cs" />
+    <Compile Include="Test\sum_WordSummarize.cs" />
+    <Compile Include="Test\sum_YinBiaoDetail.cs" />
+    <Compile Include="Test\sum_YinBiaoSummarize.cs" />
+    <Compile Include="Test\sys_Category.cs" />
+    <Compile Include="Test\sys_Composition.cs" />
+    <Compile Include="Test\sys_Dictionary.cs" />
+    <Compile Include="Test\sys_ECTranslation.cs" />
+    <Compile Include="Test\sys_Error.cs" />
+    <Compile Include="Test\sys_FillBlanks.cs" />
+    <Compile Include="Test\sys_Item.cs" />
+    <Compile Include="Test\sys_ItemGroup.cs" />
+    <Compile Include="Test\sys_Select.cs" />
+    <Compile Include="Test\sys_Speaking.cs" />
+    <Compile Include="Test\sys_Test.cs" />
+    <Compile Include="Test\sys_TestPart.cs" />
+    <Compile Include="Test\wx_Activity26.cs" />
+    <Compile Include="Test\wx_Activity27.cs" />
+    <Compile Include="Test\wx_Activity28.cs" />
+    <Compile Include="Test\wx_Activity29.cs" />
+    <Compile Include="Test\wx_Activity30.cs" />
+    <Compile Include="Test\wx_Activity31.cs" />
+    <Compile Include="Test\wx_Activity32.cs" />
+    <Compile Include="Test\wx_Activity33.cs" />
+    <Compile Include="Test\wx_Activity34.cs" />
+    <Compile Include="Test\wx_Activity25.cs" />
+    <Compile Include="Test\wx_Activity24.cs" />
+    <Compile Include="Test\wx_Activity3.cs" />
+    <Compile Include="Test\wx_Activity4.cs" />
+    <Compile Include="Test\wx_Activity5.cs" />
+    <Compile Include="Test\wx_Activity6.cs" />
+    <Compile Include="Test\wx_Activity7.cs" />
+    <Compile Include="Test\wx_Activity8.cs" />
+    <Compile Include="Test\wx_Activity9.cs" />
+    <Compile Include="Test\wx_Activity10.cs" />
+    <Compile Include="Test\wx_Activity11.cs" />
+    <Compile Include="Test\wx_Activity12.cs" />
+    <Compile Include="Test\wx_Activity13.cs" />
+    <Compile Include="Test\wx_Activity14.cs" />
+    <Compile Include="Test\wx_Activity15.cs" />
+    <Compile Include="Test\wx_Activity16.cs" />
+    <Compile Include="Test\wx_Activity17.cs" />
+    <Compile Include="Test\wx_Activity18.cs" />
+    <Compile Include="Test\wx_Activity19.cs" />
+    <Compile Include="Test\wx_Activity20.cs" />
+    <Compile Include="Test\wx_Activity21.cs" />
+    <Compile Include="Test\wx_Activity22.cs" />
+    <Compile Include="Test\wx_Activity23.cs" />
+    <Compile Include="Test\wx_Activity2.cs" />
+    <Compile Include="Test\wx_Activity1.cs" />
+    <Compile Include="Test\wx_Activity.cs" />
+    <Compile Include="Test\wx_ActivityApply.cs" />
+    <Compile Include="Test\wx_AssessmentDetail.cs" />
+    <Compile Include="Test\wx_AssessmentDetailTemp.cs" />
+    <Compile Include="Test\wx_IgnoreSchool.cs" />
+    <Compile Include="Test\wx_RegTrialAccount.cs" />
+    <Compile Include="Test\wx_UserAttachStudent.cs" />
+    <Compile Include="Test\wx_UserContactDetail.cs" />
+    <Compile Include="Test\wx_UserInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbhsChinese.Code\AbhsChinese.Code.csproj">
+      <Project>{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD}</Project>
+      <Name>AbhsChinese.Code</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dto\Request\Knowledges\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

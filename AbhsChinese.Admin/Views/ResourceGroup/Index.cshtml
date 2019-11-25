@@ -1,0 +1,184 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@{
+    ViewBag.PageTitle = "资源组管理";
+    ViewBag.ListTitle = "资源组列表";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    <style>
+        /*ios复选框*/
+        .switchery {
+            width:40px;
+            height:20px;
+            cursor:default;
+        }
+        .switchery > small {
+            width:20px;
+            height:20px;
+        }
+
+        /*abhsTable*/
+        #table_resourcegroup {
+            height: calc(100% - 40px);
+        }
+
+        #wrapper, .ibox, .table_container,.ibox-content {
+            height: 100%;
+        }
+
+        .wrapper-content {
+            height: calc(100% - 16px);
+        }
+    </style>
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+
+        <div class="row">
+            <div class="col-12">
+                <button type="button" name="btn_groupType"
+                        data-group-type="0" class="btn btn-primary">
+                    全部
+                </button>
+                @foreach (var item in CustomEnumHelper.GetElements(typeof(ResourceGroupStatusEnum)))
+                {
+                    <button type="button" name="btn_groupType"
+                            data-group-type="@item.Key" class="btn btn-default">
+                        @item.Value
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-10">
+                @Html.Partial("_SearchResourceGroupList")
+            </div>
+            <div class="col-2 text-right align-self-end">
+                <div class="btn-group">
+                    <button class="btn btn-white" type="button" onclick="addResourceGroup()">
+                        添加资源组
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="height: calc(100% - 72px);">
+            <div class="col-12 table_container">
+                <div id="table_resourcegroup"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+    <script>
+        $(function () {
+            $('.select2.form-control').select2({
+                width: '197px',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+
+            initTable();
+
+            registerEvent();
+
+            $('#form_search_resourcegroup select.abhsselect2').select2({
+                width: '197px',
+                placeholder: '请选择年级',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            });
+
+        });
+
+        function registerEvent() {
+            $('button[name="btn_groupType"]').on('click', function () {
+                let $self = $(this);
+                if ($self.hasClass('btn-primary')) {
+                    return;
+                }
+
+                let type = this.dataset.groupType;
+                let $form = $('#form_search_resourcegroup');
+                $form.find('input[name="groupType"]').val(type);
+                $form.find('.search').click();
+
+                $self.removeClass('btn-default').addClass('btn-primary')
+                     .siblings('.btn-primary').removeClass('btn-primary').addClass('btn-default');
+            });
+        }
+
+        function initTable() {
+            //let align = 'center';
+            let columns = [
+                { label: '编号', name: 'Yrg_Id', align: 'center' },
+                { label: '资源组名称', name: 'Yrg_Name', align: 'center' },
+                { label: '创建时间', name: 'CreateTime', align: 'center' },
+                { label: '年级', name: 'Grade', align: 'center' },
+                { label: '多媒体资源数量', name: 'Yrg_MediaCount', align: 'center' },
+                { label: '文本资源数量', name: 'Yrg_TextCount', align: 'center' },
+                { label: '题目数量', name: 'Yrg_SubjectCount', align: 'center' },
+                {
+                    label: '是否启用',
+                    name: 'Yrg_Status',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        if (row.Yrg_Status == 1) {
+                            return '<input type="checkbox" name="IsEnabled" class="js-switch" checked="" data-switchery="true" style="display: none;"><span class="switchery switchery-default" style="background-color: rgb(26, 179, 148); border-color: rgb(26, 179, 148); box-shadow: rgb(26, 179, 148) 0px 0px 0px 11px inset; transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;"><small style="left: 20px; transition: background-color 0.4s ease 0s, left 0.2s ease 0s; background-color: rgb(255, 255, 255);"></small></span>';
+                        }
+                        return '<input type="checkbox" name="IsEnabled" class="js-switch" checked="" data-switchery="false" style="display: none;"><span class="switchery switchery-default" style="background-color: rgb(255, 255, 255); border-color: rgb(223, 223, 223); box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset; transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;"><small style="left: 0px; transition: background-color 0.4s ease 0s, left 0.2s ease 0s;"></small></span>';
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return "<a href='javascript:void(0)' class='text-info' onclick='edit(" + row.Yrg_Id + ")'>编辑</a>";
+                    }
+                }
+            ];
+
+            $('#table_resourcegroup').table({
+                ajax: {
+                    url: '@Url.Action("GetResourceGroups", "ResourceGroup")'
+                },
+                columns: columns,
+                searchBox: '#form_search_resourcegroup'
+            });
+        }
+
+        function addResourceGroup() {
+            layer.open({
+                type: 2,
+                title: "添加资源",
+                skin: 'layui-layer-rim',
+                area: ["75%", "90%"],
+                btn: ['确定', '关闭'],
+                yes: function (index, layero) {
+                    /*提交表单*/
+                    var submit = layero.find('iframe').contents().find("#btn_SignIn");// #subBtn为页面层提交按钮ID
+                    submit.click();// 触发提交监听
+
+                },
+                content: "/ResourceGroup/AddResourceGroup"
+            });
+        }
+
+        function edit(id) {
+            window.location.href = "/ResourceGroup/Edit?id=" + id;
+        }
+    </script>
+}

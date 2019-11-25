@@ -1,0 +1,54 @@
+﻿<div class="hr-line-dashed"></div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">解析</label>
+    <div class="col-sm-9">
+        <textarea id="explain" name="explain" style="width:100%;"></textarea>
+    </div>
+</div>
+<div class="hr-line-dashed"></div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label required">年级</label>
+    <div class="col-sm-9">
+        <select name="grade"
+                class="select2 form-control"
+                data-ajax--url="@Url.Action("GetGrades", "Select2")"
+                data-ajax--cache="true"
+                data-placeholder="请选择年级" data-allow-clear="true"></select>
+        <label for="grade" class="error"></label>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label required">难度</label>
+    <div class="col-sm-9">
+        <select name="difficulty"
+                class="select2 form-control"
+                data-ajax--url="@Url.Action("GetDifficulties", "Select2")"
+                data-ajax--cache="true"
+                data-placeholder="请选择难度" data-allow-clear="true"></select>
+        <label for="difficulty" class="error"></label>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label required">关键字</label>
+    <div class="col-sm-9">
+        <input name="keywords" class="tagsinput form-control"
+               type="text" />
+        <label for="keywords" class="error"></label>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">主知识点</label>
+    <div class="col-sm-9">
+        <input type="text" id="knowledge" name="knowledge" class="form-control" 
+               placeholder="请输入知识点编号或者知识点关键词" value="">
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">次知识点</label>
+    <div class="col-sm-9">
+        <input type="text" id="knowledges" name="knowledges" class="form-control"
+               placeholder="请输入知识点编号或者知识点关键词" value="">
+    </div>
+</div>
+<input type="hidden" id="nextStatus" name="nextStatus" value="2" />
+<input type="hidden" id="subjectId" name="subjectId" value="@Model" />

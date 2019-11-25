@@ -1,0 +1,14 @@
+﻿<div class="col-2 col-md-3 pull-right text-right align-self-center">
+    @if (ViewBag.HasAddBtn != null && ViewBag.HasAddBtn)
+    {
+        <button type="button" class="btn btn-white" id="btnReload" onclick="editGlobal(0)"><i class="fa fa-plus"></i>&nbsp;@ViewBag.AddBtnName</button>
+    }
+    @if (ViewBag.HasReloadBtn != null && ViewBag.HasReloadBtn)
+    {
+        <button type="button" class="btn btn-white" id="btnReload" onclick="reloadGlobal()"><i class="fa fa-refresh"></i>&nbsp;刷新</button>
+    }
+    @if (ViewBag.HasBackBtn != null && ViewBag.HasBackBtn)
+    {
+        <button type="button" class="btn btn-white" id="btnBack" onclick="backGlobal()"><i class="fa fa-chevron-left"></i>&nbsp;返回</button>
+    }
+</div>

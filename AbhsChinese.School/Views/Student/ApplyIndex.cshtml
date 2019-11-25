@@ -1,0 +1,176 @@
+﻿
+@model AbhsChinese.Domain.Dto.Request.DtoApplyStudentSearch
+@{
+    //ViewBag.PageTitle = "学生管理";
+    ViewBag.PageTitle = "申请列表";
+    ViewBag.HasReloadBtn = true;
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .text-danger {
+            margin-left: 15px;
+        }
+
+        .img-info {
+            width: 50px;
+            height: 50px;
+        }
+
+
+
+        .wrapper-content {
+            height: calc(100% - 80px);
+        }
+
+        #wrapper, .ibox, .ibox-content, .table_container {
+            height: 100%;
+        }
+
+        #table_list {
+            height: calc(100% - 50px);
+        }
+
+        .spc-green {
+            color: #1ABC9C;
+        }
+
+        .spc-defaule {
+            color: #ccc;
+        }
+
+        .spc-red {
+            color: #D9001B;
+        }
+
+         :root {
+            --sbheight: 50px;
+        }
+        .search-box {
+            height: var(--sbheight);
+        }
+
+        @@media screen and (max-width: 1350px) {
+            :root {
+                --sbheight: 100px;
+            }
+        }
+    </style>
+
+}
+
+<div class="ibox">
+    @*<div class="ibox-title">
+            <h5>
+                <i class="fa fa-table"></i>&nbsp;@ViewBag.ListTitle
+            </h5>
+            <div class="ibox-tools">
+                <div class="col">
+                </div>
+            </div>
+        </div>*@
+    <div class="ibox-content">
+        <div class="row search-box" >
+            @Html.Partial("_SearchApplyList", Model)
+            @Html.Partial("_PageControl")
+        </div>
+        <div class="row" style="height: calc(100% - 50px);">
+            <div class="col-12 table_container">
+                <div id="table_list"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+
+
+    <script>
+        $(function () {
+            renderSearch();
+            initTable();
+
+        })
+
+        function renderSearch() {
+
+            //年级
+            $('.select2-grade').initSelectOption({
+                'source': gradeSourceArr,
+                'className': '',
+                'default': { key: '-1', value: '年级' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+        }
+
+        function initTable() {
+            let columns = [
+                { label: '申请日期', name: 'ApplyDate', align: 'center' },
+                { label: '学号', name: 'Bst_No', align: 'center' },
+                { label: '账号', name: 'Bst_PhoneShow', align: 'center' },
+                {
+                    label: '昵称', name: 'Bst_NickName', align: 'center'
+                },
+                { label: '姓名', name: 'Bst_Name', align: 'center' },
+                { label: '性别', name: 'SexStr', align: 'center' },
+                { label: '年级', name: 'GradeStr', align: 'center' },
+                {
+                    label: '来源', name: 'Ycc_StudentCount', align: 'center',
+                    formatter: function (index, value, row) {
+                        return row['TeacherName'] + '|' + row['TeacherPhone']
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return "<a href='javascript:void(0)' class='text-info' onclick='editStatus(" + row.Yay_Id + ",2)'>同意</a>" + "<a href='javascript:void(0)' class='text-danger' onclick='editStatus(" + row.Yay_Id + ",3)'>不同意</a>";;
+                    }
+                }
+            ];
+            $('#table_list').table({
+                ajax: {
+                    url: '@Url.Action("GetApplyList", "Student")'
+                },
+                columns: columns,
+                current: PageBase.GetPageIndex(),
+                searchBox: '#form_search'
+            });
+        }
+
+        function editStatus(id, status) {
+            window.layer.confirm("确认修改?", function () {
+                $.ajax({
+                    url: '@Url.Action("UpdateApplyStatus", "Student")',
+                    type: "POST",
+                    data: { applyId: id, toStatus: status },
+                    beforeSend: function () {
+                        loading.showLoading('正在保存数据，请稍候……');// showLoading();
+                    },
+                    success: generateSuccessFunc(function () {
+                        window.layer.closeAll();
+                        reload();
+                    }),
+                    error: generateErrorFunc(),
+                })
+
+            })
+
+        }
+
+        function reload() {
+            window.location.reload();
+        }
+    </script>
+}

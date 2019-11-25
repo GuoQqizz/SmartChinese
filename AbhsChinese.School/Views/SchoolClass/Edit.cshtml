@@ -1,0 +1,588 @@
+﻿
+
+@using AbhsChinese.Code.Common;
+@using AbhsChinese.School.Models;
+@model SchoolClassInputModel
+
+@{
+    ViewBag.PageTitle = "班级管理";
+    ViewBag.HasBackBtn = true;
+    ViewBag.PageTitle = Model != null && Model.Ycc_Id > 0 ? "编辑班级" : "添加班级"; //ListTitle
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/datePickerStyles")
+    @Styles.Render("~/bundles/css/timePickerStyles")
+    <style type="text/css">
+        .icheckbox_square-green {
+            margin-right: 5px;
+        }
+
+        .input-grade {
+            display: inline-block;
+        }
+
+            .input-grade label {
+                cursor: pointer;
+            }
+
+        .input-grade, #gradeCheckBox {
+            padding-left: 7px;
+        }
+
+        #gradeCheckBox {
+            margin-bottom: 10px;
+        }
+
+            #gradeCheckBox label.error {
+                width: 200px;
+                margin-top: 85px;
+                margin-left: 20px;
+            }
+
+        .ibox {
+            position: relative;
+        }
+
+        .ibox-content {
+            min-height: 730px;
+        }
+
+        .control-group {
+            /*position: absolute;
+            width: 100%;
+            bottom: 20px;*/
+        }
+
+        .select-region {
+            height: 50px;
+        }
+
+            .select-region label.error {
+                position: absolute;
+                left: 0px;
+                top: 35px;
+            }
+
+        .sp-md {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            padding: 9px 12px 4px 12px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .schedule-item {
+            margin-bottom: 10px;
+        }
+        .input-group-addon{
+           height: calc(2.25rem - 3px);
+        }
+    </style>
+}
+<div class="ibox">
+    <div class="ibox-content">
+        @*<div class="row">
+                <div class="col-12">
+                    <div class="ibox-title">
+                        <h5>
+                            @ViewBag.ListTitle
+                        </h5>
+                        <div class="ibox-tools">
+                            <div class="col">
+                                <button type="button" class="btn btn-white" id="btnBack"><i class="fa fa-chevron-left"></i>&nbsp;返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />*@
+        <form id="edit_Form" method="post" class="form-within">
+            <input type="hidden" name="Ycc_Id" class="form-control" value="@( Model.Ycc_Id)" />
+            <input type="hidden" name="Ycc_SchoolId" class="form-control" value="@Model.Ycc_SchoolId" />
+
+            <div class="form-group row  ">
+                <label class="col-form-label col-2  offset-1 text-right required">班级:</label>
+                <div class="col-6">
+                    <input type="text" name="Ycc_Name" class="form-control no-space-input" value="@Model.Ycc_Name" required maxlength="20"  autocapitalize="on"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">年级:</label>
+                <div class="col-6">
+                    <select class="form-control m-b grade-select select2-default required" id="grade" name="Ycc_Grade" data-val="@Model.Ycc_Grade" required></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">课程类型:</label>
+                <div class="col-6">
+                    <select class="form-control m-b course-type-select select2-default" id="courseType" name="Ycc_CourseType" data-val="@Model.Ycc_CourseType" required></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">课程:</label>
+                <div class="col-6">
+                    <select class="form-control m-b course-select select2-default" name="Ycc_CourseId" data-val="@Model.Ycc_CourseId" required></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">班主任:</label>
+                <div class="col-6">
+                    <select class="form-control m-b master-select select2-default" name="Ycc_ClassMaster" data-val="@Model.Ycc_ClassMaster" required></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">状态:</label>
+                <div class="col-6">
+                    <select class="form-control m-b status-select select2-default" name="Ycc_Status" data-val="@Model.Ycc_Status" required></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">班级人数:</label>
+                <div class="col-6">
+                    <input type="number" name="Ycc_LimitStudentCount" class="form-control " value="@(Model.Ycc_LimitStudentCount==0?"":Model.Ycc_LimitStudentCount.ToString())" required />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">开课日期:</label>
+                <div class="col-6 input-group date input-form-addon">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="Ycc_StartTime" class="form-control input_date" placeholder="请选择日期" value="@(Model.Ycc_StartTime != DateTime.MinValue ? Model.Ycc_StartTime.ToString("yyyy-MM-dd") : string.Empty)"  required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right required">上课时间:</label>
+                <div class="col-6 schedule-list">
+                    @if (Model.Schedules == null || Model.Schedules.Count == 0)
+                    {
+                        <div class="input-group schedule-item">
+                            <div class="input-group col-3">
+                                <select class="week-select" name="Weeks"></select>
+                            </div>
+                            <div class="col-3   input-group bootstrap-timepicker">
+                                <input type="text" class="form-control input-small timepicker timepicker-start" name="BeginTimes">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-time"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <span class="sp-md">-</span>
+                            </div>
+                            <div class="col-3   input-group bootstrap-timepicker">
+                                <input type="text" class="form-control  input-small timepicker timepicker-end" name="EndTimes">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-time"></i>
+                                </span>
+
+                            </div>
+                            <div class="col-2 control-group">
+                                <button class="btn btn-success" type="button" onclick="addSchedule(this)"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Model.Schedules.Count; i++)
+                        {
+                            <div class="input-group schedule-item">
+                                <div class="input-group col-3">
+                                    <select class="week-select" name="Weeks" data-val="@Model.Schedules[i].Ywd_Day"></select>
+                                </div>
+                                <div class="col-3   input-group bootstrap-timepicker">
+                                    <input type="text" class="form-control input-small timepicker timepicker-start" name="BeginTimes" value="@Model.Schedules[i].Ywd_StartTime.ToString()">
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-time"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="sp-md">-</span>
+                                </div>
+                                <div class="col-3   input-group bootstrap-timepicker">
+                                    <input type="text" class="form-control  input-small timepicker timepicker-end" name="EndTimes" value="@Model.Schedules[i].Ywd_EndTime.ToString()">
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-time"></i>
+                                    </span>
+
+                                </div>
+                                <div class="col-2 control-group">
+                                    <button class="btn btn-success" type="button" onclick="addSchedule(this)"><i class="fa fa-plus"></i></button>
+                                    @if (i != 0)
+                                    {
+                                        <button class="btn btn-warning" type="button" onclick="removeSchedule(this)"><i class="fa fa-minus"></i></button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 offset-1  text-right">备注:</label>
+                <div class="col-6">
+                    <textarea class="form-control text" name="Ycc_Remark" style="height:120px" maxlength="200">@(Model != null ? Model.Ycc_Remark : string.Empty)</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row control-group pr-3">
+                <div class="col-12   text-center ">
+                    <button class="btn btn-default " type="button" id="btnCancle">取消</button>
+                    <button class="btn btn-primary ml-2 " type="button" id="btnSure">确认</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/js/switchery")
+    @Scripts.Render("~/bundles/js/datePicker")
+    @Scripts.Render("~/bundles/js/timePicker")
+    <script type="text/template" id="scheduleTmp">
+        <div class="input-group schedule-item">
+            <div class="input-group col-3">
+                <select class="week-select" name="Weeks" data-val="{{Week}}"></select>
+            </div>
+            <div class="col-3   input-group bootstrap-timepicker">
+                <input type="text" class="form-control input-small timepicker timepicker-start" name="BeginTimes" value="{{BeginTime}}" >
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-time"></i>
+                </span>
+            </div>
+            <div>
+                <span class="sp-md">-</span>
+            </div>
+            <div class="col-3   input-group bootstrap-timepicker">
+                <input type="text" class="form-control  input-small  timepicker timepicker-end" name="EndTimes" value="{{EndTime}}" >
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-time"></i>
+                </span>
+            </div>
+            <div class="col-2 control-group">
+                <button class="btn btn-success" type="button" onclick="addSchedule(this)"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-warning" type="button" onclick="removeSchedule(this)"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        
+
+        $(function () {
+            setMinHeight('ibox-content',150);
+            renderHtml();
+
+            $("#edit_Form").validate({
+                rules: {
+                    Ycc_Name: {
+                        required: true,
+                    },
+                    Ycc_Grade: {
+                        required: true,
+                        min: 1,
+                    },
+
+                    Ycc_CourseType: {
+                        required: true,
+                        min: 1,
+                    },
+                    Ycc_CourseId: {
+                        required: true,
+                        min: 1,
+                    },
+                    Ycc_ClassMaster: {
+                        required: false,
+                        min: 1,
+                    },
+                    Ycc_LimitStudentCount: {
+                        required: true,
+                        digits:true,
+                    },
+                    Ycc_Status:{
+                        required: false,
+                        min: 1,
+                    }
+                    //Schedules
+
+
+
+                },
+                messages: {
+                    Ycc_Name: {
+                        required: "请输入班级名称",
+                    },
+                    Ycc_Grade: {
+                        required: "请选择年级",
+                        min: "请选择年级",
+                    },
+
+                    Ycc_CourseType: {
+                        required: "请选择课程类型",
+                        min: "请选择课程类型",
+                    },
+                    Ycc_CourseId: {
+                        required: "请选择课程",
+                        min: "请选择课程",
+                    },
+                    Ycc_ClassMaster: {
+                        required: "请选择班主任",
+                        min: "请选择班主任",
+                    },
+                    Ycc_LimitStudentCount: {
+                        required: "请输入班级人数",
+                    },
+                    Ycc_StartTime: {
+                        required: "请选择开课日期",
+                    },
+                    Ycc_Status:{
+                        required: "请选择班级状态",
+                        min: "请选择班级状态",
+                    }
+                },
+                submitHandler: throttle(function(form){
+                    ajaxSubmit();
+                },1000)
+            });
+
+            $("#btnSure").click(throttle(function(){
+                ajaxSubmit();
+            },1000));
+            $("#btnCancle").on("click", function () {
+                backLocal();
+            });
+        });
+        //表单提交
+        function ajaxSubmit() {
+            if (!$("#edit_Form").valid()) {
+                return false;
+            }
+            if (validateSchedule()) {
+                var form = $("#edit_Form").serializeObject();
+                var days = form['Weeks'];
+                if(!Array.isArray(days)){
+                    days=[days];
+                }
+                var begins = form['BeginTimes'];
+                if(!Array.isArray(begins)){
+                    begins=[begins];
+                }
+                var ends = form['EndTimes'];
+                if(!Array.isArray(ends)){
+                    ends=[ends];
+                }
+                var schedules = [];
+                for (var i = 0; i < days.length; i++) {
+                    schedules.push({
+                        Ywd_Day: days[i],
+                        Ywd_StartTime: begins[i],
+                        Ywd_EndTime: ends[i],
+                    });
+                }
+                form['Schedules'] = schedules;
+                $.ajax({
+                    url: '/SchoolClass/SaveClass',
+                    type: 'post',
+                    datatype: 'json',
+                    contentType: 'application/json;charset=utf-8',
+                    data: JSON.stringify(form),
+                    beforeSend: function () {
+                        loading.showLoading('正在保存数据，请稍候……');// showLoading();
+                    },
+                    success: generateSuccessFunc(function () {
+                        window.layer.closeAll();
+                        backLocal();
+                    }),
+                    error: generateErrorFunc(),
+                })
+            } else {
+                window.layer.alert("上课时间有重复,请合理设置",
+                        { icon: 2 },
+                        function () { window.layer.closeAll(); });
+            }
+        }
+        function backLocal(){
+            PageBase.SetToPage('/SchoolClass/Index');
+            window.location.href = '@Url.Action("Index", "SchoolClass")';
+        }
+
+        //验证上课时间
+        function validateSchedule() {
+            var res = false;
+            var form = $('#edit_Form').serializeObject();
+            var days = form['Weeks'];
+            if(!Array.isArray(days)){
+                days=[days];
+            }
+            var newDays = days.unique();
+            var schedules = [];
+            if (days.length == newDays.length && days.length < 8) {
+                res = true;
+            }
+            return res;
+        }
+
+        function renderHtml() {
+
+            //班级状态渲染
+            $('.status-select').initSelectOption({
+                'source': classStatusArr,
+                'className': '',
+                'width': '100%',
+                'useSelect2': true,
+            });
+
+            //年级渲染
+            $('.grade-select').initSelectOption({
+                'source': gradeSourceArr,
+                'className': '',
+                'width': '100%',
+                'useSelect2': true,
+            });
+            $('.grade-select').on('change', function (e) {
+                var grade = e.target.value;
+                var courseType = $('#courseType').val();
+                renderTeacher(grade);
+                renderCourse(grade, courseType);
+            })
+            //课程类型渲染
+            $('.course-type-select').initSelectOption({
+                'source': courseTypeArr,
+                'className': '',
+                'width': '100%',
+                'useSelect2': true,
+            });
+            $('.course-type-select').on('change', function (e) {
+                var courseType = e.target.value;
+                var grade = $('#grade').val();
+                renderCourse(grade, courseType);
+            })
+
+            //课程渲染
+            renderCourse(@Model.Ycc_Grade, @Model.Ycc_CourseType);
+            //老师渲染
+            renderTeacher(@Model.Ycc_Grade);
+            //开课时间
+            $(".input-group.date").datepicker({
+                autoclose: true,
+                todayBtn: "linked",
+                todayHighlight: true,
+                /*汉化*/
+                language: "cn",
+                /*日期格式*/
+                format: "yyyy-mm-dd"
+            });
+            //上课时间相关初始化
+            initScheduleItem();
+        }
+        //渲染老师
+        function renderTeacher(grade) {
+            if (grade && grade > 0) {
+                $.ajax({
+                    url: '@Url.Action("GetTeacherByGrade", "Select2")' + '?grade=' + grade,
+                    type: 'GET',
+                    success: function (res) {
+                        $('.master-select').initSelectOption({
+                            'source': res,
+                            'className': '',
+                            'width': '100%',
+                            'useSelect2': true,
+                        });
+                    }
+                });
+            } else {
+                $('.master-select').initSelectOption({
+                    'source': [],
+                    'className': '',
+                    'width': '100%',
+                    'useSelect2': true,
+                });
+            }
+        }
+        //渲染课程
+        function renderCourse(grade, courseType) {
+            if (grade && grade > 0 && courseType && courseType > 0) {
+                $.ajax({
+                    url: '@Url.Action("GetCourse", "Select2")' + '?type=' + courseType + '&grade=' + grade,
+                    type: 'GET',
+                    success: function (res) {
+                        $('.course-select').initSelectOption({
+                            'source': res,
+                            'className': '',
+                            'width': '100%',
+                            'useSelect2': true,
+                        });
+                    }
+                });
+            } else {
+                $('.course-select').initSelectOption({
+                    'source': [],
+                    'className': '',
+                    'width': '100%',
+                    'useSelect2': true,
+                });
+            }
+        }
+        //渲染上课时间
+        var scheduleTmp = document.getElementById('scheduleTmp').innerHTML;
+        var timePickerStartOption = {
+            minuteStep: 15,
+            disableFocus: true,
+            modalBackdrop: true,
+            showSeconds: true,
+            showMeridian: false,//24小时制
+            showInputs: true,
+            //defaultTime: false,//默认时间 不设置
+            defaultTime: '08:00:00'
+        };
+        var timePickerEndOption = {
+            minuteStep: 15,
+            disableFocus: true,
+            modalBackdrop: true,
+            showSeconds: true,
+            showMeridian: false,//24小时制
+            showInputs: true,
+            defaultTime: '12:00:00'
+        };
+        $('.schedule-list').on('click', '.timepicker', function () {
+            $(this).timepicker('showWidget')
+        })
+        $('.schedule-list').on('change', '.week-select', function (e) {
+            //console.log(e);
+            $(this).data('val', e.target.value);
+        })
+        function initScheduleItem() {
+            $('.timepicker-start').timepicker(timePickerStartOption);
+            $('.timepicker-end').timepicker(timePickerEndOption);
+            $('.week-select').map(function (i, v) {
+                $(v).initSelectOption({
+                    'source': weekDayArr,
+                    'className': '',
+                    'addDefault': false,
+                    'useSelect2': true,
+                });
+            })
+
+        }
+        function addSchedule($this) {
+            let count = $('.schedule-item').length;
+            if(count>=7){
+                window.layer.msg("最多设置7天",
+               { time: 1000 } )
+                return ;
+            }
+            //var p = $($this).parent().parent();
+            var p =$('.schedule-list').children(':last');
+            var html = scheduleTmp.replace('{{Week}}', '-1')
+                                  .replace('{{BeginTime}}', '')
+                                  .replace('{{EndTime}}', '');
+            $(html).insertAfter(p);
+            initScheduleItem();
+        }
+        function removeSchedule($this) {
+            var p = $($this).parent().parent();
+            p.remove();
+        }
+
+    </script>
+}

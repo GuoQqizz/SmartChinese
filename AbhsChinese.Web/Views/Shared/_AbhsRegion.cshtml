@@ -1,0 +1,105 @@
+﻿
+<style>
+    .select-region .select-region-item{
+        display:inline-block;
+        position: relative;
+        width:@(ViewBag.Width==null?"32%": ViewBag.Width);
+        vertical-align:top;
+    }
+</style>
+
+<div class="@ViewBag.ClassName select-region" style="width:100%;">
+    <div class="select-region-item">
+        <select class="select2 select2-province select2-default" id="provinceSelect" data-target="citySelect" data-target-placeholder="请选择城市" data-loaded="false" data-default-val="@ViewBag.ProvinceId" name="@ViewBag.ProvinceFieldName"></select>
+    </div>
+    <div class="select-region-item">
+        <select class="select2 select2-city select2-default" id="citySelect" data-target="cityCounty" data-target-placeholder="请选择地区"  data-loaded="false" data-default-val="@ViewBag.CityId" name="@ViewBag.CityFieldName"></select>
+    </div>
+    <div class="select-region-item">
+        <select class="select2 select2-county select2-default" id="cityCounty" data-loaded="false" data-default-val="@ViewBag.CountyId" name="@ViewBag.CountyFieldName"></select>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script>
+    //渲染select
+    function renderSelect(options) {
+        options = $.extend(true, {
+            target: null,
+            placeholder: '请选择',
+            width: "@(ViewBag.Width==null?"32%": ViewBag.Width)",
+            allowClear: true,
+            disabled: true,
+            language: "zh-CN",
+            minimumResultsForSearch: Infinity,
+            data: [{ id: '', text: '请选择' }]
+        }, options);
+        //追加bug
+        options.target.html('<option selected="selected"></option>');
+        // width: options.width,
+        options.target.select2({
+            width: '100%',
+            allowClear: options.allowClear,
+            disabled: options.disabled,
+            placeholder: options.placeholder,
+            language: options.language,
+            minimumResultsForSearch: options.minimumResultsForSearch,
+            data: options.data
+        })
+    }
+    //获取select数据
+    function initData(target, parentId, placeholder) {
+        $.ajax({
+            url: "@Url.Action("GetRegion", "Select2")" + "?parentId=" + parentId,
+            type: 'GET',
+            success: function (data) {
+                target.html('<option selected="selected"></option>');
+                renderSelect({
+                    target: target,
+                    disabled: false,
+                    data: data.results,
+                    placeholder: placeholder,
+                })
+                var loaded = target.data('loaded');
+                var defaultVal = target.data("defaultVal");
+                if (!loaded && defaultVal && defaultVal > 0) {
+                    target.val(defaultVal).trigger('change');
+                    target.data("loaded", true);
+                }
+
+            }
+        });
+    }
+    //初始化
+    function initAreaSelect() {
+        initData($('.select2-province'), 0,"请选择省份")
+        renderSelect({
+            target: $('.select2-city'),
+            placeholder: "请选择城市",
+        });
+        renderSelect({
+            target: $('.select2-county'),
+            placeholder: "请选择地区",
+        });
+        $('.select2').on("change", function (e) {
+            //$(this).valid();
+            var id = e.target.dataset['target'];
+            let target = $(`#${id}`);
+            var val = e.target.value;
+            var placeholder = e.target.dataset['targetPlaceholder'];
+            if (id) {
+                if (val == '') {
+                    renderSelect({
+                        target: target,
+                        placeholder: placeholder,
+                    })
+                } else {
+                    initData(target, val, placeholder);
+                }
+                target.val('').trigger('change');//级联触发 修改孙子辈
+            }
+        });
+    }
+    $(function () {
+        initAreaSelect();
+    })
+</script>

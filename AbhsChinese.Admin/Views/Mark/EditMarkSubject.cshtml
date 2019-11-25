@@ -1,0 +1,231 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "题目录入-圈点批注-标色";
+    string controller = "Mark";
+    string action = "EditMarkSubject";
+}
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        @using (Ajax.BeginForm(action, controller, new AjaxOptions
+        {
+            OnComplete = "complete"
+        }, new { id = "form", role = "form" }))
+        {
+            <input type="text" name="nextStatus" value="2" style="display:none;" />
+            <input type="hidden" id="subjectId" name="id" value="@Model" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" checked class="onoffswitch-checkbox"
+                                   name="stemType"
+                                   onchange="changeType(this)"
+                                   value="1"
+                                   id="switch_stemType">
+                            <label class="onoffswitch-label" for="switch_stemType">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">题干</label>
+                <div class="col-11">
+                    <textarea id="name" name="name" style="width:100%;"></textarea>
+                    <input type="hidden" id="plainName" name="plainName" />
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">内容对齐方式</label>
+                <div class="col-11" style="margin-top:8px;">
+                    <label class="lbl-align">
+                        <input style="margin-left:10px" checked type="radio" name="alignment" value="1" />左对齐
+                    </label>
+                    <label class="lbl-align">
+                        <input style="margin-left:10px" type="radio" name="alignment" value="2" />居中对齐
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">内容</label>
+                <div class="col-11">
+                    <textarea name="content" class="form-control rows-5"></textarea>
+                    <span class="form-text m-b-none">请用此格式标注答案：xxxxx{:答案}xxxx."{"、":"、"}"请使用英文符号</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row align-items-center">
+                <label class="col-1 col-form-label text-right required">颜色</label>
+                <div class="col-11">
+                    <label class="lbl-align">
+                        <input type="radio" name="color" value="1" />蓝
+                    </label>
+                    <label class="lbl-align">
+                        <input style="margin-left:10px" type="radio" name="color" value="2" />橙
+                    </label>
+                    <label class="lbl-align">
+                        <input style="margin-left:10px" type="radio" name="color" value="3" />红
+                    </label>
+                    <label class="lbl-align">
+                        <input style="margin-left:10px" type="radio" name="color" value="4" />绿
+                    </label>
+                    <label class="lbl-align">
+                        <input style="margin-left:10px" type="radio" name="color" value="5" />紫
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-11 offset-1">
+                    @Html.Partial("_ValidateMessage", "color")
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">解析</label>
+                <div class="col-11">
+                    <textarea id="explain" name="explain" style="width:100%;"></textarea>
+                </div>
+            </div>
+            @Html.Partial("_SubjectBasic")
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    @*该隐藏域用于记录是想要做保存操作还是提交操作,默认是保存操作*@
+                    <input type="hidden" name="button" value="0" />
+                    <button class="btn btn-white"
+                            type="button" onclick="submitForm(false)">
+                        保存
+                    </button>
+                    <button class="btn btn-primary"
+                            type="button" onclick="submitForm(true)">
+                        提交
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div style="display:none">
+    <textarea id="factory" name="factory"></textarea>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .lbl-align {
+            cursor: pointer;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/common/ueditor.config.subject.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.subjectbasic.js"></script>
+    <script>
+        $(function () {
+            initSelect2();
+            $("#form").validate({
+                onsubmit: false,
+                ignore: "",
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    grade: {
+                        required: true
+                    },
+                    difficulty: {
+                        required: true
+                    },
+                    keywords: {
+                        required: true
+                    },
+                    content: {
+                        required: true
+                    },
+                    color: {
+                        required: true
+                    }
+                }
+            });
+            $.when(initUeditor(dtd)).then(function () {
+                loadData();
+            });
+        });
+
+    </script>
+    <script>
+        function loadData() {
+            if ($('#subjectId').val() !== '0') {
+                $.getJSON('@Url.Action("GetDetails",controller)',
+                           { id: $('#subjectId').val() },
+                           function (response) {
+                               if (response.State) {
+                                   let data = response.Data;
+
+                                   if (data.StemType === 0) {//图片模式
+                                       $('#switch_stemType').click();
+                                   }
+
+                                   ueditorName.ready(function () {
+                                       this.setContent(data.Name);
+                                   });
+                                   $('textarea[name="content"]').val(data.Content);
+                                   $('input:radio[value="' + data.Color + '"]').prop('checked', true);
+
+                                   if (data.Explain) {
+                                       ueditorExplain.setContent(data.Explain);
+                                   }
+
+                                   if (data.Alignment) {
+                                       $(':radio[name="alignment"][value="' + data.Alignment + '"]').prop('checked', true);
+                                   }
+
+                                   setBasicData(data);
+                                   setPlainNameData(data);
+                               }
+                           });
+            } else {
+                initSelectPageComponent();
+            }
+        }
+    </script>
+    <script>
+        function initSelect2() {
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+        }
+        var dtd = $.Deferred(); // 新建一个deferred对象
+        let ueditorExplain = null;
+        let ueditorName = null;
+        function initUeditor() {
+            ueditorName = UE.getEditor('name', ueConfigOfName);
+            ueditorName.ready(function () {
+                $('div#name').find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+                replaceFormat(this);
+                dtd.resolve();
+            });
+
+            ueditorExplain = UE.getEditor('explain', ueConfigOfExplain);
+            return dtd;
+        }
+    </script>
+}

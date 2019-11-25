@@ -1,0 +1,37 @@
+﻿@model List<AbhsChinese.Domain.Dto.Response.Student.DtoOwnCashVoucher>
+
+<div id="OwnCashVoucherViewBox" class="conpoupop">
+    <div class="conpoubjbox">
+        <img src="/Images/StudentInfo/couponbj1.png" />
+    </div>
+    <div class="box">
+        <div class="conputbox1">
+            <div class="ticket">注册现金券</div>
+            <div class="conputcnt">
+                @foreach (var item in Model)
+                {
+                    <div class="itemlist">
+                        <div class="item">
+                            <div class="tit line1">@item.Ycv_Name</div>
+                            <div class="info">@(item.Ycv_ExpireType == 1 ? $"截止日期:{item.Ycv_ExpireDate.ToString("yyyy-MM-dd")}" : item.Ycv_ExpireType == 2 ? $"有效期{item.Ycv_ExpireDayCount}天" : "长期有效")</div>
+                            <div class="money">￥<span>@(Convert.ToInt32(item.Ycv_Amount))</span></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="coubj">
+            <div class="info textcenter">已发送到您的账户</div>
+            <div id="OwnCashVoucherViewBoxCloseBtn" class="bt closeconpou"><span>确定</span></div>
+            <div id="OwnCashVoucherViewBoxCloseImg" class="bt1 closeconpou"><img src="/Images/StudentInfo/closeBtn.png" /></div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            function remove() {
+                document.getElementById("OwnCashVoucherViewBox").remove();
+            }
+            document.getElementById("OwnCashVoucherViewBoxCloseBtn").onclick = document.getElementById("OwnCashVoucherViewBoxCloseImg").onclick = remove;
+        }
+    </script>
+</div>

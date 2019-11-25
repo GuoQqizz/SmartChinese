@@ -1,0 +1,39 @@
+﻿@using AbhsChinese.Web.Models.StudentInfo
+@using AbhsChinese.Domain.Enum
+@{
+    LoginInfo student = LoginStudent.GetCustomerUser();
+}
+<div class="contentleft fl">
+    <div class="contl">
+        <div class="sculpture">
+            @{
+                if (string.IsNullOrEmpty(student.Avatar))
+                {
+                    if (student.Sex == (int)SexEnum.男)
+                    {
+                        <img src="/Images/StudentInfo/u396.png" />
+                    }
+                    else
+                    {
+                        <img src="/Images/StudentInfo/portrait.png" />
+                    }
+                }
+                else
+                {
+                    <img src="@student.Avatar" />
+                }
+            }
+            @*<img src="@(string.IsNullOrEmpty(ViewBag.Avatar)?"/Images/StudentInfo/portrait.png":ViewBag.Avatar)" />*@
+            <div class="username">
+                <span>书童</span>
+            </div>
+        </div>
+        <div class="leftnav">
+            <a href="@Url.Action("StudentInfo","Student")" @(ViewBag.Active== StudentMenus.个人信息 ? "class=active":"")><img class="img1" src="~/Images/StudentInfo/user_1.png"><img class="img2" src="~/Images/StudentInfo/user.png"><span>个人信息</span></a>
+            <a href="@Url.Action("OwnCashVoucherList", "OwnCashVoucher")" @(ViewBag.Active == StudentMenus.我的现金券 ? "class=active":"")><img class="img1" src="~/Images/StudentInfo/quan1.png"><img class="img2" src="~/Images/StudentInfo/quan.png"><span>我的现金券</span></a>
+            <a href="@Url.Action("OwnOrderList", "OwnOrder")" @(ViewBag.Active == StudentMenus.我的订单 ? "class=active":"")><img class="img1" src="~/Images/StudentInfo/dingdan1.png"><img class="img2" src="~/Images/StudentInfo/dingdan.png"><span>我的订单</span></a>
+            <a href="#" @(ViewBag.Active == StudentMenus.我的佣金 ? "class=active":"") style="display:none;"><img class="img1" src="~/Images/StudentInfo/yongjin1.png"><img class="img2" src="~/Images/StudentInfo/yongjin.png"><span>我的佣金</span></a>
+            <a href="@Url.Action("Index","SecurityCenter")" @(ViewBag.Active == StudentMenus.安全中心 ? "class=active":"")><img class="img1" src="~/Images/StudentInfo/anquan1.png"><img class="img2" src="~/Images/StudentInfo/anquan.png"><span>安全中心</span></a>
+        </div>
+    </div>
+</div>

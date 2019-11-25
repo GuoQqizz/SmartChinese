@@ -1,0 +1,32 @@
+﻿<form role="form" class="form-inline search-form" id="form_search">
+    <!--用于放动态添加进来的搜索条件-->
+    <div name="div_attached">
+        <input type="hidden" name="status" value="1" />
+        <input type="hidden" name="status" value="2" />
+        <input type="hidden" name="status" value="3" />
+        <input type="hidden" name="status" value="4" />
+        <input type="hidden" name="status" value="5" />
+    </div>
+    <div class="form-group">
+        <input type="text" name="id" placeholder="请输入编号" class="form-control">
+    </div>
+    <div class="form-group">
+        <input type="text" name="name" placeholder="请输入名称" class="form-control">
+    </div>
+    <div class="form-group">
+        <input type="text" name="ownerName" placeholder="请输入负责人" class="form-control">
+    </div>
+    <div class="form-group">
+        <select class="select2 normal" data-ajax--url="@Url.Action("GetCurriculumCategaries","Select2")"
+                data-ajax--cache="true"
+                data-placeholder="请选择类型" data-allow-clear="true"
+                name="courseType"></select>
+    </div>
+    <div class="form-group">
+        <select class="select2 normal" data-ajax--url="@Url.Action("GetGrades","Select2")"
+                data-ajax--cache="true"
+                data-placeholder="请选择年级" data-allow-clear="true"
+                name="grade"></select>
+    </div>
+    <button class="btn btn-white search" type="button">搜索</button>
+</form>

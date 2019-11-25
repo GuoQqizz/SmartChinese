@@ -1,0 +1,355 @@
+﻿@using AbhsChinese.Code.Common;
+@using AbhsChinese.Admin.Models.Employee
+@model EmployeeViewModel
+
+@{
+    ViewBag.PageTitle = "教师管理";
+    ViewBag.ListTitle = Model != null && Model.Id > 0 ? "编辑教师" : "添加教师";
+}
+@section Styles {
+
+    @Styles.Render("~/bundles/css/iCheckStyles")
+    <style type="text/css">
+        .icheckbox_square-green {
+            margin-right: 5px;
+        }
+
+        .input-grade {
+            display: inline-block;
+        }
+
+            .input-grade label {
+                cursor: pointer;
+            }
+
+        .input-grade, #gradeCheckBox {
+            padding-left: 7px;
+        }
+
+        #gradeCheckBox {
+            margin-bottom: 10px;
+        }
+
+            #gradeCheckBox label.error {
+                width: 200px;
+                margin-top: 85px;
+                margin-left: 20px;
+            }
+
+        .ibox {
+            position: relative;
+        }
+
+        .ibox-content {
+            min-height: 730px;
+        }
+
+        .control-group {
+            /*position: absolute;
+            width: 100%;
+            bottom: 20px;*/
+        }
+    </style>
+}
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <div class="ibox-title">
+                    <h5>
+                        @ViewBag.ListTitle
+                    </h5>
+                    <div class="ibox-tools">
+                        <div class="col">
+                            <button type="button" class="btn btn-white" id="btnBack"><i class="fa fa-chevron-left"></i>&nbsp;返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <form id="employee_Form" method="post">
+            <input type="text" id="hiddentexta" style="visibility:hidden;position:absolute;z-index:-999" />
+            <input type="password" id="hiddenpassworda" style="visibility:hidden;position:absolute;z-index:-999" />
+            <input type="hidden" name="Id" id="Bem_Id" class="form-control" value="@(Model != null ? Model.Id : 0)" />
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">账号: </label>
+                <div class="col-4">
+                    <input type="text" name="Account" class="form-control no-space-input no-autocomplete" id="iptAccount" value="@(Model != null ? Model.Account : string.Empty)" required @(Model != null && Model.Id > 0 ? "readonly='readonly'" : "") maxlength="20" />
+                </div>
+
+                <label class="col-form-label col-1 text-right @(Model != null && Model.Id > 0 ? "":"required")">密码:</label>
+                <div class="col-4">
+                    <input type="text" onfocus="this.type='password'" name="Password" class="form-control no-space-input no-space-input no-autocomplete" maxlength="20" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">姓名:</label>
+                <div class="col-4">
+                    <input type="text" name="Name" class="form-control no-space-input" value="@(Model != null ? Model.Name : string.Empty)" required maxlength="10" />
+                </div>
+                <label class="col-form-label col-1 text-right required">性别:</label>
+                <div class="col-4">
+                    <select class="form-control m-b sex-select" name="Sex" required></select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">电话:</label>
+                <div class="col-4">
+                    <input type="tel" name="Phone" class="form-control no-space-input" value="@(Model != null ? Model.Phone : string.Empty)" required maxlength="11" />
+                </div>
+                <label class="col-form-label col-1 text-right">邮箱:</label>
+                <div class="col-4">
+                    <input type="text" name="Email" class="form-control no-space-input" value="@(Model != null ? Model.Email : string.Empty)" email maxlength="50" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">角色:</label>
+                <div class="col-4">
+                    <select class="form-control m-b" name="Roles" required>
+                        <option value="">选择角色</option>
+                        @{
+                            foreach (var kv in Model.RuleSource)
+                            {
+                                if (Model != null && Model.Roles == kv.key)
+                                {
+                                    <option value="@kv.key" selected="selected">@kv.value</option>
+                                }
+                                else
+                                {
+                                    <option value="@kv.key">@kv.value</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </div>
+                <label class="col-form-label col-1 text-right required">状态:</label>
+                <div class="col-4">
+                    <select class="form-control m-b status-select" name="Status" required></select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right required">选择年级:</label>
+                <div id="gradeCheckBox" class="col-9">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2 text-right">备注:</label>
+                <div class="col-9">
+                    <textarea class="form-control text " name="Remark" style="height:120px" maxlength="200">@(Model != null ? Model.Remark : string.Empty)</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row control-group pr-3">
+                <div class="col-12   text-center ">
+                    <button class="btn btn-default " type="button" id="btnCancle">取消</button>
+                    <button class="btn btn-primary ml-2 " type="button" id="btnSure">确认</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/js/icheck")
+    @*@Scripts.Render("~/bundles/js/const/index")*@
+    @Scripts.Render("~/bundles/js/htmlhelper")
+    <script type="text/javascript">
+
+        $.validator.addMethod("validAccount", function (value) {
+            var returnVal = false;
+            var empId = @(Model==null?0:Model.Id);
+            if (empId>0){
+                return true;
+            }
+            if (value != '') {
+                $.ajax({
+                    url: '@Url.Action("CheckUniqueAccount", "Employee")',
+                    data:{ "accont": value },
+                    type: "POST",
+                    async : false,
+                    success: function (data) {
+                        returnVal = data.State ;
+                    },
+                    error: function (xhr) {
+                        returnVal=false;
+                    }
+                });
+            }
+            return returnVal;
+        }, '该账号已经被占用');
+
+
+
+
+        $(function () {
+            setMinHeight('ibox-content');
+            $("#employee_Form").validate({
+                rules: {
+                    Account: {
+                        required: true,
+                        noZhCn:true,
+                        validAccount:true,
+                        maxlength: 20
+                    },
+                    Password: {
+                        required: @(Model!=null&&Model.Id>0? "false" : "true"),
+                        maxlength: 20,
+                        minlength:6,
+                    },
+                    Name: {
+                        required: true,
+                        maxlength: 10
+                    },
+                    Sex: {
+                        required: true,
+                        min:1
+                    },
+                    Phone: {
+                        required: true,
+                        isMobile: true
+                    },
+                    Roles: {
+                        required: true,
+                    },
+                    Status: {
+                        required: true,
+                        min:1
+                    },
+                    Email: {
+                        email: true
+                    },
+                    Grades:{
+                        required:true,
+                        min:1
+                    }
+                },
+                messages: {
+                    Account: {
+                        required: "请输入账号",
+                        noZhCn:'账号不能包含汉字',
+                        maxlength: "长度不能大于20个字符"
+                    },
+                    Password: {
+                        required: "请输入密码",
+                        maxlength: "长度不能大于20个字符",
+                    },
+                    Name: {
+                        required: "请输入姓名",
+                        maxlength: "长度不能大于10个字符"
+                    },
+                    Sex: {
+                        required: "请选择性别",
+                        min:"请选择性别"
+                    },
+                    Phone: {
+                        required: "请输入电话",
+                        isMobile: "请输入正确电话格式"
+                    },
+                    Roles: {
+                        required: "请选择角色",
+                        min:"请选择角色"
+                    },
+                    Status: {
+                        required: "请选择状态",
+                        min:"请选择状态"
+                    },
+                    Email: {
+                        email: "请输入正确邮箱格式"
+                    },
+                    Grades:{
+                        required: "请选择年级",
+                        min:"请选择年级"
+                    }
+                },
+                submitHandler: throttle(function(form){
+                    ajaxSumbit();
+                },1000)
+            });
+            $("#btnSure").click(throttle(function(){
+                ajaxSumbit();
+            },1000));
+            $("#btnBack").on("click", function () {
+                window.location.href = "@Url.Action("Index", "Employee")";
+            });
+            $("#btnCancle").on("click", function () {
+                window.location.href = "/Employee/Index";
+            });
+
+
+            //select checked 渲染
+            var totalGrades = @(Model==null?0:Model.TotalGrades);
+            let selectedGrades = [];
+            gradeSourceArr.map(function(s){
+                if((s.key&totalGrades)==s.key){
+                    selectedGrades.push(s.key);
+                }
+            })
+            $('#gradeCheckBox').initICheck({
+                'source': gradeSourceArr,
+                'selected': selectedGrades,
+                'name': 'Grades',
+                'className': 'input-grade col-3',
+            })
+            var sex = @(Model==null?-1:Model.Sex);
+            $('.sex-select').initSelectOption({
+                'source': sexSourceArr,
+                'selected': sex ,
+                'className': '',
+            });
+            var status = @(Model==null?-1:Model.Status);
+            $('.status-select').initSelectOption({
+                'source': statusSourceArr,
+                'selected': status ,
+                'className': '',
+            });
+        });
+
+        let saveing = false;
+        function ajaxSumbit() {
+            if(saveing) return false;
+            saveing=true;
+            if (!$("#employee_Form").valid()) {
+                saveing=false;
+                return false;
+            }
+            $.ajax({
+                url: '/Employee/AddOrUpdateEmployee',
+                type: 'post',
+                datatype: 'json',
+                data: $("#employee_Form").serialize(),
+                success: function (data) {
+                    saveing=false;
+                    if(data.State){
+                        window.layer.msg(data.ErrorMsg,
+                            { time: 500 },
+                            function () {
+                                window.layer.closeAll();
+                                window.location.href='@Url.Action("Index", "Employee")';
+                            });
+                    }else{
+                        window.layer.alert(data.ErrorMsg,
+                           { icon: 2 },
+                           function () {  window.layer.closeAll(); });
+                    }
+
+                },
+                error:function(err){
+                    saveing=false;
+                    console.log(err);
+                    window.layer.alert("异常，请重试",
+                        { icon: 2 },
+                        function () {  window.layer.closeAll(); });
+                }
+            })
+        }
+
+    </script>
+}

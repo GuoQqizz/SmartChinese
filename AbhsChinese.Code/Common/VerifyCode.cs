@@ -1,0 +1,88 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AbhsChinese.Code.Common
+{
+    public static class VerifyCode
+    {
+        public const string VerifyCookieName = "abhs_verifycode";
+        public static byte[] GetVerifyCode()
+        {
+            int codeW = 80;
+            int codeH = 30;
+            int fontSize = 16;
+            string chkCode = string.Empty;
+            //颜色列表，用于验证码、噪线、噪点 
+            Color[] color = { Color.Black, Color.Red, Color.Blue, Color.Green, Color.Orange, Color.Brown,Color.DarkBlue };
+            //字体列表，用于验证码 
+            string[] font = { "Times New Roman","MS Mincho", "Book Antiqua", "Gungsuh", "PMingLiU", "Impact" };
+            //验证码的字符集
+            char[] character = { '0','1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b','c', 'd', 'e', 'f','g', 'h','i','j', 'k','l', 'm', 'n','o','p','q','r','s','t','u','v','w', 'x', 'y','z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I', 'J', 'K', 'L', 'M', 'N','O', 'P','Q','R', 'S', 'T','U','V', 'W', 'X', 'Y','Z' };
+            Random rnd = new Random();
+            //生成验证码字符串 
+            for (int i = 0; i < 4; i++)
+            {
+                chkCode += character[rnd.Next(character.Length)];
+            }
+            //写入Session、验证码加密
+            //WebHelper.WriteSession("abhs_session_verifycode", Encrypt.MD5(chkCode.ToLower()));
+            WebHelper.WriteCookie(VerifyCookieName, Encrypt.MD5(chkCode.ToLower()));
+            //创建画布
+            Bitmap bmp = new Bitmap(codeW, codeH);
+            Graphics g = Graphics.FromImage(bmp);
+            g.Clear(Color.White);
+            //画噪线 
+            for (int i = 0; i < 5; i++)
+            {
+                int x1 = rnd.Next(codeW);
+                int y1 = rnd.Next(codeH);
+                int x2 = rnd.Next(codeW);
+                int y2 = rnd.Next(codeH);
+                Color clr = color[rnd.Next(color.Length)];
+                g.DrawLine(new Pen(clr), x1, y1, x2, y2);
+            }
+            //画验证码字符串 
+            for (int i = 0; i < chkCode.Length; i++)
+            {
+                string fnt = font[rnd.Next(font.Length)];
+                Font ft = new Font(fnt, fontSize);
+                Color clr = color[rnd.Next(color.Length)];
+                g.DrawString(chkCode[i].ToString(), ft, new SolidBrush(clr), (float)i * 18, (float)0);
+            }
+            //将验证码图片写入内存流，并将其以 "image/Png" 格式输出 
+            MemoryStream ms = new MemoryStream();
+            try
+            {
+                bmp.Save(ms, ImageFormat.Png);
+                return ms.ToArray();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                g.Dispose();
+                bmp.Dispose();
+            }
+        }
+
+        public static bool Check(string verifyCode)
+        {
+            if (WebHelper.GetCookie(VerifyCookieName) != Encrypt.MD5(verifyCode.ToLower()))
+            {
+                WebHelper.RemoveCookie(VerifyCookieName);
+                return false;
+            }
+            WebHelper.RemoveCookie(VerifyCookieName);
+            return true;
+        }
+    }
+}

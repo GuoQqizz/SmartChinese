@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "StudentInfoEdit";
+    Layout = null;
+}
+
+<link href="~/Content/cropper/cropper.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Content/cropper/cropper.min.js"></script>
+<script src="~/Content/cropper/cropper.patch.js"></script>
+<!-- 用一个块元素(容器)包装图像或画布元素 -->
+<div class="box" style="width:500px;height:500px;">
+    <img id="image" src="~/Content/cropper/p3.jpg" />
+    @*<img id="image" src="~/Content/cropper/6.png" />*@
+</div>
+<div class="small" style="width:161.8px;height:100px; overflow:hidden;">
+
+</div>
+<input type="file" accept="image/*" name="file" id="inputImage">
+<label title="Donload image" id="download" class="btn btn-primary">Download</label>
+<div class="btn-group">
+    <button class="btn btn-white" id="zoomIn" type="button">+</button>
+    <button class="btn btn-white" id="zoomOut" type="button">-</button>
+    <button class="btn btn-white" id="rotateLeft" type="button">向左旋转</button>
+    <button class="btn btn-white" id="rotateRight" type="button">向右旋转</button>
+    <button class="btn btn-warning" id="setDrag" type="button">新的切片</button>
+</div>
+<script>
+    $(function () {
+
+
+        var $image = $("#image")
+        $($image).cropper({
+            aspectRatio: 1.618,
+            //aspectRatio: 16 / 9,
+            preview: ".small",
+            //done: function (data) {
+            //    // Output the result data for cropping image.
+            //}
+            // modal:false,
+            //zoomOnWheel:false,
+            viewModel:2,
+            crop:function(e)
+            {
+                console.log(e);
+            }
+        });
+
+
+
+        var $inputImage = $("#inputImage");
+        if (window.FileReader) {
+            $inputImage.change(function () {
+                var fileReader = new FileReader(),
+                        files = this.files,
+                        file;
+
+                if (!files.length) {
+                    return;
+                }
+                file = files[0];
+
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function () {
+                        $inputImage.val("");
+                        $image.cropper("reset", true).cropper("replace", this.result);
+                    };
+                } else {
+                    showMessage("Please choose an image file.");
+                }
+            });
+        } else {
+            $inputImage.addClass("hide");
+        }
+
+        $("#download").click(function () {
+            var url = $image.cropper("getDataURL");
+            console.log(url);
+            //window.open($image.cropper("getDataURL"));
+        });
+
+        $("#zoomIn").click(function () {
+            $image.cropper("zoom", 0.1);
+        });
+
+        $("#zoomOut").click(function () {
+            $image.cropper("zoom", -0.1);
+        });
+
+        $("#rotateLeft").click(function () {
+            $image.cropper("rotate", 45);
+        });
+
+        $("#rotateRight").click(function () {
+            $image.cropper("rotate", -45);
+        });
+
+        $("#setDrag").click(function () {
+            $image.cropper("setDragMode", "crop");
+        });
+    })
+</script>

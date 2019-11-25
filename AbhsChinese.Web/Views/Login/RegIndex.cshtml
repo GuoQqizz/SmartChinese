@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "学生注册";
+}
+
+@section Styles{
+    <link href="~/Content/layer/theme/default/layer.css" rel="stylesheet" />
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .loginpage .loginbox {
+            padding-top:7%;
+        }
+        body {
+            background-image: url(../../Images/StudentInfo/loginbj.jpg);
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: 100% auto;
+            background-color: #f6f7f9;
+        }
+        .register_act,.feachBtn {
+            cursor:pointer;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Content/layer/layer.js"></script>
+    @Scripts.Render("~/bundles/register")
+}
+
+<div class="loginpage">
+    <div class="loginbox loginboxsp">
+        <div class="logintopboxt"><img src="~/Images/StudentInfo/loginpagetop.png" /></div>
+        <div class="logintopboxc">
+            <div class="logo"><img src="~/Images/StudentInfo/logo1.png" /></div>
+            <div class="logintext">注册</div>
+            <div class="logininp">
+                <input class="namevalue checkempty hideerror" lth="0" maxlength="20" max="20" min="0" type="text" placeholder="请输入孩子的姓名" />
+                <div class="successtip"><img src="~/Images/StudentInfo/successmsg.png" /></div>
+            </div>
+            <div class="errormsg">
+                <div class="errortext"><img src="~/Images/StudentInfo/error.png" />姓名不能为空</div>
+            </div>
+            <div class="logininp">
+                <select required name="cars" class="selectempty classvalue hideerrorselect">
+                    <option value="" disabled selected>请选择孩子的年级</option>
+                    <option value="1">一年级</option>
+                    <option value="2">二年级</option>
+                    <option value="4">三年级</option>
+                    <option value="8">四年级</option>
+                    <option value="16">五年级</option>
+                    <option value="32">六年级</option>
+                    <option value="64">初一</option>
+                    <option value="128">初二</option>
+                    <option value="256">初三</option>
+                    <option value="512">高一</option>
+                    <option value="1024">高二</option>
+                    <option value="2048">高三</option>
+                </select>
+                <div class="successtip"><img src="~/Images/StudentInfo/successmsg.png" /></div>
+                <img class="selectimg" src="~/Images/StudentInfo/select.png" />
+            </div>
+            <div class="errormsg">
+                <div class="errortext"><img src="~/Images/StudentInfo/error.png" />请选择您孩子的年级</div>
+            </div>
+            <div class="logininp">
+                <input class="mobilevalue checkmobile hideerror" type="text" placeholder="请输入手机号码" maxlength="11"/>
+                <div class="successtip"><img src="~/Images/StudentInfo/successmsg.png" /></div>
+            </div>
+            <div class="errormsg">
+                <div class="errortext"><img src="~/Images/StudentInfo/error.png" /> <span>请输入正确的手机号码</span></div>
+            </div>
+            <div class="logininp">
+                <span status="1" class="feachBtn">发送验证码</span>
+                <input class="codevalue checkempty hideerror" max="4" maxlength="4" min="1" lth="4" type="text" placeholder="请输入短信验证码" />
+                <div class="successtip"><img src="~/Images/StudentInfo/successmsg.png" /></div>
+            </div>
+            <div class="errormsg">
+                <div class="errortext"><img src="~/Images/StudentInfo/error.png" /> <span>请输入验证码</span></div>
+            </div>
+            <div class="logininp">
+                <input class="checkempty passwordvalue hideerror" lth="0" maxlength="20" max="30" min="6" type="password" placeholder="请输入密码,至少包含6位字符" />
+                <div class="successtip"><img src="~/Images/StudentInfo/successmsg.png" /></div>
+            </div>
+            <div class="errormsg">
+                <div class="errortext"><img src="~/Images/StudentInfo/error.png" />请输入密码,至少包含6位字符</div>
+            </div>
+            <div class="logininp">
+                <input class="passwordvalue1" lth="0" maxlength="20" max="30" min="5" type="password" placeholder="请再次输入密码" />
+                <div class="successtip"><img src="~/Images/StudentInfo/successmsg.png" /></div>
+            </div>
+            <div class="errormsg">
+                <div class="errortext"><img src="~/Images/StudentInfo/error.png" />两次密码输入不一致</div>
+            </div>
+            <div class="textinfo">点击注册表示你已阅读并同<a href="#">《橙同学大语文用户协议》</a></div>
+            <div class="loginbtn"><button type="button" class="register_act">注册</button></div>
+            <div class="textinfo textinfo1">已有账号<a href="/Login/LoginIndex">&nbsp;请登录></a></div>
+        </div>
+        <div class="logintopboxb"><img src="~/Images/StudentInfo/loginpagebottom.png" /></div>
+    </div>
+</div>
+<div class="codewindow" style="display: none;">
+    <div class="showwindow"></div>
+    <div class="showwindowcontent">
+        <div class="box">
+            <div class="boxc">
+                <div class="closepaydepop">
+                    <img class="closepaydepopimg" src="~/Images/StudentInfo/c1.png" />
+                </div>
+                <div class="textiinfo textcenter">信息验证</div>
+                <div class="codepop"><input placeholder="请输入验证码" type="text" id="txt_Code" /></div>
+                <div class="codepop1"><img id="imgcode" src="https://apply.bjhjyd.gov.cn/apply/validCodeImage.html?ee=1" /><a id="switchCode" href="javascript:void(0);">看不清,换一张</a></div>
+                <div class="codeerror" style="display:none;"><img src="~/Images/StudentInfo/error.png" /><span>验证码错误</span></div>
+                <div class="btn"><button type="button" class="codepopsub">确定</button></div>
+            </div>
+        </div>
+    </div>
+</div>

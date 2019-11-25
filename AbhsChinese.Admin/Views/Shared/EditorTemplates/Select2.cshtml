@@ -1,0 +1,13 @@
+﻿@model AbhsChinese.Admin.Models.Common.Select2
+<select name="@Html.NameFor(m => m.Values)"
+        class="select2"
+        data-ajax--url="@Url.Action(Model.Action, Model.Controller)"
+        data-ajax--cache="true"
+        data-placeholder="@Model.Placeholder" data-allow-clear="true"
+        @Model.Multiple>
+    <option></option>
+    @if (Model.Values != null && Model.Values.Count == 1)
+    {
+        <option value="@Model.Values[0]" selected>123</option>
+    }
+</select>

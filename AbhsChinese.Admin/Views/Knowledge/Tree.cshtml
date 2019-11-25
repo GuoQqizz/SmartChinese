@@ -1,0 +1,53 @@
+﻿@using AbhsChinese.Admin.Models.Knowledge
+@model KnowledgeTree
+@{
+    ViewBag.PageTitle = "知识树";
+    Layout = null;
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-treeview/zTreeStyle.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Content/bootstrap-treeview/jquery.ztree.all-3.5.js"></script>
+<input type="hidden" value="@Model.Id" id="Id" />
+<input type="hidden" value="@Model.ParentId" id="ParentId" />
+<input type="hidden" value="@Model.ChildId" id="ChildId" />
+
+<div style="margin:10px 10px;">
+    <ul id="treeDemo" class="ztree"></ul>
+</div>
+
+
+<script>
+    let nodeId = 0;
+    var zTreeObj;
+    var setting = {};
+     var zNodes = [
+        {name:"test1", open:true, children:[
+      {name:"test1_1"}, {name:"test1_2"}]},
+        {name:"test2", open:true, children:[
+      {name:"test2_1"}, {name:"test2_2"}]}
+        ];
+    $(function () {
+        //var tree = null;
+        //$.ajax({
+        //    url: '/Knowledge/GetKnowledgeTree?Id=' + $("#Id").val() + '&ParentId=' + $("#ParentId").val() + '&ChildId=' + $("#ChildId").val(),
+        //    type: 'get',
+        //    dataType: 'json',
+        //    success: function (obj) {
+        //        tree = obj.Data;
+        //        $('#tree').treeview({
+        //            data: tree,//节点数据
+        //            levels: 4,
+        //            highlightSearchResults: false,
+        //            onNodeSelected: function (event, node) {
+        //                nodeId = node.nodeId;
+        //                GetChild(node.Id, node.nodeId);
+        //            }
+        //        });
+        //        debugger
+        //        $('#tree').treeview('selectNode', [nodeId, { silent: true }]);
+        //    }
+        //});
+        zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    });
+</script>

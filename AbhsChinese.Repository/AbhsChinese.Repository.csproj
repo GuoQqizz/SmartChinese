@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AbhsChinese.Repository</RootNamespace>
+    <AssemblyName>AbhsChinese.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppSetting.cs" />
+    <Compile Include="Dapprt\SqlMapperExtensions.cs" />
+    <Compile Include="IRepository\ICashVoucherIndexRepository.cs" />
+    <Compile Include="IRepository\ICourseIntroductionRespository.cs" />
+    <Compile Include="IRepository\ICourseLessonProcessRepository.cs" />
+    <Compile Include="IRepository\ICourseLessonRepository.cs" />
+    <Compile Include="IRepository\ICourseLessonUnitProcessRepository.cs" />
+    <Compile Include="IRepository\ICourseLessonUnitRepository.cs" />
+    <Compile Include="IRepository\ICoursePriceAuditRepository.cs" />
+    <Compile Include="IRepository\ICoursePriceRepository.cs" />
+    <Compile Include="IRepository\ICourseProcessRepository.cs" />
+    <Compile Include="IRepository\ICourseSubjectRelRepository.cs" />
+    <Compile Include="IRepository\ILessonUnitStepRepository.cs" />
+    <Compile Include="IRepository\ICourseRespository.cs" />
+    <Compile Include="IRepository\IMediaObjectRepository.cs" />
+    <Compile Include="IRepository\IPayLogRepository.cs" />
+    <Compile Include="IRepository\IReadRecordRepository.cs" />
+    <Compile Include="IRepository\IRegionRepository.cs" />
+    <Compile Include="IRepository\IStuCoinTranRepository.cs" />
+    <Compile Include="IRepository\IStudentCashVoucherRepository.cs" />
+    <Compile Include="IRepository\ICashVoucherRepository.cs" />
+    <Compile Include="IRepository\IAdvertisingPosRepository.cs" />
+    <Compile Include="IRepository\IAdvertisingRepository.cs" />
+    <Compile Include="IRepository\IEmployeeRepository.cs" />
+    <Compile Include="IRepository\IEmployeeRoleRepository.cs" />
+    <Compile Include="IRepository\IKnowledgeIndexRepository.cs" />
+    <Compile Include="IRepository\IResourceGroupItemRepository.cs" />
+    <Compile Include="IRepository\IKnowledgeRepository.cs" />
+    <Compile Include="IRepository\IResourceIndexRepository.cs" />
+    <Compile Include="IRepository\IMediaResourceRepository.cs" />
+    <Compile Include="IRepository\IRoleRepository.cs" />
+    <Compile Include="IRepository\IStudentCourseProgressRepository.cs" />
+    <Compile Include="IRepository\ISumStudyFactDailyRepository.cs" />
+    <Compile Include="IRepository\IStudentGetCashVoucherRepository.cs" />
+    <Compile Include="IRepository\IStudentOrderPayRepository.cs" />
+    <Compile Include="IRepository\IStudentOrderRepository.cs" />
+    <Compile Include="IRepository\IStudentLoginRepository.cs" />
+    <Compile Include="IRepository\IStudentPassportRepository.cs" />
+    <Compile Include="IRepository\IStudentRepository.cs" />
+    <Compile Include="IRepository\IStudentTaskRepository.cs" />
+    <Compile Include="IRepository\IStudentWrongSubjectRepository.cs" />
+    <Compile Include="IRepository\IStudyTaskRepository.cs" />
+    <Compile Include="IRepository\IStuLesProgressRepository.cs" />
+    <Compile Include="IRepository\IStuLessonAnsRepository.cs" />
+    <Compile Include="IRepository\IStuStudyTaskAnsRepository.cs" />
+    <Compile Include="IRepository\ISubjectContentRepository.cs" />
+    <Compile Include="IRepository\ISubjectGroupRepository.cs" />
+    <Compile Include="IRepository\ISubjectIndexRepository.cs" />
+    <Compile Include="IRepository\ISubjectKnowledgeRepository.cs" />
+    <Compile Include="IRepository\ISubjectProcessRepository.cs" />
+    <Compile Include="IRepository\ISubjectRepository.cs" />
+    <Compile Include="IRepository\ISumStudyFactDateCycleRepository.cs" />
+    <Compile Include="IRepository\ISumStudentRepository.cs" />
+    <Compile Include="IRepository\ITextObjectRepository.cs" />
+    <Compile Include="IRepository\ITextResourceRepository.cs" />
+    <Compile Include="IRepository\IResourceGroupRepository.cs" />
+    <Compile Include="IRepository\ISumAssessmentDetailRepository.cs" />
+    <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="IRepository\IProductCategoryRepository.cs" />
+    <Compile Include="IRepository\IProductRepository.cs" />
+    <Compile Include="IRepository\ITableRepository.cs" />
+    <Compile Include="IRepository\IStudentWrongBookRepository.cs" />
+    <Compile Include="IRepository\School\ISchoolClassRepository.cs" />
+    <Compile Include="IRepository\School\ISchoolClassScheduleRepository.cs" />
+    <Compile Include="IRepository\School\ISchoolTeacherRepository.cs" />
+    <Compile Include="IRepository\IStudentApplySchoolRepository.cs" />
+    <Compile Include="IRepository\School\ISchoolLevelRepository.cs" />
+    <Compile Include="IRepository\School\ISchoolRepository.cs" />
+    <Compile Include="IRepository\IStuRecSubjectRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryCache.cs" />
+    <Compile Include="Repository\CashVoucherIndexRepository.cs" />
+    <Compile Include="Repository\CourseIntroductionRespository.cs" />
+    <Compile Include="Repository\CourseLessonProcessRepository.cs" />
+    <Compile Include="Repository\CourseLessonRepository.cs" />
+    <Compile Include="Repository\CourseLessonUnitProcessRepository.cs" />
+    <Compile Include="Repository\CourseLessonUnitRepository.cs" />
+    <Compile Include="Repository\AdvertisingPosRepository.cs" />
+    <Compile Include="Repository\AdvertisingRepository.cs" />
+    <Compile Include="Repository\CoursePriceAuditRepository.cs" />
+    <Compile Include="Repository\CoursePriceRepository.cs" />
+    <Compile Include="Repository\CourseProcessRepository.cs" />
+    <Compile Include="Repository\CourseRepository.cs" />
+    <Compile Include="Repository\CourseSubjectRelRepository.cs" />
+    <Compile Include="Repository\EmployeeRepository.cs" />
+    <Compile Include="Repository\EmployeeRoleRepository.cs" />
+    <Compile Include="Repository\KnowledgeIndexRepository.cs" />
+    <Compile Include="Repository\KnowledgeRepository.cs" />
+    <Compile Include="Repository\LessonUnitStepRepository.cs" />
+    <Compile Include="Repository\MediaObjectRepository.cs" />
+    <Compile Include="Repository\PayLogRepository.cs" />
+    <Compile Include="Repository\ReadRecordRepository.cs" />
+    <Compile Include="Repository\RegionRepository.cs" />
+    <Compile Include="Repository\ResourceGroupItemRepository.cs" />
+    <Compile Include="Repository\ResourceGroupRepository.cs" />
+    <Compile Include="Repository\RoleRepository.cs" />
+    <Compile Include="Repository\CashVoucherRepository.cs" />
+    <Compile Include="Repository\StuCoinTranRepository.cs" />
+    <Compile Include="Repository\StudentApplySchoolRepository.cs" />
+    <Compile Include="Repository\School\SchoolClassRepository.cs" />
+    <Compile Include="Repository\School\SchoolClassScheduleRepository.cs" />
+    <Compile Include="Repository\School\SchoolLevelRepository.cs" />
+    <Compile Include="Repository\School\SchoolTeacherRepository.cs" />
+    <Compile Include="Repository\School\SchoolRepository.cs" />
+    <Compile Include="Repository\StudentCashVoucherRepository.cs" />
+    <Compile Include="Repository\StudentCourseProgressRepository.cs" />
+    <Compile Include="Repository\SumStudyFactDailyRepository.cs" />
+    <Compile Include="Repository\StudentGetCashVoucherRepository.cs" />
+    <Compile Include="Repository\StudentOrderPayRepository.cs" />
+    <Compile Include="Repository\StudentOrderRepository.cs" />
+    <Compile Include="Repository\StudentLoginRepository.cs" />
+    <Compile Include="Repository\StudentPassportRepository.cs" />
+    <Compile Include="Repository\StudentRepository.cs" />
+    <Compile Include="Repository\StudentWrongSubjectRepository.cs" />
+    <Compile Include="Repository\StuLesProgressRepository.cs" />
+    <Compile Include="Repository\StuLessonAnsRepository.cs" />
+    <Compile Include="Repository\StuRecSubjectRepository.cs" />
+    <Compile Include="Repository\StuStudyTaskAnsRepository.cs" />
+    <Compile Include="Repository\StudentTaskRepository.cs" />
+    <Compile Include="Repository\StudyTaskRepository.cs" />
+    <Compile Include="Repository\SubjectContentRepository.cs" />
+    <Compile Include="Repository\ResourceIndexRepository.cs" />
+    <Compile Include="Repository\SubjectGroupRepository.cs" />
+    <Compile Include="Repository\SubjectIndexRepository.cs" />
+    <Compile Include="Repository\SubjectProcessRepository.cs" />
+    <Compile Include="Repository\SubjectKnowledgeRepository.cs" />
+    <Compile Include="Repository\SubjectRepository.cs" />
+    <Compile Include="Repository\SumAssessmentDetailRepository.cs" />
+    <Compile Include="Repository\MediaResourceRepository.cs" />
+    <Compile Include="Repository\SumStudyFactDateCycleRepository.cs" />
+    <Compile Include="Repository\SumStudentRepository.cs" />
+    <Compile Include="Repository\TextObjectRepository.cs" />
+    <Compile Include="Repository\TextResourceRepository.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="Repository\ProductCategoryRepository.cs" />
+    <Compile Include="Repository\ProductRepository.cs" />
+    <Compile Include="RepositoryBase\IRepositoryBase.cs" />
+    <Compile Include="RepositoryBase\RepositoryBase.cs" />
+    <Compile Include="Repository\TableRepository.cs" />
+    <Compile Include="Repository\StudentWrongBookRepository.cs" />
+    <Compile Include="SqlHelper\DbHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbhsChinese.Code\AbhsChinese.Code.csproj">
+      <Project>{b36fbb5d-e076-4f6c-b35a-09b58ab28fdd}</Project>
+      <Name>AbhsChinese.Code</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbhsChinese.Domain\AbhsChinese.Domain.csproj">
+      <Project>{2ee0a1d9-478b-471a-8fe5-30143057a007}</Project>
+      <Name>AbhsChinese.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

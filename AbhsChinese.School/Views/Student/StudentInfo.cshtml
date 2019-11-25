@@ -1,0 +1,244 @@
+﻿@using AbhsChinese.School.Models.Student
+@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@model StudentInfoVM
+@{
+    //ViewBag.PageTitle = "学生管理";
+    ViewBag.PageTitle = "学生详情";
+    ViewBag.HasBackBtn = true;
+    ViewBag.HasReloadBtn = true;
+}
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <style>
+        .tb-sudent-info td {
+            height: 50px;
+            vertical-align: middle !important;
+        }
+
+        .tb-sudent-info tr td:nth-child(2n+1) {
+            background: #f9fafc;
+            text-align: right;
+            padding-right: 20px;
+            width: 10%;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 14px;
+            color: #7F7F7F;
+        }
+
+        .tb-sudent-info tr td:nth-child(2n+0) {
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .td-header-info {
+            width: 20% !important;
+            text-align: center !important;
+            vertical-align: middle;
+        }
+
+        .header-info {
+            height: 80px;
+            width: 80px;
+            overflow: hidden;
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            border: 1px solid rgba(228, 228, 228,1);
+            border-radius: 50%;
+        }
+        .header-info img{
+            width:100%;
+            object-fit: contain;
+            object-position: center;
+        }
+        .td-header-info .level-info {
+            width: 30%;
+            border-radius: 20px;
+        }
+
+        a.danger {
+            font-family: '微软雅黑';
+            font-weight: 400;
+            color: #D9001B !important;
+        }
+
+        .td-header td {
+            background: #f9fafc;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 14px;
+            color: #7F7F7F;
+            text-align: center;
+        }
+
+        .content-item {
+            border: 1px solid #EBEBEB;
+            padding: 20px;
+            margin-top: 20px;
+            background:#fff;
+        }
+        h1,h2,h3,h4,h5{
+            font-weight: 400;
+        }
+        .ibox-content{
+            border-top:none;
+            margin-bottom:40px;
+        }
+        .content-list{
+            /*background:#f3f3f4;*/
+            background:#fff;
+            padding-bottom:30px;
+            overflow:auto;
+        }
+    </style>
+}
+<div class="ibox" style="margin-bottom:2px;">
+    <div class="ibox-content" style="padding-bottom:0px;">
+        <div class="content-list">
+            <table class="table table-bordered tb-sudent-info text-center  content-item">
+                <tr>
+                    <td class="td-header-info" rowspan="6">
+                        <p class="header-info">
+                            @if (Model.StudentInfo.Bst_Avatar.HasValue())
+                            {
+                                <img src="@Model.StudentInfo.Bst_Avatar.ToOssPath()" alt="@Model.StudentInfo.Bst_Name" />
+                            }
+                        </p>
+                        <p>学号：@Model.StudentInfo.Bst_No</p>
+                        <p class="btn btn-primary  level-info">书童</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>账号</td>
+                    <td>@Model.StudentInfo.Bst_Phone</td>
+                    <td>昵称</td>
+                    <td>@Model.StudentInfo.Bst_NickName</td>
+                </tr>
+                <tr>
+                    <td>姓名</td>
+                    <td>@Model.StudentInfo.Bst_Name</td>
+                    <td>性别</td>
+                    <td>@CustomEnumHelper.Parse(typeof(SexEnum), Model.StudentInfo.Bst_Sex)</td>
+                </tr>
+                <tr>
+                    <td>生日</td>
+                    <td>@Model.StudentInfo.Bst_Birthday.ToString("yyyy-MM-dd")</td>
+                    <td>年级</td>
+                    <td>@CustomEnumHelper.Parse(typeof(GradeEnum), Model.StudentInfo.Bst_Grade)</td>
+                </tr>
+                <tr>
+                    <td>在读学校</td>
+                    <td>@Model.StudentInfo.Bst_StudySchool</td>
+                    <td>所属校区</td>
+                    <td>
+                        @Model.StudentInfo.SchoolName @{if (Model.StudentInfo.Bst_SchoolId > 0)
+                            {<a onclick="unBind(@Model.StudentInfo.Bst_Id)" class="danger">解除绑定</a> } }
+                    </td>
+                </tr>
+                <tr>
+                    <td>收货地址</td>
+                    <td>@Model.StudentInfo.Bst_Address</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="content-item" style="display:none;">
+                <h2>统计信息</h2>
+                <table class="table table-bordered tb-sudent-statistics text-center">
+                    <tr class="td-header">
+                        <td>注册时间</td>
+                        <td>注册来源</td>
+                        <td>首次购课时间</td>
+                        <td>账号类型</td>
+                        <td>当前状态</td>
+                        <td>最近登录时间</td>
+                        <td>累计登录(次)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>注册时间</td>
+                        <td>注册时间</td>
+                        <td>注册时间</td>
+                        <td>注册时间</td>
+                        <td>注册时间</td>
+                        <td>注册时间</td>
+                        <td>注册时间</td>
+                        <td></td>
+                    </tr>
+                    <tr class="td-header">
+                        <td>累计学习（天）</td>
+                        <td>累计时长（分）</td>
+                        <td>课后任务（次）</td>
+                        <td>累计完成（次）</td>
+                        <td>课后练习（次）</td>
+                        <td>练习题数（题）</td>
+                        <td>错题本（题）</td>
+                        <td>金币（个）</td>
+                    </tr>
+                    <tr>
+                        <td>金币（个）</td>
+                        <td>金币（个）</td>
+                        <td>金币（个）</td>
+                        <td>金币（个）</td>
+                        <td>金币（个）</td>
+                        <td>金币（个）</td>
+                        <td>金币（个）</td>
+                        <td>金币（个）</td>
+                    </tr>
+                    <tr class="td-header">
+                        <td>消费金额</td>
+                        <td>订单数量</td>
+                        <td>退款记录</td>
+                        <td>现金券（张）</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>退款记录</td>
+                        <td>退款记录</td>
+                        <td>退款记录</td>
+                        <td>退款记录</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/abhsTable")
+    <script>
+        $(function () {
+
+        })
+        function unBind(studentId) {
+            window.layer.confirm("确认解除绑定?", function () {
+                $.ajax({
+                    url: '@Url.Action("UnBindSchool", "Student")',
+                    data: { studentId: studentId },
+                    type: 'POST',
+                    success: generateSuccessFunc(function () {
+                        window.layer.closeAll();
+                        window.location.reload()
+                        //backLocal();
+                    }),
+                    error: generateErrorFunc(),
+                })
+            })
+        }
+        function backLocal() {
+            PageBase.SetToPage('/Student/Index');
+            window.location.href = '@Url.Action("Index", "Student")';
+        }
+    </script>
+
+}

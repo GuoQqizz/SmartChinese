@@ -1,0 +1,579 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>图文</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/animate.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <!--引用文本编辑器-->
+    <script src="/Content/ueditor/ueditor.config.js"></script>
+    <script src="/Content/ueditor/ueditor.all.js"></script>
+    <script src="/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="/Scripts/common/ueditor.config.subject.js"></script>
+    <style>
+        .yeqian {
+            height: 30px;
+            width: 100%;
+            margin: 0px;
+        }
+
+            .yeqian li {
+                width: 50%;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                border: 1px solid #808080;
+                border-bottom: none;
+                background-color: rgb(228, 228, 228);
+                color: #666666;
+                box-sizing: border-box;
+                float: left;
+            }
+
+                .yeqian li.select {
+                    border: 1px solid #ff6a00;
+                    border-right-color: #000;
+                    border-bottom-color: #000;
+                    background-color: #ff6a00;
+                    color: #fff;
+                }
+
+                .yeqian li:first-child {
+                    border-top-left-radius: 5px;
+                }
+
+                .yeqian li:last-child {
+                    border-top-right-radius: 5px;
+                }
+
+        .yeqian-box {
+            height: calc(100% - 30px);
+            border: 1px solid #808080;
+            padding: 5px;
+        }
+
+            .yeqian-box input.form-control {
+                padding: 5px;
+            }
+
+            .yeqian-box .input-group-btn .btn {
+                padding: 3px 5px;
+            }
+
+            .yeqian-box .list {
+                overflow: auto;
+                height: calc(100% - 30px);
+                margin: 0;
+            }
+
+        .MakeBox .input-line {
+            margin: 10px;
+            min-height: 30px;
+        }
+
+        .MakeBox .info-line {
+            margin: 10px;
+            height: calc(100% - 100px);
+        }
+
+            .MakeBox .info-line .box {
+                width: 50%;
+                height: 100%;
+                float: left;
+            }
+
+            .MakeBox .info-line .img-box {
+                border: 1px solid #808080;
+                padding: 10px;
+            }
+
+                .MakeBox .info-line .img-box img {
+                    width: auto;
+                    height: auto;
+                    max-height: 100%;
+                    max-width: 100%;
+                    min-height: 80%;
+                    min-width: 80%;
+                    margin: 0 auto;
+                    display: block;
+                }
+
+        .MakeBox .kcb-list {
+            width: calc(100% - 80px);
+            position: absolute;
+            top: 30px;
+            left: 80px;
+            min-height: 30px;
+            max-height: 200px;
+            background: #fff;
+            border: 1px solid #808080;
+            background: #fff;
+            overflow: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .MakeBox .control-label {
+            width: 120px;
+            text-align: right;
+            float: left;
+            padding: 0px 5px;
+        }
+
+        .MakeBox select.form-control {
+            padding: 0px 5px;
+        }
+
+        .MakeBox .form-control.sma {
+            width: calc(33.33% - 120px);
+            float: left;
+        }
+
+        .MakeBox .form-control.big {
+            width: calc(100% - 120px);
+            float: left;
+        }
+
+        .list li {
+            margin: 5px;
+            border: 1px solid #808080;
+        }
+
+        .img-list li img {
+            width: 100%;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+    <script>
+        $(function () {
+            $(".yeqian li").click(function () {
+                $(".yeqian li").removeClass("select");
+                $(this).addClass("select");
+                $(".yeqian-box").addClass("hide");
+                $(".yeqian-box").eq($(this).index()).removeClass("hide");
+            });
+            var ue = UE.getEditor("TextBox", ueConfig);
+            ue.ready(function () {
+                ue.setHeight(480);
+            });
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                var ChapterSet = CurriculumInfo.chapterSet;
+                //创建默认的动作
+                var action = new top.StudyArticle({
+                    actionId: "studyarticle" + randomString(20),
+                    goldCoins: 0,
+                    wordPosition: "top",
+                    usetime: 1 * 60 * 1000
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+
+                //加载数据
+                (function LoadData() {
+                    if (CurriculumInfo.selectAction instanceof top.StudyArticle) {//如果是修改的动作
+                        action = new top.StudyArticle(CurriculumInfo.selectAction);
+                    }
+                    $("#kcbInput").attr("mediaid", action.kcbid).val(action.kcbtext);
+                    $("#wordposition").val(action.wordPosition);
+                    $("#goldsnum").val(action.goldCoins);
+                    $("#usetime").val(action.usetime / 60 / 1000);
+                    ue.ready(function () {
+                        ue.execCommand('insertHtml', action.textstr || "");//插入文本
+                    });
+                    if (action.imgsrc.trim() != "") {
+                        $(".img-box").html("<img src='" + action.imgsrc + "' />");
+                    }
+                })();
+
+                var textindex = 1, textkeywords = "", textIsLoading = false, textIsOver = false;
+
+                $("#SelectTextBtn").on("click", function () {
+                    textindex = 1;
+                    textIsOver = false;
+                    textkeywords = $("#SelectTextInput").val();
+                    $("#TextList").html("");
+                    LoadTextList();
+                });
+                function LoadTextList() {
+                    if (!textIsLoading && !textIsOver) {
+                        textIsLoading = true;
+                        $("#TextList .loadMediaMsg").off("click");
+                        $("#TextList .loadMediaMsg").remove();
+                        $("#TextList").append("<p class='loadMediaMsg'>数据加载中...</p>")
+                        $.ajax({
+                            url: "/ResourceGroup/GetTextToCourse",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                CourseId: ChapterSet.courseId,
+                                MediaType: 0,
+                                TextType: 0,
+                                NameOrKey: textkeywords,
+                                Pagination: {
+                                    PageIndex: textindex,
+                                    PageSize: 10,
+                                }
+                            },
+                            success: function (data) {
+                                if (data.Data.length > 0) {
+                                    $("#TextList .loadMediaMsg").off("click");
+                                    $("#TextList .loadMediaMsg").remove();
+                                    for (var i = 0; i < data.Data.length; i++) {
+                                        var d = data.Data[i];
+                                        console.log("text data", d)
+                                        $("#TextList").append(`<li textid="${d.ObjectTextID}">${d.MediaName}</li>`);//拼接li
+                                    }
+                                    if (data.Data.length == 10) {
+                                        $("#TextList").append("<p class='loadMediaMsg'>点击加载更多...</p>");
+                                        $("#TextList .loadMediaMsg").on("click", function () {
+                                            if (!textIsLoading) {
+                                                textindex++;
+                                                LoadTextList();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#TextList").append("<p class='loadMediaMsg'>没有数据了</p>");
+                                        textIsOver = true;
+
+                                    }
+
+                                    $(".text-list li").off("click");
+                                    //图片的设置要修改
+                                    $(".text-list li").on("click", function () {
+                                        var id = parseInt($(this).attr("textid"));
+                                        $.ajax({
+                                            url: "/ResourceGroup/GetTextDetailToCourse",
+                                            type: "post",
+                                            dataType: "json",
+                                            data: { id: id },
+                                            async: false,
+                                            success: function (data) {
+                                                ue.execCommand('insertHtml', data.Data.ObjectText || "");///插入文本
+                                            },
+                                            error: function (e) { }
+                                        })
+                                    });
+                                }
+                                else {
+                                    $("#TextList .loadMediaMsg").html("没有数据了");
+                                    textIsOver = true;
+                                }
+                                textIsLoading = false;
+                            },
+                            error: function (e) {
+                                console.error("error", e);
+                                textIsLoading = false;
+                                textindex--;
+                            }
+                        });
+                    }
+                }
+                $("#TextList").scroll(function () {
+                    if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+                        if (!textIsLoading) {
+                            imgindex++;
+                            LoadTextList();
+                        }
+                    }
+                })
+
+                var imgindex = 1, imgkeywords = "", imgIsLoading = false, imgIsOver = false;
+                $("#SelectImgBtn").on("click", function () {
+                    imgindex = 1;
+                    imgIsOver = false;
+                    imgkeywords = $("#SelectImgInput").val();
+                    $("#MediaList").html("");
+                    LoadImgList();
+                });
+                function LoadImgList() {
+                    if (!imgIsLoading && !imgIsOver) {
+                        imgIsLoading = true;
+                        $("#MediaList .loadMediaMsg").off("click");
+                        $("#MediaList .loadMediaMsg").remove();
+                        $("#MediaList").append("<p class='loadMediaMsg'>数据加载中...</p>")
+                        $.ajax({
+                            url: "/ResourceGroup/GetMediaToCourse",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                CourseId: ChapterSet.courseId,
+                                MediaType: 103,// 视频 = 101,音频 = 102,图片 = 103,小艾说 = 104,开场语 = 105,小艾变 = 106
+                                TextType: 0,
+                                NameOrKey: imgkeywords,
+                                Pagination: {
+                                    PageIndex: imgindex,
+                                    PageSize: 3,
+                                }
+                            },
+                            success: function (data) {
+                                if (data.Data.length > 0) {
+                                    $("#MediaList .loadMediaMsg").off("click");
+                                    $("#MediaList .loadMediaMsg").remove();
+                                    console.log("getImgData", data);
+                                    for (var i = 0; i < data.Data.length; i++) {
+                                        var d = data.Data[i];
+                                        $("#MediaList").append(`<li mediaid="${d.ObjectID}" title="${d.MediaName}" bg="${d.ObjectUrl}"><img src="${d.ObjectUrl}" /></li>`);
+                                    }
+                                    if (data.Data.length == 10) {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>点击加载更多...</p>");
+                                        $("#MediaList .loadMediaMsg").on("click", function () {
+                                            if (!imgIsLoading) {
+                                                imgindex++;
+                                                LoadImgList();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>没有数据了</p>");
+                                        imgIsOver = true;
+                                    }
+
+                                    $(".img-list li").off("click");
+                                    //图片的设置要修改
+                                    $(".img-list li").on("click", function () {
+                                        action.imgid = $(this).attr("mediaid");
+                                        action.imgsrc = $(this).attr("bg")
+                                        $(".img-box").html("<img src='" + action.imgsrc + "' />");
+                                    });
+                                }
+                                else {
+                                    $("#MediaList .loadMediaMsg").html("没有数据了");
+                                    imgIsOver = true;
+                                }
+                                imgIsLoading = false;
+                            },
+                            error: function (e) {
+                                console.error("error", e);
+                                imgIsLoading = false;
+                                imgindex--;
+                            }
+                        });
+                    }
+                }
+                $("#MediaList").scroll(function () {
+                    if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+                        if (!imgIsLoading) {
+                            imgindex++;
+                            LoadImgList();
+                        }
+                    }
+                })
+
+
+                //开场白
+                $("#kcbInput").focus(function () {
+                    LoadKCB($(this).val() || "");
+                    $(".kcb-list").show();
+                    return false;
+                });
+                $("#kcbInput").blur(function () {
+                    setTimeout(function () {
+                        $(".kcb-list").hide();
+                    }, 500);
+                    return false;
+                });
+                $("#kcbInput").keyup(function () {
+                    $(this).attr("mediaid", "");
+                    LoadKCB($(this).val());
+                    return false;
+                });
+
+                var oldstr = null;
+                function LoadKCB(str) {
+                    if (str == oldstr) {//防止相同的文字多次重复调用
+                        return;
+                    }
+                    oldstr = str;
+                    $(".kcb-list").html(`<li class="kcb-media" mediaid="" mediatext="${str}"><span class="kcb-system">自定义开场白:</span>${str}</li>`);
+                    $.ajax({
+                        url: "/ResourceGroup/GetPrologues",
+                        type: "post",
+                        data: { description: str },
+                        dataType: "json",
+                        success: function (data) {
+                            $(".kcb-list").html(`<li class="kcb-media" mediaid="" mediatext="${str}"><span class="kcb-system">自定义开场白:</span>${str}</li>`);
+                            var data = data.Data;
+                            for (var i = 0; i < data.length; i++) {
+                                var d = data[i];
+                                $(".kcb-list").append(`<li class="kcb-media" mediaid="${d.MediaID}" mediatext="${d.MediaName}"><span class="kcb-system">系统开场白:</span>${d.MediaName}</li>`);
+                            }
+                            $(".kcb-list li").click(function () {
+                                action.kcbtext = $(this).attr("mediatext");
+                                $("#kcbInput").val(action.kcbtext);
+                                action.kcbid = $(this).attr("mediaid");
+                                $("#kcbInput").attr("mediaid", action.kcbid);
+                                $(".kcb-list").hide();
+                            });
+                        },
+                        error: function (e) {
+                            $(".kcb-list").append(`<li class="kcb-media" mediaid="">数据加载失败</li>`);
+                        }
+                    })
+                }
+
+                //文字位置
+                $("#wordposition").change(function () {
+                    action.wordPosition = $(this).val();
+                    if (action.wordPosition == "top") {
+                        $("#textbox img").prependTo("#textbox");
+                    }
+                    else {
+                        $("#textbox img").appendTo("#textbox");
+                    }
+                })
+                //金币数量
+                $("#goldsnum").keyup(function () {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.goldCoins = val;
+                })
+                //学习时间
+                $("#usetime").keyup(function () {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.usetime = val * 60 * 1000;
+                })
+
+
+
+
+                $("#OkBtn").click(function () {
+                    var html = ue.getContent();
+                    var text = ue.getContentTxt();
+                    if (text.trim() != "") {
+                        var issuccess = true;
+                        $.ajax({
+                            url: "/ResourceGroup/AddTextObject",
+                            type: "post",
+                            dataType: "json",
+                            data: { content: html },
+                            async: false,
+                            success: function (data) {
+                                action.textid = data.Data + "";
+                                action.textstr = html;
+                            },
+                            error: function (e) {
+                                issuccess = false;
+                                alert("保存失败");
+                            }
+                        })
+                        if (!issuccess) return;
+
+                        action.kcbtext = $("#kcbInput").val();
+                        action.kcbid = $("#kcbInput").attr("mediaid");
+                        if (action.kcbid.trim() == "" && action.kcbtext.trim() != "") {
+                            var issuccess = false;
+                            $.ajax({
+                                url: "/ResourceGroup/AddPrologues",
+                                type: "post",
+                                dataType: "json",
+                                async: false,
+                                data: { description: action.kcbtext },
+                                success: function (data) {
+                                    issuccess = true;
+                                    action.kcbid = data.Data + "";
+                                },
+                                error: function (e) {
+                                }
+                            })
+                            if (!issuccess) { alert("开场白录入失败.请重试"); return; }
+                        }
+                        console.log("over", action);
+                        if (CurriculumInfo.selectAction instanceof top.StudyArticle) {
+                            CurriculumInfo.SetAction(action);
+                        }
+                        else {
+                            CurriculumInfo.AddAction(action);
+                        }
+                        var frame = top.frames["ActionSet"];
+                        if (frame) {
+                            $(frame).hide();
+                        }
+                    }
+                    else {
+                        alert("请输入图文文字信息.");
+                    }
+                })
+
+            }
+
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">图文</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <ul class="yeqian">
+                    <li class="select">选文本</li>
+                    <li>选图片</li>
+                </ul>
+                <div class="yeqian-box">
+                    <div class="input-group">
+                        <input id="SelectTextInput" type="text" class="form-control" placeholder="名称/编号/关键字搜索">
+                        <span class="input-group-btn">
+                            <button id="SelectTextBtn" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                    <ul id="TextList" class="list text-list"></ul>
+                </div>
+                <div class="yeqian-box hide">
+                    <div class="input-group">
+                        <input id="SelectImgInput" type="text" class="form-control" placeholder="名称/编号/关键字搜索">
+                        <span class="input-group-btn">
+                            <button id="SelectImgBtn" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                    <ul id="MediaList" class="list img-list"></ul>
+                </div>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div class="input-line" style="position:relative;">
+                <label class="col2 control-label">开场白</label>
+                <input type="text" class="form-control big" id="kcbInput" mediaid="" placeholder="请输入开场白" autocomplete="off" />
+                <ul class="kcb-list"></ul>
+            </div>
+            <div class="input-line">
+                <label class="col2 control-label">排版方式</label>
+                <select id="wordposition" class="form-control sma">
+                    <option value="top">文字在上</option>
+                    <option value="bottom">文字在下</option>
+                </select>
+                <label class="col2 control-label">金币个数</label>
+                <input id="goldsnum" type="text" class="form-control sma" placeholder="请输入整数" />
+                <label class="col2 control-label">学习时间(分钟)</label>
+                <input id="usetime" type="text" class="form-control sma" placeholder="请输入整数(分钟)" />
+            </div>
+            <div class="info-line">
+                <div class="box img-box">
+
+                </div>
+                <div class="box text-box">
+                    <textarea id="TextBox"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

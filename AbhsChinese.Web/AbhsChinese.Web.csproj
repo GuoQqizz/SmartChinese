@@ -1,0 +1,908 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CFE1DED2-6385-41E1-A87D-FC2D5F29698B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AbhsChinese.Web</RootNamespace>
+    <AssemblyName>AbhsChinese.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>20639</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Abhs.Service.Client, Version=1.0.7222.15682, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DLL\Abhs.Service.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\Filter\LoginAuthorizationFilter.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ExternalSystemController.cs" />
+    <Compile Include="Controllers\Select2Controller.cs" />
+    <Compile Include="Controllers\StudentPracticeController.cs" />
+    <Compile Include="Controllers\StudyTaskController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LearningCenterController.cs" />
+    <Compile Include="Controllers\OwnCashVoucherController.cs" />
+    <Compile Include="Controllers\OwnOrderController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\SecurityCenterController.cs" />
+    <Compile Include="Controllers\SmsController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\StudentReportController.cs" />
+    <Compile Include="Controllers\SubjectController.cs" />
+    <Compile Include="Controllers\WrongBookController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AjaxResponse.cs" />
+    <Compile Include="Models\Common\AbhsTableFactory.cs" />
+    <Compile Include="Models\Common\CssRewriteUrlTransformWrapper.cs" />
+    <Compile Include="Models\Common\OptionFactory.cs" />
+    <Compile Include="Models\Common\PageJsonResponse.cs" />
+    <Compile Include="Models\Common\Select2.cs" />
+    <Compile Include="Models\Common\Select2Option.cs" />
+    <Compile Include="Models\Course\CourseSelectViewModel.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\ActionBase.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\ActionTranslator.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\Chapter.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\HideDom.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\InsertImg.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\InsertText.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\MoveDom.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\Page.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\ScaleDom.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\SetBackground.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\SetTitle.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\SetWaitMillisecond.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\Step.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyAnnotation2.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyAnnotation.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyArticle.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyAudio.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyFastRead.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyFastReadEasy.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyFill.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyJudgment.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyLinking.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyOption.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyOptionFill.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyRecitation.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudySubjective.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\StudyVideo.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\TwinkleDom.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\XiaoAiChange.cs" />
+    <Compile Include="Models\CurriculumSetViewModel\XiaoAiSay.cs" />
+    <Compile Include="Models\LearningCenter\StudentCourseInfoViewModel.cs" />
+    <Compile Include="Models\Login\FaceBindInputModel.cs" />
+    <Compile Include="Models\OwnOrder\OrderDetailViewModel.cs" />
+    <Compile Include="Models\StudentCashVoucher\StudentCashVoucherSearch.cs" />
+    <Compile Include="Models\StudentCashVoucher\StudentCashVoucherInputModel.cs" />
+    <Compile Include="Models\Course\CourseDetailViewModel.cs" />
+    <Compile Include="Models\Course\CourseSearch.cs" />
+    <Compile Include="Models\Course\CourseViewModel.cs" />
+    <Compile Include="Models\OwnOrder\PaymentViewModel.cs" />
+    <Compile Include="Models\Login\FaceRegisterRequest.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\Login\LoginInfo.cs" />
+    <Compile Include="Models\Login\LoginInputModel.cs" />
+    <Compile Include="Models\Login\LoginStudent.cs" />
+    <Compile Include="Models\Login\RegisterInputModel.cs" />
+    <Compile Include="Models\Login\SmsInputModel.cs" />
+    <Compile Include="Models\StudentInfo\StudentCashVoucherViewModel.cs" />
+    <Compile Include="Models\StudentInfo\StudentInfoInputModel.cs" />
+    <Compile Include="Models\StudentInfo\StudentInfoViewModel.cs" />
+    <Compile Include="Models\StudentInfo\StudentLoginViewModel.cs" />
+    <Compile Include="Models\StudentInfo\StudentOrderViewModel.cs" />
+    <Compile Include="Models\StudentInfo\StuOwnVoucherSearch.cs" />
+    <Compile Include="Models\StudentInfo\SumStudentViewModel.cs" />
+    <Compile Include="Models\StudentPractice\CourseListItemVm.cs" />
+    <Compile Include="Models\StudyTask\StudyTaskListViewModel.cs" />
+    <Compile Include="Models\StuWrong\WrongSubjectVm.cs" />
+    <Compile Include="Models\SubjectReport\FillInBlankReportVm.cs" />
+    <Compile Include="Models\SubjectReport\FreeReportVm.cs" />
+    <Compile Include="Models\SubjectReport\Mark2ReportVm.cs" />
+    <Compile Include="Models\SubjectReport\MarkReportVm.cs" />
+    <Compile Include="Models\SubjectReport\MatchReportVm.cs" />
+    <Compile Include="Models\SubjectReport\MultipleChoiceFillInBlankReportVm.cs" />
+    <Compile Include="Models\SubjectReport\MultipleChoiceReportVm.cs" />
+    <Compile Include="Models\SubjectReport\ReportVm.cs" />
+    <Compile Include="Models\SubjectReport\StudyAdviceModel.cs" />
+    <Compile Include="Models\SubjectReport\StudyReportCount.cs" />
+    <Compile Include="Models\SubjectReport\SubjectReportVmFactory.cs" />
+    <Compile Include="Models\SubjectReport\SumReportViewModel.cs" />
+    <Compile Include="Models\SubjectReport\TrueFalseReportVm.cs" />
+    <Compile Include="Models\Subjects\PracticeResult.cs" />
+    <Compile Include="Models\Subjects\SubjectVm.cs" />
+    <Compile Include="Models\Subjects\MultipleChoiceSubjectVm.cs" />
+    <Compile Include="Models\Subjects\FillInBlankSubjectVm.cs" />
+    <Compile Include="Models\Subjects\Mark2SubjectVm.cs" />
+    <Compile Include="Models\Subjects\MarkSubjectVm.cs" />
+    <Compile Include="Models\Subjects\FreeSubjectVm.cs" />
+    <Compile Include="Models\Subjects\MatchSubjectVm.cs" />
+    <Compile Include="Models\Subjects\MultipleChoiceFillInBlankSubjectVm.cs" />
+    <Compile Include="Models\Subjects\TrueFalseSubjectVm.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\StudyAdvice.xml" />
+    <Content Include="Content\abhsTable\abhsTable.css" />
+    <Content Include="Content\abhsTable\abhsTable.js" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\audio\sent.mp3" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\audio\sent2.mp3" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\chivox.min.js" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\images\icon.png" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\index_AiPanel.html" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\index_Recorder.html" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\使用说明.txt" />
+    <Content Include="Content\laydate\laydate.js" />
+    <Content Include="Content\laydate\theme\default\font\iconfont.svg" />
+    <Content Include="Content\laydate\theme\default\laydate.css" />
+    <Content Include="Content\layer\layer.js" />
+    <Content Include="Content\layer\mobile\layer.js" />
+    <Content Include="Content\layer\mobile\need\layer.css" />
+    <Content Include="Content\layer\theme\default\icon-ext.png" />
+    <Content Include="Content\layer\theme\default\icon.png" />
+    <Content Include="Content\layer\theme\default\layer.css" />
+    <Content Include="Content\layer\theme\default\loading-0.gif" />
+    <Content Include="Content\layer\theme\default\loading-1.gif" />
+    <Content Include="Content\layer\theme\default\loading-2.gif" />
+    <Content Include="Content\laypage\laypage.js" />
+    <Content Include="Content\laypage\skin\laypage.css" />
+    <Content Include="Content\LessonStudy\css\animate.css" />
+    <Content Include="Content\LessonStudy\css\reset.css" />
+    <Content Include="Content\LessonStudy\css\style.css" />
+    <Content Include="Content\LessonStudy\img\1.mp3" />
+    <Content Include="Content\LessonStudy\img\AnalysisBg1.png" />
+    <Content Include="Content\LessonStudy\img\AnalysisBg2.png" />
+    <Content Include="Content\LessonStudy\img\answerBg.png" />
+    <Content Include="Content\LessonStudy\img\answerBg_left.png" />
+    <Content Include="Content\LessonStudy\img\answerBg_right.png" />
+    <Content Include="Content\LessonStudy\img\answerBg_top.png" />
+    <Content Include="Content\LessonStudy\img\baseTitleBg.png" />
+    <Content Include="Content\LessonStudy\img\bigStar.png" />
+    <Content Include="Content\LessonStudy\img\bigStar_active.png" />
+    <Content Include="Content\LessonStudy\img\contRecord.png" />
+    <Content Include="Content\LessonStudy\img\djsBg.png" />
+    <Content Include="Content\LessonStudy\img\exit.png" />
+    <Content Include="Content\LessonStudy\img\honor0.png" />
+    <Content Include="Content\LessonStudy\img\honor2.png" />
+    <Content Include="Content\LessonStudy\img\honor3.png" />
+    <Content Include="Content\LessonStudy\img\honor4.png" />
+    <Content Include="Content\LessonStudy\img\honor5.png" />
+    <Content Include="Content\LessonStudy\img\inquire.png" />
+    <Content Include="Content\LessonStudy\img\jian.png" />
+    <Content Include="Content\LessonStudy\img\judgment\rightSign_normal.png" />
+    <Content Include="Content\LessonStudy\img\judgment\rightSign_right.png" />
+    <Content Include="Content\LessonStudy\img\judgment\rightSign_wrong.png" />
+    <Content Include="Content\LessonStudy\img\judgment\wrongSign_normal.png" />
+    <Content Include="Content\LessonStudy\img\judgment\wrongSign_right.png" />
+    <Content Include="Content\LessonStudy\img\judgment\wrongSign_wrong.png" />
+    <Content Include="Content\LessonStudy\img\light.png" />
+    <Content Include="Content\LessonStudy\img\maobi32.cur" />
+    <Content Include="Content\LessonStudy\img\option\A_normol.png" />
+    <Content Include="Content\LessonStudy\img\option\A_right.png" />
+    <Content Include="Content\LessonStudy\img\option\A_wrong.png" />
+    <Content Include="Content\LessonStudy\img\option\B_normol.png" />
+    <Content Include="Content\LessonStudy\img\option\B_right.png" />
+    <Content Include="Content\LessonStudy\img\option\B_wrong.png" />
+    <Content Include="Content\LessonStudy\img\option\C_normol.png" />
+    <Content Include="Content\LessonStudy\img\option\C_right.png" />
+    <Content Include="Content\LessonStudy\img\option\C_wrong.png" />
+    <Content Include="Content\LessonStudy\img\option\D_normol.png" />
+    <Content Include="Content\LessonStudy\img\option\D_right.png" />
+    <Content Include="Content\LessonStudy\img\option\D_wrong.png" />
+    <Content Include="Content\LessonStudy\img\option\ji.png" />
+    <Content Include="Content\LessonStudy\img\option\mao.png" />
+    <Content Include="Content\LessonStudy\img\option\tu.png" />
+    <Content Include="Content\LessonStudy\img\option\zhu.png" />
+    <Content Include="Content\LessonStudy\img\recording.gif" />
+    <Content Include="Content\LessonStudy\img\revoke.png" />
+    <Content Include="Content\LessonStudy\img\ScrollDown.gif" />
+    <Content Include="Content\LessonStudy\img\shuazi.cur" />
+    <Content Include="Content\LessonStudy\img\studyPic.png" />
+    <Content Include="Content\LessonStudy\img\testVideo.mp4" />
+    <Content Include="Content\LessonStudy\img\audioImg.jpg" />
+    <Content Include="Content\LessonStudy\img\back.png" />
+    <Content Include="Content\LessonStudy\img\beginRecord.png" />
+    <Content Include="Content\LessonStudy\img\btnBg.png" />
+    <Content Include="Content\LessonStudy\img\done.png" />
+    <Content Include="Content\LessonStudy\img\done_active.png" />
+    <Content Include="Content\LessonStudy\img\laba.png" />
+    <Content Include="Content\LessonStudy\img\luyin.png" />
+    <Content Include="Content\LessonStudy\img\luyin_active.png" />
+    <Content Include="Content\LessonStudy\img\maskBg.png" />
+    <Content Include="Content\LessonStudy\img\maskLeftImg.png" />
+    <Content Include="Content\LessonStudy\img\maskRightImg.png" />
+    <Content Include="Content\LessonStudy\img\next.png" />
+    <Content Include="Content\LessonStudy\img\restartRecord.png" />
+    <Content Include="Content\LessonStudy\img\shuazi.png" />
+    <Content Include="Content\LessonStudy\img\star-off.png" />
+    <Content Include="Content\LessonStudy\img\star-on.png" />
+    <Content Include="Content\LessonStudy\img\toNext2.png" />
+    <Content Include="Content\LessonStudy\img\trueAnswerBg1.png" />
+    <Content Include="Content\LessonStudy\img\trueAnswerBg2.png" />
+    <Content Include="Content\LessonStudy\img\upload.png" />
+    <Content Include="Content\LessonStudy\img\uploading.gif" />
+    <Content Include="Content\LessonStudy\img\upload_active.png" />
+    <Content Include="Content\LessonStudy\img\videoPause.png" />
+    <Content Include="Content\LessonStudy\img\videoPlay.png" />
+    <Content Include="Content\LessonStudy\img\xiangpi.png" />
+    <Content Include="Content\LessonStudy\img\zhou.png" />
+    <Content Include="Content\LessonStudy\img\录音 拷贝.png" />
+    <Content Include="Content\LessonStudy\javascript\Curriculum.js" />
+    <Content Include="Content\LessonStudy\javascript\echarts.min.js" />
+    <Content Include="Content\LessonStudy\javascript\extend.js" />
+    <Content Include="Content\LessonStudy\javascript\fullScreen.js" />
+    <Content Include="Content\LessonStudy\javascript\jquery-3.2.1.min.js" />
+    <Content Include="Content\LessonStudy\javascript\jquery.raty.js" />
+    <Content Include="Content\LessonStudy\javascript\onLine.js" />
+    <Content Include="Content\LessonStudy\javascript\template-native.js" />
+    <Content Include="Content\LessonStudy\javascript\TimerWorker.js" />
+    <Content Include="Content\LessonStudy\javascript\tryAutoPlay.js" />
+    <Content Include="Content\select2\select2.full.min.js" />
+    <Content Include="Content\select2\select2.js" />
+    <Content Include="Content\select2\select2.main.js" />
+    <Content Include="Content\select2\select2.min.css" />
+    <Content Include="Content\select2\select2.min.js" />
+    <Content Include="Content\select2\select2.patch.css" />
+    <Content Include="Content\StudentInfo\audioplayer.css" />
+    <Content Include="Content\StudentInfo\cropper.min.css" />
+    <Content Include="Content\StudentInfo\style.css" />
+    <Content Include="Content\cropper\cropper.min.css" />
+    <Content Include="Content\cropper\cropper.min.js" />
+    <Content Include="Content\cropper\cropper.patch.js" />
+    <Content Include="Content\cropper\p3.jpg" />
+    <Content Include="Content\cropper\timg.jpg" />
+    <Content Include="Content\cropper\u762.png" />
+    <Content Include="Content\Subject\style.css" />
+    <Content Include="Content\swiper.css" />
+    <Content Include="Content\swiper.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\bindd.png" />
+    <Content Include="Images\clsoe1.png" />
+    <Content Include="Images\Course\back.png" />
+    <Content Include="Images\Course\c1.png" />
+    <Content Include="Images\Course\conpoucenter.png" />
+    <Content Include="Images\Course\conpouleft.png" />
+    <Content Include="Images\Course\conpouright.png" />
+    <Content Include="Images\Course\conpouright1.png" />
+    <Content Include="Images\Course\coupon-empty.png" />
+    <Content Include="Images\Course\coupons.png" />
+    <Content Include="Images\Course\defaultimg.jpg" />
+    <Content Include="Images\Course\hide.png" />
+    <Content Include="Images\Course\homeLeft.png" />
+    <Content Include="Images\Course\homeRight.png" />
+    <Content Include="Images\Course\nop.png" />
+    <Content Include="Images\Course\noticket.jpg" />
+    <Content Include="Images\Course\orderbodybottom.png" />
+    <Content Include="Images\Course\orderbodycenter.png" />
+    <Content Include="Images\Course\orderbodytop.png" />
+    <Content Include="Images\Course\paybj.png" />
+    <Content Include="Images\Course\payfail.jpg" />
+    <Content Include="Images\Course\s.png" />
+    <Content Include="Images\Course\salconput.png" />
+    <Content Include="Images\Course\selconpou.png" />
+    <Content Include="Images\Course\selstatus.png" />
+    <Content Include="Images\Course\zh.png" />
+    <Content Include="Images\launch.png" />
+    <Content Include="Images\paytype.png" />
+    <Content Include="Images\StudentInfo\1.png" />
+    <Content Include="Images\StudentInfo\2.png" />
+    <Content Include="Images\StudentInfo\3.png" />
+    <Content Include="Images\StudentInfo\4.png" />
+    <Content Include="Images\StudentInfo\afclass.png" />
+    <Content Include="Images\StudentInfo\anquan.png" />
+    <Content Include="Images\StudentInfo\anquan1.png" />
+    <Content Include="Images\StudentInfo\back.png" />
+    <Content Include="Images\StudentInfo\banner.jpg" />
+    <Content Include="Images\StudentInfo\bindd.png" />
+    <Content Include="Images\StudentInfo\bindd1.png" />
+    <Content Include="Images\StudentInfo\bodyl_bottom.png" />
+    <Content Include="Images\StudentInfo\bodyl_center.png" />
+    <Content Include="Images\StudentInfo\bodyl_top.png" />
+    <Content Include="Images\StudentInfo\Btn.png" />
+    <Content Include="Images\StudentInfo\btns.png" />
+    <Content Include="Images\StudentInfo\c1.png" />
+    <Content Include="Images\StudentInfo\choiceimg1.png" />
+    <Content Include="Images\StudentInfo\close.png" />
+    <Content Include="Images\StudentInfo\close2.png" />
+    <Content Include="Images\StudentInfo\closeBtn.png" />
+    <Content Include="Images\StudentInfo\clsoe.png" />
+    <Content Include="Images\StudentInfo\clsoe1.png" />
+    <Content Include="Images\StudentInfo\code.jpg" />
+    <Content Include="Images\StudentInfo\codebj.png" />
+    <Content Include="Images\StudentInfo\codebj1.png" />
+    <Content Include="Images\StudentInfo\configimg5.png" />
+    <Content Include="Images\StudentInfo\configimg6.png" />
+    <Content Include="Images\StudentInfo\configming1.png" />
+    <Content Include="Images\StudentInfo\configming2.png" />
+    <Content Include="Images\StudentInfo\configming3.png" />
+    <Content Include="Images\StudentInfo\configming4.png" />
+    <Content Include="Images\StudentInfo\conpoucenter.png" />
+    <Content Include="Images\StudentInfo\conpouleft.png" />
+    <Content Include="Images\StudentInfo\conpouright.png" />
+    <Content Include="Images\StudentInfo\conpouright1.png" />
+    <Content Include="Images\StudentInfo\coupon-empty.png" />
+    <Content Include="Images\StudentInfo\couponbg2.png" />
+    <Content Include="Images\StudentInfo\couponbg3.png" />
+    <Content Include="Images\StudentInfo\couponbg4.png" />
+    <Content Include="Images\StudentInfo\couponbj.png" />
+    <Content Include="Images\StudentInfo\couponbj1.png" />
+    <Content Include="Images\StudentInfo\couponbtn.png" />
+    <Content Include="Images\StudentInfo\coupons.png" />
+    <Content Include="Images\StudentInfo\curriculumerror.png" />
+    <Content Include="Images\StudentInfo\d.png" />
+    <Content Include="Images\StudentInfo\date.png" />
+    <Content Include="Images\StudentInfo\dd.png" />
+    <Content Include="Images\StudentInfo\dingdan.png" />
+    <Content Include="Images\StudentInfo\dingdan1.png" />
+    <Content Include="Images\StudentInfo\duig.png" />
+    <Content Include="Images\StudentInfo\duig1.png" />
+    <Content Include="Images\StudentInfo\duig2.png" />
+    <Content Include="Images\StudentInfo\error.png" />
+    <Content Include="Images\StudentInfo\facebj.png" />
+    <Content Include="Images\StudentInfo\faceclose.png" />
+    <Content Include="Images\StudentInfo\goback.png" />
+    <Content Include="Images\StudentInfo\goods.png" />
+    <Content Include="Images\StudentInfo\goodsimg.png" />
+    <Content Include="Images\StudentInfo\headerbj.png" />
+    <Content Include="Images\StudentInfo\hg.png" />
+    <Content Include="Images\StudentInfo\hide.png" />
+    <Content Include="Images\StudentInfo\homeLeft.png" />
+    <Content Include="Images\StudentInfo\homeRight.png" />
+    <Content Include="Images\StudentInfo\icon_1.png" />
+    <Content Include="Images\StudentInfo\icon_2.png" />
+    <Content Include="Images\StudentInfo\icon_3.png" />
+    <Content Include="Images\StudentInfo\icon_4.png" />
+    <Content Include="Images\StudentInfo\icon_5.png" />
+    <Content Include="Images\StudentInfo\img1.png" />
+    <Content Include="Images\StudentInfo\img2.png" />
+    <Content Include="Images\StudentInfo\img3.png" />
+    <Content Include="Images\StudentInfo\img_bg-4.png" />
+    <Content Include="Images\StudentInfo\img_bg-4_1.png" />
+    <Content Include="Images\StudentInfo\inquire.png" />
+    <Content Include="Images\StudentInfo\jt1.png" />
+    <Content Include="Images\StudentInfo\jterror.png" />
+    <Content Include="Images\StudentInfo\launch.png" />
+    <Content Include="Images\StudentInfo\left.png" />
+    <Content Include="Images\StudentInfo\loadimg.jpg" />
+    <Content Include="Images\StudentInfo\loading.gif" />
+    <Content Include="Images\StudentInfo\loginbj.jpg" />
+    <Content Include="Images\StudentInfo\loginout.png" />
+    <Content Include="Images\StudentInfo\loginpagebottom.png" />
+    <Content Include="Images\StudentInfo\loginpagecenter.png" />
+    <Content Include="Images\StudentInfo\loginpagetop.png" />
+    <Content Include="Images\StudentInfo\logo.jpg" />
+    <Content Include="Images\StudentInfo\logo.png" />
+    <Content Include="Images\StudentInfo\logo1.png" />
+    <Content Include="Images\StudentInfo\man.png" />
+    <Content Include="Images\StudentInfo\message.png" />
+    <Content Include="Images\StudentInfo\networkerror.png" />
+    <Content Include="Images\StudentInfo\newsinfo.png" />
+    <Content Include="Images\StudentInfo\nop.png" />
+    <Content Include="Images\StudentInfo\noreport.png" />
+    <Content Include="Images\StudentInfo\noticket.jpg" />
+    <Content Include="Images\StudentInfo\orderbodybottom.png" />
+    <Content Include="Images\StudentInfo\orderbodycenter.png" />
+    <Content Include="Images\StudentInfo\orderbodytop.png" />
+    <Content Include="Images\StudentInfo\pass.png" />
+    <Content Include="Images\StudentInfo\paybj.png" />
+    <Content Include="Images\StudentInfo\payfail.jpg" />
+    <Content Include="Images\StudentInfo\paytype.png" />
+    <Content Include="Images\StudentInfo\pho.png" />
+    <Content Include="Images\StudentInfo\port.png" />
+    <Content Include="Images\StudentInfo\portbottomimg.png" />
+    <Content Include="Images\StudentInfo\portcenterimg.png" />
+    <Content Include="Images\StudentInfo\portrait.png" />
+    <Content Include="Images\StudentInfo\porttopimg.png" />
+    <Content Include="Images\StudentInfo\praticeerror.png" />
+    <Content Include="Images\StudentInfo\problemerror.png" />
+    <Content Include="Images\StudentInfo\qtibj.png" />
+    <Content Include="Images\StudentInfo\quan.png" />
+    <Content Include="Images\StudentInfo\quan1.png" />
+    <Content Include="Images\StudentInfo\radio.png" />
+    <Content Include="Images\StudentInfo\radiosel.png" />
+    <Content Include="Images\StudentInfo\refurbish.png" />
+    <Content Include="Images\StudentInfo\s.png" />
+    <Content Include="Images\StudentInfo\salconput.png" />
+    <Content Include="Images\StudentInfo\scrollsImg.png" />
+    <Content Include="Images\StudentInfo\seal.png" />
+    <Content Include="Images\StudentInfo\selconpou.png" />
+    <Content Include="Images\StudentInfo\selconpou1.png" />
+    <Content Include="Images\StudentInfo\seldefault1.png" />
+    <Content Include="Images\StudentInfo\select.png" />
+    <Content Include="Images\StudentInfo\selected1.png" />
+    <Content Include="Images\StudentInfo\selsel.png" />
+    <Content Include="Images\StudentInfo\selstatus.png" />
+    <Content Include="Images\StudentInfo\shanimg1.png" />
+    <Content Include="Images\StudentInfo\shape.png" />
+    <Content Include="Images\StudentInfo\shapeBtn.png" />
+    <Content Include="Images\StudentInfo\stars-num.png" />
+    <Content Include="Images\StudentInfo\stars.png" />
+    <Content Include="Images\StudentInfo\success.png" />
+    <Content Include="Images\StudentInfo\success1.png" />
+    <Content Include="Images\StudentInfo\successmsg.png" />
+    <Content Include="Images\StudentInfo\sun.png" />
+    <Content Include="Images\StudentInfo\systemerror.png" />
+    <Content Include="Images\StudentInfo\tbjbottom.png" />
+    <Content Include="Images\StudentInfo\tbjcenter.png" />
+    <Content Include="Images\StudentInfo\tbjtop.jpg" />
+    <Content Include="Images\StudentInfo\tbjtop.png" />
+    <Content Include="Images\StudentInfo\u396.png" />
+    <Content Include="Images\StudentInfo\titlebj.png" />
+    <Content Include="Images\StudentInfo\user.png" />
+    <Content Include="Images\StudentInfo\user_1.png" />
+    <Content Include="Images\StudentInfo\volumeBj.png" />
+    <Content Include="Images\StudentInfo\w.jpg" />
+    <Content Include="Images\StudentInfo\woman.png" />
+    <Content Include="Images\StudentInfo\workerror.png" />
+    <Content Include="Images\StudentInfo\wx.png" />
+    <Content Include="Images\StudentInfo\xg.png" />
+    <Content Include="Images\StudentInfo\xg1.png" />
+    <Content Include="Images\StudentInfo\xg2.png" />
+    <Content Include="Images\StudentInfo\xjq.png" />
+    <Content Include="Images\StudentInfo\xl.png" />
+    <Content Include="Images\StudentInfo\xqcen.png" />
+    <Content Include="Images\StudentInfo\xqle.png" />
+    <Content Include="Images\StudentInfo\xqri.png" />
+    <Content Include="Images\StudentInfo\yhq.jpg" />
+    <Content Include="Images\StudentInfo\yhq.png" />
+    <Content Include="Images\StudentInfo\ym.png" />
+    <Content Include="Images\StudentInfo\yongjin.png" />
+    <Content Include="Images\StudentInfo\yongjin1.png" />
+    <Content Include="Images\StudentInfo\zfb.png" />
+    <Content Include="Images\StudentInfo\zh.png" />
+    <Content Include="Images\StudentInfo\zwbg.png" />
+    <Content Include="Images\StudentInfo\nointernet.png" />
+    <Content Include="Images\StudentInfo\taskreport.png" />
+    <Content Include="Images\StudentInfo\praticereport.png" />
+    <Content Include="Images\Subject\AnalysisBg1.png" />
+    <Content Include="Images\Subject\AnalysisBg2.png" />
+    <Content Include="Images\Subject\answerBg.png" />
+    <Content Include="Images\Subject\answerBg_left.png" />
+    <Content Include="Images\Subject\answerBg_right.png" />
+    <Content Include="Images\Subject\answerBg_top.png" />
+    <Content Include="Images\Subject\backBtn.png" />
+    <Content Include="Images\Subject\baseTitleBg.png" />
+    <Content Include="Images\Subject\bigStar.png" />
+    <Content Include="Images\Subject\bigStar_active.png" />
+    <Content Include="Images\Subject\clearWrong.png" />
+    <Content Include="Images\Subject\djsBg.png" />
+    <Content Include="Images\Subject\duig.png" />
+    <Content Include="Images\Subject\duig1.png" />
+    <Content Include="Images\Subject\duig2.png" />
+    <Content Include="Images\Subject\homeLeft.png" />
+    <Content Include="Images\Subject\homeRight.png" />
+    <Content Include="Images\Subject\honor0.png" />
+    <Content Include="Images\Subject\honor2.png" />
+    <Content Include="Images\Subject\honor3.png" />
+    <Content Include="Images\Subject\honor4.png" />
+    <Content Include="Images\Subject\honor5.png" />
+    <Content Include="Images\Subject\ji.png" />
+    <Content Include="Images\Subject\jian.png" />
+    <Content Include="Images\Subject\jian2.png" />
+    <Content Include="Images\Subject\judgment\rightSign_normal.png" />
+    <Content Include="Images\Subject\judgment\rightSign_right.png" />
+    <Content Include="Images\Subject\judgment\rightSign_wrong.png" />
+    <Content Include="Images\Subject\judgment\wrongSign_normal.png" />
+    <Content Include="Images\Subject\judgment\wrongSign_right.png" />
+    <Content Include="Images\Subject\judgment\wrongSign_wrong.png" />
+    <Content Include="Images\Subject\light.png" />
+    <Content Include="Images\Subject\mao.png" />
+    <Content Include="Images\Subject\maobi32.cur" />
+    <Content Include="Images\Subject\option\A_normol.png" />
+    <Content Include="Images\Subject\option\A_right.png" />
+    <Content Include="Images\Subject\option\A_wrong.png" />
+    <Content Include="Images\Subject\option\B_normol.png" />
+    <Content Include="Images\Subject\option\B_right.png" />
+    <Content Include="Images\Subject\option\B_wrong.png" />
+    <Content Include="Images\Subject\option\C_normol.png" />
+    <Content Include="Images\Subject\option\C_right.png" />
+    <Content Include="Images\Subject\option\C_wrong.png" />
+    <Content Include="Images\Subject\option\D_normol.png" />
+    <Content Include="Images\Subject\option\D_right.png" />
+    <Content Include="Images\Subject\option\D_wrong.png" />
+    <Content Include="Images\Subject\option\ji.png" />
+    <Content Include="Images\Subject\option\mao.png" />
+    <Content Include="Images\Subject\option\tu.png" />
+    <Content Include="Images\Subject\option\zhu.png" />
+    <Content Include="Images\Subject\orderbodybottom.png" />
+    <Content Include="Images\Subject\orderbodycenter.png" />
+    <Content Include="Images\Subject\orderbodytop.png" />
+    <Content Include="Images\Subject\pagebtnbj.png" />
+    <Content Include="Images\Subject\resetBtn.png" />
+    <Content Include="Images\Subject\result_right.png" />
+    <Content Include="Images\Subject\result_wrong.png" />
+    <Content Include="Images\Subject\revoke.png" />
+    <Content Include="Images\Subject\revokeBtn.png" />
+    <Content Include="Images\Subject\ScrollDown.gif" />
+    <Content Include="Images\Subject\shuazi.cur" />
+    <Content Include="Images\Subject\stars-num.png" />
+    <Content Include="Images\Subject\stars.png" />
+    <Content Include="Images\Subject\studyPic.png" />
+    <Content Include="Images\Subject\trueAnswerBg1.png" />
+    <Content Include="Images\Subject\trueAnswerBg2.png" />
+    <Content Include="Images\Subject\tu.png" />
+    <Content Include="Images\Subject\xg.png" />
+    <Content Include="Images\Subject\xg1.png" />
+    <Content Include="Images\Subject\xg2.png" />
+    <Content Include="Images\Subject\zhou.png" />
+    <Content Include="Images\Subject\zhu.png" />
+    <Content Include="Images\wx.png" />
+    <Content Include="Images\zfb.png" />
+    <Content Include="Scripts\ai.0.22.9-build00167.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\audioplayer.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="log4net.config" />
+    <Content Include="Configs\database.config" />
+    <Content Include="Configs\system.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\ai.0.22.9-build00167.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\laydate\theme\default\font\iconfont.eot" />
+    <Content Include="Content\laydate\theme\default\font\iconfont.ttf" />
+    <Content Include="Content\laydate\theme\default\font\iconfont.woff" />
+    <Content Include="Content\jssdk6_cn_sent_online_MIC\php\sig.php" />
+    <None Include="Properties\PublishProfiles\AbhsChineseWeb.pubxml" />
+    <None Include="Properties\PublishProfiles\xjh.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Common\abhs.date.js" />
+    <Content Include="Scripts\Common\abhstable.main.js" />
+    <Content Include="Scripts\Common\custom.filterbar.js" />
+    <Content Include="Scripts\Common\jquery.ajax.extension.spin.js" />
+    <Content Include="Scripts\Course\imagesloaded.pkgd.min.js" />
+    <Content Include="Scripts\layer.js" />
+    <Content Include="Scripts\Common\jquery.ajax.extension.js" />
+    <Content Include="Scripts\PageScripts\select2.main.js" />
+    <Content Include="Scripts\parger.js" />
+    <Content Include="Scripts\Common\spin.js" />
+    <Content Include="Scripts\StudentInfo\cropper.min.js" />
+    <Content Include="Scripts\StudentInfo\cropper.patch.js" />
+    <Content Include="Scripts\StudentInfo\EditStudentInfo.js" />
+    <Content Include="Scripts\StudentInfo\facebind.js" />
+    <Content Include="Scripts\StudentInfo\forgetpwd.js" />
+    <Content Include="Scripts\StudentInfo\layer.js" />
+    <Content Include="Scripts\StudentInfo\LeftBar.js" />
+    <Content Include="Scripts\StudentInfo\login.js" />
+    <Content Include="Scripts\StudentInfo\SecurityCenter.js" />
+    <Content Include="Scripts\StudentInfo\register.js" />
+    <Content Include="Scripts\StudentInfo\webcam.js" />
+    <Content Include="Scripts\StudentPractice\course2.list.js" />
+    <Content Include="Scripts\StudentPractice\course.list.js" />
+    <Content Include="Scripts\StudentReport\StudyReport.js" />
+    <Content Include="Scripts\StudentReport\subjectfactory.js" />
+    <Content Include="Scripts\StudentWrong\clearwrong.js" />
+    <Content Include="Scripts\StudentWrong\index.js" />
+    <Content Include="Scripts\StudentWrong\wrongdetail.js" />
+    <Content Include="Scripts\StudyTask\studytask.list.js" />
+    <Content Include="Scripts\StudyTask\studytask2.list.js" />
+    <Content Include="Scripts\Course\common.js" />
+    <Content Include="Scripts\Course\detail.js" />
+    <Content Include="Scripts\Course\order.js" />
+    <Content Include="Scripts\Course\select.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\StudyTask\studytask.practice.js" />
+    <Content Include="Scripts\Subject\AfterClass.js" />
+    <Content Include="Scripts\Subject\makeLine.js" />
+    <Content Include="Scripts\Subject\onLine.js" />
+    <Content Include="Scripts\Subject\showQuestion.js" />
+    <Content Include="Scripts\swiper.min.js" />
+    <Content Include="Scripts\template-native.js" />
+    <Content Include="Scripts\theme\default\icon-ext.png" />
+    <Content Include="Scripts\theme\default\icon.png" />
+    <Content Include="Scripts\theme\default\layer.css" />
+    <Content Include="Scripts\theme\default\loading-0.gif" />
+    <Content Include="Scripts\theme\default\loading-1.gif" />
+    <Content Include="Scripts\theme\default\loading-2.gif" />
+    <Content Include="Scripts\voucher\voucher.js" />
+    <Content Include="Scripts\voucher\voucherCourseDetail.js" />
+    <Content Include="Scripts\voucher\voucherOrder.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Student\StudentInfo.cshtml" />
+    <Content Include="Views\SecurityCenter\Index.cshtml" />
+    <Content Include="Views\Course\Select.cshtml" />
+    <Content Include="Views\Course\Detail.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Login\LoginIndex.cshtml" />
+    <Content Include="Views\OwnOrder\Payment.cshtml" />
+    <Content Include="Views\LearningCenter\LessonStudy.cshtml" />
+    <Content Include="Views\StudyTask\Practice.cshtml" />
+    <Content Include="Views\StudentReport\StudentTaskReport.cshtml" />
+    <Content Include="Views\Login\RegIndex.cshtml" />
+    <Content Include="Views\Login\AuthCode.cshtml" />
+    <Content Include="Views\Student\EditStudentInfo.cshtml" />
+    <Content Include="Views\Shared\_AbhsRegion.cshtml" />
+    <Content Include="Views\OwnCashVoucher\OwnCashVoucherList.cshtml" />
+    <Content Include="Views\Shared\_LeftBar.cshtml" />
+    <Content Include="Views\SecurityCenter\_FaceRecognition.cshtml" />
+    <Content Include="Views\SecurityCenter\_ChangeMobile.cshtml" />
+    <Content Include="Views\SecurityCenter\_EditPassword.cshtml" />
+    <Content Include="Views\SecurityCenter\_FindPassword.cshtml" />
+    <Content Include="Views\SecurityCenter\_LoginRecords.cshtml" />
+    <Content Include="Views\OwnOrder\OwnOrderList.cshtml" />
+    <Content Include="Views\StudentReport\StudentReportList.cshtml" />
+    <Content Include="Views\StudentReport\ShowTaskReport.cshtml" />
+    <Content Include="Views\Shared\_PartialVoucherList.cshtml" />
+    <Content Include="Views\WrongBook\WrongDetail.cshtml" />
+    <Content Include="Views\WrongBook\Index.cshtml" />
+    <Content Include="Views\LearningCenter\LessonApprove.cshtml" />
+    <Content Include="Views\Login\FaceBind.cshtml" />
+    <Content Include="Views\Login\ForgetPwd.cshtml" />
+    <Content Include="Views\Login\FaceBindSuccess.cshtml" />
+    <Content Include="Views\LearningCenter\Index.cshtml" />
+    <Content Include="Views\LearningCenter\CoruseInfo.cshtml" />
+    <Content Include="Views\StudyTask\ListStudyTasks.cshtml" />
+    <Content Include="Views\OwnOrder\OrderDetail.cshtml" />
+    <Content Include="Views\StudentReport\ShowStudyReport.cshtml" />
+    <Content Include="Views\LearningCenter\_StudentInfo.cshtml" />
+    <Content Include="Views\StudentPractice\ListCourses.cshtml" />
+    <Content Include="Views\WrongBook\ClearWrong.cshtml" />
+    <Content Include="Views\Error\Error404.cshtml" />
+    <Content Include="Views\Error\Error500.cshtml" />
+    <Content Include="Views\Error\index.cshtml" />
+    <Content Include="Views\OwnCashVoucher\GetHaveRegisterVoucherView.cshtml" />
+    <Content Include="Views\Course\PreviewCourse.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\ExternalSystem\" />
+    <Folder Include="Views\Select2\" />
+    <Folder Include="Views\Sms\" />
+    <Folder Include="Views\Subject\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbhsChinese.Bll\AbhsChinese.Bll.csproj">
+      <Project>{c34c0849-8ebf-46a3-bdfc-212fb583d9f2}</Project>
+      <Name>AbhsChinese.Bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbhsChinese.Code\AbhsChinese.Code.csproj">
+      <Project>{b36fbb5d-e076-4f6c-b35a-09b58ab28fdd}</Project>
+      <Name>AbhsChinese.Code</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbhsChinese.Domain\AbhsChinese.Domain.csproj">
+      <Project>{2ee0a1d9-478b-471a-8fe5-30143057a007}</Project>
+      <Name>AbhsChinese.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>20639</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:20639/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

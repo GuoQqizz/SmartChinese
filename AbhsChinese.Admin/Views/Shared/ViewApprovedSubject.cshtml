@@ -1,0 +1,343 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "题目详情";
+}
+
+<div class="ibox">
+    <div class="ibox-title">
+        <div class="ibox-tools">
+            <a href="@Url.Action("ListApprovedQuestions", "Question")"
+               class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-sm details-container">
+                    <tr>
+                        <th>题目编号</th>
+                        <td name="id">@Model</td>
+                        <th>题目类型</th>
+                        <td name="SubjectType"></td>
+                    </tr>
+                    <tr>
+                        <th>年级</th>
+                        <td name="GradeText"></td>
+                        <th>难度</th>
+                        <td name="DifficultyText"></td>
+                    </tr>
+                    <tr>
+                        <th>关键字</th>
+                        <td name="Keywords" colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <th>主知识点</th>
+                        <td name="KnowledgeText" colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <th>次知识点</th>
+                        <td name="KnowledgeTexts" colspan="3"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a class="nav-link" data-toggle="tab" href="#tab-1">题目详情</a>
+                            <input type="hidden" value="subjectDetails" />
+                        </li>
+                        <li>
+                            <a class="nav-link" data-toggle="tab" href="#tab-2">关联题目</a>
+                            <input type="hidden" value="groupedSubjects" />
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane">
+                            <div class="panel-body row table_container">
+                                <div class="col-12">
+                                    <button data-subject-id="@Model"
+                                            class="btn btn-default pull-right"
+                                            type="button"
+                                            onclick="reEdit(this)"
+                                            style="margin-bottom:5px;">
+                                        重新编辑
+                                    </button>
+                                </div>
+                                <div class="col-12">
+                                    <form role="form">
+                                        @Html.Partial("GetQuestionInfo")
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                            <div class="panel-body row table_container">
+                                <div class="col-12">
+                                    <button data-subject-id="@Model"
+                                            class="btn btn-default pull-right"
+                                            type="button"
+                                            onclick="addRelation(this)"
+                                            style="margin-bottom:5px;">
+                                        添加
+                                    </button>
+                                    <input type="hidden" id="relId" name="" />
+                                </div>
+                                <div class="col-12">
+                                    <form role="form" id="form_search_groupsubjects">
+                                        <input type="hidden" name="id" value="@Model" />
+                                        <button hidden class="search" type="button">搜索</button>
+                                    </form>
+                                    <div id="div_groupsubjects"></div>
+                                    <!--该处不需要分页-->
+                                    <div class="pagination" style="display:none"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <style>
+        .table > tbody > tr > th, .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/abhsTable")
+    <script src="~/Scripts/PageScripts/menu.patch.subjectmanage.js"></script>
+    <script src="~/Scripts/PageScripts/subjct.subjectbasic.js"></script>
+    <script src="~/Scripts/PageScripts/subject.view.reload.js"></script>
+    <script>
+        $(function () {
+            initDetails();
+            initTabs();
+
+            $('a[href="#tab-1"]').tab('show');
+        });
+        //初始化tabs组件
+        function initTabs() {
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                let tab = $(e.target).next().val();
+                if (tab === 'groupedSubjects') {
+                    initGroupedSubjectsTable();
+                }
+            })
+        }
+
+        //加载顶部table的数据
+        function initDetails() {
+            let controller = getController(@ViewBag.SubjectType);
+            let url = '/' + controller + '/' + 'GetReadonlyDetails';
+            $.getJSON(url, { id: @Model}, function (response) {
+                let data = response.Data;
+
+                //为顶部的table添加数据
+                let baiscData = {
+                    GradeText: data.GradeText,
+                    DifficultyText: data.DifficultyText,
+                    Keywords: data.Keywords,
+                    KnowledgeText: data.KnowledgeText,
+                    KnowledgeTexts: data.KnowledgeTexts
+                };
+                $.each(baiscData, function (name, value) {
+                    let val = value;
+                    if (name === "KnowledgeTexts") {
+                        val = value.join(', ');
+                    }
+                    $('td[name="' + name + '"]').html(val);
+                });
+
+                if (data.Alignment) {
+                    $(':radio[name="alignment"][value="' + data.Alignment + '"]').prop('checked', true);
+                }
+
+                $.each(SubjectTypeEnum, function (propertyName, propertyValue) {
+                    if (propertyValue === data.SubjectType){
+                        $('td[name="SubjectType"]').text(propertyName);
+                    }
+                });
+                reloadData(data, @ViewBag.SubjectType);
+            });
+        }
+
+        let table = null;
+        function initGroupedSubjectsTable() {
+            let align = 'center';
+            let columns = [
+                    { label: '编号', name: 'Id', align: 'center' },
+                    { label: '题干', name: 'Name', align: 'center' },
+                    { label: '年级', name: 'Grade', align: 'center' },
+                    { label: '类型', name: 'SubjectTypeText', align: 'center' },
+                    { label: '难度', name: 'Difficulty', align: 'center' },
+                    { label: '关键字', name: 'Keywords', align: 'center' },
+                    {
+                        label: '操作',
+                        name: '',
+                        align: 'center',
+                        formatter: function (index, value, row) {
+
+                            let viewUrl = generateUrl(row.SubjectType, row.Id);
+                            debugger;
+                            let html = '';
+                            html += '<a href="' + viewUrl + '" class="text-info">查看</a>';
+                            html += '&nbsp;&nbsp;';
+                            html += '<a onclick="cancelRelation(' + @Model + ', ' + row.Id + ')" href="javascript:void(0)" class="text-info">移除</a>';
+                            return html;
+                        }
+                    }
+            ];
+            table = $('#div_groupsubjects').table({
+                ajax: {
+                    url: '@Url.Action("GetGroupedSubjects", "Question")',
+                    type: "get"
+                },
+                columns: columns,
+                searchBox: '#form_search_groupsubjects'
+            });
+        }
+    </script>
+    <script>
+        function reEdit(button) {
+            $.ajax({
+                type: "POST",
+                url: "/Question/ReEdit",
+                data: { subjectId: @Model},
+                success: function(response){
+                    layer.msg(response.ErrorMsg, { icon: response.State ? 1 : 5 });
+                    if (response.State) {
+                        setTimeout(function () {
+                            window.location.href = "/Question/ListApprovedQuestions";
+                        }, timeToRedirect);
+                    }
+                }
+            });
+        }
+
+        function cancelRelation(subjectId, relationSubjectId){
+            layer.confirm('确认移除吗?',
+            {
+                icon: 2,
+                title: '提示',
+                yes: function (index) {
+                    $.ajax({
+                        url: '/Question/CancelRelation',
+                        type: 'get',
+                        data: { subjectId: subjectId, relationSubjectId: relationSubjectId},
+                        dataType: 'json',
+                        success: function (res) {
+                            layer.msg(res.ErrorMsg, { icon: 1 })
+                            table.reload();
+                        }
+                    });
+                    layer.close(index);
+                },
+                cancel: function (index, layero) {
+                    layer.close(index);
+                }
+            });
+        }
+
+        function generateUrl(subjectType, subjectId) {
+            let controller = '';
+            let action = 'ViewApprovedSubject';
+            switch (subjectType) {
+                case SubjectTypeEnum.判断题:
+                    controller = 'TrueFalse';
+                    break;
+                case SubjectTypeEnum.选择题:
+                    controller = 'MultipleChoice';
+                    break;
+                case SubjectTypeEnum.填空题:
+                    controller = 'FillInBlank';
+                    break;
+                case SubjectTypeEnum.选择填空:
+                    controller = 'MultipleChoiceFillInBlank';
+                    break;
+                case SubjectTypeEnum.连线题:
+                    controller = 'Match';
+                    break;
+                case SubjectTypeEnum.主观题:
+                    controller = 'Free';
+                    break;
+                case SubjectTypeEnum.圈点批注标色:
+                    controller = 'Mark';
+                    break;
+                case SubjectTypeEnum.圈点批注断句:
+                    controller = 'Mark2';
+                    break;
+                default:
+                    throw new Error('generateUrl方法错误');
+            }
+            return '/' + controller + '/' + action + '/' + subjectId + '?subjectType=' + subjectType;
+        }
+
+        function getController(subjectType) {
+            let controller = '';
+            switch (subjectType) {
+                case SubjectTypeEnum.判断题:
+                    controller = 'TrueFalse';
+                    break;
+                case SubjectTypeEnum.选择题:
+                    controller = 'MultipleChoice';
+                    break;
+                case SubjectTypeEnum.填空题:
+                    controller = 'FillInBlank';
+                    break;
+                case SubjectTypeEnum.选择填空:
+                    controller = 'MultipleChoiceFillInBlank';
+                    break;
+                case SubjectTypeEnum.连线题:
+                    controller = 'Match';
+                    break;
+                case SubjectTypeEnum.主观题:
+                    controller = 'Free';
+                    break;
+                case SubjectTypeEnum.圈点批注标色:
+                    controller = 'Mark';
+                    break;
+                case SubjectTypeEnum.圈点批注断句:
+                    controller = 'Mark2';
+                    break;
+                default:
+                    throw new Error('获取controller错误');
+            }
+            return controller;
+        }
+    </script>
+    <script>
+        function addRelation() {
+            let url = "/ResourceGroup/ShowSubject?groupId=" + 0;
+            layer.open({
+                type: 2,
+                title: "关联题目",
+                skin: 'layui-layer-rim',
+                area: ["75%", "90%"],
+                btn: ['确定', '关闭'],
+                yes: function (index, layero) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("AddRelation", "Question")',
+                        data: { subjectId: @Model, relationSubjectId: $('#relId').val() },
+                        success: function(response){
+                            layer.msg(response.ErrorMsg, { icon: response.State ? 1 : 5 });
+                        }
+                    });
+                },
+                btn2:function () {
+                    table.reload();
+                },
+                content: url
+            });
+        }
+    </script>
+}

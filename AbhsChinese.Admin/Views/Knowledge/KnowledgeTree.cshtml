@@ -1,0 +1,96 @@
+﻿@using AbhsChinese.Admin.Models.Knowledge
+@model KnowledgeTree
+@{
+    ViewBag.PageTitle = "知识树";
+    Layout = null;
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-treeview/bootstrap-treeview.css" rel="stylesheet" />
+<style>
+    .glyphicon-plus {
+        font-size: 2px;
+        color: #6d6c6c;
+    }
+    .glyphicon-minus {
+        font-size: 2px;
+        color: #6d6c6c;
+    }
+    
+</style>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Content/bootstrap-treeview/bootstrap-treeview.js"></script>
+
+<input type="hidden" value="@Model.Id" id="Id" />
+<input type="hidden" value="@Model.ParentId" id="ParentId" />
+<input type="hidden" value="@Model.ChildId" id="ChildId" />
+
+<div style="margin:10px 10px;">
+    <div id="tree"></div>
+</div>
+
+
+
+<script>
+    let nodeId = 0;
+    var nodes = null;
+    $(function () {
+        var tree = null;
+        var knowId = $("#ChildId").val();
+        $.ajax({
+            url: '/Knowledge/GetKnowledgeTree?Id=' + $("#Id").val() + '&ParentId=' + $("#ParentId").val() + '&ChildId=' + $("#ChildId").val(),
+            type: 'get',
+            dataType: 'json',
+            success: function (obj) {
+                tree = obj.Data;
+                $('#tree').treeview({
+                    data: tree,//节点数据
+                    levels: 4,
+                    highlightSelected: true,
+                    highlightSearchResults: true,
+                    onNodeSelected: function (event, node) {
+                        GetChild(node.Id, node.nodeId);
+                    }
+                });
+                nodes = $('#tree').treeview('getEnabled', nodeId)
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].Id == knowId) {
+                        nodeId = nodes[i].nodeId;
+                    }
+                }
+                $('#tree').treeview('selectNode', [nodeId, { silent: true }]);
+
+                var sel = $('#tree').treeview('getSelected');
+                debugger;
+            }
+        });
+    });
+
+
+    function GetChild(id, nodeId) {
+        if (typeof ($('#tree').treeview('getSelected')[0].nodes) != null) {
+            //这里判断当前节点下是否有值了，有就不再添加数据return防止重复添加
+            //$('#tree').treeview('getSelected')取得当前选中的数据
+            if ($('#tree').treeview('getSelected')[0].nodes != null) {
+                if ($('#tree').treeview('getSelected')[0].nodes.length > 0) {
+                    return;
+                }
+            }
+            else {
+                return;
+            }
+        }
+        $.ajax({
+            type: "get",
+            url: "/Knowledge/LazyGet",
+            data: { parentId: id },
+            success: function (data) {
+                debugger;
+                for (var i = 0; i < data.Data.length; i++) {
+                    $('#tree').treeview("addNode", [nodeId, { node: { text: data.Data[i].text, nodeid: data.Data[i].nodeid, hasChildrenField: data.Data[i].hasChildrenField, nodes: data.Data[i].nodes } }]);
+                    $('#tree').treeview("expandNode", nodeId);
+                }
+            }
+        });
+    }
+
+</script>

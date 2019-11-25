@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>插入文字</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/animate.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <style>
+        .text-size:before {
+            content: '文字大小';
+        }
+
+        .text-size li {
+            float: left;
+            height: 30px;
+            line-height: 30px;
+            width: 30px;
+            text-align: center;
+            border: 1px solid #808080;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .text-size-big {
+            font-size: 24px;
+        }
+
+        .text-size-middle {
+            font-size: 18px;
+        }
+
+        .text-size-small {
+            font-size: 14px;
+        }
+
+
+        .text-color:before {
+            content: '文字颜色';
+        }
+
+        .text-color li {
+            float: left;
+            height: 20px;
+            line-height: 20px;
+            width: 20px;
+            text-align: center;
+            border: 1px solid #808080;
+            margin: 5px;
+        }
+
+
+        .text-text:before {
+            content: "标题文本";
+        }
+
+        .text-text textarea {
+            width: 100%;
+            height: 125px;
+            padding: 5px;
+            color: #000;
+        }
+
+        .text-intype:before {
+            content: "进入方式";
+        }
+
+        .text-intype li {
+            float: left;
+            height: 30px;
+            line-height: 30px;
+            width: 70px;
+            text-align: center;
+            border: 1px solid #808080;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .text-box {
+            position: absolute;
+            cursor: move;
+            top: 100px;
+            left: 100px;
+            border: 1px solid #808080;
+            z-index: 999;
+            font-family: "Microsoft YaHei","宋体";
+            letter-spacing: .1em;
+        }
+
+        .text-position:before {
+            content: "定位位置";
+        }
+
+        .text-position li {
+            display: inline-block;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+            .text-position li input[type=text] {
+                width: 40px;
+                padding: 3px;
+                font-size: 12px;
+                margin-left: 5px;
+            }
+    </style>
+    <script>
+        $(function () {
+
+            //添加动作
+            function doActionStyle(dom, type) {
+                if (dom.length > 0) {
+                    switch (type) {
+                        case "top":
+                            dom.addClass("animated bounceInDown");
+                            break;
+                        case "left":
+                            dom.addClass("animated bounceInLeft");
+                            break;
+                        case "right":
+                            dom.addClass("animated bounceInRight");
+                            break;
+                        case "bottom":
+                            dom.addClass("animated bounceInUp");
+                            break;
+                    }
+                    if (type != "none") {
+                        dom.on("animationend", function () {
+                            dom.removeClass("animated").removeClass("bounceInDown").removeClass("bounceInLeft").removeClass("bounceInRight").removeClass("bounceInUp");
+                            dom.off("animationend");
+                        })
+                    }
+                }
+            }
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                function GetText() {
+                    var str = $("#InputBox").val();
+                    str = str.replace(/</g, "&lt;");//替换<
+                    str = str.replace(/>/g, "&gt;");//替换>
+                    var reg = new RegExp("\n", "g");
+                    str = str.replace(reg, "<br/>");
+                    str = str.replace(/\s/g, "&nbsp;");//替换空格
+                    return str;
+                }
+                function SetText(str) {
+                    str = str.replace(/<br\/>/g, "\n");
+                    str = str.replace(/&lt;/g, "<");
+                    str = str.replace(/&gt;/g, ">");
+                    str = str.replace(/&nbsp;/g, " ");
+                    $("#InputBox").val(str);
+                }
+                //创建默认的动作
+                var action = new top.InsertText({
+                    actionId: "inserttext" + randomString(20),
+                    text: GetText(),
+                    size: "middle",
+                    color: "#000000",
+                    align: "left",
+                    x: 100,
+                    y: 100,
+                    intype: "none"
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                page.selecter = "#InnerArea";
+                page.draw(CurriculumInfo.selectStep.stepNum);
+                //加载数据
+                (function LoadData() {
+                    if (CurriculumInfo.selectAction instanceof top.InsertText) {//如果是修改的动作
+                        action = new top.InsertText(CurriculumInfo.selectAction);
+                        //给自己的元素设置移动样式
+                        $("#" + action.actionId).addClass("text-box");
+
+                    }
+                    else {//如果不是修改则添加自己
+
+                        var fontsize;
+                        switch (action.size) {
+                            case "big": fontsize = "24px"; break;
+                            case "middle": fontsize = "18px"; break;
+                            case "small": fontsize = "14px"; break;
+                            default: fontsize = "18px"; break;
+                        }
+                        $("#InnerArea").append("<p id='" + action.actionId + "' class='text-box'  style='font-size:" + fontsize + ";color:" + action.color + ";top:" + action.y + "px;left:" + action.x + "px'>" + GetText() + "</p>");
+                    }
+
+                    switch (action.size) {
+                        case "big": $(".text-size-big").addClass("selected"); break;
+                        case "middle": $(".text-size-middle").addClass("selected"); break;
+                        case "small": $(".text-size-small").addClass("selected"); break;
+                    }
+
+                    $(".text-color li[fontcolor='" + action.color + "']").addClass("selected");
+                    SetText(action.text);
+                    $(".text-intype li[intype='" + action.intype + "']").addClass("selected");
+                    $("#x_position").val(action.x);
+                    $("#y_position").val(action.y);
+                    doActionStyle($("#" + action.actionId), action.intype);
+                })();
+
+
+
+
+                $(".text-size li").click(function () {
+                    $(".text-size li").removeClass("selected");
+                    $(this).addClass("selected");
+                    var size = $(this).attr("fontsize");
+                    var fontsize;
+                    switch (size) {
+                        case "big": fontsize = "24px"; break;
+                        case "middle": fontsize = "18px"; break;
+                        case "small": fontsize = "14px"; break;
+                        default: fontsize = "18px"; break;
+                    }
+                    $("#" + action.actionId).css({ "font-size": fontsize });
+                    action.size = size;
+                });
+                $(".text-color li").click(function () {
+                    $(".text-color li").removeClass("selected");
+                    $(this).addClass("selected");
+                    var color = $(this).attr("fontcolor");
+                    $("#" + action.actionId).css({ "color": color });
+                    action.color = color;
+                })
+                $("#InputBox").keyup(function () {
+                    var text = GetText();
+                    $("#" + action.actionId).html(text);
+                    action.text = text;
+                });
+                $(".text-intype li").click(function () {
+                    $(".text-intype li").removeClass("selected");
+                    $(this).addClass("selected");
+                    var intype = $(this).attr("intype");
+                    action.intype = intype;
+                    doActionStyle($("#" + action.actionId), action.intype);
+                });
+                var down = false, x = 0, y = 0, position = { align: "left", top: 0, left: 0, right: 0 };
+                $("#" + action.actionId).mousedown(function (e) {
+                    position.top = parseInt($(this).css("top"));
+                    position.left = parseInt($(this).css("left"));
+                    x = e.pageX;
+                    y = e.pageY;
+                    down = true;
+                });
+                $("#InnerArea").mousemove(function (e) {
+                    if (down) {
+                        var top = position.top + e.pageY - y;
+                        var left = position.left + e.pageX - x;
+                        var dombox = $("#" + action.actionId);
+                        if (top < 0) { top = 0; }
+                        else if (top > 600 - dombox.height()) { top = 600 - dombox.height(); }
+                        if (left < 0) { left = 0; }
+                        else if (left > 800 - dombox.width()) { left = 800 - dombox.width(); }
+                        dombox.css({ "top": top + "px", "left": left + "px" });
+                        action.x = left;
+                        action.y = top;
+                        $("#x_position").val(action.x);
+                        $("#y_position").val(action.y);
+                    }
+                });
+                $(window).mouseup(function () {
+                    down = false;
+                });
+
+                $("#x_position").keyup(function () {
+                    var dombox = $("#" + action.actionId);
+                    var left = parseInt($(this).val());
+                    if (!left) { left = 0; }
+                    $(this).val(left);
+                    action.x = left;
+                    dombox.css({ "left": left + "px" });
+                });
+
+                $("#y_position").keyup(function () {
+                    var dombox = $("#" + action.actionId);
+                    var top = parseInt($(this).val());
+                    if (!top) { top = 0; }
+                    $(this).val(top);
+                    action.y = top;
+                    dombox.css({ "top": top + "px" });
+                });
+                $("#OkBtn").click(function () {
+                    if (CurriculumInfo.selectAction instanceof top.InsertText) {
+                        CurriculumInfo.SetAction(action);
+                    }
+                    else {
+                        CurriculumInfo.AddAction(action);
+                    }
+                    var frame = top.frames["ActionSet"];
+                    if (frame) {
+                        $(frame).hide();
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">插入文字</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <ul class="text-size block-box">
+                    <li class="text-size-big" fontsize="big">大</li>
+                    <li class="text-size-middle" fontsize="middle">中</li>
+                    <li class="text-size-small" fontsize="small">小</li>
+                </ul>
+                <ul class="text-color block-box">
+                    <li fontcolor="#000000" style="background-color:#000000"></li>
+                    <li fontcolor="#ffffff" style="background-color:#ffffff"></li>
+                    <li fontcolor="#539a69" style="background-color:#539a69"></li>
+                    <li fontcolor="#5899a3" style="background-color:#5899a3"></li>
+                    <li fontcolor="#2c817c" style="background-color:#2c817c"></li>
+                    <li fontcolor="#42668e" style="background-color:#42668e"></li>
+                    <li fontcolor="#464f8f" style="background-color:#464f8f"></li>
+                    <li fontcolor="#1a4387" style="background-color:#1a4387"></li>
+                    <li fontcolor="#7e482b" style="background-color:#7e482b"></li>
+                    <li fontcolor="#826010" style="background-color:#826010"></li>
+                </ul>
+                <div class="text-text block-box">
+                    <textarea id="InputBox">请输入要插入的文字</textarea>
+                </div>
+                <ul class="text-intype block-box">
+                    <li intype="none">无效果</li>
+                    <li intype="top">顶部飞入</li>
+                    <li intype="left">左侧飞入</li>
+                    <li intype="right">右侧飞入</li>
+                    <li intype="bottom">底部飞入</li>
+                </ul>
+                <ul class="text-position block-box">
+                    <li>x<input type="text" id="x_position" value="" /></li>
+                    <li>y<input type="text" id="y_position" value="" /></li>
+                </ul>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div class="ruler-x-box">
+                <div class="mouse-info"></div>
+                <div class="ruler-x"></div>
+            </div>
+            <div class="ruler-y-box">
+                <div class="ruler-y"></div>
+                <div id="OuterArea" class="plot-area">
+                    <div class="outer-area"></div>
+                    <div id="InnerArea" class="inner-area"></div>
+                    <div class="outer-area"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

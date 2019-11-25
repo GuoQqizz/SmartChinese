@@ -1,0 +1,632 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "题目录入-连线题";
+    string controller = "Match";
+    string action = "EditMatchSubject";
+}
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        @using (Ajax.BeginForm(action, controller, new AjaxOptions
+        {
+            OnComplete = "complete"
+        }, new { id = "form", role = "form" }))
+        {
+            <input type="text" name="nextStatus" value="2" style="display:none;" />
+            <input type="hidden" id="subjectId" name="id" value="@Model" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" checked class="onoffswitch-checkbox"
+                                   name="stemType"
+                                   onchange="changeType(this)"
+                                   value="1"
+                                   id="switch_stemType">
+                            <label class="onoffswitch-label" for="switch_stemType">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">题干</label>
+                <div class="col-11">
+                    <textarea id="name" name="name" style="width:100%;"></textarea>
+                    <input type="hidden" id="plainName" name="plainName" />
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row" id="sujectOptions">
+                <div class="col-6">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" checked class="onoffswitch-checkbox"
+                                   name="TitleOptionContentType"
+                                   onchange="changeContentType(this,true)"
+                                   value="1"
+                                   id="switch_contentType_question">
+                            <label class="onoffswitch-label" for="switch_contentType_question">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" checked class="onoffswitch-checkbox"
+                                   name="AnswertOptionContentType"
+                                   onchange="changeContentType(this,false)"
+                                   value="1"
+                                   id="switch_contentType_answer">
+                            <label class="onoffswitch-label" for="switch_contentType_answer">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" id="div_content">
+                <label class="col-1 col-form-label text-right required">选项</label>
+                <div class="col-11 offset-1">
+                    <div class="row">
+                        <div class="col-6">
+                            <div id="div_questions" style="margin-bottom:5px;"></div>
+                            <button class="btn btn-default offset-10" type="button"
+                                    onclick="addQuestion()">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <div id="div_answers" style="margin-bottom:5px;"></div>
+                            <button class="btn btn-default offset-10" type="button"
+                                    onclick="addAnswer()">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="col-11 offset-1">
+                    <button onclick="showConfig()" type="button" class="btn btn-default">配置答案</button>
+                </div>
+                <div class="col-11 offset-1" style="margin-top:5px;">
+                    <table class="table table-bordered" id="table_config"></table>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">解析</label>
+                <div class="col-11">
+                    <textarea id="explain" name="explain" style="width:100%;"></textarea>
+                </div>
+            </div>
+            @Html.Partial("_SubjectBasic")
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    @*该隐藏域用于记录是想要做保存操作还是提交操作,默认是保存操作*@
+                    <input type="hidden" name="button" value="0" />
+                    <button class="btn btn-white"
+                            type="button" onclick="submitForm2(false)">
+                        保存
+                    </button>
+                    <button class="btn btn-primary"
+                            type="button" onclick="submitForm2(true)">
+                        提交
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div style="display:none">
+    <textarea id="factory" name="factory"></textarea>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .btn-circle {
+            width: 20px;
+            height: 20px;
+            padding: 2px 0;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/common/ueditor.config.subject.js"></script>
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.subjectbasic.js"></script>
+
+    <script>        
+        function submitForm2(needValid) {
+            if ($('#switch_contentType_question')[0].checked === true) {
+                let textareas = $('textarea[name^="title"]');
+                $.each(textareas, function (i,o) {
+                    let keys = o.name.split(/[\[,\]]/);
+                    let id = keys[0] + keys[1];
+                    UE.getEditor(id).ready(function () {
+                        let t = this.getContentTxt();
+                        this.textarea.value = t;
+                    });
+                });
+            }
+            if ($('#switch_contentType_answer')[0].checked === true) {
+                let textareas = $('textarea[name^="answer"]');
+                $.each(textareas, function (i, o) {
+                    let keys = o.name.split(/[\[,\]]/);
+                    let id = keys[0] + keys[1];
+                    UE.getEditor(id).ready(function () {
+                        let t = this.getContentTxt();
+                        this.textarea.value = t;
+                    });
+                });
+            }
+
+
+
+            let $form = $('#form');
+            let $hidden = $form.find(':hidden[name="button"]');
+            if (needValid)//需要进行数据校验
+            {
+
+                let vr = validatePerfect();
+                $hidden.val(2);
+                if (!$form.valid()) {//但是校验没通过
+                    return false;
+                }
+                if (!vr) {
+                    return vr;
+                }
+
+                let answered = $('[name^="linedAnswers"]:checked').length;
+                if (answered !== questions.length) {
+                    layer.msg('请配置答案', { icon: 5 });
+                    return false;
+                }
+
+                if (questions.length < 2) {
+                    layer.msg(`目前只配置了${questions.length}个选项，至少需要2个选项`, { icon: 5 });
+                    return false;
+                }
+            } else {
+                $hidden.val(1);
+            }
+            $form.submit();
+        }
+        function validatePerfect() {
+            let es = [];
+            //验证最佳答案不能为空
+            let $hiddens = $('textarea[name^="title"]')
+            $.each($hiddens, function (i, o) {
+                if (!o.value) {
+                    $(o).next().show();
+                    es.push(o);
+                }
+            });
+            $hiddens = $('textarea[name^="answer"]')
+            $.each($hiddens, function (i, o) {
+                if (!o.value) {
+                    $(o).next().show();
+                    es.push(o);
+                }
+            });
+            return es.length === 0;
+        }
+    </script>
+    <script>
+        $(function () {
+
+            $.when(initUeditor(dtd)).then(function () {
+                if ($('#subjectId').val() !== '0') {
+                    $.getJSON('@Url.Action("GetDetails",controller)',
+                               { id: $('#subjectId').val() },
+                               function (response) {
+                                   if (response.State) {
+                                       let data = response.Data;
+
+                                       if (data.StemType === 0) {
+                                           $('#switch_stemType').click();
+                                       }
+                                       setContent(ueditorName, data.Name);
+
+                                       if (data.TitleOptionContentType === 0) {
+                                           $('#switch_contentType_question').click();
+                                       }
+                                       if (data.AnswertOptionContentType === 0) {
+                                           $('#switch_contentType_answer').click();
+                                       }
+
+                                       if (data.Title) {
+                                           questions = [];
+                                       }
+                                       $.each(data.Title, function (index, t) {
+                                           questions.push({
+                                               index: index,
+                                               type: 'title',
+                                               content: t
+                                           });
+                                       });
+                                       renderQuestions();
+                                       if (data.Answer) {
+                                           answers = [];
+                                       }
+                                       $.each(data.Answer, function (index, a) {
+                                           answers.push({
+                                               index: index,
+                                               type: 'answer',
+                                               content: a
+                                           });
+                                       });
+                                       renderAnswers();
+
+                                       initCheckboxObjs();
+                                       $.each(data.LinedAnswers, function (rowIndex, colIndex) {
+                                           rows[rowIndex][colIndex].checked = 'checked';
+                                       });
+                                       renderTable();
+
+                                       setContent(ueditorExplain, data.Explain);
+
+                                       setBasicData(data);
+                                       setPlainNameData(data);
+                                   }
+                               });
+                } else {
+                    initSelectPageComponent();
+                    renderQuestions();
+                    renderAnswers();
+                }
+            });
+
+            $("#form").validate({
+                onsubmit: false,
+                ignore: "",
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    grade: {
+                        required: true
+                    },
+                    difficulty: {
+                        required: true
+                    },
+                    keywords: {
+                        required: true
+                    }
+                }
+            });
+
+
+
+
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+        });
+
+        //默认显示3个
+        let questions = [{ type: 'title' }, { type: 'title' }, { type: 'title' }];
+        function addQuestion() {
+            resetUeditors(questions);
+            //创建对象，添加到数组中
+            questions.push({ type: 'title' });
+            renderQuestions();
+        }
+
+        function resetUeditors(qs) {
+            $.each(qs, function (index, q) {
+                if (q.index !== undefined) {
+                    let id = q.type + q.index;
+                    UE.getEditor(id).destroy();
+                }
+            });
+        }
+        //初始化问题、答案编辑器
+        //qs：问题列表或答案列表
+        //isQuestionList：待初始化的是问题列表，是：true；否：false
+        function initUeditors(qs, isQuestionList) {
+            $.each(qs, function (index, q) {
+                let id = q.type + q.index;
+                UE.getEditor(id, ueConfigWithUpload).ready(function () {
+                    if (q.content) {
+                        this.setContent(q.content);
+                    }
+                    this.addListener('blur', function () {
+                        q.content = this.getContent();
+                    });
+                });
+            });
+
+            var switchId = "";
+            if (isQuestionList) {
+                switchId = "switch_contentType_question";
+            } else {
+                switchId = "switch_contentType_answer";
+            }
+            changeContentTypeOnly($('#' + switchId)[0], isQuestionList);
+        }
+
+        function removeQuestion(button) {
+            resetUeditors(questions);
+
+            let num = button.dataset.num;
+            let pIndex = -1;
+            $.each(questions, function (index, question) {
+                if (question.index === num) {
+                    pIndex = index;
+                    return false;
+                }
+            });
+
+            questions.splice(pIndex, 1);
+            renderQuestions();
+        }
+        function removeAnswer(button) {
+            resetUeditors(answers);
+
+            let num = button.dataset.num;
+            let pIndex = -1;
+            $.each(answers, function (index, a) {
+                if (a.index === num) {
+                    pIndex = index;
+                    return false;
+                }
+            });
+
+            answers.splice(pIndex, 1);
+            renderAnswers();
+        }
+
+        function renderQuestions() {
+
+            //根据对象，生成html
+            let htmls = generateAllHtml(questions);
+            //插入到页面
+            $('#div_questions').html(htmls.join(''));
+            //渲染成ueditor
+            initUeditors(questions, true);
+        }
+        let answers = [{ type: 'answer' }, { type: 'answer' }, { type: 'answer' }];
+        function addAnswer() {
+            resetUeditors(answers);
+            //创建对象，添加到数组中
+            answers.push({ type: 'answer' });
+            renderAnswers();
+        }
+        function renderAnswers() {
+            //根据对象，生成html
+            let htmls = generateAllHtml(answers);
+            //插入到页面
+            $('#div_answers').html(htmls.join(''));
+            //渲染成ueditor
+            initUeditors(answers, false);
+        }
+        function generateAllHtml(qs) {
+            let htmls = [];
+            $.each(qs, function (index, q) {
+                q.index = index;
+                let html = generateHtml(q);
+                htmls.push(html);
+            });
+            return htmls;
+        }
+
+        function generateHtml(q) {
+            let id = q.type + q.index;
+            let name = q.type + '[' + q.index + ']';
+            let functionName = 'removeQuestion(this)';
+            let text = 'Left';
+            if (q.type === 'answer') {
+                functionName = 'removeAnswer(this)';
+                text = 'Right';
+            }
+            let num = q.index + 1;
+            text = text + num.toString();
+            let html = '<div class="row align-items-center"><label class="col-1 col-form-label text-right">' + text + '</label><div class="col-10">';
+            html += '<textarea id="' + id + '" name="' + name + '"></textarea><label style="color:#cc5965;display:none;">这是必填字段</label>';
+            html += '</div>';
+            html += '<div class="col-1">';
+            html += '<button data-num="' + q.index + '" onclick="' + functionName + '" type="button" class="btn btn-xs btn-danger btn-circle"><i class="fa fa-minus"></i></button>';
+            html += '</div></div>';
+            return html;
+        }
+    </script>
+    <script>
+        let rows = [];
+        function showConfig() {
+            if (questions.length !== answers.length) {
+                layer.msg('左右两侧必须相等', { icon: 5 });
+                return false;
+            }
+            checkeds = [];
+            initCheckboxObjs();
+
+            renderTable();
+        }
+
+        function renderTable() {
+            let trs = '';
+            $.each(questions, function (index, q) {
+                if (q.content) {
+                    let tds = createTdsByCheckboxObjs(rows[index]);
+                    let text = 'Left' + (index + 1).toString();
+                    trs += '<tr><td>' + text + '</td>' + tds + '</tr>';
+                }
+            });
+            $('#table_config').html(trs);
+        }
+
+        //创建对象数组
+        //每个对象封装checkbox的位置，状态等信息
+        function initCheckboxObjs() {
+            rows = [];
+            $.each(questions, function (rowIndex, q) {
+                let row = [];
+                $.each(answers, function (colIndex, a) {
+                    let col = {
+                        row: rowIndex,
+                        col: colIndex,
+                        name: 'linedAnswers[' + rowIndex + ']',
+                        text: 'Right' + (colIndex + 1).toString(),
+                        disabled: '',
+                        checked: '',
+                        content: a.content
+                    };
+                    row.push(col);
+                });
+                rows.push(row);
+            });
+        }
+
+        function createTdsByCheckboxObjs(cols) {
+            let tdsTemplate = '';
+            $.each(cols, function (idx, c) {
+                if (c.content) {
+                    tdsTemplate += '<td>';
+                    tdsTemplate += '<input value="' + c.col + '" ' + c.disabled + ' type="checkbox" ' + c.checked + ' data-row="' + c.row + '" data-col="' + c.col + '" onchange="checkself(this)" name="' + c.name + '" />' + c.text;
+                    tdsTemplate += '</td>';
+                }
+            });
+            return tdsTemplate;
+        }
+
+        //根据点击的checkebox，获取那些checkbox需要禁用
+        //返回一个对象数组，每个对象封装着checkbox的位置信息
+        function getDisalbedByOne(row, col) {
+            let vDisableds = [];
+            let numOfRows = answers.length;
+            for (var i = 0; i < numOfRows; i++) {
+                if (col === i) {
+                    continue;
+                }
+                let id = generateIdByRowCol(row, i);
+                let p = { id: id, row: row, col: i };
+                vDisableds.push(p);
+            }
+
+            let hDisalbeds = [];
+            let numOfCols = questions.length;
+            for (var i = 0; i < numOfCols; i++) {
+                if (row === i) {
+                    continue;
+                }
+                let id = generateIdByRowCol(i, col);
+                let p = { id: id, row: i, col: col };
+                hDisalbeds.push(p);
+            }
+            let allDisableds = vDisableds.concat(hDisalbeds);
+            return allDisableds;
+        }
+        function resetCheckedBoxState() {
+            for (var i = 0; i < questions.length; i++) {
+                for (var j = 0; j < answers.length; j++) {
+                    rows[i][j].disabled = '';
+                    rows[i][j].checked = '';
+                }
+            }
+        }
+        let checkeds = [];
+        function checkself(checkbox) {
+            let row = parseInt(checkbox.dataset.row);
+            let col = parseInt(checkbox.dataset.col);
+            let id = generateIdByRowCol(row, col);
+
+            let allDisableds = [];
+            if (checkbox.checked) {
+                let dises = getDisalbedByOne(row, col);
+                allDisableds = allDisableds.concat(dises);
+            }
+            $.each(allDisableds, function (index, p) {
+                rows[p.row][p.col].checked = '';
+            });
+            rows[row][col].checked = checkbox.checked ? 'checked' : '';
+
+            renderTable();
+        }
+
+        function generateIdByRowCol(row, col) {
+            let id = row * 10 + col;
+            return id;
+        }
+    </script>
+    <script>
+        //批量切换
+        function changeContentType(checkbox, isQuestionSwitch) {
+
+            let parentDiv = isQuestionSwitch ? $('#div_questions') : $('#div_answers');
+            var textareaName = isQuestionSwitch ? "title" : "answer";
+
+            changeContentTypeOnly(checkbox, isQuestionSwitch);
+
+            let ids = [];
+            var $textareas = parentDiv.find('textarea[name^="' + textareaName + '"]');
+            $.each($textareas, function (index, textarea) {
+                //id格式title1，
+                //name格式title[1]
+                let id = textarea.name.split('[')[0] + index;
+                ids.push(id);
+            });
+            $.each(ids, function (index, id) {
+                UE.getEditor(id).ready(function () {
+                    this.setContent('');
+                });
+            });
+        }
+
+        function changeContentTypeOnly(checkbox, isQuestionSwitch) {
+
+            let parentDiv = isQuestionSwitch ? $('#div_questions') : $('#div_answers');
+            if (checkbox.checked) {//文本模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', '')
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', 'display:none !important;')
+            } else {//图片模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', 'display:none !important;')
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', '')
+            }
+        }
+    </script>
+    <script>
+        var dtd = $.Deferred(); // 新建一个deferred对象
+        let ueditorName = null;
+        let ueditorExplain = null;
+        function initUeditor() {
+            ueditorName = UE.getEditor('name', ueConfigOfName);
+            ueditorName.ready(function () {
+                $('div#name').find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+                replaceFormat(this);
+                dtd.resolve();
+
+            });
+
+            ueditorExplain = UE.getEditor('explain', ueConfigOfExplain);
+            return dtd;
+        }
+    </script>
+}

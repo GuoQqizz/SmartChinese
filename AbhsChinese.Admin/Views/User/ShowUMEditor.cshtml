@@ -1,0 +1,16 @@
+﻿@model AbhsChinese.Admin.Models.ShowUEditorModel
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <script src="~/Content/umeditor/umeditor.config.js"></script>
+    <script src="~/Content/umeditor/umeditor.js"></script>
+    <script src="~/Content/umeditor/lang/zh-cn/zh-cn.js"></script>
+    <form action="/Product/SaveUMEditor" method="post">
+        @Html.EditorFor(m => m.UEditor, new { Style = "width:1000px; height:240px;" })
+        <br />
+        <input type="submit" value="保存" />
+    </form>
+</div>
+
+@section Styles{
+    <link href="~/Content/umeditor/themes/default/css/umeditor.css" rel="stylesheet" />
+}

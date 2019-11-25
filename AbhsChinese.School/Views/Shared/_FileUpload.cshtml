@@ -1,0 +1,360 @@
+﻿@{
+//需要提供的属性
+//@ViewBag.FilePath;    //当前文件访问地址
+//@ViewBag.FilePathVal; //当前文件数据库地址
+//@ViewBag.FieldName;
+//@ViewBag.FileType;  1视频 2 音频 3 图片 4 zip
+//@ViewBag.FileExtension;
+//@ViewBag.FileSize;
+//@ViewBag.ImgWidth;
+//@ViewBag.ImgHeight;
+}
+<style>
+    .table {
+        margin-bottom: 0rem;
+    }
+
+        .table tr {
+            border-bottom: 1px solid #e7eaec;
+        }
+
+            .table tr td {
+                border-top: none !important;
+            }
+
+    .progress {
+        height: 1.3rem;
+    }
+
+    .select {
+        display: block;
+        width: 100%;
+        height: 150px;
+        border: 1px solid #e5e6e7;
+    }
+
+    #container {
+        margin-left: -14px;
+    }
+
+    #localFile {
+        display: none;
+        width: 140px;
+    }
+
+    .choose-file {
+        background: rgba(249, 250, 252, 1);
+    }
+
+        .choose-file p {
+            color: #337ab7;
+        }
+
+    .upload-content {
+        position: relative;
+    }
+
+        .upload-content label.error {
+            position: absolute;
+            bottom: -40px;
+        }
+
+            .upload-content label.error ~ #container {
+                /*height: 150px;*/
+                margin-bottom: 20px;
+            }
+</style>
+
+<div id="ossfile"></div>
+<div class="col-lg-12 upload-content">
+    @{
+        <input type="hidden" id="file" name="@ViewBag.FieldName" value="@(ViewBag.FilePathVal==null?"":ViewBag.FilePathVal)" />
+        <img src="#" id="localFile" class="m-t-n-xs img-fluid rounded" />
+        if (ViewBag.FilePath == null || ViewBag.FilePath == "")
+        {
+            <div id="container">
+                <table class="table">
+                    <tbody id="fileContainer"></tbody>
+                </table>
+                <button id="selectfiles" class='btn select btn-white choose-file'>
+                    <p class="">
+                        <i class="fa fa-plus"></i>
+                    </p>
+                    <p>选择文件</p>
+                </button>
+                <a id="postfiles" href="javascript:void(0);" class='btn' style="display:none">开始上传</a>
+            </div>
+        }
+        else
+        {
+
+            <div id="container" onchange="update()">
+                <table class="table">
+                    <tbody id="fileContainer"></tbody>
+                </table>
+                @{
+                    if (ViewBag.FileType == 1)//视频
+                    {
+                        <video id="imgFile" controls="controls"><source src="@ViewBag.FilePath" type="video/mp4" /></video>
+                    }
+                    else if (ViewBag.FileType == 2)//音频
+                    {
+                        <audio id="imgFile" controls="controls"><source src="@ViewBag.FilePath" type="audio/mp3" /></audio>
+                    }
+                    else if (ViewBag.FileType == 3)//图片
+                    {
+                        <img id="imgFile" class="rounded-circle m-t-n-xs img-fluid" style="width:140px;height:140px" src="@ViewBag.FilePath" />
+                    }
+                    else
+                    {
+                        <a id="imgFile" href="@ViewBag.FilePath">@ViewBag.FilePath</a>
+                    }
+                }
+                <a id="selectfiles" href="javascript:void(0);" class='btn'><p>更改</p></a>
+                <a id="postfiles" href="javascript:void(0);" class='btn' style="display:none">开始上传</a>
+            </div>
+                    }
+    }
+</div>
+
+<script src="~/Scripts/plupload/plupload.full.min.js"></script>
+<script>
+
+    let defauleImgExt = 'jpg,gif,png,bmp';
+    let defauleAudioExt = 'mp3';
+    let defauleVedioExt = 'mp4';
+    let defauleZipExt = 'zip,rar';
+    let imgUploadWidth,imgUploadHeight =0;
+    let errorFlag = false;
+
+
+    let filePath = '@ViewBag.FilePath';
+    let fieldName = '@ViewBag.FieldName';
+    let fileType = @ViewBag.FileType;
+    let extension = '@ViewBag.FileExtension';
+    let fileSize = '@ViewBag.FileSize'||'50m';
+    let width = '@ViewBag.ImgWidth'-0;
+    let height = '@ViewBag.ImgHeight'-0;
+
+    let oldVal = "@(ViewBag.FilePathVal==null?"":ViewBag.FilePathVal)";
+
+    var mime_type={};
+    switch (fileType) {
+        case 1://视频
+            mime_type["title"]="MP4 files";
+            mime_type["extensions"]= extension||defauleVedioExt;
+            break;
+        case 2://音频
+            mime_type["title"]="Audio files";
+            mime_type["extensions"]= extension||defauleAudioExt;
+            break;
+        case 3://图片
+            mime_type["title"]="Image files";
+            mime_type["extensions"]= extension||defauleImgExt;
+            break;
+        case 4://压缩文件
+            mime_type["title"]="Zip files";
+            mime_type["extensions"]= extension||defauleZipExt;
+            break;
+        default:
+
+    }
+
+    var uploader = new plupload.Uploader({
+        runtimes: 'html5,flash,silverlight,html4',
+        browse_button: 'selectfiles',
+        multi_selection: false,
+        container: document.getElementById('container'),
+        flash_swf_url: 'lib/plupload-2.1.2/js/Moxie.swf',
+        silverlight_xap_url: 'lib/plupload-2.1.2/js/Moxie.xap',
+        //url: '/FileManage/Upload',//Resource
+        url: '@Url.Action("Upload", "FileManage")',
+
+        filters: {
+            mime_types: [ //允许上传图片、音频、视频
+                mime_type
+            ],
+            max_file_size: fileSize, //最大只能上传50mb的文件
+            prevent_duplicates: true //不允许选取重复文件
+        },
+
+        init: {
+            PostInit: function () {
+                document.getElementById('ossfile').innerHTML = '';
+                document.getElementById('postfiles').onclick = function () {
+                    set_upload_param(uploader, '', false);
+                    return false;
+                };
+            },
+
+            FilesAdded: function (up, files) {
+
+                if(fileType==3){
+                    $('#localFile').attr('src',getObjectURL(files[0].getNative())).show();
+                    createReader(files[0].getNative(),function(image){
+                        imgUploadWidth= image.width;
+                        imgUploadHeight = image.height;
+                    })
+                }
+                $('#postfiles').show();
+                $('#selectfiles').hide();
+                $(`#${files[0].getSource().ruid}`).parent().hide();//隐藏input file
+                plupload.each(files, function (file) {
+                    document.getElementById('fileContainer').innerHTML += '<tr>' +
+                        '<td><input name="uploadFiles" type="hidden" value="" /></td>' +
+                        '<td id=' + file.id + ' style="width:60%;">' + file.name + '<b style="color:red; padding-left:10px;"></b></td>' +
+                        '<td style="width:30%;"><div class="progress"><div class="progress-bar" style="width: 0%"></div></div></td>' +
+                        '<td></td>' +
+                        '<td><a href="javascript:void(0);" onclick="removeFile(\'' + file.id + '\')"><i class="fa fa-trash-o failed"></i></button></td>' +
+                        '</tr>';
+                });
+            },
+
+
+
+            BeforeUpload: function (up, file) {
+                if(fileType==3 && width>0&&height>0){
+                    if(imgUploadWidth!=width||imgUploadHeight!=height){
+                        alert(`请上传正确图片宽高尺寸,需要${width}*${height}`);
+                        up.removeFile(file);
+                        return false;
+                    }
+                }
+            },
+
+            UploadProgress: function (up, file) {
+                var d = document.getElementById(file.id);
+                var nextD = document.getElementById(file.id).nextSibling;
+                var prog = nextD.getElementsByTagName('div')[0];
+                var progBar = prog.getElementsByTagName('div')[0]
+                //progBar.style.width = 2 * file.percent + 'px';
+                progBar.style.width = file.percent + '%';
+                progBar.setAttribute('aria-valuenow', file.percent);
+                loadingFlag = layer.msg('正在上传，请稍候……', { icon: 16, shade: 0.01, shadeClose: false, time: 60000 });
+            },
+
+            FileUploaded: function (up, file, info) {
+                $("#loading").hide();
+                layer.close(loadingFlag);
+
+                let response = JSON.parse(info.response);
+
+                if (info.status == 200) {
+                    var res = JSON.parse(info.response);
+                    if(res.State){
+                        let tdUploadedState = document.getElementById(file.id).nextSibling.nextSibling;
+                        tdUploadedState.innerHTML = '<i class="fa fa-check success"></i>';
+                        let tdUploadedUrl = document.getElementById(file.id).previousSibling;
+                        tdUploadedUrl.firstChild.value = response.FileUrl;
+
+                        $('#file').val(res.FileUrl);
+                        if($.fn.valid){
+                            $('#file').valid();
+                        }
+                        $('#postfiles').hide();
+                        $('#selectfiles').hide();
+
+                        //if($(`#${parentFormId}`)){
+                        //    $(`#${parentFormId}`).valid();
+                        //}
+                    }else{
+                        document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = res.Message ||res.ErrorMsg;
+                    }
+                }
+                else {
+                    document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = info.response;
+                }
+            },
+            FilesRemoved: function (up, files) {
+
+                let fileId = files[0].id;
+                let trNeedRemove = document.getElementById(fileId).parentNode;
+                let tBody = document.getElementById('fileContainer');
+                tBody.removeChild(trNeedRemove);
+
+                $("#imgFile").show();
+                $('#selectfiles').show();
+                //$(`#${files[0].getSource().ruid}`).parent().show();
+
+                $('#postfiles').hide();
+                $('#localFile').hide();
+
+                $('#file').val(oldVal);
+                if($.fn.valid){
+                    $('#file').valid();
+                }
+
+            },
+            Error: function (up, err) {
+                errorFlag=true;
+                $("#loading").hide();
+                console.log(err.message);
+                if (err.code == -600) {
+                    //console.log("\n选择的文件太大了,可以根据应用情况，在upload.js 设置一下上传的最大大小");
+                    layer.alert('选择的文件太大了！'+fileSize+'以内');
+                } else if (err.code == -601) {
+                    //console.log("选择的文件后缀不对,可以根据应用情况，在upload.js进行设置可允许的上传文件类型");
+                    layer.alert('请选择正确的文件后缀格式！'+mime_type.extensions);
+                } else if (err.code == -602) {
+                    //document.getElementById('console').appendChild(document.createTextNode("\n这个文件已经上传过一遍了"));
+                    layer.alert('已经选择该文件！');
+
+                } else {
+                    let td = document.getElementById('fileContainer');
+                    let tdUploadedState;
+                    if(td.lastChild&&td.lastChild.previousSibling){
+                        tdUploadedState = td.lastChild.previousSibling;
+                    }
+                    if(tdUploadedState){
+                        tdUploadedState.innerHTML = '<i class="fa fa-times failed"></i>';
+                    }
+                    layer.alert('异常,请重新选择');
+                }
+
+            }
+        }
+    });
+
+    uploader.init();
+
+    function removeFile(id) {
+        uploader.removeFile(id);
+    }
+    function set_upload_param(up, filename, ret) {
+
+        up.start();
+    }
+
+    function update() {
+        if(!errorFlag){
+            $("#imgFile").hide();
+        }
+
+    }
+
+    //获取图片宽高
+    function  createReader(file, whenReady) {
+        var reader = new FileReader;
+        reader.onload = function (evt) {
+            var image = new Image();
+            image.onload = function () {
+                if (whenReady) whenReady(image);
+            };
+            image.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    //获取图片本地url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+
+</script>

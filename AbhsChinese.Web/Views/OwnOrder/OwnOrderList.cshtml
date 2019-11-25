@@ -1,0 +1,170 @@
+﻿@using AbhsChinese.Web.Models.StudentInfo
+@using AbhsChinese.Domain.Enum
+@model StudentInfoViewModel
+@{
+    ViewBag.Title = "我的订单";
+    ViewBag.Active = StudentMenus.我的订单;
+    ViewBag.Avatar = Model.Avatar;
+}
+@section Styles{
+    <link href="~/Content/laypage/skin/laypage.css" rel="stylesheet" />
+}
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("StudentInfo","Student")">个人中心</a><em><img src="/Images/StudentInfo/back.png"></em><a href="#">我的订单</a>
+        </div>
+        <div class="navigationr"></div>
+    </div>
+    <div class="contentbox">
+        @Html.Partial("_LeftBar")
+        <div class="contentright contentright2">
+            <div class="ctrbox">
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_top.png" /></div>
+                <div class="contrbox">
+                    <div class="orderlist">
+                        <div class="tab">
+                            <div class="tablist active fl" status="1">课程订单</div>
+                            <div class="tablist fl" status="2" style="display:none;">奖品兑换订单</div>
+                        </div>
+                        <div class="pageimgerror">
+                            <img class="error-img" src="~/Images/StudentInfo/dd.png" />
+                        </div>
+                        <table class="ordertable">
+                            <thead>
+                            <th>订单编号</th>
+                            <th>下单时间</th>
+                            <th>课程名称</th>
+                            <th>实付金额</th>
+                            <th>订单状态</th>
+                            <th>操作</th>
+                            </thead>
+                            <tbody id="tb1"></tbody>
+                        </table>
+                        <div class="pagebox">
+                            <div id="pageorder"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_bottom.png" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+<div class="bindschoolbox" style="display: none;">
+    <div class="closewindow"><img class="closbtn" src="~/Images/StudentInfo/clsoe1.png" /></div>
+    <div class="bindtitle">绑定校区</div>
+    <div class="bindcont">
+        <div class="list">
+            <img src="~/Images/StudentInfo/bindd.png" />
+        </div>
+        <div class="list">
+            <span class="fl">申请绑定</span>
+            <span class="fr">校长审批</span>
+        </div>
+        <div class="listinp">
+            <input type="text" placeholder="13295555658" />
+        </div>
+        <div class="info">海淀区上地校区</div>
+        <button class="winsub">确定</button>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/laypage/laypage.js"></script>
+    <script src="~/Scripts/StudentInfo/LeftBar.js"></script>
+    <script>
+        //我的订单页面tab
+        $('.contentright2 .tab .tablist').click(function () {
+            $('.orderlist .tab .tablist').removeClass('active');
+            $(this).addClass('active');
+            let status = $(this).attr("status");
+            LoadData(1, status);
+        })
+
+        $(function () {
+            //1表示状态为可用券
+            LoadData(1, 1);
+        })
+
+        function LoadData(pageindex, status) {
+            $.ajax({
+                url: '@Url.Action("GetStudentOrder", "OwnOrder")',
+                type: 'get',
+                data: { PageIndex: pageindex, Status: status },
+                dataType: 'json',
+                success: function (data) {
+                    if (status == 1) {
+                        if (data.Data.length > 0) {
+                            $('.pageimgerror').hide();
+                            $('.ordertable').show();
+                            $('.pagebox').show();
+
+                            let _self = $('#tb1');
+                            _self.empty();
+                            let str = "";
+                            for (var i = 0; i < data.Data.length; i++) {
+                                str += '<tr>';
+                                str += '<td>' + data.Data[i].Yod_OrderNo + '</td>';
+                                str += '<td>' + data.Data[i].OrderTime + '</td>';
+                                str += '<td>' + data.Data[i].CourseName + '</td>';
+                                str += '<td>' + (data.Data[i].Yod_PayAmount == "" ? 0 : "￥" + data.Data[i].Yod_PayAmount) + '</td>';
+                                str += '<td>' + data.Data[i].Status + '</td>';
+                                switch (data.Data[i].Yod_Status) {
+                                    case 1:
+                                    case 2:
+                                        str += `<td class="gopay"><em style="cursor:pointer;" onclick="javascript:location.href='/OwnOrder/Payment/${data.Data[i].Yod_Id}'">立即付款</em></td>`;
+                                        break;
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    case 6:
+                                    case 7:
+                                        str += `<td class="gopay"><em style="cursor:pointer;" onclick="javascript:location.href='/OwnOrder/OrderDetail/${data.Data[i].Yod_Id}'">查看订单</em></td>`;
+                                        break;
+                                }
+                                str += '</tr>';
+                            }
+                            _self.append(str);
+                        }
+                        else
+                        {
+                            $('.pageimgerror').show();
+                            $('.ordertable').hide();
+                            $('.pagebox').hide();
+                        }
+                    }
+                    else if (status == 2) {
+                        //奖品领取订单
+                    }
+
+
+                    var pages = Math.ceil(data.TotalRecord / data.PageSize); //得到总页数
+                    //调用分页
+                    laypage({
+                        cont: 'pageorder',
+                        pages: pages,
+                        curr: pageindex,
+                        prev: '<',
+                        next: '>',
+                        jump: function (obj, first) {
+                            if (!first) { //一定要加此判断，否则初始时会无限刷新
+                                pageindex = obj.curr;
+                                LoadData(pageindex, status);
+                            }
+                        }
+                    })
+                }
+            });
+        }
+    </script>
+}

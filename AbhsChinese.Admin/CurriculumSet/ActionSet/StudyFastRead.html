@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>快速阅读</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+
+    <style>
+        .text-block:before {
+            content: "训练文本";
+        }
+
+        #studytext {
+            padding: 3px;
+            width: 100%;
+            height: 500px;
+        }
+
+        .audio-block input.form-control {
+            padding: 5px;
+        }
+
+        .audio-block .input-group-btn .btn {
+            padding: 3px 5px;
+        }
+
+        .audio-block .audio-list {
+            height: 470px;
+            margin: 10px 0px 0px;
+            padding: 5px;
+            overflow: auto;
+        }
+
+            .audio-block .audio-list li {
+                margin-bottom: 10px;
+                width: 100%;
+                padding: 5px;
+                border: 1px solid #808080;
+            }
+
+        .MakeBox div {
+            margin: 10px;
+            min-height: 30px;
+            line-height: 30px;
+        }
+
+        .MakeBox .kcb-list {
+            width: calc(100% - 80px);
+            position: absolute;
+            top: 30px;
+            left: 80px;
+            min-height: 30px;
+            max-height: 200px;
+            background: #fff;
+            border: 1px solid #808080;
+            background: #fff;
+            overflow: auto;
+            display: none;
+        }
+
+        .MakeBox .control-label {
+            width: 120px;
+            text-align: right;
+            float: left;
+            padding: 0px 5px;
+        }
+
+        .MakeBox select.form-control {
+            padding: 0px 5px;
+        }
+
+        .MakeBox .form-control.sma {
+            width: calc(25% - 120px);
+            float: left;
+        }
+
+        .MakeBox .form-control.big {
+            width: calc(100% - 120px);
+            float: left;
+        }
+
+        .MakeBox #textbox {
+            height: 480px;
+            overflow: auto;
+        }
+
+            .MakeBox #textbox #showTable {
+                height: 200px;
+                width: 800px;
+                margin: 139px auto;
+                border: 1px solid #808080;
+            }
+
+                .MakeBox #textbox #showTable tr {
+                    height: 50px;
+                    text-align: center;
+                    vertical-align: middle;
+                }
+    </style>
+
+
+
+    <script>
+        $(function () {
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                var ChapterSet = CurriculumInfo.chapterSet;
+                //创建默认的动作
+                var action = new top.StudyFastRead({
+                    actionId: "studyfastread" + randomString(20),
+                    showModel: "1",
+                    showNum: 5,
+                    goldCoins: 0,
+                    speed: 1000,
+                    
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                var oldstr = "";
+                //加载数据
+                (function LoadData() {
+                    if (CurriculumInfo.selectAction instanceof top.StudyFastRead) {//如果是修改的动作
+                        action = new top.StudyFastRead(CurriculumInfo.selectAction);
+                        oldstr = action.textstr;
+                    }
+                    $("#kcbInput").attr("mediaid", action.kcbid).val(action.kcbtext);
+                    $("#studytext").val(action.textstr);
+                    $("#showmodel").val(action.showModel);
+                    $("#speedtime").val(action.speed);
+                    $("#wordnum").val(action.showNum);
+                    $("#goldsnum").val(action.goldCoins);
+                })();
+                $("#kcbInput").focus(function () {
+                    LoadKCB($(this).val() || "");
+                    $(".kcb-list").show();
+                    return false;
+                });
+                $("#kcbInput").blur(function () {
+                    setTimeout(function () {
+                        $(".kcb-list").hide();
+                    }, 500);
+                    return false;
+                });
+                $("#kcbInput").keyup(function () {
+                    $(this).attr("mediaid", "");
+                    LoadKCB($(this).val());
+                    return false;
+                });
+
+                var oldstr = null;
+                function LoadKCB(str) {
+                    if (str == oldstr) {//防止相同的文字多次重复调用
+                        return;
+                    }
+                    oldstr = str;
+                    $(".kcb-list").html(`<li class="kcb-media" mediaid="" mediatext="${str}"><span class="kcb-system">自定义开场白:</span>${str}</li>`);
+                    $.ajax({
+                        url: "/ResourceGroup/GetPrologues",
+                        type: "post",
+                        data: { description: str },
+                        dataType: "json",
+                        success: function (data) {
+                            $(".kcb-list").html(`<li class="kcb-media" mediaid="" mediatext="${str}"><span class="kcb-system">自定义开场白:</span>${str}</li>`);
+                            var data = data.Data;
+                            for (var i = 0; i < data.length; i++) {
+                                var d = data[i];
+                                $(".kcb-list").append(`<li class="kcb-media" mediaid="${d.MediaID}" mediatext="${d.MediaName}"><span class="kcb-system">系统开场白:</span>${d.MediaName}</li>`);
+                            }
+                            $(".kcb-list li").click(function () {
+                                action.kcbtext = $(this).attr("mediatext");
+                                $("#kcbInput").val(action.kcbtext);
+                                action.kcbid = $(this).attr("mediaid");
+                                $("#kcbInput").attr("mediaid", action.kcbid);
+                                $(".kcb-list").hide();
+                            });
+                        },
+                        error: function (e) {
+                            $(".kcb-list").append(`<li class="kcb-media" mediaid="">数据加载失败</li>`);
+                        }
+                    })
+                }
+
+                $("#studytext").keyup(function () {
+                    action.textstr = $(this).val();
+                })
+                $("#studytext").blur(Show);
+
+                $("#showmodel").change(function () {
+                    action.showModel = $(this).val();
+                    Show();
+                });
+
+
+                $("#speedtime").keyup(function () {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.speed = val;
+                })
+                $("#speedtime").blur(Show);
+
+                $("#wordnum").keyup(function () {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.showNum = val;
+                })
+                $("#wordnum").blur(Show);
+
+                $("#goldsnum").keyup(function () {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.goldCoins = val;
+                })
+
+                var timer = null;
+                function Show() {
+                    if (timer) {
+                        clearInterval(timer);
+                    }
+                    var type = $("#showmodel").val();
+                    var time = parseInt($("#speedtime").val()) || 0;
+                    var length = parseInt($("#wordnum").val()) || 0;
+                    var str = $("#studytext").val();
+                    var mo = 4;
+                    if (type == "1") {
+                        $("#showTable tr").html("<td style='width:400px;'></td><td style='width:400px;'></td>");
+                        mo = 8;
+                    }
+                    else {
+                        $("#showTable tr").html("<td></td>");
+                    }
+                    var o = 0;
+                    function change() {
+                        var start = o * length;
+                        var tds = $("#showTable td");
+                        if (start < str.length) {
+                            var s = str.substr(start, length);
+                            tds.html("");
+                            tds.eq(o % mo).html(s);
+                        }
+                        o++;
+                    }
+                    timer = setInterval(change, time);
+                    change();
+                };
+
+                $("#OkBtn").click(function () {
+                    if (action.textstr.trim() != "") {
+                        if (action.textstr != oldstr) {//如果文字更改了,重新上传
+                            var issuccess = true;
+                            $.ajax({
+                                url: "/ResourceGroup/AddTextObject",
+                                type: "post",
+                                dataType: "json",
+                                data: { content: action.textstr },
+                                async: false,
+                                success: function (data) {
+                                    action.textid = data.Data + "";
+                                },
+                                error: function (e) {
+                                    issuccess = false;
+                                    alert("保存失败");
+                                }
+                            })
+                            if (!issuccess) return;
+                        }
+                        action.kcbtext = $("#kcbInput").val();
+                        action.kcbid = $("#kcbInput").attr("mediaid");
+                        if (action.kcbid.trim() == "" && action.kcbtext.trim() != "") {
+                            var issuccess = false;
+                            $.ajax({
+                                url: "/ResourceGroup/AddPrologues",
+                                type: "post",
+                                dataType: "json",
+                                async: false,
+                                data: { description: action.kcbtext },
+                                success: function (data) {
+                                    issuccess = true;
+                                    action.kcbid = data.Data + "";
+                                },
+                                error: function (e) {
+                                }
+                            })
+                            if (!issuccess) { alert("开场白录入失败.请重试"); return; }
+                        }
+                        if (CurriculumInfo.selectAction instanceof top.StudyFastRead) {
+                            CurriculumInfo.SetAction(action);
+                        }
+                        else {
+                            CurriculumInfo.AddAction(action);
+                        }
+                        var frame = top.frames["ActionSet"];
+                        if (frame) {
+                            $(frame).hide();
+                        }
+                    }
+                    else {
+                        alert("请选择音频");
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">快速阅读</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <div class="text-block block-box">
+                    <textarea id="studytext"></textarea>
+                </div>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div style="position:relative;">
+                <label class="col2 control-label">开场白</label>
+                <input type="text" class="form-control big" id="kcbInput" mediaid="" placeholder="请输入开场白" autocomplete="off" />
+                <ul class="kcb-list"></ul>
+            </div>
+            <div>
+                <label class="col2 control-label">训练模式</label>
+                <select id="showmodel" class="form-control sma">
+                    <option value="1">显示半行</option>
+                    <option value="2">显示整行</option>
+                </select>
+                <label class="col2 control-label">切换速度(毫秒)</label>
+                <input id="speedtime" type="text" class="form-control sma" placeholder="请输入整数" />
+                <label class="col2 control-label">显示字数</label>
+                <input id="wordnum" type="text" class="form-control sma" placeholder="请输入整数" />
+                <label class="col2 control-label">金币个数</label>
+                <input id="goldsnum" type="text" class="form-control sma" placeholder="请输入整数" />
+            </div>
+            <div>
+                <div id="textbox" class="form-control" style="height:500px;">
+                    <table id="showTable">
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

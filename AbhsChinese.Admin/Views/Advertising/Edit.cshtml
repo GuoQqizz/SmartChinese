@@ -1,0 +1,241 @@
+﻿@using System.Web.UI.WebControls
+@using AbhsChinese.Admin.Models.Advertising
+@model AdvertingInputModel
+@{
+    ViewBag.PageTitle = "更换课程";
+    ViewBag.ListTitle = Model.Bap_Code + "推荐位";
+    //Layout = "~/Views/Shared/_Forms.cshtml";
+}
+@section Styles{
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <style>
+        .verifyTip {
+            color: red;
+        }
+
+        .wrapper-content {
+            padding: 20px 10px 0px;
+        }
+
+        .m-b {
+            margin-bottom: 1px;
+        }
+
+        .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+            .switchery > small {
+                width: 20px;
+                height: 20px;
+            }
+
+        .wrapper-content {
+            height: 100%;
+        }
+
+        .ibox {
+            position: relative;
+        }
+
+        .ibox-content {
+            min-height: 647px;
+        }
+
+        .control-group {
+            position: absolute;
+            width: 100%;
+            bottom: 20px;
+        }
+
+        .img-label {
+            position: relative;
+        }
+
+            .img-label em {
+                position: absolute;
+                top: 25px;
+                right: 23px;
+                font-style: normal;
+                font-size: 80%;
+                color: #b3b3b3;
+            }
+    </style>
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox-title">
+            <h3 class="text-center mt-2">
+                @ViewBag.ListTitle
+            </h3>
+        </div>
+        <div class="ibox" style="margin-bottom: 0px;">
+            <div class="ibox-content" style="border:none">
+                <form id="ajaxForm" class="form" method="post">
+                    <input type="hidden" name="Bad_PosId" value="@Model.Bad_PosId" />
+                    <input type="hidden" name="Bad_Id" value="@Model.Bad_Id" />
+                    <input type="hidden" name="Bad_Status" value="@Model.Bad_Status" />
+                    <input type="hidden" name="Bad_Url" value="@Model.Bad_Url" />
+                    <div id="upload">
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            <label class="required col-2 col-form-label  img-label text-right"> 推荐图片：<em>(1690*520)</em></label>
+                            <div class="col-8">
+                                @{
+                                    Html.RenderPartial("_FileUpload", new ViewDataDictionary
+                                        {
+                                           { "FilePathVal" , Model.Bad_ImageUrl },//当前文件数据库地址
+                                           { "FilePath" , Model.Bad_ImageUrlShow },//当前文件访问地址
+                                           { "FieldName" , "Bad_ImageUrl" },//表单元素name
+                                           { "FileType" , 3 },//文件类型  1视频 2 音频 3 图片 4 zip
+                                           { "FileExtension" , "" },//支持的文件格式
+                                           { "FileSize","2m"},//文件大小
+                                           { "ImgWidth","1690"},//图片宽 0表示不限制
+                                           { "ImgHeight","520"},//图片高 0表示不限制
+                                           { "ImgLimitType","1"}//限制类型0:不限制，1:等于,2:小于等于,3:等比例
+                                        });
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label text-right required">推荐课程：</label>
+                        <div class="col-8">
+                            <input type="number" name="Bad_ReferId" id="Bad_ReferId" class="form-control refer-course" value="@(Model.Bad_ReferId>0?Model.Bad_ReferId.ToString():"")" placeholder="请输入课程Id" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row control-group pr-3">
+                        <div class="col-12   text-center">
+                            <button class="btn btn-default " type="button" id="btn_preview">返回</button>
+                            <button class="btn btn-primary ml-2 " type="button" id="btn_save">保存</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/js/tagInputs")
+    @Scripts.Render("~/bundles/js/typehead")
+
+
+
+    <script>
+
+        let courseList = [{ key: @Model.Bad_ReferId, value: '' }];
+        courseList = courseList.filter(s=>s.key>0);
+
+        $.validator.addMethod("validCourseId", function (value) {
+            return courseList.some(c=>c.key.toString() == value.toString());
+        }, '请输入有效的课程Id');
+
+
+        $(function () {
+            setMinHeight('ibox-content',240);
+            $('#ajaxForm').validate({
+                rules: {
+                    Bad_ImageUrl: {
+                        required: true
+                    },
+                    Bad_ReferId: {
+                        required: true,
+                        digits: true,
+                        validCourseId: true,
+
+                    }
+                },
+                messages: {
+                    Bad_ImageUrl: {
+                        required: "请上传图片"
+                    },
+                    Bad_ReferId: {
+                        required: "请输入有效的课程Id",
+                        validCourseId: "请输入有效的课程Id",
+                        digits: "请输入数字"
+                    }
+                },
+                submitHandler: throttle(function(form){
+                    ajaxSubmit();
+                },1000),
+                ignore: [],
+            });
+
+            $("#btn_save").click(throttle(function(){
+                ajaxSubmit();
+            },1000));
+            $('#btn_preview').on('click',function(){
+                //window.history.go(-1);
+                window.location.href = "@Url.Action("Index", "Advertising")";
+            })
+
+            $(".refer-course").typeahead({
+                source: function (query, process) {
+                    return $.get('/Advertising/GetCourse?idOrName=' + query, function (data) {
+                        //console.log(data);
+                        if (data && data.length > 0) {
+                            courseList = data;
+                        }
+                        let arr = [];
+                        let isNum = !isNaN(query);//isNum表示输入的是id，取key
+                        data.forEach(d=> {
+                            if (isNum) {
+                                arr.push(d.key + '');
+                            } else {
+                                arr.push(d.value);
+                            }
+                        })
+                        return process(arr);
+                    })
+                },
+                minLength: 5,
+                items: 10,
+            });
+
+
+        });
+
+        function ajaxSubmit() {
+            if (!$("#ajaxForm").valid()) {
+                return false;
+            }
+            $.ajax({
+                url: '@Url.Action("SaveAdertising", "Advertising")',
+                type: "post",
+                data: $('#ajaxForm').serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.State) {
+                        window.layer.alert(data.ErrorMsg,
+                           { icon: 1 },
+                           function () {
+                               window.layer.closeAll();
+                               window.location.href='@Url.Action("Index", "Advertising")';
+                           });
+                    } else {
+                        window.layer.alert(data.ErrorMsg,
+                           { icon: 2 },
+                           function () {  window.layer.closeAll(); });
+                    }
+                },
+                error: function (data) {
+                    window.layer.alert(data.ErrorMsg, { icon: 2 }, function () {  window.layer.closeAll(); });
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+
+

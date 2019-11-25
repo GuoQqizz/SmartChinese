@@ -1,0 +1,1042 @@
+﻿@model AbhsChinese.Web.Models.CurriculumSetViewModel.Chapter
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>橙同学大语文</title>
+    @Styles.Render("~/Content/curriculum")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/LessonStudy/javascript/echarts.min.js"></script>
+    <script src="~/Content/LessonStudy/javascript/jquery.raty.js"></script>
+    @Scripts.Render("~/bundles/curriculumOther")
+    @Scripts.Render("~/bundles/curriculum")
+    <script src="~/Content/jssdk6_cn_sent_online_MIC/chivox.min.js"></script>
+    <style>
+        #submitLoding {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: none;
+            background-image:url("/Content/LessonStudy/img/maskLeftImg.png"),url("/Content/LessonStudy/img/maskRightImg.png"),url("/Content/LessonStudy/img/maskBg.png");
+            background-repeat:no-repeat,no-repeat,no-repeat;
+            background-position:left bottom,right bottom,center center;
+            background-size:18.8% auto,18.8% auto,100% 100%;
+            position:absolute;
+            top:0px;
+            left:0px;
+            z-index:100;
+        }
+
+            #submitLoding .innerLoding {
+                height: 70px;
+                width: 100%;
+                position: absolute;
+                top: 50%;
+                left: 0;
+                margin-top: -35px;
+                text-align: center;
+            }
+
+                #submitLoding .innerLoding img {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                #submitLoding .innerLoding p {
+                    font-size: 14px;
+                    color: #999999;
+                    line-height:14px;
+                    margin-top:6px;
+                }
+    </style>
+</head>
+<body>
+    <div class="inquireMask">
+        <div class="inquireMaskContent">
+            <div class="inquire">
+                <div class="inquireContent">
+                    <div class="inquireTitle">是否继续上次进度学习？</div>
+                    <div class="inquireBtn verticalcenter">
+                        <div class="inquireLeftBtn">重新学习</div>
+                        <div class="inquireRightBtn">继续学习</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="errorMask">
+        <div class="errorMaskContent">
+            <div class="errors">
+                <div class="errorContent">
+                    <div class="errorTitle">sdfasdfasdf</div>
+                    <div class="errorBtn">确定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="backToParent" style="display:block;" href="/LearningCenter/CoruseInfo/@Model.courseId"></a>
+    <div class="mask">
+        <div class="maskContent">
+
+        </div>
+    </div>
+    <div id="submitLoding">
+        <div class="innerLoding">
+            <img src="/Images/StudentInfo/loading.gif" />
+            <p>正在生成学习报告</p>
+        </div>
+    </div>
+    <!--学习音频结构-->
+    <script id="studyAudioScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox audioBox verticalcenterWrap">
+                <%if(_this.audioImgSrc!==""&&_this.audioTextSrc==undefined){%>
+                <img src="<%=_this.audioImgSrc%>" class="audioImgBox" alt="" />
+                <%}else if(_this.audioImgSrc==""&&_this.audioTextSrc==undefined){%>
+                <p class="nothingTitle">暂无图片文字</p>
+                <%}else if(_this.audioImgSrc==""&&_this.audioTextSrc!==undefined){%>
+                <div class="audioTextBox">
+                    <div class="readContent">
+                        <%for (var i = 0; i <_this.audioTextSrc.length; i++) {%>
+                            <p name="lyric" class="lyricContent" id="p<%=i%>"><%=_this.audioTextSrc[i][1]%></p>
+                            <%}%>
+                    </div>
+                </div>
+                <%}else if(_this.audioImgSrc!==""&&_this.audioTextSrc!==undefined){%>
+                <%if(_this.wordPosition=="top"){%>
+                <div class="audioTextBox2">
+                    <div class="readContent">
+                        <%for (var i = 0; i <_this.audioTextSrc.length; i++) {%>
+                            <p name="lyric" class="lyricContent" id="p<%=i%>"><%=_this.audioTextSrc[i][1]%></p>
+                            <%}%>
+                    </div>
+                </div>
+                <img src="<%=_this.audioImgSrc%>" class="audioImgBox" alt="" />
+                <%}else if(_this.wordPosition=="bottom"){%>
+                <img src="<%=_this.audioImgSrc%>" class="audioImgBox" alt="" />
+                <div class="audioTextBox2">
+                    <div class="readContent">
+                        <%for (var i = 0; i <_this.audioTextSrc.length; i++) {%>
+                            <p name="lyric" class="lyricContent" id="p<%=i%>"><%=_this.audioTextSrc[i][1]%></p>
+                            <%}%>
+                    </div>
+                </div>
+                <%}%>
+                <%}%>
+            </div>
+        </div>
+    </script>
+    <!--学习视频结构-->
+    <script id="studyVideoScriptDiv" type="text/template">
+        <div class="videoBox">
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <video class="videos" src="<%=_this.videoSrc%>"></video>
+            <div class="playVideo"></div>
+            <%}else{%>
+            <video class="videos" src="<%=_this.videoSrc%>"></video>
+            <div class="playVideo active"></div>
+            <%}%>
+        </div>
+    </script>
+    <!--学习图文结构-->
+    <script id="studyArticleScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <%if(_this.articleImgSrc!==""&&_this.articleTextSrc==""){%>
+                <img src="<%=_this.articleImgSrc%>" class="articleImgBox articleImgBox2" alt="" />
+                <%}else if(_this.articleImgSrc==""&&_this.articleTextSrc==""){%>
+                <p class="nothingTitle">暂无图片文字</p>
+                <%}else if(_this.articleImgSrc==""&&_this.articleTextSrc!==""){%>
+                <div class="articleTextBox articleTextBox2 verticalcenter"><%=_this.articleTextSrc%></div>
+                <%}else if(_this.articleImgSrc!==""&&_this.articleTextSrc!==""){%>
+                <%if(_this.wordPosition=="top"){%>
+                <div class="articleTextBox"><%=_this.articleTextSrc%></div>
+                <img src="<%=_this.articleImgSrc%>" class="articleImgBox" alt="" />
+                <%}else if(_this.wordPosition=="bottom"){%>
+                <img src="<%=_this.articleImgSrc%>" class="articleImgBox" alt="" />
+                <div class="articleTextBox articleTextBox"><%=_this.articleTextSrc%></div>
+                <%}%>
+                <%}%>
+            </div>
+            <div class="subMit">确定</div>
+        </div>
+    </script>
+    <!--学习朗读结构-->
+    <script id="studyRecitationScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div id="playText" class="recitationTextBox verticalcenterWrap"><%=_this.recitationSrc.replace(/[，。“”：？！《》、]/g,"")%></div>
+                <div id="hideText" style="display:none;"><%=_this.recitationSrc%></div>
+            </div>
+            <div class="todos recitationTodos verticalcenter">
+                <div class="todoList verticalcenterWrap startLY">
+                    <a class="beginRecordImg"></a>
+                    <span>开始录音</span>
+                </div>
+                <div class="todoList verticalcenterWrap doneLY">
+                    <a class="uploadImg"></a>
+                    <span>完成朗读</span>
+                </div>
+            </div>
+        </div>
+        <div class="learnCenterBox learnCenter_Recitation">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <div class="playBox">
+                <div class="myRecitationScore">
+                    <p id="myScore" class="verticalcenter"><span id="scoreNum" style="font-size: 40px;margin-right: 5px;">98</span>分</p>
+                    <p id="beyondAllCountry" class="verticalcenter">您的朗读水平超过了全国<span id="chaoyue">95%</span>的小伙伴！</p>
+                    <div id="scoreDistribution"></div>
+                </div>
+            </div>
+            <div class="Todos verticalcenter">
+                <div class="TodosRevoke">重新录音</div>
+                <div class="TodosSubmit">确定</div>
+            </div>
+        </div>
+    </script>
+    <!--快速阅读-简单模式结构-->
+    <script id="studyFastReadEasyScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="fastReadEasyPlayBox">
+                <%for(i=0;i<_this.fastReadText.length;i +=_this.showNum){%>
+                    <div class="fastReadEasyReadList">
+                        <div class="fastReadEasyReadListContent verticalcenter"></div>
+                    </div>
+                    <%}%>
+            </div>
+        </div>
+    </script>
+    <!--快速阅读结构-->
+    <script id="studyFastReadScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="fastReadPlayBox">
+                <%for (var i = 0; i < _this.fastReadText.length; i += _this.showNum) {%>
+                <%if(_this.showModel == "2"){%>
+                <div class='fastReadList fastReadList1'><%=_this.fastReadText.slice(i,i+_this.showNum)%></div>
+                <%}else if(_this.showModel == "1"){%>
+                <div class='fastReadList fastReadList2'><%=_this.fastReadText.slice(i,i+_this.showNum)%></div>
+                <%}%>
+                <%}%>
+            </div>
+        </div>
+    </script>
+    <!--判断题结构-->
+    <script id="studyJudgmentScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">判断题</div>
+                <%if (list.StemType==0) {%>
+                <div class="learnCenterStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="learnCenterStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="learnCenterStemContent"><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="learnCenter_judgmentOption learnCenter_doneJudgmentOption verticalcenter">
+                    <div class="learnCenter_judgmentOptions learnCenter_wrongOption verticalcenter">
+                        <span class="sign"></span>
+                        <span class="signCont">错误</span>
+                    </div>
+                    <div class="learnCenter_judgmentOptions learnCenter_rightOption verticalcenter">
+                        <span class="sign"></span>
+                        <span class="signCont">正确</span>
+                    </div>
+                </div>
+            </div>
+            <div class="subMit">提交</div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="baseTitle">判断题</div>
+                    <%if (list.StemType==0) {%>
+                    <div class="learnCenterStem">
+                        <img src="<%=list.Stem%>" alt="" />
+                    </div>
+                    <%}else{%>
+                    <div class="learnCenterStem clearfloat">
+                        <span class="fl jian"></span>
+                        <span class="learnCenterStemContent"><%=list.Stem%></span>
+                    </div>
+                    <%}%>
+                    <div class="learnCenter_judgmentOption learnCenter_AnswerjudgmentOption verticalcenter" style="margin-top: 30px;">
+                        <div class="learnCenter_judgmentOptions learnCenter_wrongOption verticalcenter">
+                            <span class="sign"></span>
+                            <span class="signCont">错误</span>
+                        </div>
+                        <div class="learnCenter_judgmentOptions learnCenter_rightOption verticalcenter">
+                            <span class="sign"></span>
+                            <span class="signCont">正确</span>
+                        </div>
+                    </div>
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <!--选择题结构-->
+    <script id="studyOptionScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">选择题</div>
+                <%if (list.StemType==0 && list.OptionType==0) {%>
+                <div class="learnCenterStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <div class="learnCenter_OptionOption1 learnCenter_OptionOption verticalcenter" style="margin-top:60px;">
+                    <%for(var j=0;j<list.Options.length;j++){%>
+                        <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+                            <img src="<%=list.Options[j].Text%>" />
+                            <span class="optionNum optionNum<%=j%>"></span>
+                        </div>
+                        <%}%>
+                </div>
+                <%}else if(list.StemType==0 && list.OptionType==1){%>
+                <div class="learnCenter_OptionContent verticalcenter">
+                    <div class="learnCenter_OptionStem verticalcenter">
+                        <img src="<%=list.Stem%>" alt="" />
+                    </div>
+                    <div class="learnCenter_OptionOption2 learnCenter_OptionOption">
+                        <%for(var j=0;j<list.Options.length;j++){%>
+                            <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+                                <span class="optionNum optionNum<%=j%> fl"></span>
+                                <span class="optionPont fl">·</span>
+                                <span class="optionCon"><%=list.Options[j].Text%></span>
+                            </div>
+                            <%}%>
+                    </div>
+                </div>
+                <%}else if(list.StemType==1 && list.OptionType==0){%>
+                <div class="learnCenterStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="learnCenterStemContent"><%=list.Stem%></span>
+                </div>
+                <div class="learnCenter_OptionOption1 learnCenter_OptionOption verticalcenter" style="margin-top:100px;">
+                    <%for(var j=0;j<list.Options.length;j++){%>
+                        <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+                            <img src="<%=list.Options[j].Text%>" />
+                            <span class="optionNum optionNum<%=j%>"></span>
+                        </div>
+                        <%}%>
+                </div>
+                <%}else if(list.StemType==1 && list.OptionType==1){%>
+                <div class="learnCenterStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="learnCenterStemContent"><%=list.Stem%></span>
+                </div>
+                <div class="learnCenter_OptionOption3 learnCenter_OptionOption fl">
+                    <%for(var j=0;j<list.Options.length;j++){%>
+                        <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+                            <span class="optionNum optionNum<%=j%> fl"></span>
+                            <span class="optionPont fl">·</span>
+                            <span class="optionCon"><%=list.Options[j].Text%></span>
+                        </div>
+                        <%}%>
+                </div>
+                <%}%>
+            </div>
+            <div class="subMit">提交</div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="baseTitle">选择题</div>
+                    <%if (list.StemType==0 && list.OptionType==0) {%>
+                    <div class="learnCenterStem">
+                        <img src="<%=list.Stem%>" alt="" />
+                    </div>
+                    <div class="learnCenter_OptionOption1 learnCenter_AnswerOptionOption verticalcenter">
+                        <%for(var j=0;j<list.Options.length;j++){%>
+                            <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+                                <img src="<%=list.Options[j].Text%>" />
+                                <span class="optionNum optionNum<%=j%>"></span>
+                            </div>
+                            <%}%>
+                    </div>
+                    <%}else if(list.StemType==0 && list.OptionType==1){%>
+                    <div class="learnCenter_OptionContent clearfloat">
+                        <div class="learnCenter_OptionStem verticalcenter fl" style="height: 100%;">
+                            <img src="<%=list.Stem%>" alt="" />
+                        </div>
+                        <div class="learnCenter_OptionOption2 learnCenter_AnswerOptionOption fl">
+                            <%for(var j=0;j<list.Options.length;j++){%>
+                                <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+                                    <span class="optionNum optionNum<%=j%> fl"></span>
+                                    <span class="optionPont fl">·</span>
+                                    <span class="optionCon"><%=list.Options[j].Text%></span>
+                                </div>
+                                <%}%>
+                        </div>
+                    </div>
+                    <%}else if(list.StemType==1 && list.OptionType==0){%>
+                    <div class="learnCenterStem clearfloat">
+                        <span class="fl jian"></span>
+                        <span class="learnCenterStemContent"><%=list.Stem%></span>
+                    </div>
+                    <div class="learnCenter_OptionOption1 learnCenter_AnswerOptionOption verticalcenter">
+                        <%for(var j=0;j<list.Options.length;j++){%>
+                            <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+                                <img src="<%=list.Options[j].Text%>" />
+                                <span class="optionNum optionNum<%=j%>"></span>
+                            </div>
+                            <%}%>
+                    </div>
+                    <%}else if(list.StemType==1 && list.OptionType==1){%>
+                    <div class="learnCenterStem clearfloat">
+                        <span class="fl jian"></span>
+                        <span class="learnCenterStemContent"><%=list.Stem%></span>
+                    </div>
+                    <div class="learnCenter_OptionOption3 learnCenter_AnswerOptionOption">
+                        <%for(var j=0;j<list.Options.length;j++){%>
+                            <div class="learnCenter_OptionOptionList learnCenter_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+                                <span class="optionNum optionNum<%=j%> fl"></span>
+                                <span class="optionPont fl">·</span>
+                                <span class="optionCon"><%=list.Options[j].Text%></span>
+                            </div>
+                            <%}%>
+                    </div>
+                    <%}%>
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <!--填空题结构-->
+    <script id="studyFillScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">填空题</div>
+                <div class="learnCenter_fillStem">
+                    <div class="learnCenter_fillStemText">
+                        <%for(var i=0;i<list.StemArr.length;i++){%>
+                            <%if(i==list.StemArr.length-1){%>
+                            <%=list.StemArr[i]%>
+                            <%}else{%>
+                            <%=list.StemArr[i]%>（<input type="text" onpaste="return false" style="width: <%=lenArr[i]%>px;" />）
+                            <%}%>
+                            <%}%>
+                    </div>
+                </div>
+            </div>
+            <div class="subMit">提交</div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="baseTitle">填空题</div>
+                    <div class="learnCenter_fillAnswerStem">
+                        <div class="learnCenter_fillAnswerStemText">
+                            <%for(var i=0;i<list.StemArr.length;i++){%>
+                                <%if(i==list.StemArr.length-1){%>
+                                <%=list.StemArr[i]%>
+                                <%}else{%>
+                                <%=list.StemArr[i]%>（<input type="text" readonly value="" style="width: <%=lenArr[i]%>px;" />）
+                                <%}%>
+                                <%}%>
+                        </div>
+                    </div>
+
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <!--连线题结构-->
+    <script id="studyLinkingScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">连线题</div>
+                <%if (list.StemType==0) {%>
+                <div class="learnCenterStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="learnCenterStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="learnCenterStemContent"><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="learnCenter_linkingPart" data_pair="<%=list.LeftOptions.length%>">
+                    <div class="show">
+                        <div class="showleft">
+                            <%for (var i = 0; i < list.LeftOptions.length; i++) {%>
+                            <%if (list.LeftOptionType == 0) {%>
+                            <span class="showitem" thisId="<%=list.LeftOptions[i].Key%>">
+                                <img src="<%=list.LeftOptions[i].Text%>" />
+                            </span>
+                            <%} else {%>
+                            <span class="showitem" thisId="<%=list.LeftOptions[i].Key%>"><%=list.LeftOptions[i].Text%></span>
+                            <%}%>
+                            <%}%>
+                        </div>
+                        <div class="showright">
+                            <%for (var i = 0; i < list.RightOptions.length; i++) {%>
+                            <%if (list.RightOptionType == 0) {%>
+                            <span class="showitem" thisId="<%=list.RightOptions[i].Key%>">
+                                <img src="<%=list.RightOptions[i].Text%>" />
+                            </span>
+                            <%} else {%>
+                            <span class="showitem" thisId="<%=list.RightOptions[i].Key%>"><%=list.RightOptions[i].Text%></span>
+                            <%}%>
+                            <%}%>
+                        </div>
+                        <canvas class="canvas"></canvas>
+                        <canvas class="backcanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="Todos verticalcenter">
+                <div class="TodosRevoke">重置</div>
+                <div class="TodosSubmit">提交</div>
+            </div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="baseTitle">连线题</div>
+                    <%if (list.StemType==0) {%>
+                    <div class="learnCenterStem">
+                        <img src="<%=list.Stem%>" alt="" />
+                    </div>
+                    <%}else{%>
+                    <div class="learnCenterStem clearfloat">
+                        <span class="fl jian"></span>
+                        <span class="learnCenterStemContent"><%=list.Stem%></span>
+                    </div>
+                    <%}%>
+                    <div class="learnCenter_LinkingAnswer">
+                        <div class="contrast clearfloat">
+                            <div class="StandardPart clearfloat fl">
+                                <div class="StandardPartTitle fl">参考答案</div>
+                                <div class="StandardContent fl"></div>
+                            </div>
+                            <div class="mySubAnswer clearfloat fl">
+                                <div class="mySubAnswerTitle fl">你的作答</div>
+                                <div class="mySubAnswerContent fl"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <!--选择填空结构-->
+    <script id="studyOptionFillScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">选择填空</div>
+                <div class="verticalcenterWrap" style="width: 100%;height: 80%;">
+                    <div class="learnCenter_OptionFillStem clearfloat">
+                        <%for(var i=0;i<list.StemArr.length;i++){%>
+                            <div class="learnCenter_OptionFillStemText fl"><%=list.StemArr[i]%></div>
+                            <%if(i!=list.StemArr.length-1){%>
+                            <div class="learnCenter_OptionFillStemList fl"></div>
+                            <%}%>
+                            <%}%>
+                    </div>
+                    <div class="learnCenter_OptionList">
+                        <%for(var k=0;k<list.Options.length;k++){%>
+                            <%if (list.OptionType == 0) {%>
+                            <div class="learnCenter_FillOptionList" optionId="<%=list.Options[k].Key%>">
+                                <img src="<%=list.Options[k].Text%>" alt="" />
+                            </div>
+                            <%} else {%>
+                            <div class="learnCenter_FillOptionList" optionId="<%=list.Options[k].Key%>"><%=list.Options[k].Text%></div>
+                            <%}%>
+                            <%}%>
+                    </div>
+                </div>
+            </div>
+            <div class="subMit">提交</div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="baseTitle">选择填空</div>
+                    <div class="fillAnswerBox">
+
+                    </div>
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <!--主观题结构-->
+    <script id="studySubjectiveScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">主观题</div>
+                <%if (list.StemType==0) {%>
+                <div class="learnCenterStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="learnCenterStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="learnCenterStemContent learnCenterStemSJContent"><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="textAreaBox">
+                    <textarea name="" class="learnCenter_subjectiveTextarea" placeholder="请输入..."></textarea>
+                </div>
+
+            </div>
+            <div class="subMit">提交</div>
+        </div>
+        <div class="StandardMask">
+            <div class="showStandard">
+                <img src="/Content/LessonStudy/img/zhou.png" class="subjectiveBgImg" />
+                <div class="learnCenter_subjectiveAnswer">
+                    <div class="subjective_contrast clearfloat">
+                        <div class="StandardPart clearfloat fl">
+                            <div class="StandardPartTitle fl">评分标准</div>
+                            <div class="StandardContent fl"><%=list.Standard%></div>
+                        </div>
+                        <div class="mySubAnswer clearfloat fl">
+                            <div class="mySubAnswerTitle fl">你的作答</div>
+                            <div class="mySubAnswerContent fl"></div>
+                        </div>
+                    </div>
+                    <div class="starsScoreBox verticalcenter"></div>
+                    <p class="remindP">请仔细阅读评分标准，认为自己的作答能得几颗星？</p>
+                </div>
+                <div class="subjectiveSure"></div>
+            </div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="learnCenter_LinkingAnswer learnCenter_subLinkingAnswer">
+                        <div class="contrast clearfloat">
+                            <div class="StandardPart clearfloat fl">
+                                <div class="StandardPartTitle fl">参考答案</div>
+                                <div class="StandardContent fl"><%=list.Answer%></div>
+                            </div>
+                            <div class="mySubAnswer clearfloat fl">
+                                <div class="mySubAnswerTitle fl">你的作答</div>
+                                <div class="mySubAnswerContent fl"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <!--圈点批注-标色结构-->
+    <script id="studyAnnotationScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">圈点批注</div>
+                <%if (list.StemType==0) {%>
+                <div class="learnCenterStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="learnCenterStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="learnCenterStemContent"><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="learnCenter_AnnotationContents" style="text-align:<%=(list.Alignment == 1?'left':(list.Alignment == 2?'center':'right'))%>;">
+                    <%for (var i = 0; i < list.Content.length; i++) {%>
+                    <%if (/^\n$/.test(list.Content[i])) {%>
+                    <br />
+                    <%} else if (/\r/.test(list.Content[i])) {%>
+                    <span class="learnCenter_normalText" style="display:none"></span>
+                    <%} else if (/ /.test(list.Content[i])) {%>
+                    <span class="learnCenter_normalText">&nbsp;</span>
+                    <%} else {%>
+                    <span class="learnCenter_normalText"><%=list.Content[i]%></span>
+                    <%}%>
+                    <%}%>
+                </div>
+            </div>
+            <div class="Todos verticalcenter">
+                <div class="TodosRevoke">撤销</div>
+                <div class="TodosSubmit">提交</div>
+            </div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="baseTitle">圈点批注</div>
+                    <%if (list.StemType==0) {%>
+                    <div class="learnCenterStem">
+                        <img src="<%=list.Stem%>" alt="" />
+                    </div>
+                    <%}else{%>
+                    <div class="learnCenterStem clearfloat">
+                        <span class="fl jian"></span>
+                        <span class="learnCenterStemContent"><%=list.Stem%></span>
+                    </div>
+                    <%}%>
+                    <div class="learnCenter_LinkingAnswer">
+                        <div class="contrast clearfloat">
+                            <div class="StandardPart clearfloat fl">
+                                <div class="StandardPartTitle fl">参考答案</div>
+                                <div class="StandardContent fl"></div>
+                            </div>
+                            <div class="mySubAnswer clearfloat fl">
+                                <div class="mySubAnswerTitle fl">你的作答</div>
+                                <div class="mySubAnswerContent fl"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <!--圈点批注-断句结构-->
+    <script id="studyAnnotation2ScriptDiv" type="text/template">
+        <div class="learnCenterBox">
+            <img src="/Content/LessonStudy/img/zhou.png" class="learnCenterBgImg" />
+            <%if (_this.kcbSrc!=="") {%>
+            <div class="kcbTitle">
+                <img src="/Content/LessonStudy/img/laba.png" />
+                <span><%=_this.kcbTextSrc%></span>
+            </div>
+            <%}%>
+            <div class="playBox">
+                <div class="baseTitle">圈点批注</div>
+                <%if (list.StemType==0) {%>
+                <div class="learnCenterStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="learnCenterStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="learnCenterStemContent"><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="learnCenter_Annotation2Contents" style="text-align:<%=(list.Alignment == 1?'left':(list.Alignment == 2?'center':'right'))%>;">
+                    <%for (var i = 0; i < list.Content.length; i++) {%>
+                    <%if (/^\n$/.test(list.Content[i])) {%>
+                    <span class='learnCenter_Annotation2NormalText learnCenter_Annotation2Hide'></span>
+                    <%} else if (/\r/.test(list.Content[i])) {%>
+                    <span class='learnCenter_Annotation2NormalText' style="display:none;"></span>
+                    <%} else if (/ /.test(list.Content[i])) {%>
+                    <span class='learnCenter_Annotation2NormalText'>&nbsp;</span>
+                    <%} else {%>
+                    <span class='learnCenter_Annotation2NormalText'><%=list.Content[i]%></span>
+                    <%}%>
+                    <%}%>
+                </div>
+            </div>
+            <div class="Todos verticalcenter">
+                <div class="TodosRevoke">撤销</div>
+                <div class="TodosSubmit">提交</div>
+            </div>
+        </div>
+        <div class="checkAnswerBox">
+            <div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus "></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+                <div class="ScrollDown"></div>
+                <div class="answerShowPart">
+                    <div class="baseTitle">圈点批注</div>
+                    <%if (list.StemType==0) {%>
+                    <div class="learnCenterStem">
+                        <img src="<%=list.Stem%>" alt="" />
+                    </div>
+                    <%}else{%>
+                    <div class="learnCenterStem clearfloat">
+                        <span class="fl jian"></span>
+                        <span class="learnCenterStemContent"><%=list.Stem%></span>
+                    </div>
+                    <%}%>
+                    <div class="learnCenter_LinkingAnswer">
+                        <div class="contrast clearfloat">
+                            <div class="StandardPart clearfloat fl">
+                                <div class="StandardPartTitle fl">参考答案</div>
+                                <div class="StandardContent fl"></div>
+                            </div>
+                            <div class="mySubAnswer clearfloat fl">
+                                <div class="mySubAnswerTitle fl">你的作答</div>
+                                <div class="mySubAnswerContent fl"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+        </div>
+    </script>
+    <script>
+        //首次进入页面的参数
+        var chapter = {
+            isApprove : false ,
+            lastTimeIsOver : @(Model.lastTimeIsOver?"true":"false") ,
+            startAddGoldsPageNum : @Model.startAddGoldsPageNum ,
+            startPageNum: @Model.startPageNum ,
+            totalPageNum: @Model.totalPageNum ,
+            courseId : @Model.courseId ,
+            lessonId : @Model.lessonId ,
+            lessonIndex : @Model.lessonIndex ,
+            lessonProgressId : @Model.lessonProgressId ,
+            progressKey : "@Model.progressKey" ,
+        };
+        $(function(){
+            var cp = CurriulumSet.createChapter(chapter);
+            CurriulumSet.setZoom(document.body.offsetHeight / 600);
+            cp.callBack = function() {
+                console.log("本节课到此结束");
+                $("#submitLoding").show();
+
+            }
+            cp.dataCallBack =function(){
+                console.log("本节数据已提交完成");
+                window.location.href = "/StudentReport/ShowStudyReport?lessonProcessId="+cp.lessonProgressId+"&path="+encodeURIComponent("/LearningCenter/CoruseInfo/@Model.courseId")+"&source=0&r="+Math.floor(Math.random()*10000);
+            }
+            cp.doWork();
+        });
+    </script>
+</body>
+</html>

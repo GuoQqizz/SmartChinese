@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "错题列表";
+}
+
+@section Styles{
+    <link href="~/Content/laypage/skin/laypage.css" rel="stylesheet" />
+
+    <style>
+        body, html {
+            height: 100%;
+        }
+
+        .pageimgerror {
+            display: block;
+        }
+
+        .ertitler {
+            display: none;
+        }
+    </style>
+}
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("Index","LearningCenter")">学习中心</a><em><img src="~/Images/StudentInfo/back.png" /></em><a href="#">错题本</a>
+        </div>
+    </div>
+    <div class="maincontent">
+        <div class="mainbjtop"><img src="~/Images/StudentInfo/orderbodytop.png" /></div>
+        <div class="maincenter errorproblempage">
+            <div class="ertitle">
+                <div class="fl">
+                    <div class="datebox"><input id="dateRange" placeholder="" type="text" autocomplete="off" /><img src="~/Images/StudentInfo/date.png" /></div>
+                    <a href="#" class="dt-select" data-type="1">全部</a>
+                    <a href="#" class="active dt-select" data-type="2">本月</a>
+                    <a href="#" class="dt-select" data-type="3">本周</a>
+                </div>
+                <div class="ertitler">
+                    <a href="#">历史错题></a>
+                </div>
+            </div>
+            <div class="errpbox">
+            </div>
+            <div class="pagebox">
+                @*<a href="#"><</a>
+                    <a href="#">1</a>
+                    <a href="#" class="active">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">></a>*@
+            </div>
+        </div>
+        <div class="mainbjbottom"><img src="~/Images/StudentInfo/orderbodybottom.png" /></div>
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+
+@section Scripts{
+
+    <script type="text/template" id="boxNodataTmp">
+        <div class="pageimgerror">
+            <img class="error-img" src="/Images/StudentInfo/problemerror.png" />
+            <a class="errorback" href="@Url.Action("Index", "LearningCenter")">去学习</a>
+        </div>
+    </script>
+    <script type="text/template" id="boxErrorTmp">
+        <div class="pageimgerror">
+            <img class="error-img" src="/Images/StudentInfo/networkerror.png" />
+        </div>
+    </script>
+    <script type="text/template" id="boxItemTmp">
+        <a class="item" href="{{DetailUrl}}">
+            <div class="list {{className}}">
+                <div class="listbox">
+                    <div class="title">{{CreateTimeStr}}{{SourceStr}}错题</div>
+                    <div class="title1 line1">{{CourseName}}{{CourseLessonName}}</div>
+                    <div class="ctbox">
+                        <div class="citem">
+                            <div class="mm">
+                                <div class="text">未掌握知识点</div>
+                                <div class="num">{{Yws_WrongKnowledgeCount}}</div>
+                            </div>
+                        </div>
+                        <div class="citem">
+                            <div class="mm">
+                                <div class="text">未消除错题</div>
+                                <div class="num">{{Yws_WrongCount}}</div>
+                            </div>
+                        </div>
+                        <div class="citem">
+                            <div class="mm">
+                                <div class="text">已消除错题</div>
+                                <div class="num num1">{{Yws_RemoveCount}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img class="newsinfoimg" src="/Images/StudentInfo/newsinfo.png">
+            </div>
+        </a>
+    </script>
+    <script>
+        let dtStart, dtEnd, dtRange, pageSize = 6, listDataUrl = '@Url.Action("WrongBookList", "WrongBook")', detailUrl = '@Url.Action("BookDetail", "WrongBook")';
+    </script>
+    @*<script src="~/Scripts/parger.js"></script>
+
+        <script src="~/Scripts/StudentInfo/LeftBar.js"></script>
+        <script src="~/Scripts/Common/abhs.date.js"></script>
+        <script src="~/Scripts/StudentWrong/index.js"></script>*@
+    <script src="~/Content/laydate/laydate.js"></script>
+    @Scripts.Render("~/bundles/ajaxspin")
+    @Scripts.Render("~/bundles/wrongbook")
+
+    <script>
+        function geth() {
+            var H = $(window).height() - $('.navigation').height() - 20 - ($('.mainbjtop').height() * 2) - 260;
+            $('.errorproblempage').css({
+                'min-height': H
+            })
+        }
+        $(function () {
+            geth();
+            $(window).resize(function () {
+                geth()
+            });
+        })
+    </script>
+}

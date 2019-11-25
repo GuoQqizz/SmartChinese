@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Playiframe";
+}
+
+
+<h1>这是一个iframe层</h1>
+<button id="btnChange">更改搜索框内容为111</button>
+
+@section Scripts{
+  
+<script>
+    $(function () {
+        $("#btnChange").on('click', function () {
+            var key = $('#search_key', window.parent.document);
+            key.val("111");
+        })
+    })
+</script>
+}
+    

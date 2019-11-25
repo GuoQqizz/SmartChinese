@@ -1,0 +1,242 @@
+﻿@using AbhsChinese.Web.Models.StudentInfo
+@using AbhsChinese.Domain.Enum
+@model StudentInfoViewModel
+@{
+    ViewBag.Title = "个人中心";
+    ViewBag.Active = StudentMenus.个人信息;
+}
+@section Styles{
+    <link href="~/Content/StudentInfo/cropper.min.css" rel="stylesheet" />
+    <link href="~/Content/layer/theme/default/layer.css" rel="stylesheet" />
+    <link href="~/Content/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/laydate/theme/default/laydate.css" rel="stylesheet" />
+    <style>
+        .selectGrade {
+            line-height: 34px;
+            border-radius: 5px;
+            border: 1px solid #ededed;
+            width: 300px;
+            padding-left: 10px;
+            height: 36px;
+        }
+    </style>
+}
+@section Scripts{
+    <script src="~/Scripts/StudentInfo/cropper.min.js"></script>
+    <script src="~/Scripts/StudentInfo/cropper.patch.js"></script>
+    <script src="~/Content/select2/select2.full.min.js"></script>
+    <script src="~/Scripts/PageScripts/select2.main.js"></script>
+    <script src="~/Content/laydate/laydate.js"></script>
+    <script src="~/Content/layer/layer.js"></script>
+    <script src="~/Scripts/StudentInfo/LeftBar.js"></script>
+    <script src="~/Scripts/StudentInfo/EditStudentInfo.js"></script>
+}
+
+<div class="bodycontent">
+    <!--header -->
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("StudentInfo","Student")">个人中心</a><em><img src="/Images/StudentInfo/back.png"></em><a href="#">个人信息</a>
+        </div>
+        <div class="navigationr"></div>
+    </div>
+    <div class="contentbox">
+        @Html.Partial("_LeftBar")
+        <div class="contentright contentright1">
+            <div class="ctrbox">
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_top.png" /></div>
+                <div class="contrbox">
+                    <div class="conttitle">编辑个人信息</div>
+                    <form action="/Student/AddStudentInfo" method="post">
+                        <div class="conflist">
+                            <ul>
+                                <li class="portrait1">
+                                    <div class="textname fl">头像：</div>
+                                    <div class="textcont filimg">
+                                        <img class="headPhoto" src="@(Model != null && !string.IsNullOrEmpty(Model.Avatar) ? Model.Avatar:"/Images/StudentInfo/u396.png")" />
+                                        <input type="hidden" id="headPhoto" name="HeadPhoto" />
+                                        <em class="itemcenter">上传头像</em>
+                                    </div>
+                                </li>
+                                <li class="nicheng">
+                                    <div class="textname fl">昵称：</div>
+                                    <div class="textcont"><input type="text" value="@(Model != null ? Model.Bst_NickName : "")" name="NickName" /></div>
+                                </li>
+                                <li>
+                                    <div class="textname fl">姓名：</div>
+                                    <div class="textcont"><input type="text" value="@(Model != null ? Model.Bst_Name : "")" name="Name" /></div>
+                                </li>
+                                <li class="sex">
+                                    <div class="textname fl">性别：</div>
+                                    <div class="textcont">
+                                        @{
+                                            if (Model != null)
+                                            {
+                                                <div class="radiobox @(Model.Bst_Sex==(int)SexEnum.男?"radioboxsel":"") fl">
+                                                    <span class="radio">
+                                                        <img class="img1" src="~/Images/StudentInfo/radiosel.png" />
+                                                        <img class="img2" src="~/Images/StudentInfo/radio.png" />
+                                                        <input type="radio" name="Sex" value="1" @(Model.Bst_Sex == (int)SexEnum.男 ? "checked" : "") />
+                                                    </span>
+                                                    男
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="radiobox radioboxsel fl">
+                                                    <span class="radio">
+                                                        <img class="img1" src="~/Images/StudentInfo/radiosel.png" />
+                                                        <img class="img2" src="~/Images/StudentInfo/radio.png" />
+                                                        <input type="radio" name="Sex" value="1" checked />
+                                                    </span>
+                                                    男
+                                                </div>
+                                            }
+                                        }
+                                        @{
+                                            if (Model != null)
+                                            {
+                                                <div class="radiobox @(Model.Bst_Sex==(int)SexEnum.女?"radioboxsel":"") fl">
+                                                    <span class="radio">
+                                                        <img class="img1" src="~/Images/StudentInfo/radiosel.png" />
+                                                        <img class="img2" src="~/Images/StudentInfo/radio.png" />
+                                                        <input type="radio" name="Sex" value="2" @(Model.Bst_Sex == (int)SexEnum.女 ? "checked" : "") />
+                                                    </span>
+                                                    女
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="radiobox fl">
+                                                    <span class="radio">
+                                                        <img class="img1" src="~/Images/StudentInfo/radiosel.png" />
+                                                        <img class="img2" src="~/Images/StudentInfo/radio.png" />
+                                                        <input type="radio" name="Sex" value="2" />
+                                                    </span>
+                                                    女
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="textname fl">生日：</div>
+                                    <div class="textcont"><input type="text" value="@(Model!=null?Model.BirthdayEdit:"")" name="Birthday" id="Birthday" /></div>
+                                </li>
+                                <li>
+                                    <div class="textname fl">年级：</div>
+                                    <div class="textcont">
+                                        @*<input type="text" value="@(Model!=null?Model.Grade:"")" />*@
+                                        <select class="selectGrade" name="Grade">
+                                            <option value="1" @if (Model != null) { @(Model.Bst_Grade == 1 ? "selected ='selected'" : "")               }>一年级</option>
+                                            <option value="2" @if (Model != null) { @(Model.Bst_Grade == 2 ? "selected ='selected'" : "")               }>二年级</option>
+                                            <option value="4" @if (Model != null) { @(Model.Bst_Grade == 4 ? "selected ='selected'" : "")               }>三年级</option>
+                                            <option value="8" @if (Model != null) { @(Model.Bst_Grade == 8 ? "selected ='selected'" : "")               }>四年级</option>
+                                            <option value="16" @if (Model != null) { @(Model.Bst_Grade == 16 ? "selected ='selected'" : "")               }>五年级</option>
+                                            <option value="32" @if (Model != null) { @(Model.Bst_Grade == 32 ? "selected ='selected'" : "")               }>六年级</option>
+                                            <option value="64" @if (Model != null) { @(Model.Bst_Grade == 64 ? "selected ='selected'" : "")               }>初一</option>
+                                            <option value="128" @if (Model != null) { @(Model.Bst_Grade == 128 ? "selected ='selected'" : "")               }>初二</option>
+                                            <option value="256" @if (Model != null) { @(Model.Bst_Grade == 256 ? "selected ='selected'" : "")               }>初三</option>
+                                            <option value="512" @if (Model != null) { @(Model.Bst_Grade == 512 ? "selected ='selected'" : "")               }>高一</option>
+                                            <option value="1024" @if (Model != null) { @(Model.Bst_Grade == 1024 ? "selected ='selected'" : "")               }>高二</option>
+                                            <option value="2048" @if (Model != null) { @(Model.Bst_Grade == 2048 ? "selected ='selected'" : "")               }>高三</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="textname fl">在读学校：</div>
+                                    <div class="textcont"><input type="text" value="@(Model!=null?Model.Bst_StudySchool:"")" name="StudySchool" /></div>
+                                </li>
+                                <li class="area">
+                                    <div class="textname fl">收货地址：</div>
+                                    <div class="textcont">
+                                        @Html.Partial("_AbhsRegion", new ViewDataDictionary
+                                    {
+                                        { "ProvinceId" , Model.Bst_Province },
+                                        { "CityId" , Model.Bst_City },
+                                        { "Width","30%"},
+                                        { "CountyId" , Model.Bst_County },
+                                        { "ProvinceFieldName" , "Bst_Province" },
+                                        { "CityFieldName","Bst_City"},
+                                        { "CountyFieldName","Bst_County"},
+                                        {"ClassName","" }
+                                    })
+                                    </div>
+                                </li>
+                                <li class="address">
+                                    <div class="textname fl">&nbsp;</div>
+                                    <div class="textcont">
+                                        <div class="addreinp">
+                                            <input type="text" value="@(Model!=null?Model.Bst_Address:"")" name="Address" />
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="textname fl">&nbsp;</div>
+                                    <div class="textcont">
+                                        <div class="subtns">@*<button>取消</button>*@<input type="button" value="取消" style="margin-left: 35px;border-radius: 3px;width: 86px;line-height: 38px;text-align: center;background: none;border: 1px solid #51b6b0; color: #51b6b0;padding-left:0px;cursor:pointer;" onclick="javascript:location.href='@Url.Action("StudentInfo","Student")'"/><button class="submitbtn" style="cursor:pointer;">保存</button></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_bottom.png" /></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+<div class="bindschoolbox" style="display: none;">
+    <div class="closewindow"><img class="closbtn" src="~/Images/StudentInfo/clsoe1.png" /></div>
+    <div class="bindtitle">绑定校区</div>
+    <div class="bindcont">
+        <div class="list">
+            <img src="~/Images/StudentInfo/bindd.png" />
+        </div>
+        <div class="list">
+            <span class="fl">申请绑定</span>
+            <span class="fr">校长审批</span>
+        </div>
+        <div class="listinp">
+            <input type="text" placeholder="13295555658" />
+        </div>
+        <div class="info">海淀区上地校区</div>
+        <button class="winsub">确定</button>
+    </div>
+</div>
+
+<div class="Cropperbox" style="width: 500px;display: none;padding: 30px 0;">
+    <div class="closeCropperbox"><em>X</em></div>
+    <!-- 图片裁切 -->
+    <div class="fileimg">
+        <div class="fileimgbox">
+            <input type="file" accept="image/*" name="file" id="inputImage">
+            <span class="jbtn">选择图片</span>
+        </div>
+    </div>
+    <div class="box" style="height: 500px;width: 500px;margin: 20px 0;background: #f5f5f5;">
+        <img id="image" src="~/Images/StudentInfo/pho.png">
+    </div>
+
+    <div class="small fl" style="width:100px;height:100px; overflow:hidden;"><!--161.8-->
+
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-white" id="zoomIn" type="button">+</button>
+        <button class="btn btn-white" id="zoomOut" type="button">-</button>
+        <button class="btn btn-white" id="rotateLeft" type="button">向左旋转</button>
+        <button class="btn btn-white" id="rotateRight" type="button">向右旋转</button>
+        <!-- <button class="btn btn-warning" id="setDrag" type="button">新的切片</button> -->
+    </div>
+    <label title="Donload image" id="download" class="btn btn-primary">保存</label>
+</div>

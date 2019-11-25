@@ -1,0 +1,77 @@
+﻿@model int
+
+@{
+    ViewBag.PageTitle = "题目录入-判断题";
+}
+
+<input type="hidden" id="loadUrl" value="@Url.Action("GetDetails2", "TrueFalse")" />
+<input type="hidden" id="submitUrl" value="@Url.Action("EditTrueFalseSubject", "TrueFalse")" />
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        <form id="form" role="form" method="post">
+            @Html.Partial("_SubjectTitle")
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label required">答案</label>
+                <div class="col-sm-6">
+                    <div class="row col-row">
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="radio" class="ichecks" value="1" name="answer" />正确
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="radio" class="ichecks" value="0" name="answer" />错误
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <label for="checkIn" class="error"></label>
+            </div>
+            @Html.Partial("_SubjectBasic2", Model)
+            @Html.Partial("_SubjectButtons")
+        </form>
+    </div>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .icheckbox_square-green, .iradio_square-green {
+            margin-right: 5px;
+        }
+
+        .col-row {
+            margin-top: 0.5em;
+        }
+
+        .col-form-label {
+            text-align: right;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Content/ueditor/ueditor.local.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/SubjectUpload/subject.upload.js"></script>
+    <script src="~/Scripts/PageScripts/subject2.edit.js"></script>
+    <script>
+        $(function () {
+            let pageData = getDataFromServer();
+            displayCommonData(pageData);
+            displayPersonalData(pageData);
+
+            enableValidate();
+        });
+
+        function displayPersonalData(pageData) {
+            $(`[name="answer"][value="${pageData.Answer}"]`).prop('checked', true);
+        }
+    </script>
+}

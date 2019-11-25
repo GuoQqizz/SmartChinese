@@ -1,0 +1,297 @@
+﻿@using AbhsChinese.Web.Models.SubjectReport
+@using AbhsChinese.Domain.Enum
+@model SumReportViewModel
+@{
+    ViewBag.Title = Model.ReportType == (int)CourseReportEnum.任务报告 ? "任务报告" : "练习报告";
+}
+
+<style>
+    html, body {
+        height: 100%;
+    }
+
+    .btn {
+        cursor: pointer;
+    }
+</style>
+<input type="hidden" value="@Model.TaskId" id="taskId" />
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("Index","LearningCenter")">学习中心</a>
+            <em><img src="/Images/StudentInfo/back.png"></em>
+            @*@{
+                if (Model.Origin == 1)
+                {
+                    <a href="@Url.Action("ListStudyTasks","StudyTask")">课后任务</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("StudentReportList","StudentReport")">学习报告</a>
+                }
+            }*@
+            <a href="@Url.Action("StudentReportList","StudentReport")">学习报告</a>
+            <em><img src="/Images/StudentInfo/back.png"></em><a href="javascript:void(0)">报告详情</a>
+            @*<a href="@Url.Action("StudentReportList","StudentReport")">课后任务</a>*@
+        </div>
+        <!-- <div class="navigationr"><span class="refurbish"><img src="~/Images/StudentInfo/refurbish.png" />刷新</span></div> -->
+    </div>
+    <div class="taskdetailpage practicepage">
+        @{
+            if (Model.Source == 0)
+            {
+                <!--开场动画开始-->
+                <div class="startbox">
+                    @{
+                        if (Model.ReportType == (int)CourseReportEnum.任务报告)
+                        {
+                            <img class="shapebox" src ="/Images/StudentInfo/taskreport.png" />
+                        }
+                        else if(Model.ReportType == (int)CourseReportEnum.练习报告)
+                        {
+                            <img class="shapebox" src = "/Images/StudentInfo/praticereport.png" />
+                        }
+                    }
+                    @*<img class="shapebox" src="~/Images/StudentInfo/shape.png" />*@
+                    <div class="shapecont itemcenter">
+                        <img class="scrollamn" src="~/Images/StudentInfo/scrollsImg.png" />
+                    </div>
+                    <div class="btn" id="btnShow" style="display:none;"><img src="~/Images/StudentInfo/shapeBtn.png" /></div>
+                </div>
+                <!--开场动画结束-->
+                        }
+        }
+        <div class="taskmainpage" @(Model.Source == 1 ? "style=display:block;" : "")>
+            <div class="maintop"><img src="~/Images/StudentInfo/img_bg-4.png" /></div>
+            <div class="mainbox" @(Model.Source == 1 ? "style=height:auto;" : "")>
+                <div class="boxtop"><img src="~/Images/StudentInfo/porttopimg.png" /></div>
+                <div class="boxcenter">
+                    <div class="practicebox">
+                        <div class="dz"><img src="~/Images/StudentInfo/sun.png" /></div>
+                        <div class="practicetitle">@Model.StudentName-@Model.ReportTypeStr</div>
+                        <div class="practinfo">@Model.CourseTitle</div>
+                        <div class="practinfo1">@Model.StudyDate</div>
+                        <div class="practx">
+                            @{
+                                int stars = Model.TotalScore;
+                                if (stars < 0)
+                                {
+                                    stars = 0;
+                                }
+                                for (int i = 0; i < stars; i++)
+                                {
+                                    <img src="~/Images/StudentInfo/stars.png" />
+                                }
+                                for (int j = 0; j < 5 - stars; j++)
+                                {
+                                    <img src="~/Images/StudentInfo/stars-num.png" />
+                                }
+                            }
+                        </div>
+                        <div class="pracresbox">
+                            <div class="item">
+                                <img src="~/Images/StudentInfo/icon_1.png" />
+                                <div class="infox">@Model.StudyTime<span>分</span></div>
+                                <div class="infox1">学习时间</div>
+                            </div>
+                            <div class="item">
+                                <img src="~/Images/StudentInfo/icon_2.png" />
+                                <div class="infox">@Model.TotalCoins<span>个</span></div>
+                                <div class="infox1">获得金币</div>
+                            </div>
+                            <div class="item">
+                                <img src="~/Images/StudentInfo/icon_3.png" />
+                                <div class="infox">@Model.SubjectCount<span>个</span></div>
+                                <div class="infox1">练习题</div>
+                            </div>
+                            <div class="item">
+                                <img src="~/Images/StudentInfo/icon_4.png" />
+                                <div class="infox">@Model.ExcellentRates%</div>
+                                <div class="infox1">五星率</div>
+                            </div>
+                        </div>
+                        <div class="practtable">
+                            @{
+                                foreach (var topKnowledge in Model.Knowledge)
+                                {
+                                    <table>
+                                        <thead>
+                                        <th style="width: 52%;" class="textleft line1">@topKnowledge.TopName</th>
+                                        <th style="width: 12%;">有待提高</th>
+                                        <th style="width: 12%;">还不错</th>
+                                        <th style="width: 12%;">很好</th>
+                                        <th style="width: 12%;">完美</th>
+                                        </thead>
+                                        @foreach (var child in topKnowledge.ChildKnowledge)
+                                        {
+                                            <tr>
+                                                <td class="textleft">@child.ChildName</td>
+                                                <td class="">
+                                                    <div class="seimg itemcenter">
+                                                        @if (child.Desc == (int)EvaluateEnum.有待提高)
+                                                        {
+                                                            <img src='~/Images/StudentInfo/selsel.png' />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src='~/Images/StudentInfo/seldefault1.png' />
+                                                        }
+                                                    </div>
+                                                </td>
+                                                <td class="">
+                                                    <div class="seimg itemcenter">
+                                                        @if (child.Desc == (int)EvaluateEnum.还不错)
+                                                        {
+                                                            <img src='~/Images/StudentInfo/selsel.png' />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src='~/Images/StudentInfo/seldefault1.png' />
+                                                        }
+                                                    </div>
+                                                </td>
+                                                <td class="">
+                                                    <div class="seimg itemcenter">
+                                                        @if (child.Desc == (int)EvaluateEnum.很好)
+                                                        {
+                                                            <img src='~/Images/StudentInfo/selsel.png' />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src='~/Images/StudentInfo/seldefault1.png' />
+                                                        }
+                                                    </div>
+                                                </td>
+                                                <td class="">
+                                                    <div class="seimg itemcenter">
+                                                        @if (child.Desc == (int)EvaluateEnum.完美)
+                                                        {
+                                                            <img src='~/Images/StudentInfo/selsel.png' />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src='~/Images/StudentInfo/seldefault1.png' />
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                }
+                            }
+                        </div>
+                        <div class="practsummarybox">
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="boxbottom"><img src="~/Images/StudentInfo/portbottomimg.png" /></div>
+            </div>
+            <div class="mainbottom"><img src="~/Images/StudentInfo/img_bg-4_1.png" /></div>
+        </div>
+        <div class="gobackpage" @(Model.Source == 0 ? "style=display:none;" : "")><a href="@Model.Path"><img src="~/Images/StudentInfo/goback.png" /></a></div>
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/report")
+    <script>
+        /*初始化*/
+        var counter = 0; /*计数器*/
+        var pageStart = 1; /*offset*/
+        var isEnd = false;/*结束标志*/
+
+        $(function () {
+            /*首次加载*/
+            getData(pageStart);
+
+            if(@Model.Source==0)
+            {
+                //开场动画
+                $('.taskdetailpage .btn').click(function () {
+                    $('.taskdetailpage .startbox').addClass('selstartbox');
+                    $('.taskdetailpage .shapecont img').addClass('seleimg');
+                    setTimeout(
+                        function () {
+                            $('.taskdetailpage .startbox').hide();
+                            $('.taskmainpage').fadeIn(1000);
+                            var curHeight = $('.taskmainpage .mainbox').height();
+                            var autoHeight = $('.taskmainpage .mainbox').css('height', 'auto').height();
+                            $('.taskmainpage .mainbox').height(curHeight).animate({
+                                height: autoHeight
+                            }, 3000);
+                        }, 1000);
+                    setTimeout(function(){
+                        $('.gobackpage').show();},4000);
+                })
+            }
+
+            /*监听加载更多*/
+            $(window).scroll(function(){
+
+                /*滚动加载时如果已经没有更多的数据了、正在发生请求时，不能继续进行*/
+                if(isEnd == true || isAjax == true){
+                    return;
+                }
+
+                // 当滚动到最底部以上500像素时， 加载新内容
+                if ($(document).height() - $(this).scrollTop() - $(this).height()<500){
+                    pageStart ++;
+
+                    getData(pageStart);
+                }
+            });
+        });
+
+        function getData(pageindex){
+            isAjax = true;
+            $.ajax({
+                type: 'GET',
+                url: '/StudentReport/GetSubjectsToPractice',
+                dataType: 'json',
+                data: { taskId: $("#taskId").val(), pageIndex: pageindex },
+                success: function (reponse) {
+                    isAjax = false;
+
+                    //数据
+                    var data = reponse.Data;
+                    //每页显示记录数
+                    var pageSize=reponse.PageSize;
+                    //总记录数
+                    var totalCount=reponse.TotalCount;
+
+                    for (var i = 0; i < data.length; i++) {
+                        factory(data[i]);
+                    }
+
+                    if ( (pageindex * pageSize) >= totalCount){
+                        isEnd = true; /*停止滚动加载请求*/
+                        //提示没有了
+                    }
+
+                    if(pageindex>1)
+                    {
+                        var curHeight = $('.taskmainpage .mainbox').height();
+                        var autoHeight = $('.taskmainpage .mainbox').css('height', 'auto').height();
+                        $('.taskmainpage .mainbox').height(curHeight).animate({
+                            height: autoHeight
+                        }, 3000);
+                    }
+
+                    $("#btnShow").show();
+                },
+                error: function(xhr, type){
+                    //alert('Ajax error!');
+                }
+            });
+        }
+    </script>
+}

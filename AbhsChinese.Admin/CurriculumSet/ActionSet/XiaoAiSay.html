@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>小艾说</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <style>
+        .audio-block:before {
+            content: "选择素材";
+        }
+
+
+        .audio-block input.form-control {
+            padding: 5px;
+        }
+
+        .audio-block .input-group-btn .btn {
+            padding: 3px 5px;
+        }
+
+        .audio-block .audio-list {
+            height: 470px;
+            margin: 10px 0px 0px;
+            padding: 5px;
+            overflow: auto;
+        }
+
+            .audio-block .audio-list li {
+                margin-bottom: 10px;
+                width: 100%;
+                padding: 5px;
+                border: 1px solid #808080;
+            }
+
+        .MakeBox p {
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                var ChapterSet = CurriculumInfo.chapterSet;
+                //创建默认的动作
+                var action = new top.XiaoAiSay({
+                    actionId: "xiaoaisay" + randomString(20),
+                    mediaid: "",
+                    src: "",
+                    medianame: ""
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                //page.selecter = "#InnerArea";
+                //page.draw(CurriculumInfo.selectStep.stepNum);
+                //加载数据
+                (function LoadData() {
+                    if (CurriculumInfo.selectAction instanceof top.XiaoAiSay) {//如果是修改的动作
+                        action = new top.XiaoAiSay(CurriculumInfo.selectAction);
+                        $("#AudioName").html(action.medianame);
+                        $("#AudioPlayer").attr("src", action.src);
+                        $("#MediaList").html(`<li mediaid="${action.mediaid}" audiosrc="${action.src}" class="selected"><span>${action.medianame}</span></li>`);
+                    }
+                })();
+
+
+
+                var index = 1, keywords = "";
+                $("#SelectAudioBtn").on("click", function () {
+                    index = 1;
+                    keywords = $("#SelectAudioInput").val();
+                    if (CurriculumInfo.selectAction instanceof top.XiaoAiSay) {//如果是修改的动作
+                        action = new top.XiaoAiSay(CurriculumInfo.selectAction);
+                        $("#AudioName").html(action.medianame);
+                        $("#AudioPlayer").attr("src", action.src);
+                        $("#MediaList").html(`<li mediaid="${action.mediaid}" audiosrc="${action.src}"  class="selected"><span>${action.medianame}</span></li>`);
+                    }
+                    else {
+                        $("#MediaList").html("");
+                    }
+                    isOver = false;
+                    LoadList();
+                });
+                var isLoading = false;
+                var isOver = false;
+                function LoadList() {
+                    if (!isLoading && !isOver) {
+                        isLoading = true;
+                        $("#MediaList .loadMediaMsg").off("click");
+                        $("#MediaList .loadMediaMsg").remove();
+                        $("#MediaList").append("<p class='loadMediaMsg'>数据加载中...</p>");
+                        $.ajax({
+                            url: "/ResourceGroup/GetMediaToCourse",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                CourseId: ChapterSet.courseId,
+                                MediaType: 104,// 视频 = 101,音频 = 102,图片 = 103,小艾说 = 104,开场语 = 105,小艾变 = 106
+                                TextType: 0,
+                                NameOrKey: keywords,
+                                Pagination: {
+                                    PageIndex: index,
+                                    PageSize: 10,
+                                }
+                            },
+                            success: function (data) {
+                                if (data.Data.length > 0) {
+
+                                    $("#MediaList .loadMediaMsg").off("click");
+                                    $("#MediaList .loadMediaMsg").remove();
+                                    console.log("getImgData", data);
+                                    for (var i = 0; i < data.Data.length; i++) {
+                                        var d = data.Data[i];
+                                        $("#MediaList").append(`<li mediaid="${d.ObjectID}" audiosrc="${d.ObjectUrl}"><span>${d.MediaName}</span></li>`);
+                                    }
+
+                                    if (data.Data.length == 10) {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>点击加载更多...</p>");
+                                        $("#MediaList .loadMediaMsg").on("click", function () {
+                                            if (!isLoading) {
+                                                index++;
+                                                LoadList();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>没有数据了</p>");
+                                        isOver = true;
+                                    }
+
+                                    $(".audio-list li").off("click");
+                                    $(".audio-list li").on("click", function () {
+                                        $(".audio-list li").removeClass("selected");
+                                        $(this).addClass("selected");
+                                        action.mediaid = $(this).attr("mediaid");
+                                        action.medianame = $(this).text();
+                                        action.src = $(this).attr("audiosrc");
+                                        $("#AudioName").html(action.medianame);
+                                        $("#AudioPlayer").attr("src", action.src);
+                                    });
+                                }
+                                else {
+                                    $("#MediaList .loadMediaMsg").html("没有数据了");
+                                    isOver = true;
+                                }
+                                isLoading = false;
+                            },
+                            error: function (e) {
+                                console.error("error", e);
+                                isLoading = false;
+                                index--;
+                            }
+                        });
+                    }
+                }
+
+                $("#MediaList").scroll(function () {
+                    if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+                        if (!isLoading) {
+                            index++;
+                            LoadList();
+                        }
+                    }
+                })
+
+
+                $("#OkBtn").click(function () {
+                    if (action.src != "") {
+                        if (CurriculumInfo.selectAction instanceof top.XiaoAiSay) {
+                            CurriculumInfo.SetAction(action);
+                        }
+                        else {
+                            CurriculumInfo.AddAction(action);
+                        }
+                        var frame = top.frames["ActionSet"];
+                        if (frame) {
+                            $(frame).hide();
+                        }
+                    }
+                    else {
+                        alert("请选择小艾说");
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">小艾说</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <div class="audio-block block-box">
+                    <div class="input-group">
+                        <input id="SelectAudioInput" type="text" class="form-control" placeholder="名称/编号/关键字搜索">
+                        <span class="input-group-btn">
+                            <button id="SelectAudioBtn" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                    <ul id="MediaList" class="audio-list"></ul>
+                </div>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <p>试听<span id="AudioName">请选择小艾说</span></p>
+            <p>
+                <audio id="AudioPlayer" controls="controls"></audio>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+﻿@{ 
+    Layout = null;
+}
+<link href="~/Content/umeditor/themes/default/css/umeditor.css" rel="stylesheet" />
+
+<div id="UEditor_content">
+    <input type="hidden" name="@ViewBag.Name" value="" />
+</div>
+<!--style给定宽度可以影响编辑器的最终宽度-->
+<script type="text/plain" id="myEditor"
+        class="@ViewBag.Class"
+        style="@ViewBag.Style">
+</script>
+
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Content/umeditor/umeditor.config.js"></script>
+<script src="~/Content/umeditor/umeditor.js"></script>
+<script src="~/Content/umeditor/lang/zh-cn/zh-cn.js"></script>
+
+<script type="text/javascript">
+        //实例化编辑器
+        var um = UM.getEditor('myEditor');
+        um.addListener('blur', function () {
+            let hidUEditorContent = document.getElementById('UEditor_content').firstChild;
+            hidUEditorContent.value = UM.getEditor('myEditor').getContent();
+        });
+</script>

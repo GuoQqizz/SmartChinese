@@ -1,0 +1,231 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "课程详情-已上架";
+}
+
+<div class="ibox">
+    <div class="ibox-title">
+        <div class="ibox-tools">
+            <a href="@Url.Action("ListCourses", "CourseManage")"
+               class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i>&nbsp;返回</a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-sm details-container" style="table-layout:fixed">
+                    <tr>
+                        <th style="width:527px;height:359px;padding:0px;" rowspan="6">
+                            <div id="preview"></div>
+                            <div id="dropz" class="dropzone"></div>
+                        </th>
+                        <th style="width:8%;">课程编号</th>
+                        <td style="width:8%;">@Model</td>
+                        <th style="width:8%;">课程名称</th>
+                        <td name="Name"></td>
+                    </tr>
+                    <tr>
+                        <th>年级</th>
+                        <td name="GradeText"></td>
+                        <th>课程类型</th>
+                        <td><div class="short-text" name="CourseTypeText"></div></td>
+                    </tr>
+                    <tr>
+                        <th>课时数量</th>
+                        <td name="LessonCount"></td>
+                        <th>负责人</th>
+                        <td name="OwnerName"></td>
+                    </tr>
+                    <tr>
+                        <th>已合格课时</th>
+                        <td colspan="3">
+                            <div class="short-text" name="ApprovedLessons"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>课程简介</th>
+                        <td colspan="3">
+                            <div class="short-text" name="Description"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>状态</th>
+                        <td name="StatusText"></td>
+                        <th>操作</th>
+                        <td>
+                            <button type="button" disabled onclick="startTrading(@Model)"
+                                    id="btnStartTrading"
+                                    class="btn btn-primary">
+                                上架
+                            </button>
+                            <button type="button" disabled onclick="stopTrading(@Model)"
+                                    id="btnStopTrading"
+                                    class="btn btn-primary">
+                                下架
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a class="nav-link" data-toggle="tab" href="#tab-1">课程设置</a>
+                            <input type="hidden" value="list" />
+                        </li>
+                        <li>
+                            <a class="nav-link" data-toggle="tab" href="#tab-2">操作日志</a>
+                            <input type="hidden" value="logs" />
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane">
+                            <div class="panel-body">
+                                <form id="frm_pricing" action="@Url.Action("Pricing","CourseManage")" method="post">
+                                    <input type="hidden" id="courseId" name="courseId" value="@Model" />
+                                    <input type="hidden" name="nextStatus" value="2" />
+                                    <input type="hidden" id="coverIamge" name="coverIamge" value="" />
+                                    <div id="div_schoolLevelsContainer"></div>
+                                    @*<div class="form-group row">
+                                            <label class="col-sm-2 text-right col-form-label">课程排序</label>
+                                            <div class="col-sm-9">
+                                                <input type="number" min="0" required class="form-control" name="sort" value="" />
+                                            </div>
+                                        </div>*@
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 text-right col-form-label">课程详情</label>
+                                        <div class="col-sm-9">
+                                            <textarea id="introduction" name="introduction"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 text-right col-form-label">课程安排</label>
+                                        <div class="col-sm-9">
+                                            <textarea id="arrange" name="arrange"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 text-center">
+                                            <button type="button" class="btn btn-default" onclick="preview(@Model)">预览</button>
+                                            <button type="button" id="btnOk" class="btn btn-primary"
+                                                    style="display:none;"
+                                                    onclick="savePrice(this)">
+                                                确定
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                            <div class="panel-body table_container">
+                                <form role="form" id="form_search_logs">
+                                    <input type="hidden" id="courseId" name="courseId" value="@Model" />
+                                    <button hidden class="search" type="button">搜索</button>
+                                </form>
+                                <div id="table_logs"></div>
+                                <div class="pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="div_template_schoolLevel" style="display:none">
+    <div class="form-group row">
+        <label class="col-sm-2 text-right col-form-label required">$levelName：</label>
+        <div class="col-sm-9">
+            <div class="input-group m-b">
+                <input type="number" min="0" step="0.1" required name="pricings[$index].price" class="form-control">
+                <input type="hidden" name="pricings[$index].schoolLevelId" value="$value" class="form-control">
+                <div class="input-group-append">
+                    <span class="input-group-addon">￥</span>
+                </div>
+            </div>
+            <label for="pricings[$index].price" class="error" style="display:none;"></label>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="urlToGetPreviewParameters"
+       value="@Url.Action("Preview","CourseManage")" />
+
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <link href="~/Content/dropzone/basic.css" rel="stylesheet" />
+    <link href="~/Content/dropzone/dropzone.css" rel="stylesheet" />
+    <style>
+        .details-container td {
+            vertical-align: middle !important;
+        }
+
+        .details-container th {
+            vertical-align: middle !important;
+        }
+
+        .dz-details {
+            display: none;
+        }
+
+        .dz-success-mark {
+            display: none;
+        }
+
+        .dz-error-mark {
+            display: none;
+        }
+
+        .dropzone {
+            border: none;
+        }
+
+        .dz-error-message {
+            display: none;
+        }
+    </style>
+    <style>
+        .details-container tr {
+            height: 60px;
+        }
+        /*.course-name {
+            width: 500px;
+        }
+
+        .course-description {
+            width: 800px;
+        }
+
+        .ellipsis-text {
+            white-space: nowrap;
+            cursor: pointer;
+            max-width: 100%;
+            _width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }*/
+        .short-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 99%;
+            /* height: 59px; */
+            display: inline-block;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/abhsTable")
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/dropzone/dropzone.js"></script>
+    <script src="~/Scripts/PageScripts/coursemanage.details.js"></script>
+}

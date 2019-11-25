@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>动作选项</title>
+    <meta charset="utf-8" />
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="ActionSet.js"></script>
+    <script>
+        $(function () {
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var page = top.CurriculumInfo.selectPage;
+
+                var step = top.CurriculumInfo.selectStep;
+                if (step.actions.length > 0) {
+                    $(".onlyAction").attr({ "title": "步骤中已经包含其它动作,此动作只能在步骤中唯一.", "href": "#" }).css({ "cursor": "not-allowed", "color": "#888" });
+                }
+
+                for (var s in page.steps) {
+                    var step = page.steps[s];
+                    for (var a in step.actions) {
+                        if (step.actions[a].type == "setTitle") {
+                            $("#setTitle").attr({ "title": "标题只允许设置一次.", "href": "#" }).css({ "cursor": "not-allowed", "color": "#888" });
+                            return;
+                        }
+                    }
+                }
+            }
+            $("a").click(function () {
+                window.location.href = $(this).attr("href") + "?r=" + Math.floor(Math.random * 10000);
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <b class="Title">选择交互方式</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="LinkBox">
+            <h3>基本交互</h3>
+            <p>
+                <a id="setTitle" href="ActionSet/SetTitle.html">设置讲义标题</a>
+                <a href="ActionSet/SetBackground.html">设置讲义背景</a>
+                <a href="ActionSet/XiaoAiSay.html">"小艾"说</a>
+                <a href="ActionSet/XiaoAiChange.html">"小艾"变</a>
+                <a href="ActionSet/InsertImg.html">插入图片</a>
+                <a href="ActionSet/InsertText.html">插入文字</a>
+                <a href="ActionSet/SetWaitMillisecond.html">等候</a>
+            </p>
+            <h3>动画效果</h3>
+            <p>
+                <a href="ActionSet/MoveDom.html">移动</a>
+                <a href="ActionSet/ScaleDom.html">缩放</a>
+                <a href="ActionSet/TwinkleDom.html">闪烁</a>
+                <a href="ActionSet/HideDom.html">隐藏</a>
+            </p>
+            <h3>学习方式</h3>
+            <p>
+                <a class="onlyAction" href="ActionSet/StudyAudio.html">音频</a>
+                <a class="onlyAction" href="ActionSet/StudyVideo.html">视频</a>
+                <a class="onlyAction" href="ActionSet/StudyArticle.html">图文</a>
+                <a class="onlyAction" href="ActionSet/StudyRecitation.html">朗读</a>
+                <a class="onlyAction" href="ActionSet/StudyFastReadEasy.html">快速阅读-简单</a>
+                <a class="onlyAction" href="ActionSet/StudyFastRead.html">快速阅读</a>
+                <a class="onlyAction" href="ActionSet/StudyAnnotation.html">圈点批注-标色</a>
+                <a class="onlyAction" href="ActionSet/StudyAnnotation2.html">圈点批注-断句</a>
+            </p>
+            <h3>练习方式</h3>
+            <p>
+                <a class="onlyAction" href="ActionSet/StudyJudgment.html">判断题</a>
+                <a class="onlyAction" href="ActionSet/StudyLinking.html">连线题</a>
+                <a class="onlyAction" href="ActionSet/StudyOption.html">选择题</a>
+                <a class="onlyAction" href="ActionSet/StudyOptionFill.html">选择填空</a>
+                <a class="onlyAction" href="ActionSet/StudyFill.html">填空题</a>
+                <a class="onlyAction" href="ActionSet/StudySubjective.html">主观题</a>
+                <a class="onlyAction" style="display:none;" href="ActionSet/StudyCalligraphy.html">田字格写字</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

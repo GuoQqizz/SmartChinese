@@ -1,0 +1,25 @@
+﻿
+@model AbhsChinese.Domain.Dto.Request.School.DtoSchoolClassSearch
+<form role="form" class="form-inline search-form col-10 col-md-9" id="form_search">
+    <input type="hidden" name="SchoolId" value="@Model.SchoolId" />
+    <input type="hidden" name="Status" data-for="btn-status-list" value="" />
+    <div class="form-group">
+        <input type="number" class="form-control" name="ClassId" placeholder="按班级号搜索" />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="SearchStr" placeholder="按班级名/班主任/课程名搜索"  style="width:210px;"/>
+    </div>
+    <div class="form-group">
+        <select class="form-control m-b select2-grade select2" name="Grade"></select>
+    </div>
+    <div class="form-group">
+        <select class="form-control m-b select2 select2-cousre-type" name="CourseType"></select>
+    </div>
+    @*<div class="form-group">
+        <select class="form-control m-b select2 select2-status" name="Status"></select>
+    </div>*@
+
+    <button class="btn btn-white search" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
+</form>
+
+

@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.PageTitle = "课程管理";
+    string controller = "Course";
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" name="btn_state"
+                        data-state="1,2,3,4,5" class="btn btn-primary">
+                    全部
+                </button>
+                <button type="button" name="btn_state"
+                        data-state="1" class="btn btn-default">
+                    未定价
+                </button>
+                <button type="button" name="btn_state"
+                        data-state="2" class="btn btn-default">
+                    待上架
+                </button>
+                <button type="button" name="btn_state"
+                        data-state="3" class="btn btn-default">
+                    已上架
+                </button>
+                <button type="button" name="btn_state"
+                        data-state="4" class="btn btn-default">
+                    已下架
+                </button>
+                <button type="button" name="btn_state"
+                        data-state="5" class="btn btn-default">
+                    已关闭
+                </button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -6px;">
+            <div class="col-10">
+                @Html.Partial("_SearchConditionOfCurriculumList")
+            </div>
+            <div class="col-2 text-right align-self-end">
+                <a class="btn btn-primary"
+                   href="@Url.Action("AddCourse",controller)">添加课程</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 table_container">
+                <div id="table_list"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <style>
+        .course-description {
+            width: 460px;
+            display:  inline-block;
+        }
+
+        .ellipsis-text {
+            white-space: nowrap;
+            cursor: pointer;
+            max-width: 100%;
+            _width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #form_search .form-group {
+            max-width: 16.66%;
+        }
+
+            #form_search .form-group .form-control {
+                width: 100%;
+            }
+    </style>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/abhsTable")
+    <script src="~/Scripts/common/abhs.common.js"></script>
+    <script>
+        $(function () {
+            initTable();
+            registerEvent();
+        });
+
+        function registerEvent() {
+            $('button[name="btn_state"]').on('click', function () {
+                let $self = $(this);
+                let activeClass = 'btn-primary';
+                if ($self.hasClass(activeClass)) {
+                    return;
+                }
+
+                let multipleState = this.dataset.state;
+                let states = multipleState.split(',');
+
+                let html = '';
+                $.each(states, function (i, o) {
+                    let input = '<input type="hidden" name="status" value="' + o + '" />';
+                    html += input;
+                });
+                let $form = $('#form_search');
+                let $div_attached = $form.find('div[name="div_attached"]');
+                $div_attached.html(html);
+                $form.find('.search').click();
+
+                let defaultClass = 'btn-default';
+                $self.removeClass(defaultClass).addClass(activeClass)
+                     .siblings().removeClass(activeClass).addClass(defaultClass);
+            });
+
+        }
+        function initTable() {
+            let align = 'center';
+            let columns = [
+        { label: '编号', name: 'Id', align: align},
+        {
+            label: '课程名称', name: 'Name', align: 'left',
+            formatter: function (index, value, row) {
+                return `<div class="" title="${value}">${value}</div>`;
+            }
+        },
+        { label: '类型', name: 'CourseTypeText', align: align },
+        { label: '年级', name: 'GradeText', align: align, },
+        { label: '负责人', name: 'OwnerName', align: align },
+        {
+            label: '已合格课时', name: 'ApprovalLesCount', align: align,
+            formatter: function (index, value, row) {
+                return `<span>${value.lenWithZero(2)}&nbsp;(共${row.LessonCount.lenWithZero(2)}课时)</span>`;
+            }
+        },
+        {
+            label: '课程描述', name: 'Description', align: 'left',
+            formatter: function (index, value, row) {
+
+                var _value = String(value);
+                var targetLength = 20;
+                var str = "...";
+                if (value.length > targetLength)//如果字符串长度超过了设定长度
+                {
+                    str = str.substr(0, targetLength);
+                    _value = _value.substr(0, targetLength - str.length);
+                    _value += str;
+                }
+                return "<span title='" + value + "'>" + String(_value) + "</span>";
+            }
+        },
+        { label: '状态', name: 'StatusText', align: align },
+        {
+            label: '操作', name: '', align: align,
+            formatter: function (index, value, row) {
+                let url = '/@controller/Details/' + row.Id;
+                return '<a href="' + url + '">操作</a>';
+            }
+        }
+            ];
+            $('#table_list').table({
+                ajax: {
+                    url: '@Url.Action("GetCurriculums", controller)'
+                },
+                columns: columns,
+                searchBox: '#form_search'
+            });
+
+            $('.select2.normal').select2({
+                width: '197px',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+        }
+    </script>
+}

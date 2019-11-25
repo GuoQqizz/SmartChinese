@@ -1,0 +1,457 @@
+﻿@using AbhsChinese.Domain.Dto.Response
+@model DtoCashVoucher
+@{
+    ViewBag.Title = "OrderVoucher";
+    ViewBag.PageTitle = "成单赠券";
+}
+@section Styles{
+    @Styles.Render("~/bundles/css/dataPickerStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <script src="~/Scripts/PageScripts/jquery.validate.extension.js"></script>
+    <style>
+        
+        .ibox-content{
+            padding-bottom:6px;
+        }
+        .i-checks {
+            padding-top: 8px;
+        }
+
+        .custom-input {
+            border: 1px solid #e5e6e7;
+            border-radius: 1px;
+            height: calc(2.25rem - 3px);
+            padding: 6px 12px;
+            color: inherit;
+        }
+
+            .custom-input:disabled {
+                background-color: #e9ecef;
+            }
+
+            .custom-input:focus {
+                border-color: #1ab394;
+            }
+
+        .notclick {
+            pointer-events: none;
+        }
+        .form-control.error {
+            border: 1px dotted #cc5965 !important;
+        }
+
+        /*下面代码可提为公用*/
+         .select2-default.error ~ .select2-container {
+            margin-bottom: 30px;
+            border: 1px dotted #cc5965;
+        }
+
+        .select2-default.error + label.error {
+            position: absolute;
+            top: 36px;
+        }
+
+        .select2-container + label.error {
+            position: absolute;
+            top: 2.25rem;
+            width: 200px;
+            left: 14px;
+        }
+
+         .input-form-addon input.error, .input-form-addon select.error {
+            margin-bottom: 20px;
+        }
+
+        .input-form-addon label.error {
+            position: absolute;
+            top: 36px;
+        }
+        .input-group-addon{
+            height:calc(2.25rem - 3px);
+        }
+        .input-error {
+            border: 1px dotted #cc5965;
+        }
+    </style>
+}
+<div class="ibox">
+    <div class="ibox-content">
+        <form id="submitForm" method="post">
+            <input type="hidden" value="@(Model!=null?Model.Ycv_Id:0)" id="Id" />
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">现金券名称：</label>
+                <div class="col-11">
+                    <input type="text" name="Name" id="Name" class="form-control" value="@(Model!=null?Model.Ycv_Name:"")" placeholder="请输入现金券名称"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">总发行量：</label>
+                <div class="col-11">
+                    <input type="text" name="PublishCount" id="PublishCount" onkeyup="value=value.replace(/[^\d]/g,'')"  onblur="value=value.replace(/[^\d]/g,'')" class="form-control" placeholder="只能输入正整数，输入0为无限制" value="@(Model!=null?Model.Ycv_PublishCount.ToString():"")" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">面额：</label>
+                <div class="col-11">
+                    <input type="text" name="Amount" id="Amount" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')"  onblur="value=value.replace(/[^\d]/g,'')" placeholder="面值只能是整数值" value="@(Model!=null?Model.Ycv_Amount.ToString():"")" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">每人限领：</label>
+                <div class="col-11">
+                    <label style="line-height: 33px;">1张</label>
+                    <input hidden value="1" name="LimitByPerson" id="LimitByPerson" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">使用门槛：</label>
+                @{
+                    if (Model != null)
+                    {
+                        <div class="col-1">
+                            <div class="i-checks amountlimit">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="0" name="rdoOrderAmountLimit" @(Model.Ycv_OrderAmountLimit == 0 ? "checked" : "") style="position: absolute; opacity: 0;">
+                                </div>&nbsp;无限制
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="i-checks amountlimit" style="padding-top: 0px;">
+                                    <div class="iradio_square-green" style="position: relative;">
+                                        <input type="radio" value="1" name="rdoOrderAmountLimit" @(Model.Ycv_OrderAmountLimit != 0 ? "checked" : "") style="position: absolute; opacity: 0;">
+                                    </div>&nbsp;满&nbsp;<input type="text" onkeyup="value=value.replace(/[^\d]/g,'')"  onblur="value=value.replace(/[^\d]/g,'')" name="OrderAmountLimit" id="OrderAmountLimit" value="@(string.Format("{0:0.##}",Model.Ycv_OrderAmountLimit ))" style="width:80px;" class="custom-input input_amount" @(Model.Ycv_OrderAmountLimit != 0 ? "" : "disabled") />&nbsp;元可用
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-1">
+                            <div class="i-checks amountlimit">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="0" name="rdoOrderAmountLimit" checked style="position: absolute; opacity: 0;">
+                                </div>&nbsp;无限制
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="i-checks amountlimit" style="padding-top: 0px;">
+                                    <div class="iradio_square-green" style="position: relative;">
+                                        <input type="radio" value="1" name="rdoOrderAmountLimit" style="position: absolute; opacity: 0;">
+                                    </div>&nbsp;满&nbsp;<input type="text" name="OrderAmountLimit" id="OrderAmountLimit" style="width:80px;" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')" class="custom-input input_amount required" disabled /><span>&nbsp;元可用</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            @{
+                if (Model != null)
+                {
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label text-right required">有效期：</label>
+                        <div class="col-1">
+                            <div class="i-checks div_expire">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="1" @(Model.Ycv_ExpireType == 1 ? "checked" : "") name="rdoExpireType" style="position: absolute; opacity: 0;">
+                                </div>&nbsp;日期范围
+                            </div>
+                        </div>
+                        <div class="col-2 input-group date  @(Model.Ycv_ExpireType==1?"":"notclick")">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="datepicker1" class="form-control input_date" placeholder="请选择日期" @(Model.Ycv_ExpireType == 1 ? "" : "disabled") value="@(Model.Ycv_ExpireDate.ToString("yyyy-MM-dd")=="1900-01-01"?"":Model.Ycv_ExpireDate.ToString("yyyy-MM-dd"))">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label text-right"></label>
+                        <div class="col-1">
+                            <div class="i-checks div_expire">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="2" @(Model.Ycv_ExpireType == 2 ? "checked" : "") name="rdoExpireType" style="position: absolute; opacity: 0;">
+                                </div>&nbsp;固定天数
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group m-b">
+                                <input type="text" name="ExpireDayCount" id="ExpireDayCount" value="@(Model.Ycv_ExpireDayCount)" class="form-control input_day" @(Model.Ycv_ExpireType == 2 ? "" : "disabled") placeholder="领取后到期天数" />
+                                <div class="input-group-append">
+                                    <span class="input-group-addon">天</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label text-right"></label>
+                        <div class="col-2">
+                            <div class="i-checks div_expire " style="padding-top: 0px;">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="3" @(Model.Ycv_ExpireType == 3 ? "checked" : "") name="rdoExpireType" style="position: absolute; opacity: 0;">
+                                </div>&nbsp;长期有效
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label text-right required">有效期：</label>
+                        <div class="col-1">
+                            <div class="i-checks div_expire">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="1" name="rdoExpireType" style="position: absolute; opacity: 0;">
+                                </div>&nbsp;日期范围
+                            </div>
+                        </div>
+                        <div class="col-2 input-group date notclick">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="DatePick" id="datepicker1" class="form-control input_date" placeholder="请选择日期" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label text-right"></label>
+                        <div class="col-1">
+                            <div class="i-checks div_expire">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="2" name="rdoExpireType" style="position: absolute; opacity: 0;">
+                                </div>&nbsp;固定天数
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group" style="width:240px;">
+                                <input type="text" name="ExpireDayCount" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')" id="ExpireDayCount" class="form-control input_day" disabled placeholder="领取后到期天数" />
+                                <div class="input-group-append">
+                                    <span class="input-group-addon">天</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label text-right"></label>
+                        <div class="col-2">
+                            <div class="i-checks div_expire" style="padding-top: 0px;">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="3" name="rdoExpireType" checked style="position: absolute; opacity: 0;">
+                                </div>&nbsp;长期有效
+                            </div>
+                        </div>
+                        <div class="col-2">
+
+                        </div>
+                    </div>
+                }
+            }
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">适用校区：</label>
+                @{
+                    if (Model != null)
+                    {
+                        <div class="col-1">
+                            <div class="i-checks div_school">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="0" name="rdoSchool" @(Model.Ycv_SchoolId == 0 ? "checked" : "") style="position: absolute; opacity: 0;">
+                                </div>&nbsp;全部校区
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <input hidden value="@(Model.Ycv_SchoolId!=0?Model.Ycv_SchoolId:0)" id="sel_schoolId" />
+                            <input hidden value="@(Model.Ycv_SchoolId!=0?Model.Ycv_SchoolId.ToString():"")" id="sel_schoolText" />
+                            <div class="form-group">
+                                <div class="i-checks div_school" style="padding-top: 0px;">
+                                    <div class="iradio_square-green" style="position: relative;">
+                                        <input type="radio" value="1" name="rdoSchool" @(Model.Ycv_SchoolId != 0 ? "checked" : "") style="position: absolute; opacity: 0;">
+                                    </div>
+                                    <select id="schoolId" name="schoolId"
+                                            class="select2_school form-control custom-input input_school" @(Model.Ycv_SchoolId != 0 ? "" : "disabled") style="width:218px;"
+                                            data-placeholder="输入校区编号或校区名称模糊搜索"
+                                            data-allow-clear="true"
+                                            data-ajax--cache="true"></select>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-1">
+                            <div class="i-checks div_school">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="0" name="rdoSchool" checked style="position: absolute; opacity: 0;">
+                                </div>&nbsp;全部校区
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="i-checks div_school" style="padding-top: 0px;">
+                                    <div class="iradio_square-green" style="position: relative;">
+                                        <input type="radio" value="1" name="rdoSchool" style="position: absolute; opacity: 0;">
+                                    </div>
+                                    <input type="text" id="schoolId" name="schoolId" class="form-control input_school required" disabled style="width:218px;box-shadow:none;border:1px solid #e5e6e7;border-radius: 1px;">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">可使用课程：</label>
+                @{
+                    if (Model != null)
+                    {
+                        <div class="col-1">
+                            <div class="i-checks course">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="1" id="aa" name="rdoCourse" @(Model.Ycv_ApplyScopeType == 1 ? "checked" : "") style="position: absolute; opacity: 0;">
+                                </div>&nbsp;全部课程
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="i-checks course">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="2" name="rdoCourse" @(Model.Ycv_ApplyScopeType == 2 ? "checked" : "") style="position: absolute; opacity: 0;">
+                                </div>&nbsp;指定类型
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="i-checks course">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="3" name="rdoCourse" @(Model.Ycv_ApplyScopeType == 3 ? "checked" : "") style="position: absolute; opacity: 0;">
+                                </div>&nbsp;指定课程
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-1">
+                            <div class="i-checks course">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="1" id="aa" name="rdoCourse" checked style="position: absolute; opacity: 0;">
+                                </div>&nbsp;全部课程
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="i-checks course">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="2" name="rdoCourse" style="position: absolute; opacity: 0;">
+                                </div>&nbsp;指定类型
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="i-checks course">
+                                <div class="iradio_square-green" style="position: relative;">
+                                    <input type="radio" value="3" name="rdoCourse" style="position: absolute; opacity: 0;">
+                                </div>&nbsp;指定课程
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="hr-line-dashed line" @(Model != null ? ((Model.Ycv_ApplyScopeType == 1 || Model.Ycv_ApplyScopeType == 2) ? "" : "style=display:none;") : "style=display:none;")></div>
+            <div class="form-group row div_grade" @(Model != null ? (Model.Ycv_ApplyScopeType == 1 ? "" : "style=display:none;") : "style=display:none;")>
+                <label class="col-1 col-form-label text-right required">选择年级：</label>
+                @*年级编辑值*@
+                <input type="hidden" value="@(Model!=null?Model.Ycv_ApplyGrade:0)" id="sel_GradeId" />
+                <input type="hidden" value="@(Model!=null?Model.Grade:"")" id="sel_GradeText" />
+                <div class="col-11">
+                    <select name="Grade" id="Grade"
+                            class="select2 form-control select2-default"
+                            data-ajax--url="@Url.Action("GetGrades", "Select2")"
+                            data-ajax--cache="true"
+                            data-placeholder="请选择年级" data-allow-clear="true" required disabled></select>
+                </div>
+            </div>
+            <div class="form-group row div_type" @(Model != null ? (Model.Ycv_ApplyScopeType == 1 ? "" : "style=display:none;") : "style=display:none;")>
+                <label class="col-1 col-form-label text-right required">选择类型：</label>
+                @*类型编辑值*@
+                <input type="hidden" value="@(Model!=null?Model.Ycv_CourseType:0)" id="sel_CourseTypeId" />
+                <input type="hidden" value="@(Model!=null?Model.CourseType:"")" id="sel_CourseTypeText" />
+                <div class="col-11">
+                    <select name="CourseType" id="CourseType"
+                            class="select2 form-control select2-default"
+                           data-ajax--url="@Url.Action("GetCourseTypes", "Select2")"
+                            data-ajax--cache="true"
+                            data-placeholder="请选择课程类型" data-allow-clear="true" required disabled></select>
+                </div>
+            </div>
+            <div class="form-group row div_course" @(Model != null ? (Model.Ycv_ApplyScopeType == 2 ? "" : "style=display:none;") : "style=display:none;")>
+                <label class="col-1 col-form-label text-right required">添加课程：</label>
+                @*课程编辑值*@
+                <input type="hidden" value="@(Model!=null?Model.Ycv_CourseId:0)" id="sel_CourseId" />
+                <input type="hidden" value="@(Model!=null?Model.Ycv_CourseId.ToString():"")" id="sel_CourseText" />
+                <div class="col-11">
+                    <input type="text" id="CourseId" name="CourseId" class="form-control input_course required" style="width:218px;box-shadow:none;border:1px solid #e5e6e7;border-radius: 1px;" disabled>
+                </div>
+            </div>
+            <div class="hr-line-dashed line" @(Model != null ? ((Model.Ycv_ApplyScopeType == 1 || Model.Ycv_ApplyScopeType == 2) ? "" : "style=display:none;") : "style=display:none;")></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">可赠券课程：</label>
+                @{
+                    if (Model != null)
+                    {
+                        @*可赠券课程编辑值*@
+                        <input type="hidden" value="@(Model!=null?Model.Ycv_RelatedCourseId:0)" id="sel_RelatedCourseId" />
+                        <input type="hidden" value="@(Model!=null?Model.Ycv_RelatedCourseId.ToString():"")" id="sel_RelatedCourseText" />
+                        <div class="col-11">
+                            <select name="RelatedCourseId" id="RelatedCourseId"
+                                    class="select2_relatedcourse form-control select2-default" style="width:220px;"
+                                    data-placeholder="输入课程编号或课程名称模糊搜索"
+                                    data-allow-clear="true"
+                                    data-ajax--cache="true" required></select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-11">
+                            <input type="text" id="RelatedCourseId" name="RelatedCourseId" class="form-control input_relatedCourseId" style="width:218px;box-shadow:none;border:1px solid #e5e6e7;border-radius: 1px;">
+                        </div>
+                    }
+                }
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">备注：</label>
+                <div class="col-11">
+                    <textarea rows="5" cols="20" name="remark" id="Remark" class="form-control" style="height: 200px; resize: none;" placeholder="请输入文本内容">@(Model != null ? Model.Ycv_Remark : "")</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary" type="button" id="btn_SignIn">
+                        保存
+                    </button>
+                    <button class="btn btn-white" type="button" id="btn_Cancel" onclick="window.history.go(-1)">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@*现金券类型  2：成单券*@
+<input type="hidden" value="2" id="VoucherType" />
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/dataPicker")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/PageScripts/voucher.js"></script>
+    <script>
+        $('#RelatedCourseId').selectPage({
+            showField: 'name',
+            keyField: 'id',
+            pageSize: 2,
+            //关闭向下的三角尖按钮
+            dropButton: false,
+            data: '/CashVoucher/GetCourses',
+            inputDelay: 0.2,
+            beforeSend: function (e) {
+                console.log(e);
+                if ($("#RelatedCourseId_text").val() == "") {
+                    e.abort();
+                }
+            },
+            params: function () { return {}; },
+            eAjaxSuccess: function (d) {
+                return d.Data;
+            }
+        });
+    </script>
+}

@@ -1,0 +1,92 @@
+﻿@model AbhsChinese.Admin.Models.Question.QuestionInputModel
+
+@{
+    ViewBag.Title = "AddQuestion";
+    ViewBag.PageTitle = "题目录入-选择题";
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <form role="form" id="form" method="post"
+              action="@Url.Action("SaveQuestion", "Question")">
+            @Html.HiddenFor(m => m.SubjectType)
+            <div class="form-group row">
+                <label class="col-2 col-form-label">题干</label>
+                <div class="col-10">
+                    @Html.TextAreaFor(m => m.Name, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            @Html.EditorFor(m => m.ChiceOption)
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-2 col-form-label">答案</label>
+                @Html.EditorFor(m => m.Answers)
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-2 col-form-label">选项名称</label>
+                <div class="col-2">
+                    <div class="i-checks">
+                        <div class="iradio_square-green" style="position: relative;">
+                            <input type="radio" value="1" name="display" checked style="position: absolute; opacity: 0;">
+                        </div>&nbsp;显示
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="i-checks">
+                        <div class="iradio_square-green" style="position: relative;">
+                            <input type="radio" value="0" name="display" style="position: absolute; opacity: 0;">
+                        </div>&nbsp;不显示
+                    </div>
+                </div>
+                <label for="checkIn" class="error"></label>
+            </div>
+            <div class="hr-line-dashed"></div>
+            @Html.EditorFor(m => m.Baisc)
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-white" type="submit">保存</button>
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles{
+
+}
+@section Scripts{
+    <script>
+        $(function () {
+            $("#form").validate({
+                ignore: "",
+                rules: {
+                    Name: {
+                        required: true,
+                        maxlength: 200
+                    },
+                    'ChiceOption.A': {
+                        required: true
+                    },
+                    'ChiceOption.B': {
+                        required: true
+                    },
+                    answers: {
+                        required: true
+                    },
+                    'Baisc.Grade': {
+                        required: true
+                    },
+                    'Baisc.Difficulty': {
+                        required: true
+                    },
+                    'Basic.Keywords': {
+                        required: true
+                    }
+                }
+            });
+        });
+    </script>
+}

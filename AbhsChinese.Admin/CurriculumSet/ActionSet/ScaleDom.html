@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>缩放</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <style>
+        .scale-block:before {
+            content: "选择要缩放的元素";
+        }
+
+        .scale-block input.form-control {
+            padding: 5px;
+        }
+
+        .scale-block .input-group-btn .btn {
+            padding: 3px 5px;
+        }
+
+        .scale-block .img-list {
+            height: 350px;
+            margin: 10px 0px 0px;
+            padding: 5px;
+            overflow: auto;
+        }
+
+            .scale-block .img-list li {
+                margin-bottom: 10px;
+                width: 100%;
+                border: 1px solid #ccc;
+            }
+
+                .scale-block .img-list li img {
+                    width: 100%;
+                    border: 1px solid #808080;
+                }
+
+                .scale-block .img-list li p {
+                    min-height: 40px;
+                    line-height: 30px;
+                    margin: 0 10px;
+                }
+
+
+        .set-block:before {
+            content: "设置";
+        }
+
+        .set-block .form-inline {
+            margin-top: 5px;
+        }
+
+        .set-block label {
+            margin-right: 5px;
+        }
+
+        .set-block input {
+            width: 70px;
+        }
+
+        .z-top {
+            z-index: 999 !important;
+        }
+
+            .z-top:after {
+                content: " ";
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                border: 1px solid #f00;
+            }
+    </style>
+    <style id="ScaleStyle" type="text/css"></style>
+    <script>
+        $(function () {
+            function MakeStyle(duration, ratio, num) {
+                $("#ScaleStyle").html("@keyframes myAnimate{0%{ -webkit-transform: scale(1);transform: scale(1);} 50%{ -webkit-transform: scale(" + ratio + ");transform: scale(" + ratio + ");} 100%{ -webkit-transform: scale(1);transform: scale(1);}} .ScaleStyle{animation:myAnimate " + duration / 1000 + "s linear 0s " + num + " normal;-webkit-animation:myAnimate " + duration / 1000 + "s linear 0s " + num + " normal;}");
+            }
+
+            function doActionStyle(dom) {
+                dom.addClass("ScaleStyle")
+                dom.on("animationend", function () {
+                    dom.removeClass("ScaleStyle");
+                    dom.off("animationend");
+                })
+            }
+
+
+
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                //创建默认的动作
+                var action = new top.ScaleDom({
+                    actionId: "scaledom" + randomString(20),
+                    duration: 1000,
+                    objectId: "",
+                    ratio: 1.1,
+                    num: 1
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                page.selecter = "#InnerArea";
+                page.draw(CurriculumInfo.selectStep.stepNum);
+                //加载数据
+                (function LoadData() {
+                    var DomList = $("#DomList");
+                    //获取所有页面动作元素
+                    for (var s = 0; s <= CurriculumInfo.selectStep.stepNum; s++) {
+                        var step = page.steps[s];//获取步骤
+                        for (var a in step.actions)//循环所有的动作
+                        {
+                            var _action = step.actions[a];//获取当前动作
+                            switch (_action.type) {
+                                case "setTitle":
+                                    DomList.append("<li id='action_" + _action.actionId + "' actiontype='setTitle' objectid='" + _action.actionId + "' style='color:" +
+                                        _action.color + ";'><p>" + _action.text + "</p></li>");
+                                    break;
+                                    //case "setBackground": break;
+                                    //case "xiaoAiSay": break;
+                                case "xiaoAiChange":
+                                    if ($("#action_xiaoAiChangeImg").length > 0) {
+                                        $("#action_xiaoAiChangeImg").remove();
+                                    }
+                                    DomList.append("<li id='action_xiaoAiChangeImg' actiontype='xiaoAiChange' objectid='xiaoAiChangeImg' ><img src='" + _action.src + "' title='" + _action.imgId + "' /></li>");
+                                    break;
+                                case "insertImg":
+                                    DomList.append("<li id='action_" + _action.actionId + "' actiontype='insertImg' objectid='" + _action.actionId + "' ><img src='" + _action.src + "' title='" + _action.imgId + "' /></li>"); break;
+                                case "insertText":
+                                    DomList.append("<li id='action_" + _action.actionId + "' actiontype='insertText' objectid='" + _action.actionId + "' style='color:" +
+                                        _action.color + ";'><p>" + _action.text + "</p></li>"); break;
+                                case "hideDom": $("#action_" + _action.objectId).remove(); break;
+                                default: break;
+                            }
+                        }
+                    }
+
+                    if (CurriculumInfo.selectAction instanceof top.ScaleDom) {//如果是修改的动作
+                        action = new top.ScaleDom(CurriculumInfo.selectAction);
+                        $("#action_" + action.objectId).addClass("selected");
+                        var dom = $("#" + action.objectId);
+                        dom.addClass("z-top");
+                        doActionStyle(dom);
+                    }
+                    $("#durationTime").val(action.duration);
+                    $("#doTimes").val(action.num);
+                    $("#scaleSize").val(Math.floor(action.ratio * 100));
+                    MakeStyle(action.duration, action.ratio, action.num);//设置样式
+                })();
+
+
+                //图片的设置要修改
+                $(".img-list li").click(function () {
+                    $(".z-top").removeClass("z-top");
+                    $(".ScaleStyle").removeClass("ScaleStyle");
+                    $(".img-list li").removeClass("selected");
+                    $(this).addClass("selected");
+                    var domid = $(this).attr("objectid");
+                    var dom = $("#" + domid);
+                    dom.addClass("z-top");
+                    doActionStyle(dom);
+                    action.objectId = domid;
+                });
+
+                //只允许输入数字
+                $("#durationTime").keyup(function (e) {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.duration = val;
+                    MakeStyle(action.duration, action.ratio, action.num);
+                    if (action.objectId != "") {
+                        var dom = $("#" + action.objectId);
+                        doActionStyle(dom);
+                    }
+                })
+                //只允许输入数字
+                $("#doTimes").keyup(function (e) {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.num = val;
+                    MakeStyle(action.duration, action.ratio, action.num);
+                    if (action.objectId != "") {
+                        var dom = $("#" + action.objectId);
+                        doActionStyle(dom);
+                    }
+                })
+                //只允许输入数字
+                $("#scaleSize").keyup(function (e) {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.ratio = val / 100;
+                    MakeStyle(action.duration, action.ratio, action.num);
+                    if (action.objectId != "") {
+                        var dom = $("#" + action.objectId);
+                        doActionStyle(dom);
+                    }
+                })
+                $("#OkBtn").click(function () {
+                    if (action.objectId != "") {
+                        if (CurriculumInfo.selectAction instanceof top.ScaleDom) {
+                            CurriculumInfo.SetAction(action);
+                        }
+                        else {
+                            CurriculumInfo.AddAction(action);
+                        }
+                        var frame = top.frames["ActionSet"];
+                        if (frame) {
+                            $(frame).hide();
+                        }
+                    }
+                    else {
+                        alert("请选择元素")
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">缩放</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <div class="scale-block block-box">
+                    <ul id="DomList" class="img-list"></ul>
+                </div>
+                <div class="set-block block-box">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="durationTime">动作时长</label>
+                            <input type="text" class="form-control-sm" id="durationTime" value="" />
+                            <span>(毫秒)</span>
+                        </div>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="doTimes">执行次数</label>
+                            <input type="text" class="form-control-sm" id="doTimes" value="" />
+                        </div>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="scaleSize">缩放比例</label>
+                            <input type="text" class="form-control-sm" id="scaleSize" value="" /><span>%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div class="ruler-x-box">
+                <div class="mouse-info"></div>
+                <div class="ruler-x"></div>
+            </div>
+            <div class="ruler-y-box">
+                <div class="ruler-y"></div>
+                <div id="OuterArea" class="plot-area">
+                    <div class="outer-area"></div>
+                    <div id="InnerArea" class="inner-area">
+                    </div>
+                    <div class="outer-area"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

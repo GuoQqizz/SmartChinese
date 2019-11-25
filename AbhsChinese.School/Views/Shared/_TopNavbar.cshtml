@@ -1,0 +1,85 @@
+﻿@using AbhsChinese.School.Helpers
+    @{
+        var currentUser = LoginCookieHelper.GetCurrentUser();
+        var header = currentUser.Teacher.Yoh_AvatarShow;
+        if (header == null || header == "")
+        {
+            header = "/Images/profile_small.jpg";
+        }
+        var name = $"{currentUser.School.Bsl_SchoolName}-{currentUser.Teacher.Yoh_Name}" ;
+    }
+    <div class="row border-bottom nav-top">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+            @*<div class="navbar-header"></div>*@
+            <div class="nav navbar-top-links navbar-left navbar-title">
+                <h3 class="page-title">@ViewBag.PageTitle</h3>
+            </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="float-left"
+                       style="padding:15px 10px; cursor:default">
+                        <img class="rounded-circle"
+                             style="width:31px;height:31px;"
+                             alt="..." src="@header" />
+                        <span>&nbsp;@name</span>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:signOut();" style="">
+                    <i class="fa fa-power-off"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="row" style="margin-bottom:10px; display:none;">
+    <div class="col-12">
+        <div class="border-bottom">
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <h3 class="page-title">@ViewBag.PageTitle</h3>
+                </div>
+
+                <div class="col pull-right text-right mr-4">
+                    @if (ViewBag.HasAddBtn != null && ViewBag.HasAddBtn)
+                    {
+                        <button type="button" class="btn btn-white" id="btnReload" onclick="editGlobal(0)"><i class="fa fa-plus"></i>&nbsp;@ViewBag.AddBtnName</button>
+                    }
+                    @if (ViewBag.HasReloadBtn != null && ViewBag.HasReloadBtn)
+                    {
+                        <button type="button" class="btn btn-white" id="btnReload" onclick="reloadGlobal()"><i class="fa fa-refresh"></i>&nbsp;刷新</button>
+                    }
+                    @if (ViewBag.HasBackBtn != null && ViewBag.HasBackBtn)
+                    {
+                        <button type="button" class="btn btn-white" id="btnBack" onclick="backGlobal()"><i class="fa fa-chevron-left"></i>&nbsp;返回</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function backGlobal() {
+        if (window.backLocal && typeof window.backLocal == 'function') {
+            window.backLocal();
+        } else {
+            window.history.back();
+        }
+    }
+    function reloadGlobal() {
+        if (window.reloadLocal && typeof window.reloadLocal == 'function') {
+            window.reloadLocal();
+        } else {
+            //PageBase.SetReload();
+            window.location.reload();
+        }
+    }
+    function editGlobal(id) {
+        if (window.editLocal && typeof window.editLocal == 'function') {
+            window.editLocal(id);
+        } else {
+            console.log(id);
+        }
+    }
+</script>

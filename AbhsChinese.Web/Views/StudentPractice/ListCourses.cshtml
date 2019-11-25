@@ -1,0 +1,65 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "课后练习";
+}
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("Index","LearningCenter")">学习中心</a><em><img src="~/Images/StudentInfo/back.png" /></em>
+            <a href="#">课后练习</a>
+        </div>
+    </div>
+    <div class="maincontent">
+        <div class="pageimgerror">
+            <img class="error-img" src="~/Images/StudentInfo/praticeerror.png" />
+        </div>
+        <div class="afterclasspage"></div>
+        <div class="pagebox"></div>
+    </div>
+</div>
+
+<input type="hidden" id="historySearch" value="@ViewBag.HistorySearch" />
+
+<script type="text/template" id="lesson-template">
+    <div class="item">
+        <div class="list">
+            <img src="/Images/StudentInfo/afclass.png" />
+            <div class="contafbox">
+                <div class="info">
+                    <div class="fl">
+                        <span class="label{{CourseType}}">{{DisplayCourseType}}</span><em>{{CourseName}}（共{{LessonCount}}课时）</em>
+                    </div>
+                    <div class="infor">共练习<span id="span-{{CourseId}}">0</span>题</div>
+                </div>
+                <div class="info1 line1">
+                    适用年级：{{DisplayGrade}}&nbsp;&nbsp;&nbsp;&nbsp;教材版本：部编版&nbsp;&nbsp;&nbsp;&nbsp;校区班级：{{ClassName}}
+                </div>
+                <div class="info2" id="div-{{CourseId}}" data-can-practice="0">
+                    <div class="itema fl"><a class="defaultbtn" data-to-practice="10" onclick="practiceAfterClass(10,{{CourseId}},this)" href="javascript:void(0);">练习10题</a></div>
+                    <div class="itema fl"><a class="defaultbtn" data-to-practice="15" onclick="practiceAfterClass(15,{{CourseId}},this)" href="javascript:void(0);">练习15题</a></div>
+                    <div class="itema fl"><a class="defaultbtn" data-to-practice="20" onclick="practiceAfterClass(20,{{CourseId}},this)" href="javascript:void(0);">练习20题</a></div>
+                    <div class="itema fl"><a class="defaultbtn" data-to-practice="25" onclick="practiceAfterClass(25,{{CourseId}},this)" href="javascript:void(0);">练习25题</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+@section Styles{
+    <style>
+        li {
+            margin-top: 10px;
+        }
+        body,html{height:100%;}
+    </style>
+}
+
+@section Scripts{
+    <script src="~/Scripts/parger.js"></script>
+    <script src="~/Scripts/StudentPractice/course.list.js"></script>
+}
+
+

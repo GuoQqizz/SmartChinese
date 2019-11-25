@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <meta name="save" content="history">
+    <meta name="description" content="" />
+    @Styles.Render("~/font-awesome/css")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/bundles/css/select2Styles")
+    @Styles.Render("~/bundles/css/iCheckStyles")
+
+
+    <title>橙同学大语文校区后台</title>
+
+    <style>
+       
+
+        .nav-header {
+            padding: 10px 24px;
+            /*background-size: cover;*/
+        }
+
+        .nav.metismenu > li {
+            background-color: #2f4050;
+        }
+
+        .navbar-title {
+            margin-left: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-top .navbar, .nav-top .navbar .nav {
+            height: 100%;
+        }
+
+        .nav-top {
+            height: 54px;
+            overflow: hidden;
+        }
+
+        #page-wrapper {
+            height: calc(100% - 54px);
+        }
+
+        .wrapper-content {
+            padding-top: 10px;
+        }
+
+
+        .row + .row {
+            margin-top: 0;
+        }
+
+        .search-form {
+            margin-top: -10px;
+        }
+
+        .spc-green {
+            color: #1ABC9C;
+        }
+
+        .spc-defaule {
+            color: #ccc;
+        }
+
+        .spc-red {
+            color: #D9001B;
+        }
+    </style>
+    <style>
+        /*form 输入触发状态样式*/
+        /*.form-within {
+            padding-top: 5px;
+            margin-top: 20px;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+            .form-within:focus-within {
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }*/
+
+        .input-form-addon input.error, .input-form-addon select.error {
+            margin-bottom: 20px;
+        }
+
+        .input-form-addon label.error {
+            position: absolute;
+            top: 36px;
+        }
+
+        .select2-default.error ~ .select2-container {
+            margin-bottom: 30px;
+            border: 1px dotted #cc5965;
+        }
+
+        .select2-default.error + label.error {
+            position: absolute;
+            top: 36px;
+        }
+
+        .select2-container + label.error {
+            position: absolute;
+            top: 2.25rem;
+            width: 200px;
+            left: 14px;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+
+</head>
+<body>
+    <div id="wrapper" class="@Html.PageClass()">
+        @Html.Partial("_Navigation")
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+            @Html.Partial("_TopNavbar")
+            <div class="wrapper wrapper-content">
+                @RenderBody()
+            </div>
+            @Html.Partial("_Footer")
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/js/common")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js/slimScroll")
+    @Scripts.Render("~/bundles/js/inspinia")
+    @Scripts.Render("~/bundles/js/select2")
+    @Scripts.Render("~/bundles/js/icheck")
+
+
+    <script src="~/Content/layer/layer.js"></script>
+
+
+    @Scripts.Render("~/bundles/js/pagebase")
+
+    <script>
+
+        function setMinHeight(targetClassName, offset) {
+            offset = offset || 140;
+            $(`.${targetClassName}`).css("min-height", ($(window).height() - offset) + "px");
+        }
+        //退出
+        function signOut() {
+            window.layer.confirm("确定退出登录?", function () {
+                window.location.href = "/Login/SignOut";
+            })
+        }
+        $(function () {
+            //日期关闭自动提示
+            $('.input-group.date input').attr('autocomplete', 'off');
+            //关闭自动提示
+            $('.no-autocomplete').attr('autocomplete', 'off');
+            //输入删除前后空格
+            $('form').on('input', '.no-space-input', function (e) {
+                var val = e.target.value;
+                if (val.startsWith(' ')) {
+                    e.target.value = val.trim();
+                }
+            })
+            $('form').on('change', '.no-space-input', function (e) {
+                var val = e.target.value;
+                if (val.startsWith(' ') || val.endsWith(' ')) {
+                    e.target.value = val.trim();
+                }
+            })
+
+
+
+            //导航选中
+            let pathName = document.location.pathname;
+            let $a = $(`.nav-second-level a[href="${pathName}"]`);
+            if ($a && $a.length > 0) {
+                $a.parent().addClass('active');
+                $a.parent().parent().addClass('in');
+                $a.parent().parent().parent().addClass('active');
+            } else {
+                let $beforeName = window.sessionStorage.getItem('before');
+                $a = $(`.nav-second-level a[href="${$beforeName}"]`);
+                if ($a && $a.length > 0) {
+                    $a.parent().addClass('active');
+                    $a.parent().parent().addClass('in');
+                    $a.parent().parent().parent().addClass('active');
+                }
+            }
+
+
+        });
+        window.onbeforeunload = function (e) {
+            window.sessionStorage.setItem('before', window.location.pathname);
+        }
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

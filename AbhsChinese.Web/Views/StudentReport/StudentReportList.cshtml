@@ -1,0 +1,156 @@
+﻿@using AbhsChinese.Web.Models.SubjectReport
+@model StudyReportCount
+@{
+    ViewBag.Title = "学习报告";
+}
+
+@section Styles{
+    <link href="~/Content/laypage/skin/laypage.css" rel="stylesheet" />
+    <style>
+        body, html {
+            height:100%;
+        }
+    </style>
+}
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("Index","LearningCenter")">学习中心</a><em><img src="/Images/StudentInfo/back.png"></em><a href="@Url.Action("StudentReportList","StudentReport")">学习报告</a>
+        </div>
+    </div>
+    <div class="taskpage">
+        @{
+            @*if (Model.AllCount == 0)
+            {
+                <div class="pageimgerror" style="display:block;">
+                    <img class="error-img" src="~/Images/StudentInfo/noreport.png" />
+                    @*<a class="errorback" href="#">返回首页</a>
+                </div>
+            }
+            else
+            {*@
+                <div class="selectbox">
+                    <a href="javascript:void(0)" @(Model.Active==0?"class=active":"") status="0">
+                        全部<span>(@Model.AllCount)</span>
+                    </a>
+                    <a href="javascript:void(0)" @(Model.Active==1?"class=active":"") status="1">
+                        学习报告<span>(@Model.LessonCount)</span>
+                    </a>
+                    <a href="javascript:void(0)" @(Model.Active==2?"class=active":"") status="2">
+                        任务报告<span>(@Model.TaskCount)</span>
+                    </a>
+                    <a href="javascript:void(0)" @(Model.Active==3?"class=active":"") status="3">
+                        练习报告<span>(@Model.PracticeCount)</span>
+                    </a>
+                </div>
+                <div class="tablebox" style="min-height:600px;">
+                    <table class="tasktable">
+                        <thead>
+                        <th style="width:160px;">时间</th>
+                        <th style="width:160px;">报告类型</th>
+                        <th>报告内容</th>
+                        <th style="width:85px;">操作</th>
+                        </thead>
+                        <tbody id="tb1"></tbody>
+                    </table>
+                    <div class="pageimgerror1" style="padding-top:150px;text-align:center;padding-bottom:150px;"><img class="error-img" src="~/Images/StudentInfo/zwbg.png" /></div>
+                    <div class="pagebox">
+                        <div id="pagereport"></div>
+                    </div>
+                </div>
+            @*}*@
+        }
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+
+@section Scripts{
+    <script src="~/Content/laypage/laypage.js"></script>
+    <script>
+        $('.taskpage .selectbox a').click(function () {
+            $(this).addClass('active').siblings().removeClass('active');
+            let status = $(this).attr("status");
+            LoadData(1, status);
+        });
+        $(function () {
+            var selecta = $('.selectbox').find('.active');
+            //1表示状态为
+            LoadData(1, $(selecta).attr('status'));
+        })
+
+        function LoadData(pageindex, status) {
+            $.ajax({
+                url: '@Url.Action("GetStudentReport", "StudentReport")',
+                type: 'get',
+                data: { pageIndex: pageindex, reportType: status },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Data.length > 0) {
+                        $('.pageimgerror1').hide();
+                        $('.tablebox').show();
+                        $('.pagebox').show();
+                        //if(data.TotalRecord>=10)
+                        //{
+                        //    $('.pagebox').show();
+                        //}
+                        //else
+                        //{
+                        //    $('.pagebox').hide();
+                        //}
+                        let _self = $('#tb1');
+                        _self.empty();
+                        let str = "";
+                        let url = "";
+                        for (var i = 0; i < data.Data.length; i++) {
+                            if (data.Data[i].ReportType == 1) //1：学习报告 2：任务报告 3：练习报告
+                            {
+                                url = `/StudentReport/ShowStudyReport?lessonProcessId=${data.Data[i].Id}&path=${window.encodeURIComponent(`/StudentReport/StudentReportList?active=${status}`)}&source=1&r=${Math.random()}`;
+                            }
+                            else {
+                                url = `/StudentReport/ShowTaskReport?taskId=${data.Data[i].Id}&path=${window.encodeURIComponent(`/StudentReport/StudentReportList?active=${status}`)}&source=1&origin=0&r=${Math.random()}`;
+                            }
+                            str += '<tr>';
+                            str += '<td>' + data.Data[i].StudyTime + '</td>';
+                            str += '<td>' + data.Data[i].ReportTypeStr + '</td>';
+                            str += '<td>' + data.Data[i].StudyContent + '</td>';
+                            str += `<td><a class="check" href="${url}")">查看</a></td>`;
+                            str += '</tr>';
+                        }
+                        _self.append(str);
+
+                        var pages = Math.ceil(data.TotalRecord / data.PageSize); //得到总页数
+                        //调用分页
+                        laypage({
+                            cont: 'pagereport',
+                            pages: pages,
+                            curr: pageindex,
+                            prev: '<',
+                            next: '>',
+                            jump: function (obj, first) {
+                                if (!first) { //一定要加此判断，否则初始时会无限刷新
+                                    pageindex = obj.curr;
+                                    LoadData(pageindex, status);
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        let _self = $('#tb1');
+                        _self.empty();
+                        $('.pageimgerror1').show();
+                        $('.tablebox').show();
+                        $('.pagebox').hide();
+                    }
+                }
+            });
+        }
+    </script>
+}

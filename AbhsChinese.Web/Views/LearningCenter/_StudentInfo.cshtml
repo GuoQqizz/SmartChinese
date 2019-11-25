@@ -1,0 +1,54 @@
+﻿@using AbhsChinese.Domain.Dto.Response.Student
+@using AbhsChinese.Domain.Enum
+@model DtoSumStudent
+
+<div class="bjboxbox">
+    <div class="bjboxboxtop"><img src="/Images/StudentInfo/tbjtop.png" /></div>
+    <div class="bjboxboxcenter" style="height: 250px;">
+        <div class="infoperson">
+            <div class="photoimg">
+                @{
+                    if (string.IsNullOrEmpty(Model.Avatar))
+                    {
+                        if (Model.Sex == (int)SexEnum.男)
+                        {
+                            <img src="/Images/StudentInfo/u396.png" />
+                        }
+                        else
+                        {
+                            <img src="/Images/StudentInfo/portrait.png" />
+                        }
+                    }
+                    else
+                    {
+                        <img src="@Model.AvatarStr" />
+                    }
+                }
+                <div class="usname">@Model.Salutation</div>
+            </div>
+            <div class="userinfo">
+                <!-- <img src="/Images/StudentInfo/man.png" /> -->
+                <img src="@(Model.Sex==(int)SexEnum.男?"/Images/StudentInfo/man.png":"/Images/StudentInfo/woman.png")" />&nbsp;&nbsp;@Model.Name
+            </div>
+            <div class="userinfo1">
+                @(string.IsNullOrEmpty(Model.School)?"未绑定校区":Model.School)
+            </div>
+            <div class="userinfo2">
+                <div class="usitem">
+                    <div class="text">今日学习</div>
+                    <div class="text1"><span>@Model.StudyMinutes</span>分钟</div>
+                </div>
+                <div class="usitem">
+                    <div class="text">学习天数</div>
+                    <div class="text1"><span class="label1">@Model.StudyDayCount</span>天</div>
+                </div>
+                <div class="usitem">
+                    <div class="text">金币数量</div>
+                    <div class="text1"><span class="label2">@Model.Coins</span>个</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="bjboxboxtop"><img src="/Images/StudentInfo/tbjbottom.png" /></div>
+</div>

@@ -1,0 +1,30 @@
+﻿@model AbhsChinese.Admin.Models.UserViewModel
+
+@{
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";
+}
+
+
+
+@section styles{
+    <link href="~/Content/umeditor/themes/default/css/umeditor.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script src="~/Content/umeditor/umeditor.config.js"></script>
+    <script src="~/Content/umeditor/umeditor.js"></script>
+    <script src="~/Content/umeditor/lang/zh-cn/zh-cn.js"></script>
+    <script>
+        $(function () {
+            var $editform = $("#frmUserEdit");
+            $editform.submit(function (response) {
+                if ($editform.valid()) {
+                    $editform.ajaxSubmit(function (response) {
+                        alert(response);
+                    });
+                    return false;
+                }
+            });
+        });
+    </script>
+}

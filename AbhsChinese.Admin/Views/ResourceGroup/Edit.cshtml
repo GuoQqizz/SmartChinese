@@ -1,0 +1,369 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@using AbhsChinese.Admin.Models.ResourceGroup
+@model ResourceGroupEditViewModel
+@{
+    ViewBag.PageTitle = "资源组详情";
+}
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    <style>
+        .shorttd{
+            width:200px;
+            background:#f9fafc;
+        }
+
+        .longtd{
+            width:400px;
+        }
+         .switchery {
+            width:40px;
+            height:20px;
+        }
+        .switchery > small {
+            width:20px;
+            height:20px;
+        }
+
+         /*abhsTable*/
+        #table_resource {
+            height: calc(100% - 79px);
+        }
+        .table_container {
+            height: 100%;
+        }
+        #wrapper {
+            height: 100%;
+        }
+        .wrapper {
+            height: calc(100% - 120px);
+        }
+    </style>
+}
+
+<div class="ibox" style="margin-bottom:2px;">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered toptable">
+                    <tr>
+                        <td class="shorttd">编号</td>
+                        <td class="longtd" id="txt_Id">@(Model != null ? Model.Yrg_Id : 10000)</td>
+                        <td class="shorttd">资源组名称</td>
+                        <td class="longtd">@(Model != null ? Model.Yrg_Name : "")</td>
+                    </tr>
+                    <tr>
+                        <td class="shorttd">创建时间</td>
+                        <td class="longtd">@(Model != null ? Model.Yrg_CreateTime.ToString("yyyy-MM-dd") : "")</td>
+                        <td class="shorttd">年级</td>
+                        <td class="longtd">@(CustomEnumHelper.Parse(typeof(GradeEnum), Model.Yrg_Grade))</td>
+                    </tr>
+                    <tr>
+                        <td class="shorttd">多媒体资源数量</td>
+                        <td class="longtd">@(Model != null ? Model.Yrg_MediaCount : 0)</td>
+                        <td class="shorttd">文本资源数量</td>
+                        <td class="longtd">@(Model != null ? Model.Yrg_TextCount : 0)</td>
+                    </tr>
+                    <tr>
+                        <td class="shorttd">题目数量</td>
+                        <td class="longtd">@(Model != null ? Model.Yrg_SubjectCount : 0)</td>
+                        <td class="shorttd">是否启用</td>
+                        <td class="longtd">
+                            <input type="checkbox" name="IsEnabled" class="js-switch" @(Model != null && Model.Yrg_Status == 1 ? "checked" : "") onchange="updateState(this)" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="@((int)Model.Active)" id="active" />
+<div class="ibox" style="height: calc(100% - 95px);">
+    <div class="ibox-content" style="height: 100%;">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" name="btn_countType" data-count-type="2" class="btn @(Model.Active==ResourceTypeEnum.多媒体资源?"btn-primary":"btn-default")">多媒体资源数量</button>
+                <button type="button" name="btn_countType" data-count-type="1" class="btn @(Model.Active==ResourceTypeEnum.文本资源?"btn-primary":"btn-default")">文本资源数量</button>
+                <button type="button" name="btn_countType" data-count-type="3" class="btn @(Model.Active==ResourceTypeEnum.题目?"btn-primary":"btn-default")">题目</button>
+
+                <div class="ibox-tools" style="top:1px;">
+                    <div class="form-group">
+                        <button class="btn btn-white" type="button" onclick="addResourceGroupItem()">
+                            &nbsp;&nbsp;添加&nbsp;&nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="ibox-content" style="display:none;">
+                    <form role="form" class="form-inline search-form" id="form_search_resourcecount">
+                        <input type="hidden" name="countType" value="" />
+                        <div class="form-group" style="display:none">
+                            <button class="btn btn-white search" type="button">
+                                搜索
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" style="height:100%;">
+            <div class="col-12 table_container">
+                <div id="table_resource"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    <script>
+        var resType = $("#active").val();
+        $(function () {
+            //CheckBox 样式
+            var elem = document.querySelector('.js-switch');
+            var switchery = new Switchery(elem, { color: '#1AB394' });
+
+            //initTable();
+            registerEvent();
+
+            getData(resType);
+        });
+
+        function registerEvent() {
+            $('button[name="btn_countType"]').on('click', function () {
+                let $self = $(this);
+                if ($self.hasClass('btn-primary')) {
+                    return;
+                }
+
+                let type = this.dataset.countType;
+                resType = type;
+                getData(resType);
+
+                $self.removeClass('btn-default').addClass('btn-primary')
+                     .siblings('.btn-primary').removeClass('btn-primary').addClass('btn-default');
+            });
+        }
+
+        function getData(res) {
+            var theadData;
+            if (res == 2) {  //1：文本 2：多媒体 3：题目
+                theadData = [
+                   { label: '编号', name: 'Id', align: 'center' },
+                   {
+                       label: '多媒体资源名称',
+                       name: 'Name',
+                       align: 'center'
+                   },
+                   { label: '上传时间', name: 'UploadTime', align: 'center' },
+                   { label: '年级', name: 'Grades', align: 'center' },
+                   { label: '类型', name: 'Type', align: 'center' },
+                   { label: '关键字', name: 'Keywords', align: 'center' },
+                   {
+                       label: '操作',
+                       name: '',
+                       align: 'center',
+                       formatter: function (index, value, row) {
+                           return "<a href='javascript:void(0)' class='text-info' onclick='show(" + row.Id + "," + row.MediaType + ")'>查看</a>&nbsp;&nbsp;<a href='javascript:void(0)' class='text-info' onclick='del(" + row.Id + ")'>移除</a>";
+                       }
+                   }
+                ];
+            }
+            else if (res == 1) {
+                theadData = [
+                    { label: '编号', name: 'Id', align: 'center' },
+                    {
+                        label: '文本资源名称',
+                        name: 'Name',
+                        align: 'center'
+                    },
+                    { label: '上传时间', name: 'UploadTime', align: 'center' },
+                    { label: '年级', name: 'Grades', align: 'center' },
+                    { label: '类型', name: 'Type', align: 'center' },
+                    { label: '关键字', name: 'Keywords', align: 'center' },
+                    {
+                        label: '操作',
+                        name: '',
+                        align: 'center',
+                        formatter: function (index, value, row) {
+                            return "<a href='javascript:void(0)' class='text-info' onclick='show(" + row.Id + ")'>查看</a>&nbsp;&nbsp;<a href='javascript:void(0)' class='text-info' onclick='del(" + row.Id + ")'>移除</a>";
+                        }
+                    }
+                ];
+            }
+            else if (res == 3) {
+                theadData = [
+                    { label: '编号', name: 'Id', align: 'center' },
+                    {
+                        label: '题干',
+                        name: 'Name',
+                        align: 'center'
+                    },
+                    { label: '年级', name: 'Grades', align: 'center' },
+                    { label: '类型', name: 'Type', align: 'center' },
+                    { label: '难度', name: 'Difficulty', align: 'center' },
+                    { label: '关键字', name: 'Keywords', align: 'center' },
+                    {
+                        label: '操作',
+                        name: '',
+                        align: 'center',
+                        formatter: function (index, value, row) {
+                            return "<a href='javascript:void(0)' class='text-info' onclick='show(" + row.Id + "," + row.SubjectType + ")'>查看</a>&nbsp;&nbsp;<a href='javascript:void(0)' class='text-info' onclick='del(" + row.Id + ")'>移除</a>";
+                        }
+                    }
+                ];
+            }
+
+            $('.pagination').MyPaging({
+                size: 20,
+                total: 0,
+                current: 1,
+                prevHtml: '上一页',
+                nextHtml: '下一页',
+                layout: 'total, totalPage, prev, pager, next, jumper',
+                jump: function () {
+                    var _this = this;
+                    //var pagination = {
+                    //    PageIndex: _this.current,
+                    //    PageSize: _this.size
+                    //};
+                    $.ajax({
+                        url: '@Url.Action("GetResourceGroupItem", "ResourceGroup")',
+                        type: 'get',
+                        data: {
+                            PageIndex: _this.current,
+                            PageSize:_this.size,
+                            Id: $("#txt_Id").text(),
+                            ResourceType: resType
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            $('#table_resource').abhsTable({
+                                theadData: theadData,//头部栏目
+                                tbodyData: res.Data,//tbody内容
+                                tableBordered: true,//是否边框
+                                tableStriped: true,//是否隔行变色
+                                tableHover: true,//是否划过变色
+                            })
+                            _this.setTotal(res.TotalRecord);
+                        }
+                    })
+                }
+            });
+        }
+
+
+        function addResourceGroupItem() {
+            let url = "";
+            var title = "";
+            if (resType == 1) {
+                url = "/ResourceGroup/ShowText?groupId=" + $("#txt_Id").text();
+                title = "关联文本资源";
+            }
+            else if (resType == 2) {
+                url = "/ResourceGroup/ShowMedia?groupId=" + $("#txt_Id").text();
+                title = "关联多媒体资源";
+            }
+            else if (resType == 3) {
+                url = "/ResourceGroup/ShowSubject?groupId=" + $("#txt_Id").text();
+                title = "关联题目";
+            }
+            layer.open({
+                type: 2,
+                title: title,
+                skin: 'layui-layer-rim',
+                area: ["75%", "95%"],
+                btn: ['确定', '关闭'],
+                yes: function (index, layero) {
+                    /*提交表单*/
+
+                    var submit = layero.find('iframe').contents().find("#btn_SignIn");// #subBtn为页面层提交按钮ID
+                    submit.click();// 触发提交监听
+                },
+                content: url
+            });
+        }
+
+        function show(id, mediaType) {
+            let url = "";
+            if (resType == 1) {
+                url = "/ResourceGroup/TextView?id=" + id;
+            }
+            else if (resType == 2) {
+                if (mediaType == 101) {
+                    url = "/ResourceGroup/MediaView?id=" + id;
+                }
+                if (mediaType == 102) {
+                    url = "/ResourceGroup/MediaView?id=" + id;
+                }
+                if (mediaType == 103) {
+                    url = "/ResourceGroup/MediaView?id=" + id;
+                }
+            }
+            else if (resType == 3) {
+                url = "/ResourceGroup/SubjectView?id=" + id + "&type=" + mediaType;
+            }
+            layer.open({
+                type: 2,
+                title: "查看",
+                skin: 'layui-layer-rim',
+                area: ["75%", "90%"],
+                btn: ['关闭'],
+                content: url
+            });
+
+        }
+
+        function del(id) {
+            layer.confirm('确认移除吗?',
+            {
+                icon: 2,
+                title: '提示',
+                yes: function (index) {
+                    $.ajax({
+                        url: '/ResourceGroup/Delete?resourceId=' + id + '&resourceType=' + resType + '&groupId=' + $("#txt_Id").text(),
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (res) {
+                            layer.msg(res.ErrorMsg, { icon: 1 })
+                            location.reload();
+                        }
+                    });
+                    layer.close(index);
+                },
+                cancel: function (index, layero) {
+                    layer.close(index);
+                }
+            });
+        }
+
+        function updateState(obj) {
+            var elem = document.querySelector('.js-switch');
+            var status = elem.checked ? 1 : 2;
+            console.log(obj)
+            $.ajax({
+                url: '/ResourceGroup/UpdateStatus',
+                type: 'post',
+                data: {
+                    id: $("#txt_Id").text(),
+                    status: status
+                },
+                dataType: 'json',
+                success: function (res) {
+                    layer.msg(res.ErrorMsg, { icon: 1 })
+                    location.reload();
+                }
+            });
+        }
+    </script>
+}
+

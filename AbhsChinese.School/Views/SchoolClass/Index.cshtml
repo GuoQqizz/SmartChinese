@@ -1,0 +1,214 @@
+﻿
+@model AbhsChinese.Domain.Dto.Request.School.DtoSchoolClassSearch
+@{
+    //ViewBag.PageTitle = "班级管理"; //ListTitle
+    ViewBag.PageTitle = "班级列表";
+    ViewBag.HasReloadBtn = true;
+    ViewBag.HasAddBtn = true;
+    ViewBag.AddBtnName = "添加班级";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .text-info + .text-info {
+            margin-left: 15px;
+        }
+
+        .img-info {
+            width: 50px;
+            height: 50px;
+        }
+
+        #wrapper, .ibox, .table_container, .ibox-content {
+            height: 100%;
+        }
+
+        .wrapper-content {
+            height: calc(100% - 120px);
+        }
+
+        #table_list {
+            height: calc(100% - 60px);
+        }
+         :root {
+            --sbheight: 80px;
+        }
+        .search-box {
+            height: var(--sbheight);
+        }
+
+        @@media screen and (max-width: 1350px) {
+            :root {
+                --sbheight: 130px;
+            }
+        }
+        @@media screen and (max-width: 1550px) {
+            :root {
+                --sbheight: 130px;
+            }
+        }
+    </style>
+
+}
+
+<div class="ibox">
+    @*<div class="ibox-title">
+            <h5>
+                <i class="fa fa-table"></i>&nbsp;@ViewBag.ListTitle
+            </h5>
+            <div class="ibox-tools">
+                <div class="col">
+                    <button class="btn btn-white" type="button" onclick="edit(0)">
+                        <i class="fa fa-plus"></i>&nbsp;添加班级
+                    </button>
+                </div>
+            </div>
+        </div>*@
+    <div class="ibox-content">
+
+        <div class="row search-box">
+            <div class="col-12 btn-status-list" data-val="-1">
+            </div>
+            @Html.Partial("_SearchClassList", Model)
+            @Html.Partial("_PageControl")
+        </div>
+        <div class="row" style="height: calc(100% - 50px);">
+            <div class="col-12 table_container">
+                <div id="table_list"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+
+
+    <script>
+        $(function () {
+            renderSearch();
+            initTable();
+            registerEvent();
+        })
+
+        function renderSearch() {
+
+            //班级状态
+            $('.btn-status-list').initBtns({
+                'source': classStatusArr,
+                'className': 'status-item',
+                'name': 'Status',
+            });
+            //年级
+            $('.select2-grade').initSelectOption({
+                'source': gradeSourceArr,
+                'className': '',
+                'default': { key: '-1', value: '年级' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+            //课程类型
+            $('.select2-cousre-type').initSelectOption({
+                'source': courseTypeArr,
+                'className': '',
+                'default': { key: '-1', value: '课程类型' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+        }
+
+        function initTable() {
+            let columns = [
+                { label: '班级号', name: 'Ycc_Id', align: 'center' },
+                { label: '班级名称', name: 'Ycc_Name', align: 'center' },
+                { label: '课程名称', name: 'CourseName', align: 'center' },
+                {
+                    label: '班主任', name: 'ClassMasterName', align: 'center'
+                },
+                { label: '年级', name: 'GradeStr', align: 'center' },
+                { label: '课程类型', name: 'CourseTypeStr', align: 'center' },
+                { label: '班级人数', name: 'Ycc_LimitStudentCount', align: 'center' },
+                { label: '实际人数', name: 'Ycc_StudentCount', align: 'center' },
+                { label: '开课日期', name: 'StartTimeStr', align: 'center' },
+                {
+                    label: '上课时间', name: 'ClassScheduleStr', align: 'center',
+                    formatter: function (index, value, row) {
+                        console.log();
+                        var schedules = row['ClassSchedule'];
+                        var res = ''
+                        for (var i = 0; i < schedules.length; i++) {
+                            res += `${schedules[i]['Day']}(${schedules[i]['StartTime']}~${schedules[i]['EndTime']})`;
+                            if (i < schedules.length - 1) {
+                                if (i > 0 && i % 2 == 0) {
+                                    res += '<br/>'
+                                }
+
+                                res += '&nbsp;&nbsp;&nbsp;&nbsp;'
+                            }
+
+                        }
+                        return res;
+                    }
+                },
+                 {
+                     label: '状态',
+                     name: 'Bsl_Status',
+                     align: 'center',
+                     formatter: function (index, value, row) {
+                         let statue = row['Ycc_Status']
+                         //   未开始 = 1,上课中 = 2, 已结课 = 3,
+                         let className = statue == 1 ? "spc-defaule" : statue == 2 ? "spc-green" : "spc-red";
+                         return `<span class="${className}">${row['StatusStr']}</span>`;
+                     }
+                 },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return "<a href='javascript:void(0)' class='text-info' onclick='editLocal(" + row.Ycc_Id + ")'>编辑</a>";
+                    }
+                }
+            ];
+            $('#table_list').table({
+                ajax: {
+                    url: '@Url.Action("GetClassList", "SchoolClass")'
+                },
+                columns: columns,
+                current: PageBase.GetPageIndex(),
+                searchBox: '#form_search'
+            });
+        }
+        function editLocal(id) {
+            window.location.href = '@Url.Action("Edit", "SchoolClass")' + '?classId=' + id;
+        }
+
+        function registerEvent() {
+            $('.status-item').on('click', function () {
+                //$('.status-item').removeClass('btn-primary')
+                //$('.status-item').map(function (i, v) {
+                //    $(v).removeClass('btn-primary');
+                //    if (!$(v).hasClass('btn-default')) {
+                //        $(this).addClass('btn-default');
+                //    }
+                //})
+
+
+                $(this).addClass('btn-primary').removeClass('btn-default');
+                $(this).siblings().removeClass("btn-primary").addClass("btn-default");
+                var name = $(this).data('for');
+                var item = $(`[name=${name}]`);
+                item.val($(this).data('val'));
+                $('.search').click();
+            })
+        }
+    </script>
+}

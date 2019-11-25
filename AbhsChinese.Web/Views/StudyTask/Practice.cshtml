@@ -1,0 +1,537 @@
+﻿@using AbhsChinese.Domain.Enum
+@model int?
+
+@{
+    if (ViewBag.TaskType == StudyTaskTypeEnum.课后练习)
+    {
+        ViewBag.Title = "课后练习";
+        ViewBag.Origin = 2;
+    }
+    else
+    {
+        ViewBag.Origin = 1;
+    }
+}
+
+<input type="hidden" id="studyTaskId" value="@Model" />
+<input type="hidden" id="studentTaskId" value="@ViewBag.StudentTaskId" />
+<input type="hidden" id="urlToLoadSubjects"
+       value="@Url.Action("GetSubjectsToPractice","StudyTask")" />
+<input type="hidden" id="urlToRedirect"
+       value="@Url.Action("ShowTaskReport","StudentReport")" />
+<input type="hidden" id="studyTaskType" value="@ViewBag.TaskType" />
+<input type="hidden" id="urlOfReffer" value="@ViewBag.Path" />
+
+<div class="bodycontent">
+    <div class="backBtn"></div>
+    <div class="maincontent">
+        <div class="mainbjtop">
+            <img src="~/Images/StudentInfo/orderbodytop.png" />
+        </div>
+        <div class="maincenter">
+            <div class="contentTop">
+                <div class="contentTitle">
+                    <p class="textName">@ViewBag.PageTitle （共<span id="span-subjectCount"></span>题）</p>
+                </div>
+                <div style="height:90px;display: none;" id="hbox"></div>
+                <div class="textOrder clearfloat">
+                    <div class="tihao fl">题号：</div>
+                </div>
+            </div>
+            <div class="contentCenter">
+
+            </div>
+        </div>
+        <div class="mainbjbottom">
+            <img src="~/Images/StudentInfo/orderbodybottom.png" />
+        </div>
+    </div>
+    <div class="pagebtnbox verticalcenter">
+        <a class="pagebtn preBtn">上一页</a>
+        <a class="pagebtn nextBtn">下一页</a>
+        <a class="pagebtn submitBtn">提交</a>
+    </div>
+</div>
+
+<div class="textMask">
+    <div class="textMaskCenter">
+        <div class="textMaskContent">
+            <div class="textMaskCloseBtn">×</div>
+            <div class="resultState resultState_wrong"></div>
+            <div class="resultStateTitle">消除错题成功</div>
+            <div class="textMaskContentSureBtn">确定</div>
+        </div>
+    </div>
+</div>
+
+<div id="submitLoding">
+    <div class="innerLoding">
+        <img src="~/Content/layer/theme/default/loading-2.gif" />
+        <p>正在提交答案</p>
+    </div>
+</div>
+
+<script id="ScriptDiv" type="text/template">
+    <%for(var i=0;i
+    <list.length;i++){%>
+        <%if(list[i].SubjectType==1){%>
+        <%if(list[i].StemType==1&&list[i].OptionType==1){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">选择题</span>
+            </div>
+            <div class="textContent">
+                <div class="stem clearfloat">
+                    <span class="stemJian fl"></span>
+                    <div class="stemContent"><%=list[i].Stem%></div>
+                </div>
+                <div class="allOption1 allOption">
+                    <%for(var j=0;j<list[i].Options.length;j++){%>
+                        <div class="OptionList1 OptionList clearfloat" optionId="<%=list[i].Options[j].Key%>">
+                            <%if(j==0){%>
+                            <div class="OptionListNum fl">A.</div>
+                            <%}else if(j==1){%>
+                            <div class="OptionListNum fl">B.</div>
+                            <%}else if(j==2){%>
+                            <div class="OptionListNum fl">C.</div>
+                            <%}else if(j==3){%>
+                            <div class="OptionListNum fl">D.</div>
+                            <%}%>
+                            <div class="OptionListCont"><%=list[i].Options[j].Text%></div>
+                        </div>
+                        <%}%>
+                </div>
+            </div>
+        </div>
+        <%}else if(list[i].StemType==1&&list[i].OptionType==0){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">选择题</span>
+            </div>
+            <div class="textContent">
+                <div class="stem clearfloat">
+                    <span class="stemJian fl"></span>
+                    <div class="stemContent"><%=list[i].Stem%></div>
+                </div>
+                <div class="allOption2 allOption verticalcenter">
+                    <%for(var j=0;j<list[i].Options.length;j++){%>
+                        <div class="OptionList2 OptionList" optionId="<%=list[i].Options[j].Key%>">
+                            <img src="<%=list[i].Options[j].Text%>" alt="" />
+                            <%if(j==0){%>
+                            <span>A</span>
+                            <%}else if(j==1){%>
+                            <span>B</span>
+                            <%}else if(j==2){%>
+                            <span>C</span>
+                            <%}else if(j==3){%>
+                            <span>D</span>
+                            <%}%>
+                        </div>
+                        <%}%>
+                </div>
+            </div>
+        </div>
+        <%}else if(list[i].StemType==0&&list[i].OptionType==1){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">选择题</span>
+            </div>
+            <div class="textContent verticalcenter">
+                <div class="stem2">
+                    <img src="<%=list[i].Stem%>" />
+                </div>
+                <div class="allOption3 allOption">
+                    <%for(var j=0;j<list[i].Options.length;j++){%>
+                        <div class="OptionList1 OptionList clearfloat" optionId="<%=list[i].Options[j].Key%>">
+                            <%if(j==0){%>
+                            <div class="OptionListNum fl">A.</div>
+                            <%}else if(j==1){%>
+                            <div class="OptionListNum fl">B.</div>
+                            <%}else if(j==2){%>
+                            <div class="OptionListNum fl">C.</div>
+                            <%}else if(j==3){%>
+                            <div class="OptionListNum fl">D.</div>
+                            <%}%>
+                            <div class="OptionListCont"><%=list[i].Options[j].Text%></div>
+                        </div>
+                        <%}%>
+                </div>
+            </div>
+        </div>
+        <%}else if(list[i].StemType==0&&list[i].OptionType==0){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">选择题</span>
+            </div>
+            <div class="textContent">
+                <div class="stem">
+                    <img src="<%=list[i].Stem%>" style="margin:0 auto;" />
+                </div>
+                <div class="allOption2 allOption verticalcenter">
+                    <%for(var j=0;j<list[i].Options.length;j++){%>
+                        <div class="OptionList2 OptionList" optionId="<%=list[i].Options[j].Key%>">
+                            <img src="<%=list[i].Options[j].Text%>" alt="" />
+                            <%if(j==0){%>
+                            <span>A</span>
+                            <%}else if(j==1){%>
+                            <span>B</span>
+                            <%}else if(j==2){%>
+                            <span>C</span>
+                            <%}else if(j==3){%>
+                            <span>D</span>
+                            <%}%>
+                        </div>
+                        <%}%>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <%}%>
+        <%if(list[i].SubjectType==2){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">判断题</span>
+            </div>
+            <div class="textContent">
+                <%if(list[i].StemType==1){%>
+                <div class="stem clearfloat">
+                    <span class="stemJian fl"></span>
+                    <div class="stemContent"><%=list[i].Stem%></div>
+                </div>
+                <%}else{%>
+                <div class="stem">
+                    <img src="<%=list[i].Stem%>" style="margin:0 auto;" alt="" />
+                </div>
+                <%}%>
+                <div class="judgmentOption verticalcenter">
+                    <div class="judgmentOptions wrongOption verticalcenter fl">
+                        <span class="sign"></span>
+                        <span class="signCont">错误</span>
+                    </div>
+                    <div class="judgmentOptions rightOption verticalcenter fl">
+                        <span class="sign"></span>
+                        <span class="signCont">正确</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <%if(list[i].SubjectType==3){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">填空题</span>
+            </div>
+            <div class="textContent">
+                <div class="fillStem">
+                    <%for(var j=0;j<list[i].StemArr.length;j++){%>
+                        <%if(j==list[i].StemArr.length-1){%>
+                        <%=list[i].StemArr[j]%>
+                        <%}else{%>
+                        <%=list[i].StemArr[j]%>（<input type="text" onpaste="return false" style="width: <%=list[i].lenArr[j]%>px;" />）
+                        <%}%>
+                        <%}%>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <%if(list[i].SubjectType==4){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">选择填空</span>
+            </div>
+            <div class="textContent">
+                <div class="OptionFillStem clearfloat">
+                    <%for(var j=0;j<list[i].StemArr.length;j++){%>
+                        <div class="OptionFillStemText clearfloat fl"><%=list[i].StemArr[j]%></div>
+                        <%if(j!=list[i].StemArr.length-1){%>
+                        <div class="OptionFillStemList fl"></div>
+                        <%}%>
+                        <%}%>
+                </div>
+                <div class="optionFillOptionList">
+                    <%for(var k=0;k<list[i].Options.length;k++){%>
+                        <%if(list[i].OptionType==0){%>
+                        <div class="FillOptionList" optionId="<%=list[i].Options[k].Key%>">
+                            <img src="<%=list[i].Options[k].Text%>" alt="" />
+                        </div>
+                        <%}else{%>
+                        <div class="FillOptionList" optionId="<%=list[i].Options[k].Key%>"><%=list[i].Options[k].Text%></div>
+                        <%}%>
+                        <%}%>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <%if(list[i].SubjectType==5){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle" style="position: relative;">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">连线题</span>
+                <span class="resetBtn"></span>
+            </div>
+            <div class="textContent">
+                <%if(list[i].StemType==1){%>
+                <div class="stem clearfloat">
+                    <span class="stemJian fl"></span>
+                    <div class="stemContent"><%=list[i].Stem%></div>
+                </div>
+                <%}else{%>
+                <div class="stem">
+                    <img src="<%=list[i].Stem%>" alt="" />
+                </div>
+                <%}%>
+                <div class="linkingPart" data_pair="<%=list[i].LeftOptions.length%>">
+                    <div class="show">
+                        <div class="showleft">
+                            <%for (var j = 0; j < list[i].LeftOptions.length; j++) {%>
+                            <%if (list[i].LeftOptionType == 0) {%>
+                            <span class="showitem" thisId="<%=list[i].LeftOptions[j].Key%>">
+                                <img src="<%=list[i].LeftOptions[j].Text%>" />
+                            </span>
+                            <%} else {%>
+                            <span class="showitem" thisId="<%=list[i].LeftOptions[j].Key%>"><%=list[i].LeftOptions[j].Text%></span>
+                            <%}%>
+                            <%}%>
+                        </div>
+                        <div class="showright">
+                            <%for (var k = 0; k < list[i].RightOptions.length; k++) {%>
+                            <%if (list[i].RightOptionType == 0) {%>
+                            <span class="showitem" thisId="<%=list[i].RightOptions[k].Key%>">
+                                <img src="<%=list[i].RightOptions[k].Text%>" />
+                            </span>
+                            <%} else {%>
+                            <span class="showitem" thisId="<%=list[i].RightOptions[k].Key%>"><%=list[i].RightOptions[k].Text%></span>
+                            <%}%>
+                            <%}%>
+                        </div>
+                        <canvas class="canvas"></canvas>
+                        <canvas class="backcanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <%if(list[i].SubjectType==6){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">主观题</span>
+            </div>
+            <div class="textContent">
+                <%if(list[i].StemType==1){%>
+                <div class="stem clearfloat">
+                    <span class="stemJian fl"></span>
+                    <div class="stemContent"><%=list[i].Stem%></div>
+                </div>
+                <%}else{%>
+                <div class="stem">
+                    <img src="<%=list[i].Stem%>" alt="" />
+                </div>
+                <%}%>
+                <textarea name="" class="subjectiveTextarea" onpaste="return false" placeholder="请输入..."></textarea>
+            </div>
+        </div>
+        <%}%>
+        <%if(list[i].SubjectType==7){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle" style="position: relative;">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">圈点批注</span>
+                <span class="revokeBtn"></span>
+            </div>
+            <div class="textContent">
+                <%if(list[i].StemType==1){%>
+                <div class="stem clearfloat">
+                    <span class="stemJian fl"></span>
+                    <div class="stemContent"><%=list[i].Stem%></div>
+                </div>
+                <%}else{%>
+                <div class="stem">
+                    <img src="<%=list[i].Stem%>" alt="" />
+                </div>
+                <%}%>
+                <div class="AnnotationContents">
+                    <%for (var j = 0; j < list[i].Content.length; j++) {%>
+                    <%if (/^\n$/.test(list[i].Content[j])) {%>
+                    <br />
+                    <%} else if (/\r/.test(list[i].Content[j])) {%>
+                    <span class='normalText' style="display:none;"></span>
+                    <%} else if (/ /.test(list[i].Content[j])) {%>
+                    <span class='normalText fl'>&nbsp;</span>
+                    <%} else {%>
+                    <span class='normalText fl'><%=list[i].Content[j]%></span>
+                    <%}%>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <%if(list[i].SubjectType==8){%>
+        <div class="contentList" id="contentList_<%=list[i].id%>">
+            <div class="listTitle" style="position: relative;">
+                <span class="specialNum"><%=list[i].id%></span>
+                <span class="allNum">/<%=TotalRecord%></span>
+                <span class="textType">圈点批注</span>
+                <span class="revokeBtn"></span>
+            </div>
+            <div class="textContent">
+                <%if(list[i].StemType==1){%>
+                <div class="stem clearfloat">
+                    <span class="stemJian fl"></span>
+                    <div class="stemContent"><%=list[i].Stem%></div>
+                </div>
+                <%}else{%>
+                <div class="stem">
+                    <img src="<%=list[i].Stem%>" alt="" />
+                </div>
+                <%}%>
+                <div style="text-align: left;">
+                    <div class="Annotation2Contents" style="text-align:<%=(list[i].Alignment==1?" left":(list[i].Alignment==2?"center":"right"))%>
+                        ;">
+                        <%for (var j = 0; j < list[i].Content.length; j++) {%>
+                        <%if (/^\n$/.test(list[i].Content[j])) {%>
+                        <span class='Annotation2NormalText Annotation2NormalTextHide'></span>
+                        <%} else if (/\r/.test(list[i].Content[j])) {%>
+                        <span class='Annotation2NormalText' style="display:none;"></span>
+                        <%} else if (/ /.test(list[i].Content[j])) {%>
+                        <span class='Annotation2NormalText'>&nbsp;</span>
+                        <%} else {%>
+                        <span class='Annotation2NormalText'><%=list[i].Content[j]%></span>
+                        <%}%>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%}%>
+        <%}%>
+</script>
+
+@section Styles{
+    <link href="~/Content/Subject/style.css" rel="stylesheet" />
+    <style>
+        .backBtn {
+            cursor: pointer;
+        }
+
+        #submitLoding {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: none;
+            background-image: url("/Content/LessonStudy/img/maskLeftImg.png"),url("/Content/LessonStudy/img/maskRightImg.png"),url("/Content/LessonStudy/img/maskBg.png");
+            background-repeat: no-repeat,no-repeat,no-repeat;
+            background-position: left bottom,right bottom,center center;
+            background-size: 18.8% auto,18.8% auto,100% 100%;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            z-index: 100;
+        }
+
+            #submitLoding .innerLoding {
+                height: 70px;
+                width: 100%;
+                position: absolute;
+                top: 50%;
+                left: 0;
+                margin-top: -35px;
+                text-align: center;
+            }
+
+                #submitLoding .innerLoding img {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                #submitLoding .innerLoding p {
+                    font-size: 14px;
+                    color: #999999;
+                    line-height: 14px;
+                    margin-top: 6px;
+                }
+    </style>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/practice")
+    <script>
+        $(function () {
+            registerEvent();
+        });
+
+        function registerEvent() {
+            $(".textMaskContentSureBtn").on('click', function () {
+                $(".textMask").hide();
+                $('body').css('overflow-y','auto');
+            })
+
+            $('.textMaskCloseBtn').on('click', function () {
+                $('body').css('overflow-y', 'auto');
+                $(".textMask").hide();
+            });
+
+            $('.backBtn').on('click', function () {
+                let encodedUrl = window.encodeURI($('#urlOfReffer').val());
+                window.location.href = encodedUrl;
+            });
+        }
+
+        function savePraticeResult(answers) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SavePracticeResult", "StudyTask")',
+                data: {
+                    'dataStr': JSON.stringify(answers),
+                    taskType: $('#studyTaskType').val()
+                },
+                success: function (response) {
+                    if (response && response.State === true) {
+                        let url = $('#urlToRedirect').val();
+                        let parameters = {
+                            taskId: $('#studentTaskId').val(),
+                            source: 0,
+                            path: window.encodeURIComponent($('#urlOfReffer').val()),
+                            origin: '@ViewBag.Origin',
+                            timestamp: new Date().getTime()
+                        };
+                        let paramArr = [];
+                        $.each(parameters, function (pn, pv) {
+                            paramArr.push(pn + '=' + pv);
+                        });
+                        parameters = paramArr.join('&');
+                        location.href = url + '?' + parameters;
+                    } else {
+                        $('#submitLoding').hide();
+                        $(window).scrollTop(0);
+                        $('body').css('overflow','hidden');
+                        $(".textMask").show();
+                        $(".resultState").addClass("resultState_wrong");
+                        $(".resultStateTitle").text(response.ErrorMsg);
+                    }
+                },
+                beforeSend: function () {
+                    $('#submitLoding').show();
+                }
+            });
+        }
+    </script>
+}

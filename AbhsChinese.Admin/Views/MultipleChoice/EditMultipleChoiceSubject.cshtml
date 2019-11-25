@@ -1,0 +1,428 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "题目录入-选择题";
+    string controller = "MultipleChoice";
+}
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        @using (Ajax.BeginForm("EditMultipleChoiceSubject", controller, new AjaxOptions
+        {
+            OnComplete = "complete"
+        }, new { id = "form", role = "form", @class = "" }))
+        {
+        <input type="text" name="nextStatus" value="2" style="display:none;" />
+        <input type="hidden" id="subjectId" name="id" value="@Model" />
+        <div class="row">
+            <div class="col-12">
+                <div class="switch pull-right">
+                    <div class="onoffswitch">
+                        <input type="checkbox" checked class="onoffswitch-checkbox"
+                               name="stemType"
+                               onchange="changeType(this)"
+                               value="1"
+                               id="switch_stemType">
+                        <label class="onoffswitch-label" for="switch_stemType">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-1 col-form-label text-right required">题干</label>
+            <div class="col-11">
+                <textarea id="name" name="name" style="width:100%;height:100px;"></textarea>
+                <input type="hidden" id="plainName" name="plainName" />
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="row">
+            <label class="col-1 col-form-label text-right">选项</label>
+            <div class="col-11">
+                <div class="switch pull-right">
+                    <div class="onoffswitch">
+                        <input type="checkbox" checked class="onoffswitch-checkbox"
+                               name="contentType"
+                               onchange="changeContentType(this)"
+                               value="1"
+                               id="switch_content_answer">
+                        <label class="onoffswitch-label" for="switch_content_answer">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row ueditor-group">
+            <label class="col-1 col-form-label text-right required">A</label>
+            <div class="col-11">
+                <textarea id="optionsA" name="options" style="width:100%;"></textarea>
+            </div>
+        </div>
+        <div class="form-group row ueditor-group">
+            <label class="col-1 col-form-label text-right required">B</label>
+            <div class="col-11">
+                <textarea id="optionsB" name="options" style="width:100%;"></textarea>
+            </div>
+        </div>
+        <div class="form-group row ueditor-group">
+            <label class="col-1 col-form-label text-right">C</label>
+            <div class="col-11">
+                <textarea id="optionsC" name="options" style="width:100%;"></textarea>
+            </div>
+        </div>
+        <div class="form-group row ueditor-group">
+            <label class="col-1 col-form-label text-right">D</label>
+            <div class="col-11">
+                <textarea id="optionsD" name="options" style="width:100%;"></textarea>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group row">
+            <label class="col-1 col-form-label text-right required">答案</label>
+            <div class="col-11">
+                <div class="row">
+                    <div class="col-1">
+                        <label>
+                            <input type="checkbox" class="i-checks" name="answers"
+                                   value="0">&nbsp;A
+                        </label>
+                    </div>
+                    <div class="col-1">
+                        <label>
+                            <input type="checkbox" class="i-checks" name="answers"
+                                   value="1">&nbsp;B
+                        </label>
+                    </div>
+                    <div class="col-1">
+                        <label>
+                            <input disabled type="checkbox" class="i-checks"
+                                   id="answerC" name="answers"
+                                   value="2">&nbsp;C
+                        </label>
+                    </div>
+                    <div class="col-1">
+                        <label>
+                            <input disabled type="checkbox" class="i-checks"
+                                   id="answerD" name="answers"
+                                   value="3">&nbsp;D
+                        </label>
+                    </div>
+                </div>
+                <label for="answers" class="error" style="display:none;"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-1 col-form-label text-right">选项名称</label>
+            <div class="col-md-2">
+                <div class="i-checks">
+                    <div class="iradio_square-green" style="position: relative;">
+                        <input type="radio" value="1" name="display" checked style="position: absolute; opacity: 0;">
+                    </div>&nbsp;显示
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="i-checks">
+                    <div class="iradio_square-green" style="position: relative;">
+                        <input type="radio" value="0" name="display" style="position: absolute; opacity: 0;">
+                    </div>&nbsp;不显示
+                </div>
+            </div>
+            <label for="checkIn" class="error"></label>
+        </div>
+        <div class="form-group row">
+            <label class="col-1 col-form-label text-right">选项顺序</label>
+            <div class="col-md-2">
+                <div class="i-checks">
+                    <div class="iradio_square-green" style="position: relative;">
+                        <input type="radio" value="1" name="random" checked style="position: absolute; opacity: 0;">
+                    </div>&nbsp;随机排列
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="i-checks">
+                    <div class="iradio_square-green" style="position: relative;">
+                        <input type="radio" value="0" name="random" style="position: absolute; opacity: 0;">
+                    </div>&nbsp;顺序排列
+                </div>
+            </div>
+            <label for="checkIn" class="error"></label>
+        </div>
+        <div class="form-group row">
+            <label class="col-1 col-form-label text-right">解析</label>
+            <div class="col-11">
+                <textarea id="explain" name="explain" style="width:100%;"></textarea>
+            </div>
+        </div>
+        @Html.Partial("_SubjectBasic")
+        <div class="form-group row">
+            <div class="col-12 text-center">
+                @*该隐藏域用于记录是想要做保存操作还是提交操作,默认是保存操作*@
+                <input type="hidden" name="button" value="0" />
+                <button class="btn btn-white"
+                        type="button" onclick="submitForm(false)">
+                    保存
+                </button>
+                <button class="btn btn-primary"
+                        type="button" onclick="submitForm(true)">
+                    提交
+                </button>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+<input type="hidden" id="urlToLoadData" value="@Url.Action("GetDetails","MultipleChoice")" />
+
+<div style="display:none">
+    <textarea id="factory" name="factory"></textarea>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Scripts/common/ueditor.config.subject.js"></script>
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.js"></script>
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.subjectbasic.js"></script>
+    <script>
+        $(function () {
+            enableValidate();
+
+
+            $.when(initUeditors(dtd)).then(function () {
+                if ($('#subjectId').val() !== '0') {
+                    let url = $('#urlToLoadData').val();
+                    let parameters = { id: $('#subjectId').val() };
+                    $.getJSON(url, parameters,
+                        function (response) {
+                            if (response.State) {
+                                let data = response.Data;
+
+                                if (data.StemType === 0) {//图片模式
+                                    $('#switch_stemType').click();
+                                }
+                                if (data.ContentType === 0) {//图片模式
+                                    $('#switch_content_answer').click();
+                                }
+
+                                setContent(ueditorName, data.Name);
+                                setContent(ueditorA, data.Options[0]);
+                                setContent(ueditorB, data.Options[1]);
+                                setContent(ueditorC, data.Options[2]);
+                                setContent(ueditorD, data.Options[3]);
+                                setContent(ueditorExplain, data.Explain);
+
+                                $('input[name="answers"]').iCheckCheckBox(data.Answers);
+                                if (data.Options[2]) {
+                                    $('#answerC').iCheck('enable');
+                                }
+                                if (data.Options[3]) {
+                                    $('#answerD').iCheck('enable');
+                                }
+
+                                $('input[name="display"]').iCheckRadio(data.Display);
+                                $('input[name="random"]').iCheckRadio(data.Random);
+
+                                setBasicData(data);
+
+                                setPlainNameData(data);
+                            }
+                        });
+                } else {
+                    initSelectPageComponent();
+                }
+            });
+            initSelect2Components();
+        });
+    </script>
+    <script>
+        function enableValidate() {
+            $("#form").validate({
+                onsubmit: false,//取消提交表单自动验证
+                ignore: "",//设置对所有表单元素进行验证(因默认不验证隐藏元素)
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    grade: {
+                        required: true
+                    },
+                    difficulty: {
+                        required: true
+                    },
+                    keywords: {
+                        required: true
+                    },
+                    answers: {
+                        required: true
+                    },
+                    optionA: {
+                        required: true
+                    },
+                    optionB: {
+                        required: true
+                    }
+                }
+            });
+        }
+        function initSelect2Components() {
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+        }
+        function changeContentType(checkbox) {
+            let parentDiv = $('div.ueditor-group');
+            if (checkbox.checked) {//文本模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', '')
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', 'display:none !important;')
+            } else {//图片模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', 'display:none !important;')
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', '')
+            }
+            resetContent(ueditorA);
+            resetContent(ueditorB);
+            resetContent(ueditorC);
+            resetContent(ueditorD);
+        }
+    </script>
+    <script>
+        let ueditorName = null;
+        let ueditorA = null;
+        let ueditorB = null;
+        let ueditorC = null;
+        let ueditorD = null;
+        let ueditorExplain = null;
+
+        var dtd = $.Deferred(); // 新建一个deferred对象
+
+        const ueConfigOfOptions = {
+            toolbars: [[
+                'source',
+                'bold', 'italic', 'forecolor',
+                'rowspacingtop', 'rowspacingbottom',
+                'fontfamily', 'fontsize',
+                'indent',
+                'justifyleft', 'justifycenter', 'justifyright', 'simpleupload'
+            ]],
+            elementPathEnabled: false,
+            wordCount: false,
+            enableAutoSave: false,
+            enableContextMenu: false,
+            initialFrameHeight: 100,
+            autoHeightEnabled: false,
+            retainOnlyLabelPasted: true,
+            imageAllowWidth: 253,
+            imageAllowHeight: 160
+        };
+
+        function enableICheckByContent(optionNum, content) {
+            let $icheck = $('#answer' + optionNum);
+            let enable = content ? 'enable' : 'disable';
+            $icheck.iCheck(enable);
+            if (enable === 'disable') {
+                $icheck.iCheck('uncheck');
+            }
+        }
+
+        function initUeditors(dtd) {
+            ueditorName = UE.getEditor('name', ueConfigOfName);
+            ueditorName.ready(function () {
+                $('div#name').find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+                replaceFormat(this);
+                dtd.resolve();
+            });
+
+            ueditorA = UE.getEditor('optionsA', ueConfigOfOptions);
+            hideImageIcon(ueditorA);
+            ueditorB = UE.getEditor('optionsB', ueConfigOfOptions);
+            hideImageIcon(ueditorB);
+            ueditorC = UE.getEditor('optionsC', ueConfigOfOptions);
+            ueditorC.ready(function () {
+                this.addListener('blur', function () {
+                    let content = this.getContent();
+                    enableICheckByContent('C', content);
+                });
+            });
+            hideImageIcon(ueditorC);
+            ueditorD = UE.getEditor('optionsD', ueConfigOfOptions);
+            ueditorD.ready(function () {
+                this.addListener('blur', function () {
+                    let content = this.getContent();
+                    enableICheckByContent('D', content);
+                });
+            });
+            hideImageIcon(ueditorD);
+
+            ueditorExplain = UE.getEditor('explain', ueConfigOfExplain);
+            return dtd;
+        }
+        function hideImageIcon(ueditor) {
+            ueditor.ready(function () {
+                let ueditorId = this.key;
+                $('div#' + ueditorId)
+                    .find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+            });
+        }
+        function resetContent(ueditor) {
+            ueditor.ready(function () {
+                this.setContent('');
+            });
+        }
+    </script>
+    <script>
+        //覆盖subject.js中的submitForm方法，此处需要特殊处理
+        function submitForm(needValid) {
+            if ($('#switch_content_answer')[0].checked === true) {
+                let valOfA = ueditorA.getContentTxt();
+                ueditorA.textarea.value = valOfA;
+
+                let valOfB = ueditorB.getContentTxt();
+                ueditorB.textarea.value = valOfB;
+
+                let valOfC = ueditorC.getContentTxt();
+                ueditorC.textarea.value = valOfC;
+
+                let valOfD = ueditorD.getContentTxt();
+                ueditorD.textarea.value = valOfD;
+            }
+
+            let $form = $('#form');
+            let $hidden = $form.find(':hidden[name="button"]');
+            if (needValid)//需要进行数据校验
+            {
+                $hidden.val(2);
+                if (!$form.valid()) {//但是校验没通过
+                    return false;
+                }
+            } else {
+                $hidden.val(1);
+            }
+            $form.submit();
+        }
+
+    </script>
+}

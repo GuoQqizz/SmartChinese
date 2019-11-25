@@ -1,0 +1,55 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "待校对-圈点批注-标色";
+    string controller = "Mark2";
+    ViewBag.controller = controller;
+    ViewBag.action = "EditMarkSubject";
+    ViewBag.id = Model;
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <form action="@Url.Action("Approve", controller)" method="post">
+            <input type="hidden" name="subjectId" value="@Model" />
+            <input type="hidden" name="nextStatus" />
+            @Html.Partial("GetQuestionInfo")
+            @Html.Partial("_SubjectBasicReadonly")
+            @Html.Partial("_SubjectViewButtons")
+        </form>
+    </div>
+</div>
+
+@section Styles{
+}
+
+@section Scripts{
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Scripts/PageScripts/subjectreadonly.js"></script>
+    <script src="~/Scripts/PageScripts/subject.view.mark.js"></script>
+    <script src="~/Scripts/PageScripts/subject.view.reload.js"></script>
+    <script src="~/Scripts/PageScripts/subjct.subjectbasic.js"></script>
+    <script>
+        $(function () {
+            let url = '@Url.Action("GetDetails",controller)';
+            let subjectId = $(':hidden[name="subjectId"]').val();
+            $.getJSON(url, { id: subjectId }, function (response) {
+                if (response.State) {
+                    let data = response.Data;
+                    
+                    renderSubjectBasicData(data);
+
+                    reloadMark2SubjectData(data);
+
+                    if (data.Alignment) {
+                        $(':radio[name="alignment"][value="' + data.Alignment + '"]').prop('checked', true);
+                    }
+
+                    let status = data.SubjectStatus;
+                    registerEventForMark(status);
+                    $('#div_button_' + status).show();
+                }
+            });
+        });
+    </script>
+}

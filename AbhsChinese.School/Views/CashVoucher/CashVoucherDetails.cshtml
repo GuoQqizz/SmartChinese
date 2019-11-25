@@ -1,0 +1,224 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@using AbhsChinese.Domain.Dto.Response
+@model DtoCashVoucher
+@{
+    ViewBag.Title = "CashVoucherDetails";
+    ViewBag.HasBackBtn = true;
+    ViewBag.PageTitle = "现金券明细";
+}
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <style>
+        .shorttd {
+            background: #f9fafc;
+        }
+
+        .longtd {
+            height: 50px;
+            vertical-align: middle !important;
+        }
+        .cash-detail-content{
+            height:100%;
+        }
+        /*abhsTable*/
+        #table_voucher {
+            height: calc(100% - 84px);
+        }
+
+        .table_container {
+            height: 100%;
+        }
+
+        #page-wrapper {
+            height: 100%;
+        }
+
+        #wrapper {
+            height: 100%;
+        }
+
+        .wrapper {
+            height: calc(100% - 198px);
+        }
+    </style>
+}
+<div class="cash-detail-content">
+    <div class="ibox" style="margin-bottom:2px;">
+        <div class="ibox-content" style="padding-bottom:0px;">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered toptable text-center">
+                        <tr>
+                            <th class="shorttd">编号</th>
+                            <th class="shorttd">名称</th>
+                            <th class="shorttd">适用课程</th>
+                            <th class="shorttd">使用门槛</th>
+                            <th class="shorttd">面值</th>
+                            <th class="shorttd">有效期</th>
+                            <th class="shorttd">状态</th>
+                        </tr>
+                        <tr>
+                            <td class="longtd">@(Model!=null?Model.Ycv_Id:0)</td>
+                            <td class="longtd">@(Model != null ? Model.Ycv_Name : "")</td>
+                            <td class="longtd">@(Model != null ? (Model.Ycv_CourseId == 0 ? "全部课程" : Model.Ycs_Name) : "")</td>
+                            <td class="longtd">@(Model != null ? (Model.Ycv_OrderAmountLimit == 0 ? "无门槛" : "满￥" + Model.Ycv_OrderAmountLimit.ToString("0.00") + "元可用") : "")</td>
+                            <td class="longtd">@(Model != null ? "￥" + Model.Ycv_Amount.ToString("0.00") : "")</td>
+                            <td class="longtd">@(Model != null ? (Model.Ycv_ExpireType == 0 ? "长期有效" : Model.Ycv_ExpireType == 1 ? Model.ExpireDate : "领取" + Model.Ycv_ExpireDayCount + "天后有效") : "")</td>
+                            <td class="longtd">@(Model != null ? ((Model.Ycv_PublishCount > Model.Ycv_TakenCount) ? "未领完" : "已领完") : "")</td>
+                        </tr>
+                        <tr>
+                            <th class="shorttd">总发行量</th>
+                            <th class="shorttd">已领取</th>
+                            <th class="shorttd">待领取</th>
+                            <th class="shorttd">已使用</th>
+                            <th class="shorttd">未使用</th>
+                            <th class="shorttd" colspan="2">备注</th>
+                        </tr>
+                        <tr>
+                            <td class="longtd">@(Model != null ? Model.Ycv_PublishCount : 0)</td>
+                            <td class="longtd">@(Model != null ? Model.Ycv_TakenCount : 0)</td>
+                            <td class="longtd">@(Model != null ? (Model.Ycv_PublishCount-Model.Ycv_TakenCount) : 0)</td>
+                            <td class="longtd">@(Model != null ? Model.UsedCount : 0)</td>
+                            <td class="longtd">@(Model != null ? (Model.Ycv_TakenCount-Model.UsedCount) : 0)</td>
+                            <td class="longtd" colspan="2">@(Model != null ? Model.Ycv_Remark:"")</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox" style="height: calc(100% - 214px); margin-top:25px;">
+        <div class="ibox-content" style="height: 100%;">
+            <div class="row">
+                <div class="col-12">
+                    <form role="form" class="search-form" id="form_search_voucher">
+                        <div class="form-group row">
+                            <input type="hidden" value="@(Model!=null?Model.Ycv_Id:0)" name="CashVoucherId" />
+                            <label class="col-1 col-form-label text-right">使用状态：</label>
+                            <div class="col-2">
+                                @*<input type="text" class="form-control" name="Status" />*@
+                                <select class="select2 form-control" data-ajax--url="@Url.Action("GetStuentCashVoucherStatus","Select2")"
+                                        data-ajax--cache="true"
+                                        data-placeholder="全部"
+                                        data-allow-clear="true"
+                                        name="Status">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <label class="col-1 col-form-label text-right">订单编号：</label>
+                            <div class="col-2">
+                                <input type="text" class="form-control" name="UsedReferNo" />
+                            </div>
+                        </div>
+                        <div class="ibox-tools" style="top:1px;">
+                            <div class="form-group">
+                                <button class="btn btn-white search" type="button">
+                                    &nbsp;&nbsp;搜索&nbsp;&nbsp;
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="row" style="height:calc(100% - 38px);">
+                <div class="col-12 table_container">
+                    <div id="table_voucher"></div>
+                    <div class="pagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    @section Scripts{
+        @Scripts.Render("~/bundles/js/abhsTable")
+        <script src="~/Scripts/common/date.js"></script>
+        <script>
+            $(function () {
+                setMinHeight('cash-detail-content', 150);
+                $('.select2.form-control').select2({
+                    width: '100%',
+                    allowClear: true,
+                    minimumResultsForSearch: Infinity
+                }).on('change', function (e) {
+                    $(this).valid();
+                });
+
+                initTable();
+            });
+
+            function initTable() {
+                let columns = [
+                    { label: '券编号', name: 'Ysv_VoucherNo', align: 'center' },
+                    { label: '领取用户', name: 'Bst_Phone', align: 'center' },
+                    {
+                        label: '领取方式', name: 'Ysv_GotType', align: 'center',
+                        formatter: function (index, value, row) {
+                            if (row.Ysv_GotType == 1) {
+                                return "主动领取"
+                            }
+                            return "后台赠送";
+                        }
+                    },
+                    { label: '领取时间', name: 'TakenTime', align: 'center' },
+                    {
+                        label: '当前状态', name: 'Ysv_Status', align: 'center',
+                        formatter: function (index, value, row) {
+                            if (row.Ysv_Status == 2) {
+                                return "已使用"
+                            }
+                            if (row.Ysv_Status == 1) {
+                                var start = row.ExpireDate;
+                                var end = CurrentDate();
+                                start = start.replace(/-/g, '/');
+                                end = end.replace(/-/g, '/');
+                                console.log(row.Ysv_ExpireDate)
+                                var sTimes = new Date(Date.parse(start));
+                                var eTimes = new Date(Date.parse(end));
+                                console.log(sTimes);
+                                console.log(eTimes);
+                                if (sTimes.getTime() >= eTimes.getTime()) {
+                                    return "未使用";
+                                }
+                                return "已过期";
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        label: '使用时间', name: 'UsedTime', align: 'center',
+                        formatter: function (index, value, row) {
+                            if (row.UsedTime == "1900-01-01 00:00:00") {
+                                return "";
+                            }
+                            return "<span>" + row.UsedTime + "</span>";
+                        }
+                    },
+                    {
+                        label: '订单编号', name: 'Ysv_UsedReferNo', align: 'center',
+                        formatter: function (index, value, row) {
+                            if (row.Ysv_UsedReferNo == null) {
+                                return "";
+                            }
+                            return "<span>" + row.Ysv_UsedReferNo + "</span>";
+                        }
+                    }
+                ];
+
+                $('#table_voucher').table({
+                    ajax: {
+                        url: '@Url.Action("GetStudentCashVoucheres", "CashVoucher")'
+                    },
+                    columns: columns,
+                    searchBox: '#form_search_voucher'
+                });
+            }
+        </script>
+    }
+
+
+
+
+

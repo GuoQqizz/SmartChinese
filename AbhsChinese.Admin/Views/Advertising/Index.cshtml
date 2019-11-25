@@ -1,0 +1,236 @@
+﻿
+@using AbhsChinese.Admin.Models.Advertising;
+@model AdvertisingSearch
+
+@{
+    ViewBag.PageTitle = "课程推荐管理";
+    ViewBag.ListTitle = "课程推荐";
+
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/select2Styles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+        .switchery-default {
+            cursor: pointer;
+        }
+
+        .switchery > small {
+            width: 20px;
+            height: 20px;
+        }
+
+        .text-info + .text-info {
+            margin-left: 15px;
+        }
+
+        .img-info {
+            width: 50px;
+            height: 50px;
+        }
+
+        .pagination {
+            display: none;
+        }
+
+        .wrapper-content {
+            height: calc(100% - 50px);
+        }
+
+          #wrapper, .ibox,.table_container {
+            height: 100%;
+        }
+
+        .ibox-content {
+            height: calc(100% - 60px);
+        }
+          
+        #table_advertising {
+            height: calc(100% - 50px);
+        }
+    </style>
+
+}
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>
+            <i class="fa fa-table"></i>&nbsp;@ViewBag.ListTitle
+        </h5>
+        <div class="ibox-tools">
+            <div class="col">
+                <button class="btn btn-white" type="button" onclick="reload()">
+                    <i class="fa fa-refresh"></i>&nbsp;刷新
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row" style="height:0;">
+            @Html.Partial("_SearchAdvertisingList", Model)
+        </div>
+        <div class="row" style="height: 100%;">
+            <div class="col-12 table_container">
+                <div id="table_advertising"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+
+
+    <script>
+        $(function () {
+            initTable();
+            registerEvent();
+        })
+
+
+        function initTable() {
+            let columns = [
+                { label: '推荐位', name: 'Bap_Code', align: 'center' },
+                {
+                    label: '推荐图',
+                    name: 'Bad_ImageUrlShow',
+                    align: 'center',
+                    formatter: formatterImg('Bad_ImageUrlShow', 'Bad_ReferName', 'img-info'),
+                },
+                {
+                    label: '课程编号', name: 'Bad_ReferId', align: 'center',
+                    formatter: function (index, value, row) {
+                        let ret = ''
+                        if (row['Bad_ReferId'] > 0) {
+                            ret = row['Bad_ReferId'].toString();
+                        }
+                        return ret;
+                    }
+                },
+                {
+                    label: '课程名称', name: 'Bad_ReferName', align: 'center',
+                    formatter: formatterStr('Bad_ReferName')
+                },
+                { label: '开始时间', name: 'CreateTime', align: 'center', },
+                { label: '点击次数', name: 'Bad_HitCount', align: 'center' },
+                { label: '完成购买', name: 'Bad_ValidCount', align: 'center', },
+                {
+                    label: '是否推荐',
+                    name: 'Bap_Status',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        let checked = row['Bap_Status'] == 1 ? 'checked' : '';
+                        let dataProp = `  data-bap-id=${row['Bap_Id']} data-bad-id="${row['Bad_Id']}"`;
+                        return `   <input type="checkbox"  class="js-switch"   ${checked}  ${dataProp}/>`;
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        //console.log(row.Bap_Id, row.Bad_Id);
+                        let res = '';
+                        if (row.Bad_Id == 0) {
+                            res = "<a href='javascript:void(0)' class='text-info' onclick='edit(" + row.Bap_Id + "," + row.Bad_Id + ")'>新增课程</a>";
+                        } else {
+                            res = "<a href='javascript:void(0)' class='text-info' onclick='showHistory(" + row.Bap_Id + ")'>推荐历史</a>" +
+                            "<a href='javascript:void(0)' class='text-info' onclick='edit(" + row.Bap_Id + "," + row.Bad_Id + ")'>更换课程</a>";
+                        }
+                        return res;
+                    }
+                }
+            ];
+            //js修改switch状态
+            function setSwitchery(switchElement, checkedBool) {
+                if ((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
+                    switchElement.setPosition(true);
+                }
+            }
+            //表格加载完成后回调
+            let loaded = function () {
+                //处理checkedbox
+                var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+                elems.forEach(function (ele) {
+                    let switchery = new Switchery(ele, { disabled: false });
+                    let bapId = $(ele).data('bapId');
+                    let badId = $(ele).data('badId');
+                    if (bapId > 0) {//可用
+                        switchery.enable();
+                        ele.onchange = function () {
+                            let toStatus = $(this).is(':checked') ? 1 : 2;
+                            $.ajax({
+                                url: '@Url.Action("EditAdertisingPosStatus", "Advertising")',
+                                type: 'POST',
+                                data: { advPosId: bapId, toStatus: toStatus },
+                                success: function (data) {
+                                    if (data.State) {
+                                        window.layer.msg(data.ErrorMsg,
+                                           { time: 500 },
+                                           function () {
+                                               window.layer.closeAll();
+                                           });
+                                    } else {
+                                        window.layer.alert(data.ErrorMsg,
+                                           { icon: 2 },
+                                           function () {
+                                               window.layer.closeAll();
+                                               setSwitchery(switchery, toStatus != 1);
+                                           });
+                                    }
+                                },
+                                error: function (data) {
+                                    window.layer.alert(data.ErrorMsg, { icon: 2 }, function () {
+                                        window.layer.closeAll();
+                                        setSwitchery(switchery, toStatus != 1);
+                                    });
+                                }
+                            })
+                        };
+                    } else {//不可用
+                        switchery.disable();
+                    }
+                });
+            }
+            $('#table_advertising').table({
+                ajax: {
+                    url: '@Url.Action("GetPagingAdvertisingPos", "Advertising")'
+                },
+                columns: columns,
+                loaded: loaded,
+                searchBox: '#form_search_advertising'
+            });
+        }
+
+        function registerEvent() {
+
+        }
+        function showHistory(badPosId) {
+            //window.location.href = '/Advertising/History?badPosId=' + badPosId;
+            window.location.href = '@Url.Action("History", "Advertising")' + '?badPosId=' + badPosId;
+
+        }
+        function edit(badPosId, badId) {
+            window.location.href = '@Url.Action("Edit", "Advertising")' + '?badPosId=' + badPosId + "&badId=" + badId;
+            //window.location.href = '/Advertising/Edit?badPosId=' + badPosId + "&badId=" + badId;
+        }
+        function reload() {
+            window.location.reload();
+        }
+
+    </script>
+}

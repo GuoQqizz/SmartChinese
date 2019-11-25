@@ -1,0 +1,111 @@
+﻿@using AbhsChinese.Code.Extension
+@model AbhsChinese.Web.Models.OwnOrder.OrderDetailViewModel
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="#">订单详情</a>
+        </div>
+    </div>
+    <div class="maincontent">
+        <div class="mainbjtop"><img src="~/Images/Course/orderbodytop.png" /></div>
+        <div class="maincenter orderpage">
+            <div class="title">
+                <div class="fl"> 当前订单状态：<span>@Model.OrderStatusStr</span></div>
+                <div class="config">
+                    @if ((Model.OrderStatus == (int)AbhsChinese.Domain.Enum.StudentOrderStatus.已取消) && (!Model.IsHaveThisCourse))
+                    {
+                        <a href="@Url.Action("MakeOrder","OwnOrder",new { id = Model.CourseId })" target="_self">重新购买</a>
+                    }
+                    @*<a href="#" class="bill">申请发票</a>
+                    <a href="#" class="refund">申请退款</a>*@
+                </div>
+            </div>
+            <div class="ordertitle">订单详情</div>
+            <div class="ordercontent">
+                <div class="cheader">
+                    <div class="goodsimg fl"><img src="@(string.IsNullOrEmpty(Model.CourseImage)?"/Images/Course/defaultimg.jpg":Model.CourseImage)" /></div>
+                    <div class="cheader_right">
+                        <div class="lbox">
+                            <div class="goodsinfo">
+                                <div class="goodslabel fl">
+                                    <span class="clas">@Model.GradeName</span>
+                                    <span class="type">@Model.CourseTypeName</span>
+                                </div>
+                                <div class="goodsname line1">@Html.Raw(string.Format("{0}(共{1}课时)", Model.CourseName, Model.LessonCount))</div>
+                            </div>
+                            <div class="goodsinfo1">@Model.Description</div>
+                            <div class="goodsinfo2">教材版本：@Model.TextbookVersion</div>
+                            <div class="goodsprice"><span>￥</span>@Model.OrderAmount.ToString("0")</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="orderinfotitle">订单信息</div>
+            <div class="orderinfobox">
+                <table>
+                    <tr>
+                        <td class="hbj">订单编号</td>
+                        <td>@Model.OrderNo</td>
+                    </tr>
+                    <tr>
+                        <td class="hbj">下单时间</td>
+                        <td>@Model.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td class="hbj">用户账号</td>
+                        <td>@Model.StudentAccount</td>
+                    </tr>
+                    <tr>
+                        <td class="hbj">所属校区</td>
+                        <td>@Model.SchoolName</td>
+                    </tr>
+                    <tr>
+                        <td class="hbj">支付编号</td>
+                        <td>@(Model.OrderCashPay?.PayOuterId)</td>
+                    </tr>
+                    <tr>
+                        <td class="hbj">支付时间</td>
+                        <td>@Model.PayTimeStr</td>
+                    </tr>
+                    <tr>
+                        <td class="hbj">支付方式</td>
+                        <td>@Model.PayTypeStr</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="orderinfotitle">支付金额</div>
+            <div class="orderinfobox orderinfoboxtotal">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>课程原价</th>
+                            <th>总部现金券</th>
+                            <th>校区现金券</th>
+                            <th>@(Model.OrderStatus== (int)AbhsChinese.Domain.Enum.StudentOrderStatus.已支付 ? "实际支付" : "仍需支付")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>￥@Model.OrderAmount.ToString("0.00")</td>
+                            <td>-￥@Model.BaseVoucherAmount.ToString("0.00")</td>
+                            <td>-￥@Model.SchoolVoucherAmount.ToString("0.00")</td>
+                            <td>￥@Model.PayAmount.ToString("0.00")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mainbjbottom"><img src="~/Images/Course/orderbodybottom.png" /></div>
+    </div>
+
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/Course/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/Course/homeRight.png" />
+</div>
+

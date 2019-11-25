@@ -1,0 +1,101 @@
+﻿
+<style>
+    .select-region div{
+        display:inline-block;
+        position: relative;
+        width:@(ViewBag.Width==null?"32%": ViewBag.Width);
+    }
+</style>
+
+<div class="@ViewBag.ClassName select-region" style="width:100%;">
+    <div>
+        <select class="select2 select2-province   " id="provinceSelect" data-target="citySelect" data-loaded="false" data-default-val="@ViewBag.ProvinceId" name="@ViewBag.ProvinceFieldName"></select>
+    </div>
+    <div>
+        <select class="select2 select2-city   " data-target="cityCounty" id="citySelect" data-loaded="false" data-default-val="@ViewBag.CityId" name="@ViewBag.CityFieldName"></select>
+    </div>
+    <div>
+        <select class="select2 select2-county  " id="cityCounty" data-loaded="false" data-default-val="@ViewBag.CountyId" name="@ViewBag.CountyFieldName"></select>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script>
+    //渲染select
+    function renderSelect(options) {
+        options = $.extend({
+            target: null,
+            placeholder: '请选择',
+            width: "@(ViewBag.Width==null?"32%": ViewBag.Width)",
+            allowClear: true,
+            disabled: true,
+            language: "zh-CN",
+            minimumResultsForSearch: Infinity,
+            data: [{ id: '', text: '请选择' }]
+        }, options);
+        //追加bug
+        options.target.html('<option selected="selected"></option>');
+        // width: options.width,
+        options.target.select2({
+           width:'100%',
+            allowClear: options.allowClear,
+            disabled: options.disabled,
+            placeholder: options.placeholder,
+            language: options.language,
+            minimumResultsForSearch: options.minimumResultsForSearch,
+            data: options.data
+        })
+    }
+    //获取select数据
+    function initData(target, parentId) {
+        $.ajax({
+            url: "@Url.Action("GetRegion", "Select2")" + "?parentId=" + parentId,
+            type: 'GET',
+            success: function (data) {
+                target.html('<option selected="selected"></option>');
+                renderSelect({
+                    target: target,
+                    disabled: false,
+                    data: data.results
+                })
+                var loaded = target.data('loaded');
+                var defaultVal = target.data("defaultVal");
+                if (!loaded && defaultVal && defaultVal > 0) {
+                    target.val(defaultVal).trigger('change');
+                    target.data("loaded", true);
+                }
+                
+            }
+        });
+    }
+    //初始化
+    function initAreaSelect() {
+        initData($('.select2-province'), 0)
+        renderSelect({
+            target: $('.select2-city'),
+            placeholder: "请选择城市",
+        });
+        renderSelect({
+            target: $('.select2-county'),
+            placeholder: "请选择地区",
+        });
+        $('.select2').on("change", function (e) {
+            $(this).valid();
+            var id = e.target.dataset['target'];
+            let target = $(`#${id}`);
+            var val = e.target.value;
+            if (id) {
+                if (val == '') {
+                    renderSelect({
+                        target: target,
+                    }) 
+                } else {
+                    initData(target, val);
+                }
+                target.val('').trigger('change');//级联触发 修改孙子辈
+            }
+        });
+    }
+    $(function () {
+        initAreaSelect();
+    })
+</script>

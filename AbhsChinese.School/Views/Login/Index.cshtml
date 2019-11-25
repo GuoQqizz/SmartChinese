@@ -1,0 +1,105 @@
+﻿
+@{
+    Layout = null;
+}
+@model string
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>橙同学大语文校区后台</title>
+    @Styles.Render("~/font-awesome/css")
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 100%;
+            background: url(/Images/schoolmaster.jpg) no-repeat center bottom #07c29b;
+        }
+    </style>
+</head>
+<body>
+    <div class="loginpage">
+        <div class="login">
+            <form action="" method="post" id="loginForm">
+                <input type="hidden" name="redirect" value="@ViewBag.Redirect" />
+                <div class="box">
+                    <div class="title">登录</div>
+                    <div class="inpbox">
+                        <div class="fl"><img src="/Images/user.png" /></div>
+                        <div class="inputbox fr"><input id="username" type="text" placeholder="请输入用户名" name="account" maxlength="11" /></div>
+                    </div>
+                    <div class="errorinfo"><span>用户名不对</span></div>
+                    <div class="inpbox">
+                        <div class="fl"><img src="/Images/pass.png" /></div>
+                        <div class="inputbox fr"><input type="password" id="pass" placeholder="请输入密码" name="pwd" maxlength="20" /></div>
+                    </div>
+                    <div class="errorinfo"><span>请输入密码</span></div>
+                    <div class="inpbox inboxa">
+                        <a href="@Url.Action("FindPwd", "Login")">忘记密码？</a>
+                    </div>
+                    <div class="btns">
+                        <button class="subbtn" id="login">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/js/common")
+    @Scripts.Render("~/bundles/jquery")
+    @*<script src="~/Scripts/common/base.js"></script>*@
+    <script src="~/Content/layer/layer.js"></script>
+    <script>
+
+        var redirect = '@Model' || '@Url.Action("Index", "Teacher")';
+        function isPoneAvailable(val) {
+            var mobile = /^^1[3456789]\d{9}$/;
+            if (!mobile.test(val)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        $(function () {
+            $('#login').on('click', function () {
+                var lock = true;
+                var username = $('#username').val();
+                var pass = $('#pass').val();
+                if (username.length < 11 || !isPoneAvailable(username)) {
+                    $('#username').parents('.inpbox').next('.errorinfo').find('span').show();
+                } else {
+                    lock = false;
+                    $('#username').parents('.inpbox').next('.errorinfo').find('span').hide();
+                }
+                if (pass.length < 1) {
+                    $('#pass').parents('.inpbox').next('.errorinfo').find('span').show();
+                } else {
+                    lock = false;
+                    $('#pass').parents('.inpbox').next('.errorinfo').find('span').hide();
+                }
+                if (!lock) {
+                    $.ajax({
+                        url: '/Login/Login',
+                        type: 'POST',
+                        data: $('#loginForm').serialize(),
+                        dataType: "json",
+                        success: generateSuccessFunc(function () {
+                            window.location.href = redirect;
+                        }, 2),
+                        error: generateErrorFunc()
+                    });
+                }
+                return false;
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@{
+    ViewBag.PageTitle = "现金券";
+    ViewBag.ListTitle = "现金券列表";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    
+    <style>
+        /*添加多媒体资源下拉菜单*/
+        .dropdown-menu{
+            left:-45px !important;
+        }
+        /*switchery样式*/
+         .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+        .switchery-default {
+            cursor: pointer;
+        }
+
+        .switchery > small {
+            width: 20px;
+            height: 20px;
+        }
+
+        /*abhsTable*/
+         #table_cash {
+             height: calc(100% - 40px);
+         }
+         #wrapper, .ibox, .table_container,.ibox-content {
+            height: 100%;
+        }
+
+        .wrapper-content {
+            height: calc(100% - 16px);
+        }
+    </style>
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" name="btn_cashType"
+                        data-cash-type="0" class="btn btn-primary">
+                    全部
+                </button>
+                @foreach (var item in CustomEnumHelper.GetElements(typeof(VoucherTypeEnum)))
+                {
+                    <button type="button" name="btn_cashType"
+                            data-cash-type="@item.Key" class="btn btn-default">
+                        @item.Value
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-10">
+                @Html.Partial("_SearchCashVoucherList")
+            </div>
+            <div class="col-2 text-right align-self-end">
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">添加现金券</button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                               href="@Url.Action(
+                                    "AllVoucher",
+                                    "CashVoucher")">全场券</a>
+
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="@Url.Action(
+                                    "OrderVoucher",
+                                    "CashVoucher")">成单券</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="@Url.Action(
+                                    "RegisterVoucher",
+                                    "CashVoucher")">注册券</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="height: calc(100% - 72px);">
+            <div class="col-12 table_container">
+                <div id="table_cash"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+    <script>
+        $(function () {
+            $('.select2.form-control').select2({
+                width: '197px',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+
+            initTable();
+            registerEvent();
+
+            $('#form_search_cash select.abhsselect2').select2({
+                width: '197px',
+                placeholder: '请选择年级',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            });
+
+        });
+
+        function registerEvent() {
+            $('button[name="btn_cashType"]').on('click', function () {
+                let $self = $(this);
+                if ($self.hasClass('btn-primary')) {
+                    return;
+                }
+
+                let type = this.dataset.cashType;
+                let $form = $('#form_search_cash');
+                $form.find('input[name="cashType"]').val(type);
+                $form.find('.search').click();
+
+                $self.removeClass('btn-default').addClass('btn-primary')
+                     .siblings('.btn-primary').removeClass('btn-primary').addClass('btn-default');
+            });
+        }
+
+        function initTable() {
+            let columns = [
+                { label: '编号', name: 'Ycv_Id', align: 'center' },
+                { label: '现金券名称', name: 'Ycv_Name', align: 'center' },
+                { label: '现金券类型', name: 'VoucherType', align: 'center' },
+                { label: '应用课程类型', name: 'AvailableType', align: 'center' },
+                //{ label: '适用类型', name: 'CourseType', align: 'center' },
+                //{
+                //    label: '适用课程', name: 'Ycv_CourseId', align: 'center', formatter: function (index, value, row) {
+                //        if (row.Ycv_ApplyScopeType == 3) {
+                //            return "<span>" + row.Ycs_Name + "</span>"
+                //        }
+                //        return "全部课程";
+                //    }
+                //},
+                {
+                    label: '适用门槛', name: 'Ycv_OrderAmountLimit', align: 'center', formatter: function (index, value, row) {
+                        if (row.Ycv_OrderAmountLimit == 0) {
+                            return "无门槛";
+                        }
+                        return "<span>满￥" + row.Ycv_OrderAmountLimit + "可用</span>";
+                    }
+                },
+                {
+                    label: '面值', name: 'Ycv_Amount', align: 'center', formatter: function (index, value, row) {
+                        return "￥" + row.Ycv_Amount;
+                    }
+                },
+                {
+                    label: '适用校区', name: 'Bsl_Name', align: 'center', formatter: function (index, value, row) {
+                        if (row.Ycv_SchoolId == 0) {
+                            return "全部校区";
+                        }
+                        return "<span>" + row.SchoolName + "</span>";
+                    }
+                },
+                {
+                    label: '有效期', name: 'Ycv_ExpireType', align: 'center', formatter: function (index, value, row) {
+                        if (row.Ycv_ExpireType == 1) {
+                            return "<span>" + row.ExpireDate + "</span>";
+                        }
+                        if (row.Ycv_ExpireType == 2) {
+                            return "<span>领取后" + row.Ycv_ExpireDayCount + "天有效</span>";
+                        }
+                        return "<span>长期有效</span>";
+                    }
+                },
+                {
+                    label: '领取状态', name: '', align: 'center',
+                    formatter: function (index, value, row) {
+                        var count = Number(row.Ycv_PublishCount) - Number(row.Ycv_TakenCount);
+                        console.log(count);
+                        if (count > 0) {
+                            return "未领完";
+                        }
+                        return "已领完";
+                    }
+                },
+                {
+                    label: '启用状态', name: '', align: 'center',
+                    formatter: function (index, value, row) {
+                        if (row['Ycv_Status'] == 1) {
+                            return "已启用";
+                        }
+                        else if (row['Ycv_Status'] == 2) {
+                            return "未启用";
+                        }
+                        else if (row['Ycv_Status'] == 3) {
+                            return "已关闭";
+                        }
+                        return "";
+                    }
+                },
+                {
+                    label: '是否启用', name: 'Ycv_Status', align: 'center',
+                    formatter: function (index, value, row) {
+                        let checked = row['Ycv_Status'] == 1 ? 'checked' : '';
+                        let dataProp = `  data-bap-id=${row['Ycv_Id']} data-bad-id="${row['Ycv_Id']}"`;
+                        let dataStatus = `  data-status=${row['Ycv_Status']}`;
+                        let cls = `  js${row['Ycv_Id']}`;
+                        return `   <input type="checkbox" class="js-switch ${cls}"   ${checked}  ${dataProp} ${dataStatus} />`;
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        //<a href='javascript:void(0)' class='text-info' onclick='edit(" + row.Ycv_Id + "," + row.Ycv_VoucherType + ")'>编辑</a>
+                        if (row.Ycv_Status == 2 || row.Ycv_Status == 3) {
+                            return "<a href='javascript:void(0)' class='text-info' onclick='show(" + row.Ycv_Id + ")'>查看</a><a href='javascript:void(0)' style='padding-left:10px;' class='text-info " + row.Ycv_Id + "' onclick='del(" + row.Ycv_Id + ")'>删除</a>";
+                        }
+                        return "<a href='javascript:void(0)' class='text-info' onclick='show(" + row.Ycv_Id + ")'>查看</a>";
+                    }
+                }
+            ];
+
+            //js修改switch状态
+            function setSwitchery(switchElement, checkedBool) {
+                if ((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
+                    switchElement.setPosition(true);
+                }
+            }
+
+            //表格加载完成后回调
+            let loaded = function () {
+                //处理checkedbox
+                var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+                elems.forEach(function (ele) {
+                    let switchery = new Switchery(ele, { disabled: false });
+                    let bapId = $(ele).data('bapId');
+                    let badId = $(ele).data('badId');
+                    let status = $(ele).data("status");
+
+                    if (bapId > 0) {//可用
+                        switchery.enable();
+                        ele.onchange = function () {
+                            let toStatus = $(this).is(':checked') ? 1 : 2;
+                            if(toStatus==2)
+                            {
+                                toStatus = 3;
+                            }
+                            let _this = $(this); 
+                            $.ajax({
+                                url: '@Url.Action("UpdateStatus", "CashVoucher")',
+                                type: 'POST',
+                                data: { id: bapId, status: toStatus },
+                                success: function (data) {
+                                    if (data.State) {
+                                        window.layer.msg(data.ErrorMsg,
+                                           { time: 500 },
+                                           function () {
+                                               window.layer.closeAll();
+                                           });
+                                        //location.reload();
+                                        if (toStatus == 2) {
+                                            _this.parent().prev().text("已启用");
+                                            $(".js" + bapId + "").parent().next().children()[1].remove();
+                                            $(".js" + bapId + "").parent().parent().parent().parent().parent().next().find("." + bapId + "").remove();
+                                            let r = $(".js" + bapId + "").parent().parent().parent().parent().parent().next().find("a").parent();
+                                        }
+                                        else if (toStatus == 1) {
+                                            _this.parent().prev().text("已启用");
+                                            $(".js" + bapId + "").parent().next().children()[1].remove();
+                                            $(".js" + bapId + "").parent().parent().parent().parent().parent().next().find("." + bapId + "").remove();
+                                            let r = $(".js" + bapId + "").parent().parent().parent().parent().parent().next().find("a").parent();
+
+                                            //$(".js" + bapId + "").parent().next().find("a").after("&nbsp;&nbsp;<a href='javascript:void(0)' class='text-info' onclick='del(" + bapId + ")'>删除</a>");
+                                        }
+                                        else if (toStatus == 3) {
+                                            _this.parent().prev().text("已关闭");
+                                            //$(".js" + bapId + "").parent().next().children()[1].remove();
+                                            $(".js" + bapId + "").parent().next().find("a").after("<a href='javascript:void(0)' style='padding-left:10px;' class='text-info " + bapId + "' onclick='del(" + bapId + ")'>删除</a>");
+                                        }
+
+                                    } else {
+                                        window.layer.alert(data.ErrorMsg,
+                                           { icon: 2 },
+                                           function () {
+                                               window.layer.closeAll();
+                                               setSwitchery(switchery, toStatus != 1);
+                                           });
+                                    }
+                                },
+                                error: function (data) {
+                                    window.layer.alert(data.ErrorMsg, { icon: 2 }, function () {
+                                        window.layer.closeAll();
+                                        setSwitchery(switchery, toStatus != 1);
+                                    });
+                                }
+                            })
+                        };
+                    } else {//不可用
+                        switchery.disable();
+                    }
+                });
+            }
+
+            $('#table_cash').table({
+                ajax: {
+                    url: '@Url.Action("GetCashVoucheres", "CashVoucher")'
+                },
+                columns: columns,
+                loaded: loaded,
+                searchBox: '#form_search_cash'
+            });
+        }
+
+        //编辑（已移除）
+        //function edit(id, voucherType) {
+        //    if (voucherType == 1) {
+        //        location.href = '/CashVoucher/AllVoucher?id=' + id;
+        //    }
+        //    if (voucherType == 2) {
+        //        location.href = '/CashVoucher/OrderVoucher?id=' + id;
+        //    }
+        //    if (voucherType == 4) {
+        //        location.href = '/CashVoucher/RegisterVoucher?id=' + id;
+        //    }
+        //}
+
+        function del(id) {
+            let $row = $("." + id + "").parent().parent(); //获取当前tr
+            layer.confirm("确定要删除吗？", { title: "提示" }, function () {
+                $.ajax({
+                    url: '/CashVoucher/UpdateStatus',
+                    type: 'POST',
+                    data: { id: id, status: 4 },
+                    success: function (data) {
+                        if (data.State) {
+                            window.layer.msg(data.ErrorMsg,
+                               { time: 500 },
+                               function () {
+                                   window.layer.closeAll();
+                               });
+                            $row.remove();
+                        } else {
+                            window.layer.alert(data.ErrorMsg,
+                               { icon: 2 },
+                               function () {
+                                   window.layer.closeAll();
+                               });
+                        }
+                    },
+                    error: function (data) {
+                        window.layer.alert(data.ErrorMsg, { icon: 2 }, function () {
+                            window.layer.closeAll();
+                        });
+                    }
+                })
+            })
+        }
+
+        function show(id) {
+            location.href = '/CashVoucher/CashVoucherDetails?cashVoucherId=' + id;
+        }
+    </script>
+}

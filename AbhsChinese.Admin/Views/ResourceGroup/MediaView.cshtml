@@ -1,0 +1,102 @@
+﻿@using System.Web.UI.WebControls
+@using AbhsChinese.Domain.Dto.Response
+@using AbhsChinese.Domain.Enum
+@model DtoAudioResource
+@{
+    ViewBag.PageTitle = "查看";
+    Layout = "~/Views/Shared/_Forms.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox" style="margin-bottom: 0px;">
+            <div class="ibox-content" style="border:none">
+                <div class="form-group  row">
+                    <label class="col-sm-2 col-form-label text-right">名称：</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext">@(Model != null ? Model.Ymr_Name : "")</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label text-right">年级：</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext">@(Model != null ? Model.Grade : "")</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-2 col-form-label text-right">关键字：</label>
+                    <div class="col-lg-10">
+                        <p class="form-control-plaintext">@(Model != null ? Model.Ymr_Keywords : "")</p>
+                    </div>
+                </div>
+                @{
+                    if (Model != null)
+                    {
+                        if (Model.Ymr_MediaType == (int)MediaResourceTypeEnum.视频)
+                        {
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label text-right">视频资源：</label>
+                                <div class="col-lg-10">
+                                    <video controls="controls" id="showVideo" style="width:1000px !important;height:500px !important;">
+                                        <source src="@Model.AudioUrl" type="video/mp4" />
+                                    </video>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.Ymr_MediaType == (int)MediaResourceTypeEnum.音频)
+                        {
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label text-right">音频资源：</label>
+                                <div class="col-lg-10">
+                                    <audio controls="controls">
+                                        <source src="@Model.AudioUrlStr" type="audio/mp3" />
+                                    </audio>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label text-right">图片资源：</label>
+                                <div class="col-lg-10">
+                                    @{
+                                        if (Model.ImgId>0)
+                                        {
+                                            <img src="@Model.ImgUrlStr" style="width:200px;height:250px;" />
+                                        }
+                                        else
+                                        {
+                                            <p class="form-control-plaintext">暂无图片</p>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-2 col-form-label text-right">文本内容：</label>
+                                    <div class="col-lg-10">
+                                        @{
+                                            if (Model.Yxo_Id > 0)
+                                            {
+                                                <div style="height:200px;">@Model.Yxo_Content</div>
+                                            }
+                                            else
+                                            {
+                                                <p class="form-control-plaintext">暂无文本内容</p>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                            }
+                                            else if (Model.Ymr_MediaType == (int)MediaResourceTypeEnum.图片)
+                                            {
+                                                <div class="form-group row">
+                                                    <label class="col-lg-2 col-form-label text-right">图片资源：</label>
+                                                    <div class="col-lg-10">
+                                                        <img src="@Model.AudioUrlStr" style="width:200px;height:250px;" />
+                                                    </div>
+                                                </div>
+                                                }
+                                            }
+                }
+            </div>
+        </div>
+    </div>
+</div>

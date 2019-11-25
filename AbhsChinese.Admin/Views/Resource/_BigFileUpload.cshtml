@@ -1,0 +1,356 @@
+﻿@using AbhsChinese.Domain.Dto.Response
+@using AbhsChinese.Domain.Enum
+@model DtoMediaResourceAndObject
+<style>
+     .table {
+         margin-bottom: 0rem;
+     }
+
+    .table tr {
+         border-bottom: 1px solid #e7eaec;
+         }
+
+     .table tr td {
+         border-top: none !important;
+             }
+
+     .progress {
+         height: 1.3rem;
+     }
+
+     .select {
+         display: block;
+         width: 80%;
+         height: 150px;
+         border: 1px solid #e5e6e7;
+     }
+      .chooseFile {
+          margin-top: 6%;
+          color:#999999;
+     }
+     #container {
+         margin-left: -14px;
+     }
+     #localImg {
+         display: none;
+         width:140px;
+     }
+     #localAudio {
+         display: none;
+     }
+     .select-error {
+         border:1px dotted #cc5965;
+     }
+</style>
+
+<div id="ossfile"></div>
+<div class="col-lg-12">
+    @{
+        if (Model == null || Model.Ymr_Id == 0)
+        {
+            <img src="#" id="localImg" class="m-t-n-xs img-fluid rounded" />
+                    <audio id="localAudio" controls="controls"><source src="#" type="audio/mp3" /></audio>
+
+                    <div id="container">
+                        <table class="table">
+                            <tbody id="fileContainer"></tbody>
+                        </table>
+                        <a id="selectfiles" href="javascript:void(0);" class='btn select'><p class="chooseFile"><i class="fa fa-plus"></i></p><p style="color:#999999;">选择文件</p></a>
+                        <a id="postfiles" href="javascript:void(0);" class='btn' style="display:none;color:#999999;">开始上传</a>
+                    </div>
+        }
+        else
+        {
+            <img src="#" id="localImg" class="m-t-n-xs img-fluid rounded" />
+            <audio id="localAudio" controls="controls"><source src="#" type="audio/mp3" /></audio>
+            <div id="container" onchange="update()">
+                <table class="table">
+                    <tbody id="fileContainer"></tbody>
+                </table>
+                @{
+                    if (Model.Ymr_MediaType == (int)MediaResourceTypeEnum.音频)
+                    {
+                        <audio id="audioFile" class="resourceFile" controls="controls"><source src="@Model.AudioUrlStr" type="audio/mp3" /></audio>
+                    }
+                    else if (Model.Ymr_MediaType == (int)MediaResourceTypeEnum.图片)
+                    {
+                        <img class="rounded-circle m-t-n-xs img-fluid resourceFile" style="width:140px;height:140px" src="@Model.XiaoAiBUrl" />
+                    }
+                    else if (Model.Ymr_MediaType == (int)MediaResourceTypeEnum.小艾说)
+                    {
+                        <audio class="resourceFile" controls="controls"><source src="@Model.XiaoAiBUrl" type="audio/mp3" /></audio>
+                    }
+                }
+                <a id="selectfiles" href="javascript:void(0);" class='btn' style="color:#999999;"><p>更改</p></a>
+                <a id="postfiles" href="javascript:void(0);" class='btn' style="display:none;color:#999999;">开始上传</a>
+            </div>
+                    }
+    }
+</div>
+
+<script src="~/Scripts/plupload/plupload.full.min.js"></script>
+<script>
+    var loadingFlat;
+    var oldUrl = "";
+
+    let defauleImgExt = 'jpg,gif,png,bmp';
+    let defauleAudioExt = 'mp3';
+    let defauleVedioExt = 'mp4';
+    let defauleZipExt = 'zip,rar';
+
+    let fileType = @ViewBag.FileType;
+    let fileSize = '50m';
+    let errorFlag = false;
+
+    let uploadUrl="@ViewBag.UploadUrl";
+
+    var mime_type={};
+    switch (fileType) {
+        case 101://视频
+            mime_type["title"]="MP4 files";
+            mime_type["extensions"]= defauleVedioExt;
+            break;
+        case 102://音频
+            mime_type["title"]="Audio files";
+            mime_type["extensions"]= defauleAudioExt;
+            break;
+        case 103://图片
+            mime_type["title"]="Image files";
+            mime_type["extensions"]= defauleImgExt;
+            break;
+        case 104://小艾说
+            mime_type["title"]="MP4 files";
+            mime_type["extensions"]= defauleAudioExt;
+            break;
+    }
+
+    var uploader = new plupload.Uploader({
+        runtimes: 'html5,flash,silverlight,html4',
+        browse_button: 'selectfiles',
+        multi_selection: false,
+        container: document.getElementById('container'),
+        flash_swf_url: 'lib/plupload-2.1.2/js/Moxie.swf',
+        silverlight_xap_url: 'lib/plupload-2.1.2/js/Moxie.xap',
+        url: uploadUrl+'/Files/Upload',
+
+        filters: {
+            mime_types: [ //允许上传图片、音频、视频
+                mime_type
+            ],
+            max_file_size: fileSize, //最大只能上传50mb的文件
+            prevent_duplicates: true //不允许选取重复文件
+        },
+
+        init: {
+            PostInit: function () {
+                document.getElementById('ossfile').innerHTML = '';
+                document.getElementById('postfiles').onclick = function () {
+                    set_upload_param(uploader, '', false);
+                    return false;
+                };
+            },
+
+            FilesAdded: function (up, files) {
+                var audio = document.getElementById('audioFile');
+                if(audio!=null){
+                    audio.pause();
+                }
+                oldUrl = document.getElementById('Url').value;
+                let fileType = files[0].type;
+
+                if (fileType == "image/jpeg" || fileType == "image/png" || fileType == "image/gif") {
+                    $('#localImg').attr('src', getObjectURL(files[0].getNative())).show();
+                    createReader(files[0].getNative(), function (image) {
+                        imgW = image.width;
+                        imgH = image.height;
+                    })
+                }
+                if (fileType == "audio/mp3") {
+                    $('#localAudio').attr('src', getObjectURL(files[0].getNative())).show();
+                }
+
+                $('#postfiles').show();
+                $('.moxie-shim').hide();
+                $('#selectfiles').hide();
+
+                plupload.each(files, function (file) {
+                    document.getElementById('fileContainer').innerHTML += '<tr>' +
+                        '<td><input name="uploadFiles" type="hidden" value="" /></td>' +
+                        '<td id=' + file.id + ' style="width:60%;">' + file.name + '</td>' +
+                        '<td style="width:30%;"><div class="progress"><div class="progress-bar" style="width: 0%"></div></div></td>' +
+                        '<td></td>' +
+                        '<td><a href="javascript:void(0);" onclick="removeFile(\'' + file.id + '\')"><i class="fa fa-trash-o failed"></i></button></td>' +
+                        '</tr>';
+                });
+            },
+
+            FilesRemoved: function (up, files) {
+                let fileId = files[0].id;
+                let trNeedRemove = document.getElementById(fileId).parentNode;
+                let tBody = document.getElementById('fileContainer');
+                tBody.removeChild(trNeedRemove);
+                $('#localAudio').hide();
+                $('#localImg').hide();
+
+                $(".resourceFile").show();
+                $('#postfiles').hide();
+                $('#selectfiles').show();
+                document.getElementById('Url').value = oldUrl;
+                let audio = document.getElementById('localAudio');
+
+                if(audio!=null){
+                    audio.pause();
+                }
+                var isValid = $('#Url').valid();
+                if(isValid==false)
+                {
+                    $("#selectfiles").addClass("select-error");
+                }
+                else
+                {
+                    $("#selectfiles").removeClass("select-error");
+                }
+            },
+
+            BeforeUpload: function (up, file) {
+
+                console.log(file);
+                //获得文件扩展名
+                var fileExtension = file.name.split('.').pop();
+                console.log(fileExtension);
+                var fileName = CurrentDateName() + '.' + fileExtension;
+
+                let fileType = file.type;
+                let direct = "";
+                if (fileType == "image/jpeg" || fileType == "image/png" || fileType == "image/gif") {
+                    direct = "Resource/Images";
+                }
+                if (fileType == "audio/mp3") {
+                    direct = "Resource/Audio";
+                }
+
+                up.setOption("multipart_params", {
+                    subject: 'abhstest',
+                    directory: direct,
+                    fileName: fileName
+                });
+            },
+
+            UploadProgress: function (up, file) {
+
+                var d = document.getElementById(file.id);
+                var nextD = document.getElementById(file.id).nextSibling;
+                var prog = nextD.getElementsByTagName('div')[0];
+                var progBar = prog.getElementsByTagName('div')[0]
+                //progBar.style.width = 2 * file.percent + 'px';
+                progBar.style.width = file.percent + '%';
+                progBar.setAttribute('aria-valuenow', file.percent);
+
+                loadingFlag = layer.msg('正在上传，请稍候……', { icon: 16, shade: 0.01, shadeClose: false, time: 60000 });
+            },
+
+            FileUploaded: function (up, file, info) {
+                let response = JSON.parse(info.response);
+                if (response.State == false) {
+                    layer.close(loadingFlag);
+                    layer.alert("上传失败，请稍后再试");
+                    let tdUploadedState = document.getElementById('fileContainer').nextSibling.nextSibling;
+                    tdUploadedState.innerHTML = '<i class="fa fa-times failed"></i>';
+                }
+                else {
+                    if (info.status == 200) {
+                        let res = JSON.parse(info.response);
+                        let tdUploadedState = document.getElementById(file.id).nextSibling.nextSibling;
+                        tdUploadedState.innerHTML = '<i class="fa fa-check success"></i>';
+                        let tdUploadedUrl = document.getElementById(file.id).previousSibling;
+                        tdUploadedUrl.firstChild.value = response.url;
+
+                        let fileType = file.type;
+                        if (fileType == "image/jpeg" || fileType == "image/png" || fileType == "image/gif") {
+                            document.getElementById('Url').value = "/Resource/Images/" + res.FileName;
+                        }
+                        if (fileType == "audio/mp3") {
+                            document.getElementById('Url').value = "/Resource/Audio/" + res.FileName;
+                        }
+
+                        $("#loading").hide();
+                        $("#errorurl").hide();
+                        $("#postfiles").hide();
+                        layer.close(loadingFlag);
+                    } else {
+                        document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = res.response || res.ErrorMsg;
+                    }
+                    $('#Url').valid();
+                }
+            },
+
+            Error: function (up, err) {
+                errorFlag=true;
+                if (err.code == -600) {
+                    //document.getElementById('console').appendChild(document.createTextNode("\n选择的文件太大了,可以根据应用情况，在upload.js 设置一下上传的最大大小"));
+                    layer.alert('选择的文件太大了！' + fileSize + '以内');
+                } else if (err.code == -601) {
+                    layer.alert('请选择正确的文件后缀格式！' + mime_type.extensions);
+                    //document.getElementById('console').appendChild(document.createTextNode("\n选择的文件后缀不对,可以根据应用情况，在upload.js进行设置可允许的上传文件类型"));
+                } else if (err.code == -602) {
+                    //document.getElementById('console').appendChild(document.createTextNode("\n这个文件已经上传过一遍了"));
+                    layer.alert('已经选择该文件！');
+
+                } else {
+                    //document.getElementById('console').appendChild(document.createTextNode("\nError xml:" + err.response));
+                    let td = document.getElementById('fileContainer');
+                    let tdUploadedState;
+                    if (td.lastChild && td.lastChild.previousSibling) {
+                        tdUploadedState = td.lastChild.previousSibling;
+                    }
+                    if (tdUploadedState) {
+                        tdUploadedState.innerHTML = '<i class="fa fa-times failed"></i>';
+                    }
+                    layer.alert('异常,请重新选择');
+                }
+            }
+        }
+    });
+
+    uploader.init();
+
+    function removeFile(id) {
+        uploader.removeFile(id);
+    }
+    function set_upload_param(up, filename, ret) {
+
+        up.start();
+    }
+
+    function update() {
+        if(!errorFlag){
+            $(".resourceFile").hide();
+        }
+    }
+
+    //获取图片宽高
+    function createReader(file, whenReady) {
+        var reader = new FileReader;
+        reader.onload = function (evt) {
+            var image = new Image();
+            image.onload = function () {
+                if (whenReady) whenReady(image);
+            };
+            image.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    //获取图片本地url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+</script>

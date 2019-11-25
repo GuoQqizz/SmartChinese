@@ -1,0 +1,174 @@
+﻿
+@model AbhsChinese.Domain.Dto.Request.School.DtoSchoolTeacherSearch
+@{
+    //ViewBag.PageTitle = "老师管理";
+    ViewBag.PageTitle = "教师列表";
+    ViewBag.HasReloadBtn = true;
+    ViewBag.HasAddBtn = true;
+    ViewBag.AddBtnName = "添加教师";
+
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .text-info + .text-info {
+            margin-left: 15px;
+        }
+
+        .img-info {
+            width: 50px;
+            height: 50px;
+        }
+
+
+         #wrapper, .ibox, .table_container, .ibox-content {
+            height: 100%;
+        }
+
+        .wrapper-content {
+            height: calc(100% - 80px);
+        }
+
+        #table_list {
+            height: calc(100% - 50px);
+        }
+
+        .spc-green {
+            color: #1ABC9C;
+        }
+
+        .spc-defaule {
+            color: #ccc;
+        }
+
+        .spc-red {
+            color: #D9001B;
+        }
+
+         :root {
+            --sbheight: 50px;
+        }
+        .search-box {
+            height: var(--sbheight);
+        }
+
+        @@media screen and (max-width: 1350px) {
+            :root {
+                --sbheight: 100px;
+            }
+        }
+    </style>
+
+}
+<div class="ibox">
+    @*<div class="ibox-title">
+            <h5>
+                <i class="fa fa-table"></i>&nbsp;@ViewBag.ListTitle
+            </h5>
+            <div class="ibox-tools">
+                <div class="col">
+                    <button class="btn btn-white" type="button" onclick="edit(0)">
+                        <i class="fa fa-plus"></i>&nbsp;添加教师
+                    </button>
+                </div>
+            </div>
+        </div>*@
+    <div class="ibox-content">
+        <div class="row search-box">
+            @Html.Partial("_SearchTeacherList", Model)
+            @Html.Partial("_PageControl")
+        </div>
+        <div class="row" style="height: calc(100% - 50px);">
+            <div class="col-12 table_container">
+                <div id="table_list"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+
+
+    <script>
+        $(function () {
+            renderSearch();
+            initTable();
+
+        })
+
+        function renderSearch() {
+
+            let statusSource = statusSourceArr.concat();
+            statusSource.pop();
+            //老师状态
+            $('.select2-status').initSelectOption({
+                'source': statusSource,
+                'className': '',
+                'default': { key: '-1', value: '状态' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+            //年级
+            $('.select2-grade').initSelectOption({
+                'source': gradeSourceArr,
+                'className': '',
+                'default': { key: '-1', value: '年级' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+        }
+
+        function initTable() {
+            let columns = [
+                { label: '编号', name: 'Yoh_Id', align: 'center' },
+                { label: '账号', name: 'Yoh_Phone', align: 'center' },
+                { label: '姓名', name: 'Yoh_Name', align: 'center' },
+                {
+                    label: '头像', name: 'Yoh_Avatar', align: 'center',
+                    formatter: formatterImg('Yoh_AvatarShow', 'Yoh_Name', 'img-info'),
+                },
+                { label: '性别', name: 'SexStr', align: 'center' },
+                { label: '邮箱', name: 'Yoh_Email', align: 'center' },
+                { label: '负责年级', name: 'Grades', align: 'center' },
+                {
+                    label: '状态',
+                    name: 'StatusStr',
+                    align: 'center',
+                    formatter: function (index,value,row) {
+                        let className = row.Yoh_Status == 1 ? "" : row.Yoh_Status == 2 ? "spc-defaule" : "spc-red";//spc-green
+                        return `<span class="${className}">${row['StatusStr']}</span>`;
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return "<a href='javascript:void(0)' class='text-info' onclick='editLocal(" + row.Yoh_Id + ")'>编辑</a>";
+                    }
+                }
+            ];
+            $('#table_list').table({
+                ajax: {
+                    url: '@Url.Action("GetTeacher", "Teacher")'
+                },
+                columns: columns,
+                current: PageBase.GetPageIndex(),
+                searchBox: '#form_search'
+            });
+        }
+
+        function editLocal(id) {
+            window.location.href = '@Url.Action("Edit", "Teacher")' + '?teacherId=' + id;
+        }
+    </script>
+}

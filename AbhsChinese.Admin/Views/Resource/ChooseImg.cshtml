@@ -1,0 +1,293 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@using AbhsChinese.Admin.Models.Resource
+@model ResourceGroupViewModel
+@{
+    ViewBag.PageTitle = "多媒体资源管理";
+    ViewBag.ListTitle = "多媒体资源列表";
+    Layout = "~/Views/Shared/_Forms.cshtml";
+}
+@section Styles {
+    
+    @Styles.Render("~/bundles/css/select2Styles")
+    <link href="~/Content/ui-choose/ui-choose.css" rel="stylesheet" />
+    <style>
+        .ibox-content {
+            border: none;
+        }
+
+        .wrapper-content {
+            padding: 20px 10px 0;
+        }
+
+
+        .todo-list.small-list > li {
+            background: #f8f8f8;
+            cursor:pointer;
+        }
+        .check-link {
+            display: none;
+        }
+
+        .check-link {
+            display: inline !important;
+        }
+
+        /*#type + .select2 {
+            margin-left: 20px;
+        }*/
+
+        #ullist {
+            width: 300px;
+            overflow: auto;
+            border: 1px solid #e5e6e7;
+            display:none;
+        }
+
+         .msgBtn {
+            text-align: center;
+            position:absolute;
+            width: 300px;
+            height:37px;
+            bottom: -9px;
+            left: 35px;
+        }
+         .oddli{
+            background:#fbfcfd !important;
+        }
+         .evenli{
+             background:#ffffff !important;
+         }
+    </style>
+}
+
+<div class="wrapper wrapper-content" style="height:100%;">
+    <div class="row">
+        <div class="col-md-12" style="padding-left:35px;">
+            <div class="input-group">
+                <select id="grade" class="select2" data-ajax--url="@Url.Action("GetGrades","Select2")"
+                        data-ajax--cache="true"
+                        data-placeholder="请选择年级" data-allow-clear="true"
+                        name="Grade">
+                    <option></option>
+                </select>
+                <input id="nameOrkey" type="text" class="form-control" name="NameOrKey" placeholder="按资源名、编号或关键字搜索" style="flex:none;width:250px !important;margin-left:20px;"/>
+                <button id="search" class="btn btn-primary search" type="button" style="flex:none;width:100px !important;margin-left:20px;">搜索</button>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height: calc(100% - 50px);">
+        <div class="col-lg-12" style="height:100%;">
+            <div class="row" style="height:100%;">
+                <div class="col-lg-3" style="flex:0 0 8%;height:100%;">
+                    <div class="ibox" style="margin-bottom:0px;height:100%;">
+                        <div class="ibox-content" style="padding-right:0px;height:100%;">
+                            <span style="margin-left:10px;display:none;font-size:14px;" id="searchTip">符合条件的图片：</span>
+                            <ul class="todo-list small-list" id="ullist" style="height:100%;"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="ibox" style="margin-bottom:0px;margin-top: 40px;">
+                        <div class="ibox-content text-left">
+                            <div id="detail" style="height:600px;">
+                                <div id="imgDiv" style="display:none;">
+                                    <div class="form-group  row">
+                                        <label class="col-lg-1 col-form-label">资源图片:</label>
+                                        <div class="col-sm-10" id="showImg">
+                                            @*<img src="http://abhstest.oss-cn-beijing.aliyuncs.com/img/c59564788f744aedb486862a9e2b3873.jpg" style="width:200px;height:250px;" />*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary btn-sm" type="button" id="btn_SignIn" style="display:none;">保存</button>
+<label id="tip" style="position:absolute;left:45%;top:30%;font-size:13px;color:#999;">请选择一张图片</label>
+<label id="tip2" style="position:absolute;left:45%;top:30%;font-size:13px;color:#999;display:none;">没有符合条件的图片</label>
+<input type="hidden" name="Ygi_ResourceId" id="resourceId" />
+<input type="hidden" id="Id" />
+<input type="hidden" id="ImgUrl" />
+
+
+
+@section Scripts {
+    
+    @Scripts.Render("~/bundles/js/select2")
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+    <script src="~/Content/ui-choose/ui-choose.js"></script>
+    <script>
+        var index = 1;
+        var listLoading = false;
+        var isOver = false;
+        $(function () {
+            $('.select2').select2({
+                width: '300px',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                let $select = $(this);
+                let selectedValue = $select.val();
+                let $hidden = $select.parent('div.select-container')
+                    .find('input[type="hidden"]');
+                $hidden.val(selectedValue);
+                $hidden.next('label.error').remove();
+            });
+
+            $("#btn_SignIn").click(function () {
+                ajaxSubmit();
+            });
+
+            $("#search").click(function () {
+                isOver = false;
+                $("#detail").hide();
+                $("#ullist").empty();
+                index = 1;
+                LoadList();
+            });
+
+            $("#ullist").scroll(function () {
+                if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+                    if (!listLoading && !isOver) {
+                        $("#msg").remove();
+                        index++;
+                        LoadList();
+                    }
+                }
+            });
+
+        });
+
+        function LoadList() {
+            if (!listLoading && !isOver) {
+                listLoading = true;
+                var grade = $("#grade option:checked").val();
+                var type = 103;
+                var nameOrkey = $("#nameOrkey").val();
+                var resourceType = 2;
+
+                $.ajax({
+                    url: '/Resource/GetImgList?pageIndex='+index+'&pageSize=20&grade=' + grade + '&nameOrkey=' + nameOrkey,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.Code == 2) {
+                            $("#ullist").show();
+                            $("#tip").hide();
+                            $("#searchTip").show();
+                            let flat = 0;
+                            for (var i = 0; i < data.Data.length; i++) {
+                                if (flat == 0) {
+                                    $("#ullist").append('<li id="li' + data.Data[i].Ymr_Id + '" onclick="choose(' + data.Data[i].Ymr_MediaObjectId + ',2,' + data.Data[i].Ymr_Id + ')" class="oddli"><a href="#" class="check-link"><i class="fa fa-square-o"></i></a><span class="m-l-xs">' + (data.Data[i].Ymr_Name.length > 12 ? data.Data[i].Ymr_Id + "-" + data.Data[i].Ymr_Name.substring(0, 12) + "..." : data.Data[i].Ymr_Id + "-" + data.Data[i].Ymr_Name) + '</span></li>');
+                                    flat = 1;
+                                }
+                                else {
+                                    $("#ullist").append('<li id="li' + data.Data[i].Ymr_Id + '" onclick="choose(' + data.Data[i].Ymr_MediaObjectId + ',2,' + data.Data[i].Ymr_Id + ')" class="evenli"><a href="#" class="check-link"><i class="fa fa-square-o"></i></a><span class="m-l-xs">' + (data.Data[i].Ymr_Name.length > 12 ? data.Data[i].Ymr_Id + "-" + data.Data[i].Ymr_Name.substring(0, 12) + "..." : data.Data[i].Ymr_Id + "-" + data.Data[i].Ymr_Name) + '</span></li>');
+                                    flat = 0;
+                                }
+                            }
+                            if (data.Data.length >= 20) {
+                                $("#ullist").append('<button class="btn btn-default msgBtn" id="msg" onclick="loadmore()">点击加载更多</button>');
+                            }
+                        }
+                        if ($("#ullist").children().length == 0) {
+                            $("#tip").hide();
+                            $("#searchTip").hide();
+                            $("#tip2").show();
+                            $("#detail").hide();
+                            $("#ullist").hide();
+                        }
+                        else {
+                            $("#searchTip").show();
+                            $("#tip").hide();
+                            $("#tip2").hide();
+                        }
+                        listLoading = false;
+                    },
+                    error: function (data) {
+                        listLoading = false;
+                        console.log(data)
+                    }
+                });
+            }
+        }
+
+        function loadmore() {
+            if (!listLoading && !isOver) {
+                $("#msg").remove();
+                console.log("加载数据");
+                index++;
+                LoadList();
+            }
+        }
+
+        function choose(objectId, resourceType, id) {
+            var $li = $("#li" + id + "").children().children();
+            var classname = $li.attr("class");
+            if (classname == "fa fa-square-o") {
+                $("li a i").each(function () {
+                    if ($(this).attr("class") == "fa fa-check-square") {
+                        $(this).removeClass("fa fa-check-square");
+                        $(this).addClass("fa fa-square-o");
+                        $(this).parent().parent().css("background", "#f3f3f4");
+                        $(this).parent().next().css("color", "#676a6c");
+                    }
+                })
+
+                $("#Id").val(objectId);
+                $("#li" + id + "").css("background", "#1ab394");
+                //$("#li" + id + "").children().next().css("color", "#fff");
+                $li.removeClass("fa fa-square-o");
+                $li.addClass("fa fa-check-square");
+            }
+            else {
+                $("#Id").val("");
+                $("#li" + id + "").css("background", "#f3f3f4");
+                //$("#li" + id + "").children().next().css("color", "#676a6c");
+                id = 0;
+                $li.removeClass("fa fa-check-square");
+                $li.addClass("fa fa-square-o");
+                $("#detail").hide();
+                return;
+            }
+
+            $.ajax({
+                url: '/ResourceGroup/Detail?id=' + objectId + '&resourceType=' + resourceType,
+                type: 'get',
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Data != null) {
+                        $("#tip").hide();
+                        $("#imgDiv").show();
+                        $("#showImg").empty();
+                        $("#showImg").append('<img src="' + data.Data.ObjectUrl + '" " style="width:200px;height:250px;"/>');
+
+                        $("#ImgUrl").val(data.Data.ObjectUrl);
+                        $("#detail").show();
+                    }
+                    else {
+                        $("#ImgUrl").val("");
+                        $("#tip").show();
+                    }
+                },
+                error: function (data) {
+                    console.log(data)
+                }
+            });
+        }
+
+        function ajaxSubmit() {
+            if ($("#Id").val() == "") {
+                layer.alert("请选择文件");
+                return;
+            }
+        }
+    </script>
+}

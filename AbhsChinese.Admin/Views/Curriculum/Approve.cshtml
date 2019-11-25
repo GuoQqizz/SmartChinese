@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.PageTitle = "课程审批";
+}
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <form role="form" class="form-inline search-form" id="form_search">
+                    <input type="hidden" name="type" value="" />
+                    <div class="form-group">
+                        <input type="text" name="LessonNumber" placeholder="按编号搜索" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="LessonOrProducerName" placeholder="按课时名称，制作人员搜索" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <select class="select2 normal" data-ajax--url="@Url.Action("GetCurriculumCategaries","Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择类型" data-allow-clear="true"
+                                name="CourseType"></select>
+                    </div>
+                    <div class="form-group">
+                        <select class="select2 normal" data-ajax--url="@Url.Action("GetGrades","Select2")"
+                                data-ajax--cache="true"
+                                data-placeholder="请选择年级" data-allow-clear="true"
+                                name="Grade"></select>
+                    </div>
+                    <button id="Seach" class="btn btn-white search" type="button">搜索</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 table_container">
+                <div id="table_list"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Styles{
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    <style>
+        #form_search {
+            margin: 0px;
+        }
+
+            #form_search .form-group {
+                max-width: 20%;
+            }
+
+                #form_search .form-group .form-control {
+                    width: 100%;
+                }
+    </style>
+
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/abhsTable")
+    <script>
+        $(function () {
+            $('.select2.normal').select2({
+                width: '197px',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+
+
+
+            window.lessonTable = $('#table_list').table({
+                ajax: {
+                    url: '@Url.Action("GetApproveLessons", "Curriculum")',
+                    type: "post"
+                },
+                columns: [
+                { label: '时间', name: 'UpdateDateStr', align: "center" },
+                {
+                    label: '课时编号', name: 'CourseID', align: "center",
+                    formatter: function (index, value, row) {
+                        return value + "-" + row.LessonIndex;
+                    }
+                },
+                { label: '课时名称', name: 'LessonName', align: "center" },
+                { label: '对应课程', name: 'CourseName', align: "center" },
+                {
+                    label: '第几课时', name: 'LessonIndex', align: "center",
+                    formatter: function (index, value, row) {
+                        return "第" + value + "课时";
+                    }
+                },
+                { label: '课程类型', name: 'CourseTypeStr', align: "center" },
+                { label: '年级', name: 'GradeStr', align: "center" },
+                { label: '制作人员', name: 'LessonProducerName', align: "center" },
+                { label: '课时状态', name: 'LessonStatusStr', align: "center" },
+                {
+                    label: '操作', name: 'LessonID', align: "center",
+                    formatter: function (index, value, row) {
+                        return '<a target="_blank" href="/Curriculum/ChapterApprove/' + value + '">操作</a>';
+                    }
+                }
+                ],
+                searchBox: '#form_search'
+            });
+
+        })
+    </script>
+}

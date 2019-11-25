@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "订单详情";
+}
+@using AbhsChinese.Code.Extension
+@model AbhsChinese.Web.Models.OwnOrder.PaymentViewModel
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="#">订单详情</a>
+        </div>
+    </div>
+    <div class="maincontent">
+        <div class="mainbjtop"><img src="~/Images/Course/orderbodytop.png" /></div>
+        <div class="maincenter orderpage">
+            <div class="ordertitle">订单详情</div>
+            <div class="ordercontent">
+                <div class="cheader">
+                    <div class="goodsimg fl"><img src="@Model.CourseImage" /></div>
+                    <div class="cheader_right">
+                        <div class="lbox">
+                            <div class="goodsinfo">
+                                <div class="goodslabel fl">
+                                    <span class="clas">@Model.GradeName</span>
+                                    <span class="type">@Model.CourseTypeName</span>
+                                </div>
+                                <div class="goodsname line1">@Html.Raw(string.Format("{0}(共{1}课时)", Model.CourseName, Model.LessonCount))</div>
+                            </div>
+                            <div class="goodsinfo1">@Model.Description</div>
+                            <div class="goodsinfo2">教材版本：@Model.TextbookVersion</div>
+                            <div class="goodsprice"><span>￥</span>@Model.OrderAmount.ToString("0")</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.OrderAmount > 0)
+            {
+                <div class="orderinfotitle">现金券</div>
+                <div class="orderconpoubox" id="usedVoucherList">
+                    <div class="getconputbox">
+                        <div class="item itemcenter" id="openconpoulist" style="display:none;">领取更多现金券&nbsp;&gt;</div>
+                    </div>
+                </div>
+                <div class="noticket textcenter" id="noneVouchers" style="display:none;"><img src="~/Images/Course/noticket.jpg" /></div>
+            }
+            <div class="orderinfotitle">支付方式</div>
+            <div class="paytypebox">
+                <div class="paytypeitem itemcenter active" data-paytype="1">
+                    <img src="~/Images/wx.png" />
+                    <img class="payt" src="~/Images/paytype.png" />
+                </div>
+                <!-- <div class="paytypeitem itemcenter">
+                    <img src="img/zfb.png" />
+                    <img class="payt" src="img/paytype.png" />
+                </div> -->
+            </div>
+            <div class="orderinfotitle" style="padding-bottom: 0;">支付金额</div>
+            <div class="orderdatecou orderPayTimeCountdownTip_1">请在<span><em id="minute" class="minute"></em>分<em id="second" class="second"></em>秒</span>内完成支付</div>
+            <div class="orderinfobox orderinfoboxtotal">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>课程原价</th>
+                            <th>总部现金券</th>
+                            <th>校区现金券</th>
+                            <th>仍需支付</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>￥@Model.OrderAmount.ToString("0.00")</td>
+                            <td id="selectedBaseVoucherAmount">-￥0.00</td>
+                            <td id="selectedSchoolVoucherAmount">-￥0.00</td>
+                            <td><span style="color: #ff0000;" id="needPayAmount">￥@Model.OrderAmount.ToString("0.00")</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="suborder"><button id="btnPayment" data-status="@Model.OrderStatus" data-courseid="@Model.CourseId">提交订单</button></div>
+        </div>
+        <div class="mainbjbottom"><img src="~/Images/Course/orderbodybottom.png" /></div>
+    </div>
+
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/Course/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/Course/homeRight.png" />
+</div>
+@Html.Partial("_PartialVoucherList")
+
+<div class="paycodepop" style="display:none;">
+    <div class="showwindow"></div>
+    <div class="showwindowcontent">
+        <div class="box textcenter">
+            <div class="boxc">
+                <div class="closepaydepop1">
+                    <img class="closepaydepopimg" src="/Images/Course/c1.png" />
+                </div>
+                <div class="paycodetitle">
+                    微信扫码支付<span id="needPayAmount_modelTip">￥@Model.OrderAmount.ToString("0.00")</span>
+                </div>
+                <div class="paycodeinfo orderPayTimeCountdownTip_2">请在<span><em id="minute1"></em>分<em id="second1"></em>秒</span>内完成支付</div>
+                @*<div class="codeimg"><img src="/Images/StudentInfo/code.jpg" id="wechatPayQRImg" /></div>*@
+                <div class="codeimg"><img src="" id="wechatPayQRImg" /></div>
+                <div class="codebtn"><a href="javascript:void(0);" id="btnOrderQuery">已完成支付</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="payfailpage" style="display:none;">
+    <div class="showwindow"></div>
+    <div class="showwindowcontent">
+        <div class="box">
+            <div class="boxc">
+                <div class="closepaydepop">
+                    <img class="closepaydepopimg" src="/Images/Course/c1.png" />
+                </div>
+                <div class="payfailimg textcenter"><img src="/Images/Course/payfail.jpg" /></div>
+                <div class="text textcenter">订单未完成支付</div>
+                <div class="codebtn"><a href="javascript:void(0);" id="btnRePay">重新支付</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="buyrepeatpage" style="display:none;" id="payErrorPanel">
+    <div class="showwindow"></div>
+    <div class="showwindowcontent">
+        <div class="box">
+            <div class="boxc">
+                <div class="text textcenter" id="paymentErrorTip"></div>
+                <div class="codebtn"><a href="javascript:void(0)" id="btnCloseErrorTip">关闭</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="studentId" value="@Model.StudentId">
+<input type="hidden" id="orderId" value="@Model.OrderId">
+<input type="hidden" id="orderStatus" value="@Model.OrderStatus">
+<input type="hidden" id="courseInfo" value='@Html.Raw(string.Format("{{\"CourseId\": {0}, \"CoursePrice\": {1}, \"Grade\": {2}, \"CourseType\": {3}}}",Model.CourseId,Model.OrderAmount,Model.Grade,Model.CourseType))'>
+<input type="hidden" id="reBuyUrl" value='@Url.Action("MakeOrder","OwnOrder",new { id = Model.CourseId })'>
+<input type="hidden" id="orderInvalidTime" value="@Html.Raw(Model.OrderTime.AddMinutes(30).ToTimestamp())">
+
+@section scripts{
+    @Scripts.Render("~/bundles/orderpayment")
+}

@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "错题详情";
+}
+@using AbhsChinese.Domain.Dto.Response.Student
+@model DtoStudentWrongSubjectInfo
+@section Styles{
+    @Styles.Render("~/Content/wrongdetail")
+    <style>
+        #step2, #step3 {
+            display: none;
+        }
+        body, html {
+            height:100%;
+        }
+        #step3 {
+            overflow: hidden;
+        }
+    </style>
+}
+@*<meta name="viewport" content="width=device-width, initial-scale=0.8,maximum-scale=8, user-scalable=no"/>*@
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("Index","LearningCenter")">学习中心</a><em><img src="~/Images/StudentInfo/back.png" /></em><a href="@Url.Action("Index","WrongBook")">错题本</a><em><img src="~/Images/StudentInfo/back.png" /></em><a href="javascript:void(0);">错题详情</a>
+        </div>
+    </div>
+    <div class="contentbox errordetailpage">
+        <div class="contentbox1left fl">
+            <div class="ctrbox">
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_top.png" /></div>
+                <div class="contrbox">
+                    <div class="">
+                        <div class="protitle">
+                            <div class="tittext">@(Model.BookCreateTimeStr + " " + Model.SourceStr + "错题")</div>
+                            <div class="tittext1">@(Model.CourseName + (Model.CourseLessonName.HasValue() ? "-" : "") + Model.CourseLessonName)</div>
+                        </div>
+                        <div id="objectbox">
+                        </div>
+                    </div>
+                </div>
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_bottom.png" /></div>
+            </div>
+        </div>
+        <div class="contentbox1right">
+            <div class="bjboxbox">
+                <div class="bjboxboxtop"><img src="~/Images/StudentInfo/tbjtop.png" /></div>
+                <div class="bjboxboxcenter">
+                    <div class="ptle">
+                        <div class="text fl">题目难度</div>
+                        <div class="text1 subject-hard" style="padding-right:10px;"></div>
+                    </div>
+                    <div class="ptle">
+                        <div class="text fl">题目解析</div>
+                        <div class="text1"><a id="objanl">查看></a></div>
+                    </div>
+                    @if (Model.Yws_KnowledgeId > 0)
+                    {
+                        <div class="ptle knowledge-info">
+                            <div class="text fl">题目知识点</div>
+                            <div class="text1"><a id="objkno">查看></a></div>
+                        </div>
+                    }
+                    <div class="textbox knowledge-name"></div>
+                    <div class="errdeconfig">
+                        <div class="btns">
+                            <a href="#" class="prev-wrong">上一题</a>
+                            <a href="#" class="next-wrong">下一题</a>
+                        </div>
+                        <div class="btns1">
+                            <a href="#" class="again" onclick="return again(@Model.Yws_Id,@Model.Yws_Status);">@(Model.Yws_Status == 3 ? "清除错题" : "再做一次")</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bjboxboxtop"><img src="~/Images/StudentInfo/tbjbottom.png" /></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+
+
+@section Scripts{
+
+    <script>
+        let knowledgeId =@Model.Yws_KnowledgeId;
+        let detailUrl = '@Url.Action("WrongDetail","WrongBook")' + '?wrongSubjectId=';
+        let bookUrl = '@Url.Action("Index","WrongBook")';
+        let detailDataUrl = '@Url.Action("WrongDetailVm", "WrongBook")';
+        let clearWrongUrl = '@Url.Action("ClearWrong","WrongBook")'+'?wrongSubjectId=';
+        let currentId=@Model.Yws_Id;
+        let wrongSubjectIds='@Newtonsoft.Json.JsonConvert.SerializeObject(Model.WrongSubjectIds)';
+        if (wrongSubjectIds) {
+            wrongSubjectIds = JSON.parse(wrongSubjectIds);
+        }else{
+            wrongSubjectIds=[];
+        }
+
+    </script>
+    <script src="~/Scripts/audioplayer.min.js"></script>
+    @Scripts.Render("~/bundles/ajaxspin")
+    @Scripts.Render("~/bundles/wrongdetail")
+}

@@ -1,0 +1,290 @@
+﻿@using System.Web.UI.WebControls
+@using AbhsChinese.Domain.Dto.Response
+@model DtoKnowledge
+@{
+    ViewBag.PageTitle = "添加知识点";
+}
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .input-key {
+            border: 1px dotted #cc5965;
+        }
+        .sp_container {
+            width:100% !important;
+        }
+    </style>
+}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox" style="margin-bottom: 0px;">
+                <div class="ibox-content" style="border:none">
+                    <form id="ajaxForm" action="" method="post">
+                        <input type="hidden" id="Ykl_Id" name="Ykl_Id" value="@(Model!=null?Model.Ykl_Id:0)" />
+                        <div class="form-group  row">
+                            <label class="col-lg-1 col-form-label text-right required">知识点名称：</label>
+                            <div class="col-lg-11"><input type="text" name="Ykl_Name" class="form-control" value="@(Model!=null?Model.Ykl_Name:"")" placeholder="请输入知识点名称"></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-1 col-form-label text-right required">知识点等级：</label>
+                            <div class="col-lg-11">
+                                @{
+                                    if (Model != null)
+                                    {
+                                        <input type="hidden" value="@Model.Ykl_Level" id="Level" />
+                                        <select class="form-control" name="Ykl_Level" disabled>
+                                            <option value="">选择知识点等级</option>
+                                            <option value="1" @if (Model != null) { @(Model.Ykl_Level == 1 ? "selected ='selected'" : "")     }>一级知识点</option>
+                                            <option value="2" @if (Model != null) { @(Model.Ykl_Level == 2 ? "selected ='selected'" : "")     }>二级知识点</option>
+                                            <option value="3" @if (Model != null) { @(Model.Ykl_Level == 3 ? "selected ='selected'" : "")     }>三级知识点</option>
+                                            <option value="4" @if (Model != null) { @(Model.Ykl_Level == 4 ? "selected ='selected'" : "")     }>四级知识点</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <select class="form-control" name="Ykl_Level">
+                                            <option value="">选择知识点等级</option>
+                                            <option value="1">一级知识点</option>
+                                            <option value="2">二级知识点</option>
+                                            <option value="3">三级知识点</option>
+                                            <option value="4">四级知识点</option>
+                                        </select>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-1 col-form-label text-right">父知识点：</label>
+                            <div class="col-lg-11">
+                                @{
+                                    if (Model != null)
+                                    {
+                                        <input type="text" id="Ykl_ParentId" name="Ykl_ParentId" class="form-control" placeholder="输入名称编号或关键词" data-init="@(Model.Ykl_ParentId==0?0:Model.Ykl_ParentId)" @(Model.Ykl_ParentId == 0 ? "disabled" : "")>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" id="Ykl_ParentId" name="Ykl_ParentId" class="form-control" placeholder="输入名称编号或关键词" disabled>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-1 col-form-label text-right required">关键字：</label>
+                            <div class="col-lg-11">
+                                <div class="divkey">
+                                    <input type="text" name="Ykl_Keywords" class="tagsinput" value="@(Model!=null?Model.Ykl_Keywords:"")" placeholder="请输入关键字用逗号隔开">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-1 col-form-label text-right">关联视/音频：</label>
+                            <div class="col-lg-11">
+                                @{
+                                    if (Model != null)
+                                    {
+                                        <input type="text" id="Ykl_ResourceId" name="Ykl_ResourceId" class="form-control" placeholder="输入名称视/音频编号或关键词" data-init="@(Model.Ykl_ResourceId == 0 ? "":Model.Ymr_Name)" value="@(Model.Ykl_ResourceId)">
+                                    }
+                                    else
+                                    {
+                                        <input type="text" id="Ykl_ResourceId" name="Ykl_ResourceId" class="form-control" value="" placeholder="输入名称视/音频编号或关键词">
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary" type="button" id="btn_SignIn">
+                                    保存
+                                </button>
+                                <button class="btn btn-white" type="button" id="btn_Cancel" onclick="window.history.go(-1)">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script>
+        var level = $("select[name='Ykl_Level']").val();
+        if (level == "") {
+            level = 1;
+        }
+
+        $(function () {
+
+            selectParent();
+
+            $('#Ykl_ResourceId').selectPage({
+                showField: 'name',
+                keyField: 'id',
+                pageSize: 10,
+                data: '/Knowledge/GetAudioAndVideo',
+                inputDelay: 0.5,
+                autoFillResult: false,
+                beforeSend: function (e) {
+                    console.log(e);
+                    if ($("#Ykl_ResourceId_text").val() == "") {
+                        e.abort();
+                    }
+                },
+                eClose: function (event) {
+                    if (!event.elem.hidden.val()) {
+                        event.elem.combo_input.val('')
+                    }
+                },
+                params: function () { return { pageNumber:1}; },
+                eAjaxSuccess: function (d) {
+                    return d.Data;
+                }
+            });
+
+            //关键词选择设置
+            $('.tagsinput').tagsinput({
+                tagClass: 'label label-primary',
+                maxCharsOnBlur: true,
+                maxChars: 8,
+                trimValue: true
+            });
+            $('.tagsinput').on('itemAdded', function (event) {
+                $(".divkey").removeClass("input-key");
+            });
+            $('.tagsinput').on('change', function (event) {
+                $(this).valid();
+            });
+            $('.tagsinput').on('itemRemoved', function (event) {
+                var isExists = $(this).valid();
+                if (isExists == false) {
+                    $(".divkey").addClass("input-key");
+                }
+            });
+
+            $('#ajaxForm').validate({
+                ignore: '',
+                errorPlacement: function (error, element) {
+                    if (element.is(".tagsinput")) {
+                        $(".divkey").addClass("input-key");
+                        error.appendTo(element.parent().parent());
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                },
+                rules: {
+                    Ykl_Name: {
+                        required: true,
+                        maxlength: 50,
+                        isBlank: true
+                    },
+                    Ykl_Level: {
+                        required: true
+                    },
+                    Ykl_Keywords: {
+                        required:true
+                    }
+                },
+                messages: {
+                    Ykl_Name: {
+                        required: "请输入名称",
+                        maxlength: "长度不能大于50个字符"
+                    },
+                    Ykl_Level: {
+                        required: "请选择等级"
+                    },
+                    Ykl_Keywords: {
+                        required: "请输入关键词"
+                    }
+                },
+                submitHandler: function (form) {
+                    ajaxSubmit();
+                }
+            });
+
+            $("#btn_SignIn").click(function () {
+                ajaxSubmit();
+            });
+
+            var flag = 0;
+            $("select[name='Ykl_Level']").change(function () {
+                level = $(this).val();
+                if (level > 1) {
+                    $('#Ykl_ParentId').selectPageDisabled(false);
+                }
+                else {
+                    $('#Ykl_ParentId').selectPageDisabled(true);
+                }
+            });
+        });
+
+        function selectParent() {
+            $('#Ykl_ParentId').selectPage({
+                showField: 'name',
+                keyField: 'id',
+                pageSize: 10,
+                data: '/Knowledge/GetParentNode',
+                inputDelay: 0.5,
+                beforeSend: function (e) {
+                    console.log(e);
+                    if ($("#Ykl_ParentId_text").val() == "") {
+                        e.abort();
+                    }
+                },
+                eClose: function (event) {
+                    if (!event.elem.hidden.val()) {
+                        event.elem.combo_input.val('')
+                    }
+                },
+                params: function () { return { "level": parseInt(level) - 1 }; },
+                eAjaxSuccess: function (d) {
+                    return d.Data;
+                }
+            });
+        }
+
+        function ajaxSubmit() {
+            var res = $('#Ykl_ResourceId').val();
+            //if (res == "") {
+            //    $('#Ykl_ResourceId_text').val("");
+            //}
+
+            //var par = $('#Ykl_ParentId').val();
+            //if (par == "") {
+            //    $('#Ykl_ParentId_text').val("");
+            //}
+            debugger;
+
+            if (!$("#ajaxForm").valid()) {
+                return false;
+            }
+
+            loadingFlag = layer.msg('加载中，请稍候……', { icon: 16, shade: 0.01, shadeClose: false, time: 60000 });
+
+            $.ajax({
+                url: "/Knowledge/AddKnowledge",
+                type: "post",
+                data: $('#ajaxForm').serialize(),
+                dataType: "json",
+                success: function (data) {
+                    layer.close(loadingFlag);
+                    if (data.State) {
+                        window.layer.msg(data.ErrorMsg, { time: 500 }, function () { window.layer.closeAll(); window.location.href = "/Knowledge/Index" });
+                    } else {
+                        window.layer.alert(data.ErrorMsg, { icon: 2 }, function () { window.location.href = "/Knowledge/Index"; });
+                    }
+                },
+                error: function (data) {
+                    layer.close(loadingFlag);
+                    window.layer.alert(data.ErrorMsg, { icon: 2 }, function () { window.location.href = "/Knowledge/Index"; });
+                }
+            });
+        }
+    </script>
+}

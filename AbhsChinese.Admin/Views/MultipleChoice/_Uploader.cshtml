@@ -1,0 +1,16 @@
+﻿<div class="abhs_upload">
+    <input type="file" name="file" onchange="uploadFile(this)" value=""
+           style="display:none;" />
+    <img src="~/Images/5.png" style="height:80px;margin-right:10px;" alt="Alternate Text" />
+    <button name="btn_scan" class="btn btn-default btn-lg" type="button"
+            onclick="selectFile(this)">
+        上传图片
+    </button>
+    <button name="btn_delete" class="btn btn-danger btn-lg" type="button"
+            style="display:none;"
+            onclick="removeFile(this)">
+        删除图片
+    </button>
+    <input style="display:none;" type="text" name="name" value="" />
+    @Html.Partial("_ValidateMessage", "name")
+</div>

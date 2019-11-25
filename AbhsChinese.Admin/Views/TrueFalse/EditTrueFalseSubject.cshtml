@@ -1,0 +1,208 @@
+﻿@model int?
+
+@{
+    ViewBag.Title = "AddQuestion";
+    ViewBag.PageTitle = "题目录入-判断题";
+    string controller = "TrueFalse";
+}
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        @using (Ajax.BeginForm("EditTrueFalseSubject", "TrueFalse", new AjaxOptions
+        {
+            OnComplete = "complete"
+        }, new { id = "form", role = "form" }))
+        {
+            @*下面的input标签仅用于阻止回车默认提交表单*@
+            <input type="text" name="nextStatus" value="2" style="display:none;" />
+            <input type="hidden" id="subjectId" name="id" value="@Model" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" checked class="onoffswitch-checkbox"
+                                   name="stemType"
+                                   onchange="changeType(this)"
+                                   value="1"
+                                   id="switch_stemType">
+                            <label class="onoffswitch-label" for="switch_stemType">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">题干</label>
+                <div class="col-11">
+                    <textarea id="name" name="name" style="width:100%;"></textarea>
+                    <input type="hidden" id="plainName" name="plainName" />
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">答案</label>
+                <div class="col-1">
+                    <div class="i-checks">
+                        <div class="iradio_square-green"
+                             style="position: relative;">
+                            <input type="radio" value="1"
+                                   name="answer"
+                                   checked
+                                   style="position: absolute; opacity: 0;">
+                        </div>&nbsp;正确
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="i-checks">
+                        <div class="iradio_square-green"
+                             style="position: relative;">
+                            <input type="radio" value="0"
+                                   name="answer"
+                                   style="position: absolute; opacity: 0;">
+                        </div>&nbsp;错误
+                    </div>
+                </div>
+                <label for="checkIn" class="error"></label>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">解析</label>
+                <div class="col-11">
+                    <textarea id="explain" name="explain" style="width:100%;"></textarea>
+                </div>
+            </div>
+            @Html.Partial("_SubjectBasic")
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    @*该隐藏域用于记录是想要做保存操作还是提交操作,默认是保存操作*@
+                    <input type="hidden" name="button" value="0" />
+                    <button class="btn btn-white"
+                            type="button" onclick="submitForm(false)">
+                        保存
+                    </button>
+                    <button class="btn btn-primary"
+                            type="button" onclick="submitForm(true)">
+                        提交
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div style="display:none">
+    <textarea id="factory" name="factory"></textarea>
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")    
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .i-checks{
+            margin-top: 5px;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Scripts/common/ueditor.config.subject.js"></script>
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.subjectbasic.js"></script>
+    <script>
+
+        $(function () {
+            initUeditor();
+            initSelect2();
+
+            $.when(initUeditor(dtd)).then(function () { loadData(); });
+
+            
+
+            $("#form").validate({
+                onsubmit: false,
+                ignore: "",
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    grade: {
+                        required: true
+                    },
+                    difficulty: {
+                        required: true
+                    },
+                    keywords: {
+                        required: true
+                    }
+                }
+            });
+
+
+        });
+
+    </script>
+    <script>
+        function loadData() {
+            if ($('#subjectId').val() !== '0') {
+                $.getJSON('@Url.Action("GetDetails", controller)',
+                           { id: $('#subjectId').val() },
+                           function (response) {
+                               if (response.State) {
+                                   let data = response.Data;
+
+                                   if (data.StemType === 0) {//图片模式
+                                       $('#switch_stemType').click();
+                                   }
+
+                                   setContent(ueditorName, data.Name);
+
+                                   setContent(ueditorExplain, data.Explain);
+
+                                   $('input[name="answer"]').iCheckRadio(data.Answer);                                   
+
+                                   setBasicData(data);
+
+                                   setPlainNameData(data);
+                               }
+                           });
+            } else {
+                initSelectPageComponent();
+            }
+        }
+    </script>
+    <script>
+        function initSelect2() {
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+        }
+    </script>
+    <script>
+        let ueditorExplain = null;
+        let ueditorName = null;
+        var dtd = $.Deferred(); // 新建一个deferred对象
+        function initUeditor() {
+            ueditorName = UE.getEditor('name', ueConfigOfName);
+            ueditorName.ready(function () {
+                $('div#name').find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+                replaceFormat(this);
+                dtd.resolve();
+            });
+
+            ueditorExplain = UE.getEditor('explain', ueConfigOfExplain);
+
+            return dtd;
+        }
+    </script>
+}

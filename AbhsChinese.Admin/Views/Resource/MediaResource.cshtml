@@ -1,0 +1,237 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+
+@{
+    ViewBag.PageTitle = "多媒体资源管理";
+    ViewBag.ListTitle = "多媒体资源列表";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    
+    @Styles.Render("~/bundles/css/select2Styles")
+    <style>
+        /*ios复选框*/
+        .switchery {
+            width: 40px;
+            height: 20px;
+            cursor: default;
+        }
+
+        .switchery > small {
+            width: 20px;
+            height: 20px;
+        }
+
+        /*添加多媒体资源下拉菜单*/
+        .dropdown-menu{
+            left:-45px !important;
+        }
+
+        /*abhsTable*/
+        #table_resource {
+            height: calc(100% - 40px);
+        }
+
+        #wrapper, .ibox, .table_container,.ibox-content {
+            height: 100%;
+        }
+
+        .wrapper-content {
+            height: calc(100% - 16px);
+        }
+    </style>
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" name="btn_mediaType"
+                        data-media-type="0" class="btn btn-primary">
+                    全部
+                </button>
+                @foreach (var item in CustomEnumHelper.GetElements(typeof(MediaResourceTypeEnum)))
+                {
+                    if(item.Key==(int)MediaResourceTypeEnum.开场语 || item.Key== (int)MediaResourceTypeEnum.小艾变)
+                    {
+                        continue;
+                    }
+                    <button type="button" name="btn_mediaType"
+                            data-media-type="@item.Key" class="btn btn-default">
+                        @item.Value
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-10">
+                @Html.Partial("_SearchResourceList")
+            </div>
+            <div class="col-2 text-right align-self-end">
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">添加资源</button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                               href="@Url.Action(
+                                    "AddVideoResource",
+                                    "Resource")">视频</a>
+                            
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="@Url.Action(
+                                    "AddAudioResource",
+                                    "Resource")">音频</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="@Url.Action(
+                                    "AddImageResource",
+                                    "Resource")">图片</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="@Url.Action(
+                                    "AddXiaoAiResource",
+                                    "Resource")">小艾说</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="height: calc(100% - 72px);">
+            <div class="col-12 table_container">
+                <div id="table_resource"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    
+    @Scripts.Render("~/bundles/js/select2")
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+    <script>
+        $(function () {
+            $('.select2.form-control').select2({
+                width: '197px',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+
+            initTable();
+            registerEvent();
+
+            $('#form_search_resource select.abhsselect2').select2({
+                width: '197px',
+                placeholder: '请选择年级',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            });
+        });
+
+        function registerEvent() {
+            $('button[name="btn_mediaType"]').on('click', function () {
+                let $self = $(this);
+                if ($self.hasClass('btn-primary')) {
+                    return;
+                }
+
+                let type = this.dataset.mediaType;
+                let $form = $('#form_search_resource');
+                $form.find('input[name="mediaType"]').val(type);
+                $form.find('.search').click();
+
+                $self.removeClass('btn-default').addClass('btn-primary')
+                     .siblings('.btn-primary').removeClass('btn-primary').addClass('btn-default');
+            });
+        }
+
+        function initTable() {
+            let columns = [
+                { label: '编号', name: 'Ymr_Id', align: 'center' },
+                {
+                    label: '多媒体资源名称',
+                    name: 'Ymr_Name',
+                    align: 'center'
+                },
+                { label: '上传时间', name: 'UploadTime', align: 'center' },
+                { label: '年级', name: 'Grade', align: 'center' },
+                { label: '类型', name: 'MediaType', align: 'center'},
+                { label: '关键字',name: 'Ymr_Keywords',align: 'center'},
+                {
+                    label: '是否启用',
+                    name: 'Ymr_Status',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        if (row.Ymr_Status == 1) {
+                            return '<input type="checkbox" name="IsEnabled" class="js-switch" checked="" data-switchery="true" style="display: none;"><span class="switchery switchery-default" style="background-color: rgb(26, 179, 148); border-color: rgb(26, 179, 148); box-shadow: rgb(26, 179, 148) 0px 0px 0px 11px inset; transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;"><small style="left: 20px; transition: background-color 0.4s ease 0s, left 0.2s ease 0s; background-color: rgb(255, 255, 255);"></small></span>';
+                        }
+                        return '<input type="checkbox" name="IsEnabled" class="js-switch" checked="" data-switchery="false" style="display: none;"><span class="switchery switchery-default" style="background-color: rgb(255, 255, 255); border-color: rgb(223, 223, 223); box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset; transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;"><small style="left: 0px; transition: background-color 0.4s ease 0s, left 0.2s ease 0s;"></small></span>';
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return "<a href='javascript:void(0)' class='text-info' onclick='edit(" + row.Ymr_Id + "," + row.Ymr_MediaType + ")'>编辑</a>";
+                    }
+                }
+            ];
+
+            $('#table_resource').table({
+                ajax: {
+                    url: '@Url.Action("GetPagingMediaResource", "Resource")'
+                },
+                columns: columns,
+                searchBox: '#form_search_resource'
+            });
+        }
+
+        function addMediaResource() {
+            layer.open({
+                type: 2,
+                title: "添加资源",
+                skin: 'layui-layer-rim',
+                area: ["60%", "86%"],
+                btn: ['确定', '关闭'],
+                yes: function (index, layero) {
+
+                    /*第二种方法*/
+                    var submit = layero.find('iframe').contents().find("#btn_SignIn");// #subBtn为页面层提交按钮ID
+                    submit.click();// 触发提交监听
+                },
+                content: "/Resource/AddAndUpdateMediaResource?id=0"
+            });
+        }
+
+        function edit(id, mediaType) {
+            var url="";
+            if (mediaType == 101)
+            {
+                url = "/Resource/AddVideoResource?id=" + id
+            }
+            else if (mediaType == 102) {
+                url = "/Resource/AddAudioResource?id=" + id
+            }
+            else if (mediaType == 103) {
+                url = "/Resource/AddImageResource?id=" + id
+            }
+            else if (mediaType == 104) {
+                url = "/Resource/AddXiaoAiResource?id=" + id
+            }
+            location.href = url;
+        }
+    </script>
+}

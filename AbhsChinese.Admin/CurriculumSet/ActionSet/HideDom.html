@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>隐藏</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <link href="/CurriculumSet/animate.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <style>
+        .dom-outtype:before {
+            content: "隐藏方式";
+        }
+
+        .dom-outtype li {
+            float: left;
+            height: 30px;
+            line-height: 30px;
+            width: 70px;
+            text-align: center;
+            border: 1px solid #808080;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .hide-block:before {
+            content: "选择要隐藏的元素";
+        }
+
+        .hide-block input.form-control {
+            padding: 5px;
+        }
+
+        .hide-block .input-group-btn .btn {
+            padding: 3px 5px;
+        }
+
+        .hide-block .img-list {
+            height: 350px;
+            margin: 10px 0px 0px;
+            padding: 5px;
+            overflow: auto;
+        }
+
+            .hide-block .img-list li {
+                margin-bottom: 10px;
+                width: 100%;
+                border: 1px solid #ccc;
+            }
+
+                .hide-block .img-list li img {
+                    width: 100%;
+                    border: 1px solid #808080;
+                }
+
+                .hide-block .img-list li p {
+                    min-height: 40px;
+                    line-height: 30px;
+                    margin: 0 10px;
+                }
+
+        .hide-dom {
+            z-index: 999 !important;
+        }
+
+            .hide-dom:after {
+                content: " ";
+                position: absolute;
+                z-index: 1000;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #80808080;
+                border: 1px solid #333333;
+            }
+    </style>
+    <script>
+        $(function () {
+            function doActionStyle(dom, type) {
+                if (dom.length > 0) {
+                    dom.addClass("hide-dom");
+                    switch (type) {
+                        case "none":
+                            dom.addClass("hide-dom");
+                            break;
+                        case "top":
+                            dom.addClass("animated bounceOutUp");
+                            break;
+                        case "left":
+                            dom.addClass("animated bounceOutLeft");
+                            break;
+                        case "right":
+                            dom.addClass("animated bounceOutRight");
+                            break;
+                        case "bottom":
+                            dom.addClass("animated bounceOutDown");
+                            break;
+                    }
+                    if (type != "none") {
+                        dom.on("animationend", function () {
+                            dom.removeClass("animated").removeClass("bounceOutUp").removeClass("bounceOutLeft").removeClass("bounceOutRight").removeClass("bounceOutDown");
+                            dom.off("animationend");
+                        })
+                    }
+                }
+            }
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                //创建默认的动作
+                var action = new top.HideDom({
+                    actionId: "hidedom" + randomString(20),
+                    outtype: "none",
+                    objectId: ""
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                page.selecter = "#InnerArea";
+                page.draw(CurriculumInfo.selectStep.stepNum);
+                //加载数据
+                (function LoadData() {
+                    var DomList = $("#DomList");
+                    //获取所有页面动作元素
+                    for (var s = 0; s <= CurriculumInfo.selectStep.stepNum; s++) {
+                        var step = page.steps[s];//获取步骤
+                        for (var a in step.actions)//循环所有的动作
+                        {
+                            var _action = step.actions[a];//获取当前动作
+                            switch (_action.type) {
+                                case "setTitle":
+                                    DomList.append("<li id='action_" + _action.actionId + "' actiontype='setTitle' objectid='" + _action.actionId + "' style='color:" +
+                                        _action.color + ";'><p>" + _action.text + "</p></li>");
+                                    break;
+                                case "xiaoAiChange":
+                                    if ($("#action_xiaoAiChangeImg").length > 0) {
+                                        $("#action_xiaoAiChangeImg").remove();
+                                    }
+                                    DomList.append("<li id='action_xiaoAiChangeImg' actiontype='xiaoAiChange' objectid='xiaoAiChangeImg' ><img src='" + _action.src + "' title='" + _action.imgId + "' /></li>");
+                                    break;
+                                case "insertImg":
+                                    DomList.append("<li id='action_" + _action.actionId + "' actiontype='insertImg' objectid='" + _action.actionId + "' ><img src='" + _action.src + "' title='" + _action.imgId + "' /></li>"); break;
+                                case "insertText":
+                                    DomList.append("<li id='action_" + _action.actionId + "' actiontype='insertText' objectid='" + _action.actionId + "' style='color:" +
+                                        _action.color + ";'><p>" + _action.text + "</p></li>"); break;
+                                case "hideDom":
+                                    $("#action_" + _action.objectId).hide();
+                                    break;
+                                default: break;
+                            }
+                        }
+                    }
+
+                    if (CurriculumInfo.selectAction instanceof top.HideDom) {//如果是修改的动作
+                        action = new top.HideDom(CurriculumInfo.selectAction);
+                        $("#action_" + action.objectId).addClass("selected").show();
+                        var dom = $("#" + action.objectId);
+                        dom.addClass("hide-dom").show();
+                        doActionStyle(dom, action.outtype);
+                    }
+                    $(".dom-outtype li[outtype='" + action.outtype + "']").addClass("selected");
+                })();
+
+
+                $(".dom-outtype li").click(function () {
+                    $(".dom-outtype li").removeClass("selected");
+                    $(this).addClass("selected");
+                    var outtype = $(this).attr("outtype");
+                    action.outtype = outtype;
+                    var dom = $("#" + action.objectId);
+                    doActionStyle(dom, action.outtype);
+                });
+                //图片的设置要修改
+                $(".img-list li").click(function () {
+                    $(".hide-dom").removeClass("hide-dom");
+                    $(".img-list li").removeClass("selected");
+                    $(this).addClass("selected");
+                    var domid = $(this).attr("objectid");
+                    var dom = $("#" + domid);
+                    doActionStyle(dom, action.outtype);
+                    action.objectId = domid;
+                });
+                $("#OkBtn").click(function () {
+                    if (action.objectId != "") {
+                        if (CurriculumInfo.selectAction instanceof top.HideDom) {
+                            CurriculumInfo.SetAction(action);
+                        }
+                        else {
+                            CurriculumInfo.AddAction(action);
+                        }
+                        var frame = top.frames["ActionSet"];
+                        if (frame) {
+                            $(frame).hide();
+                        }
+                    }
+                    else {
+                        alert("请选择元素")
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">隐藏</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <ul class="dom-outtype block-box">
+                    <li outtype="none">无效果</li>
+                    <li outtype="top">顶部飞出</li>
+                    <li outtype="left">左侧飞出</li>
+                    <li outtype="right">右侧飞出</li>
+                    <li outtype="bottom">底部飞出</li>
+                </ul>
+                <div class="hide-block block-box">
+                    <ul id="DomList" class="img-list"></ul>
+                </div>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div class="ruler-x-box">
+                <div class="mouse-info"></div>
+                <div class="ruler-x"></div>
+            </div>
+            <div class="ruler-y-box">
+                <div class="ruler-y"></div>
+                <div id="OuterArea" class="plot-area">
+                    <div class="outer-area"></div>
+                    <div id="InnerArea" class="inner-area">
+                    </div>
+                    <div class="outer-area"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

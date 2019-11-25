@@ -1,0 +1,158 @@
+﻿@using System.Web.UI.WebControls
+@using AbhsChinese.Domain.Dto.Response
+@using AbhsChinese.Domain.Enum
+
+@model DtoMediaResourceAndObject
+@{
+    ViewBag.PageTitle = "添加视频";
+
+    ViewBag.FileType = (int)MediaResourceTypeEnum.视频;
+}
+@section Styles{
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+
+    <style>
+        .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+            .switchery > small {
+                width: 20px;
+                height: 20px;
+            }
+
+        .input-key {
+            border: 1px dotted #cc5965;
+        }
+
+        /*#wrapper,.wrapper-content,.fadeInRight,.row,.ibox, .ibox-content {
+            height: 100%;
+        }*/
+    </style>
+}
+
+@*<div class="wrapper wrapper-content animated fadeInRight">*@
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox" style="margin-bottom: 0px;">
+                <div class="ibox-content" style="border:none">
+                    <form id="ajaxForm" method="post">
+                        <input type="hidden" name="ResourceType" class="form-control" value="101">
+                        <input type="hidden" name="MediaType" class="form-control" value="101">
+                        <input type="hidden" name="MediaObjectType" class="form-control" value="3">
+                        <input type="hidden" name="Id" value="@(Model != null ? Model.Ymr_Id : 0)" />
+                        <div class="form-group  row">
+                            <label class="col-lg-2 col-form-label required text-center">名称：</label>
+                            <div class="col-lg-10">
+                                <input type="text" name="Name" class="form-control" placeholder="请输入多媒体资源名称" value="@(Model != null ? Model.Ymr_Name : "")" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label required text-center">年级：</label>
+                            <div class="col-lg-10">
+                                <select class="form-control" name="Grade" required>
+                                    <option value="">全部年级</option>
+                                    <option value="1" @if (Model != null) { @(Model.Ymr_Grade == 1 ? "selected ='selected'" : "")        }>一年级</option>
+                                    <option value="2" @if (Model != null) { @(Model.Ymr_Grade == 2 ? "selected ='selected'" : "")        }>二年级</option>
+                                    <option value="4" @if (Model != null) { @(Model.Ymr_Grade == 4 ? "selected ='selected'" : "")        }>三年级</option>
+                                    <option value="8" @if (Model != null) { @(Model.Ymr_Grade == 8 ? "selected ='selected'" : "")        }>四年级</option>
+                                    <option value="16" @if (Model != null) { @(Model.Ymr_Grade == 16 ? "selected ='selected'" : "")        }>五年级</option>
+                                    <option value="32" @if (Model != null) { @(Model.Ymr_Grade == 32 ? "selected ='selected'" : "")        }>六年级</option>
+                                    <option value="64" @if (Model != null) { @(Model.Ymr_Grade == 64 ? "selected ='selected'" : "")        }>初一</option>
+                                    <option value="128" @if (Model != null) { @(Model.Ymr_Grade == 128 ? "selected ='selected'" : "")        }>初二</option>
+                                    <option value="256" @if (Model != null) { @(Model.Ymr_Grade == 256 ? "selected ='selected'" : "")        }>初三</option>
+                                    <option value="512" @if (Model != null) { @(Model.Ymr_Grade == 512 ? "selected ='selected'" : "")        }>高一</option>
+                                    <option value="1024" @if (Model != null) { @(Model.Ymr_Grade == 1024 ? "selected ='selected'" : "")        }>高二</option>
+                                    <option value="2048" @if (Model != null) { @(Model.Ymr_Grade == 2048 ? "selected ='selected'" : "")        }>高三</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label text-center">是否启用：</label>
+                            <div class="col-lg-10">
+                                @{
+                                    if (Model == null || Model.Ymr_Id == 0)
+                                    {
+                                        <input type="checkbox" name="IsEnabled" class="js-switch" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="IsEnabled" class="js-switch" @(Model != null && Model.Ymr_Status == 1 ? "checked" : "") />
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label required text-center">关键字：</label>
+                            <div class="col-lg-10">
+                                <div class="divkey">
+                                    <input type="text" name="Key" class="tagsinput form-control" value="@(Model != null ? Model.Ymr_Keywords : "")" placeholder="请输入关键字用逗号隔开" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label required text-center">资源链接：</label>
+                            <div class="col-lg-10">
+                                <input type="text" name="Url" id="Url" class="form-control" value="@(Model!=null?Model.Yme_Url:"")" placeholder="请输入资源链接" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-sm-offset-6"></div>
+                            <div class="col-lg-6 col-sm-offset-6">
+                                <button class="btn btn-primary btn-sm" type="button" id="btn_SignIn">保存</button>
+                                <button class="btn btn-white btn-sm" type="button" id="btn_Cancel" onclick="window.history.go(-1)">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@*</div>*@
+@section scripts{
+    @Scripts.Render("~/bundles/js/switchery")
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Scripts/PageScripts/tagsinput.js"></script>
+    <script>
+        $(function () {
+            $("#btn_SignIn").click(function () {
+                ajaxSubmit();
+            });
+        });
+
+        function ajaxSubmit() {
+            if (!$("#ajaxForm").valid()) {
+                return false;
+            }
+
+            loadingFlag = layer.msg('加载中，请稍候……', { icon: 16, shade: 0.01, shadeClose: false, time: 60000 });
+            $.ajax({
+                url: "/Resource/AddMediaResourceDo",
+                type: "post",
+                data: $('#ajaxForm').serialize(),
+                dataType: "json",
+                success: function (data) {
+                    layer.close(loadingFlag);
+                    if (data.State) {
+                        layer.msg(data.ErrorMsg,
+                            { time: 500 },
+                            function () {
+                                location.href = '/Resource/MediaResource';
+                            });
+                    } else {
+                        layer.alert(data.ErrorMsg,
+                            { icon: 2 },
+                            function () { location.href = '/Resource/MediaResource'; });
+                    }
+                },
+                error: function (data) {
+                    layer.close(loadingFlag);
+                    layer.alert(data.ErrorMsg, { icon: 2 }, function () { location.href = '/Resource/MediaResource' });
+                }
+            });
+        }
+
+    </script>
+}

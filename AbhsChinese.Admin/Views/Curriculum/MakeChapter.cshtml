@@ -1,0 +1,167 @@
+﻿@model int
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MakeChapter</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/CurriculumSet/CurriculumSet.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/CurriculumSet/html2canvas.min.js"></script>
+    <script src="~/Scripts/extend.js"></script>
+    <script src="~/CurriculumSet/CurriculumClass.js"></script>
+    <script src="~/CurriculumSet/CurriculumSet.js"></script>
+    <script>
+        if(opener && opener.lessonTable)
+        {
+            opener.lessonTable.reload();
+        }
+        $(function () {
+            
+            //用于记录全屏
+            var isfull = false;
+            //全屏按钮点击事件
+            $("#fullBtn").click(function () {
+                if (!isfull) {
+                    var docElm = document.documentElement;
+                    if (docElm.requestFullscreen) {
+                        docElm.requestFullscreen();
+                    }
+                    else if (docElm.msRequestFullscreen) {
+                        docElm = document.body; //overwrite the element (for IE)
+                        docElm.msRequestFullscreen();
+                    }
+                    else if (docElm.mozRequestFullScreen) {
+                        docElm.mozRequestFullScreen();
+                    }
+                    else if (docElm.webkitRequestFullScreen) {
+                        docElm.webkitRequestFullScreen();
+                    }
+                    $(this).text("关闭全屏");
+                }
+                else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                    else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                    else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    }
+                    else if (document.webkitCancelFullScreen) {
+                        document.webkitCancelFullScreen();
+                    }
+                    $(this).text("全屏制作");
+                }
+                isfull = !isfull;
+            });
+
+            //页签切换
+            $('#myTabs a').click(function (e) {
+                e.preventDefault()
+                $("#myTabs .active").removeClass("active");
+                $(this).parent().addClass("active");
+                $(this).tab('show')
+            })
+
+            $(".ShowList").click(function () {
+                var child = $(this).children().first();
+                if (child.hasClass("glyphicon-chevron-down")) {
+                    child.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+                    $(".PageInnerBox").show();
+                }
+                else {
+                    child.removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+                    $(".PageInnerBox").hide();
+                }
+            });
+            //请求界面数据
+            $.ajax({
+                url: "@Url.Action("GetChapter", "Curriculum")",
+                type: "post",
+                data: { chapterid: @Model },
+                dataType: "json",
+                async: false,
+                success: Load,
+                error: function (e) {
+                    console.error("错了");
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="TopBox">
+        <h4 class="CurriculumTitle">课程题目</h4>
+        <button id="OverBtn" class="btn btn-info">提交审批</button>
+        <button id="fullBtn" class="btn btn-info">全屏制作</button>
+        <div class="PageBox">
+            <div class="PageInnerBox">
+                <div id="Pages">
+                    <div id="AddPage"><i class="addAction glyphicon glyphicon-plus"></i><br /><span>添加讲义</span></div>
+                </div>
+            </div>
+            <div class="ShowList"><i class="glyphicon glyphicon-chevron-up"></i></div>
+        </div>
+    </div>
+    <div class="InfoBox">
+        <div id="ShowBox" class="ShowBox">
+            <div id="ShowInfoBox" class="ShowInfo"></div>
+        </div>
+        <div class="SetBox">
+            <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#SetInfoBox" aria-controls="SetInfoBox" role="tab" data-toggle="tab">内容编辑</a></li>
+                <li role="presentation"><a href="#ApproveBox" aria-controls="ApproveBox" role="tab" data-toggle="tab">审批意见</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="SetInfoBox">
+                    <div class="PageTitle">第<span id="pageNum"></span>页:<input type="text" id="pageRemark" placeholder="讲义备注(学习时不显示)" /></div>
+                    <div class="StepList">
+                        @*<div class="Step">
+                                <div class="StepTitleBox">
+                                    <span class="StepTitle"></span>
+                                    <p class="StepBtn">
+                                        <i class="addAction glyphicon glyphicon-plus-sign"></i><i class="deleteStep glyphicon glyphicon-remove-sign"></i>
+                                    </p>
+                                </div>
+                                <ul class="Actions">
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+                            </div>*@
+                    </div>
+                    <div class="SetBtnBox">
+                        <button id="SavePage" class="btn btn-default">保存</button>
+                        <button id="SkimPage" class="btn btn-default">预览本页</button>
+                        <button id="AddStep" class="btn btn-primary">添加步骤</button>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="ApproveBox">
+                    <p></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <iframe id="ActionSet"></iframe>
+    <div class="showPageBox">
+        <div class="NavBox">
+            <b class="Title">页面浏览</b>
+            <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+        </div>
+        <iframe id="ShowPage" style="background:#fff;"></iframe>
+    </div>
+    <div id="LoadingBox"></div>
+    <p id="LoadingText">数据加载中请稍后...</p>
+</body>
+</html>

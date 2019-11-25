@@ -1,0 +1,63 @@
+﻿<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <h3 class="text-white">艾上大语文校区后台</h3>
+            </li>
+            <li>
+                <a href="javascript:void(0);">
+                    <i class="fa fa-user-o"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">学生</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li >
+                        <a href="@Url.Action("Index", "Student")">学生列表</a>
+                    </li> 
+                    <li >
+                        <a href="@Url.Action("ApplyIndex", "Student")">申请列表</a>
+                    </li> 
+                    <li >
+                        <a href="@Url.Action("NoClassStudent", "Student")">未分班学生</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="javascript:void(0);">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">教师</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li class="@Html.IsSelected(action: "Index")">
+                        <a href="@Url.Action("Index", "Teacher")">教师列表</a>
+                    </li> 
+                </ul>
+            </li>
+            <li >
+                <a href="javascript:void(0);">
+                    <i class="fa fa-university"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">班级</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li >
+                        <a href="@Url.Action("Index", "SchoolClass")">班级列表</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="javascript:void(0);">
+                    <i class="fa  fa-th-large fa-money "></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">现金券</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="@Html.IsSelected(action: "Index")">
+                        <a href="@Url.Action("Index", "CashVoucher")">现金券列表</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

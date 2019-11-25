@@ -1,0 +1,253 @@
+﻿@model int
+
+@{
+    ViewBag.PageTitle = "题目录入-选择题";
+}
+
+<input type="hidden" id="loadUrl" value="@Url.Action("GetDetails2", "MultipleChoice")" />
+<input type="hidden" id="submitUrl" value="@Url.Action("EditMultipleChoiceSubject", "MultipleChoice")" />
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        <form id="form" role="form" method="post">
+            @Html.Partial("_SubjectTitle")
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">选项</label>
+                <div class="col-sm-9">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" class="onoffswitch-checkbox"
+                                   name="contentType"
+                                   onchange="changeContentType(this)"
+                                   value="1"
+                                   id="switch_content_answer">
+                            <label class="onoffswitch-label" for="switch_content_answer">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-tab custom-tab-group-true">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label required">A</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="options" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label required">B</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="options" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">C</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="options" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">D</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="options" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="custom-tab custom-tab-group-false">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label required">A</label>
+                    <div class="col-sm-9">
+                        <div class="custom-upload">
+                            <span class="custom-thumbnail"></span>
+                            <button type="button" class="btn btn-default">选择文件</button>
+                            <button type="button" class="btn btn-danger">删除</button>
+                            <div class="abhs-file"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label required">B</label>
+                    <div class="col-sm-9">
+                        <div class="custom-upload">
+                            <span class="custom-thumbnail"></span>
+                            <button type="button" class="btn btn-default">选择文件</button>
+                            <button type="button" class="btn btn-danger">删除</button>
+                            <div class="abhs-file"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">C</label>
+                    <div class="col-sm-9">
+                        <div class="custom-upload">
+                            <span class="custom-thumbnail"></span>
+                            <button type="button" class="btn btn-default">选择文件</button>
+                            <button type="button" class="btn btn-danger">删除</button>
+                            <div class="abhs-file"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">D</label>
+                    <div class="col-sm-9">
+                        <div class="custom-upload">
+                            <span class="custom-thumbnail"></span>
+                            <button type="button" class="btn btn-default">选择文件</button>
+                            <button type="button" class="btn btn-danger">删除</button>
+                            <div class="abhs-file"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label required">答案</label>
+                <div class="col-sm-4">
+                    <div class="row col-row">
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="ichecks" name="answers"
+                                   value="0" />A
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="ichecks" name="answers"
+                                   value="1" />B
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="ichecks" name="answers"
+                                   value="2" />C
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="ichecks" name="answers"
+                                   value="3" />D
+                        </div>
+                    </div>
+                    <label for="answers" class="error local-error"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">选项名称</label>
+                <div class="col-sm-6">
+                    <div class="row col-row">
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="radio" class="ichecks" value="1" name="display" />显示
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="radio" class="ichecks" value="0" name="display" />不显示
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <label for="checkIn" class="error local-error"></label>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">选项顺序</label>
+                <div class="col-sm-6">
+                    <div class="row col-row">
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="radio" class="ichecks" value="1" name="random" />随机排列
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>
+                                <input type="radio" class="ichecks" value="0" name="random" />顺序排列
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <label for="checkIn" class="error local-error"></label>
+            </div>
+            @Html.Partial("_SubjectBasic2", Model)
+            @Html.Partial("_SubjectButtons")
+        </form>
+    </div>
+</div>
+
+<script type="text/template" id="upload-template">
+    <div class="custom-upload">
+        <span class="custom-thumbnail"></span>
+        <button type="button" class="btn btn-default">选择文件</button>
+        <div class="abhs-file"></div>
+    </div>
+</script>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .col-form-label {
+            text-align: right;
+        }
+
+        /*.custom-thumbnail {
+            display: none;
+        }*/
+
+        .local-error {
+            display: none;
+        }
+
+        .icheckbox_square-green, .iradio_square-green {
+            margin-right: 5px;
+        }
+
+        .col-row {
+            margin-top: 0.5em;
+        }
+
+        .abhs-file input, .custom-upload .btn-danger {
+            display: none;
+        }
+
+        .custom-tab {
+            display: none;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/ueditor/ueditor.local.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/SubjectUpload/subject.upload.js"></script>
+    <script src="~/Scripts/PageScripts/subject2.edit.js"></script>
+    <script>
+        $(function () {
+            let pageData = getDataFromServer();
+            displayCommonData(pageData);
+            displayPersonalData(pageData);
+        });
+    </script>
+    <script>
+        function changeContentType(checkbox) {
+            let checked = checkbox.checked;
+            setGroupImageOrText(checked);
+        }
+
+        function setGroupImageOrText(checked) {
+            $('.custom-tab-group-' + checked.toString()).show();
+            $('.custom-tab-group-' + (!checked).toString()).hide();
+        }
+
+        function displayPersonalData(pageData) {
+            $('#switch_content_answer').prop('checked', pageData.ContentType === 1);
+            setGroupImageOrText(pageData.ContentType === 1);
+
+            $.each(pageData.Answers, function (ai, ao) {
+                $(`[name="answers"][value="${ao}"]`).prop('checked', true);
+            });
+
+            $(`[name="display"][value="${pageData.Display}"]`).prop('checked', true);
+            $(`[name="random"][value="${pageData.Random}"]`).prop('checked', true);
+        }
+    </script>
+}

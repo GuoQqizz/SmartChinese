@@ -1,0 +1,71 @@
+﻿@using AbhsChinese.Web.Models.StudentInfo
+@using AbhsChinese.Domain.Enum
+@model StudentInfoViewModel
+@{
+    ViewBag.Title = "安全中心";
+    ViewBag.Active = StudentMenus.安全中心;
+    ViewBag.Avatar = Model.Avatar;
+    ViewBag.Mobile = Model.Bst_Phone;
+}
+@section Styles{
+    <link href="~/Content/layer/theme/default/layer.css" rel="stylesheet" />
+    <link href="~/Content/StudentInfo/cropper.min.css" rel="stylesheet" />
+    <link href="~/Content/laypage/skin/laypage.css" rel="stylesheet" />
+    <style>
+        .feachBtn,.mobilefun1,.mobilefun2,.mobilefun3,.passfun1,.passfun2,.stepfun1,.stepfun2,.nextcj,.stepfun4,.stepfun5,.stepfun6,.stepfun7,.findpassfun1,.findpassfun2,.findpassfun3 {
+            cursor:pointer;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Content/layer/layer.js"></script>
+    <script src="~/Content/laypage/laypage.js"></script>
+    @Scripts.Render("~/bundles/SecurityCenter")
+}
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("StudentInfo","Student")">个人中心</a><em><img src="/Images/StudentInfo/back.png"></em><a href="#">安全中心</a>
+        </div>
+        <div class="navigationr"></div>
+    </div>
+    <div class="contentbox">
+        @Html.Partial("_LeftBar")
+        <div class="contentright contentright4">
+            <div class="ctrbox">
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_top.png" /></div>
+                <div class="contrbox">
+                    <div class="loginbox">
+                        <div class="tab">
+                            <div class="tablist active fl" status="1">人脸识别</div>
+                            <div class="tablist fl" status="2">更换手机</div>
+                            <div class="tablist fl" status="3">修改密码</div>
+                            <div class="tablist fl" status="4">找回密码</div>
+                            <div class="tablist fl" status="5">登录记录</div>
+                        </div>
+                    </div>
+                    <div class="logincontent">
+                        @Html.Partial("_FaceRecognition")
+                        @Html.Partial("_ChangeMobile")
+                        @Html.Partial("_EditPassword")
+                        @Html.Partial("_FindPassword")
+                        @Html.Partial("_LoginRecords")
+                    </div>
+                    
+                </div>
+                <div class="topbj"><img src="~/Images/StudentInfo/bodyl_bottom.png" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/StudentInfo/homeRight.png" />
+</div>
+

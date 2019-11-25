@@ -1,0 +1,142 @@
+﻿
+@using AbhsChinese.Admin.Models.Advertising;
+@model AdvertisingSearch
+
+@{
+    ViewBag.PageTitle = "课程推荐管理";
+    ViewBag.ListTitle = "推荐历史";
+
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/select2Styles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+        .switchery-default {
+            cursor: default;
+        }
+
+        .switchery-fn {
+            cursor: pointer;
+        }
+
+        .switchery > small {
+            width: 20px;
+            height: 20px;
+        }
+
+        .text-info + .text-info {
+            margin-left: 15px;
+        }
+
+        .img-info {
+            width: 40px;
+            height: 40px;
+        }
+
+         #wrapper,.ibox,.table_container{
+            height: 100%;
+        }
+        .ibox-content{
+              height:calc(100% - 50px);
+        }
+        .wrapper-content{ 
+            height:calc(100% - 60px);
+        }
+        #table_advertising{
+            height:calc(100% - 50px);
+        }
+    </style>
+
+}
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>
+            <i class="fa fa-table"></i>&nbsp;@ViewBag.ListTitle
+        </h5>
+        <div class="ibox-tools">
+            <div class="col">
+                <button class="btn btn-white" type="button" onclick="goBack()">
+                    <i class="fa fa-chevron-left"></i>&nbsp;返回
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox-content">
+        <div class="row" style="height:0;">
+            @Html.Partial("_SearchAdvertisingList", Model)
+        </div> 
+        <div class="row" style="height: 100%;">
+            <div class="col-12 table_container">
+                <div id="table_advertising"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    @Scripts.Render("~/bundles/js/select2")
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+
+
+    <script>
+        $(function () {
+            initTable();
+            registerEvent();
+        })
+
+        function initTable() {
+            let columns = [
+                  { label: '编号', name: 'Bad_Id', align: 'center' },
+                { label: '推荐位', name: 'Bap_Code', align: 'center' },
+                {
+                    label: '推荐图',
+                    name: 'Bad_ImageUrlShow',
+                    align: 'center',
+                    formatter: formatterImg('Bad_ImageUrlShow', 'Bad_ReferName', 'img-info'),
+                },
+                { label: '课程编号', name: 'Bad_ReferId', align: 'center' },
+                {
+                    label: '课程名称', name: 'Bad_ReferName', align: 'center',
+                    formatter: formatterStr('Bad_ReferName')
+                },
+                { label: '开始时间', name: 'CreateTime', align: 'center', },
+                { label: '结束时间', name: 'EndTime', align: 'center', },
+                { label: '点击次数', name: 'Bad_HitCount', align: 'center' },
+                { label: '完成购买', name: 'Bad_ValidCount', align: 'center', },
+
+            ];
+
+            $('#table_advertising').table({
+                ajax: {
+                    url: '@Url.Action("GetPagingAdvertisingHistory", "Advertising")'
+                },
+                columns: columns,
+                searchBox: '#form_search_advertising'
+            });
+        }
+
+        function registerEvent() {
+
+        }
+        function goBack() {
+            window.location = '@Url.Action("Index", "Advertising")';
+        }
+    </script>
+}

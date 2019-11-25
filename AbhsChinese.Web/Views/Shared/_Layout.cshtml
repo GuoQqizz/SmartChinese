@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>橙同学大语文</title>@*@ViewBag.Title*@
+    @Styles.Render("~/Content/css")
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+        function getInfo(_this) {
+            $.ajax({
+                url: '/Student/GetSumStudentInfo?random=' + Math.random(),
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    index = 1;
+                    if (data.State == true) {
+                        $("#school").html(data.Data.School == null ? "未绑定校区" : data.Data.School)
+                        $("#coins").html(data.Data.Coins);
+                        $("#clogin").html(data.Data.CurrentLoginTime);
+                        $("#area").html(data.Data.LastLoginArea + "（IP：" + data.Data.LastLoginIp + "）");
+                        $("#llogin").html(data.Data.PrevLoginTime);
+                    }
+                }
+            });
+        }
+        function outlogin() {
+            $(".chosewindow").show();
+        }
+        function btnYes() {
+            window.location.href = "@Url.Action("OutLogin","Login")";
+        }
+        function btnCan() {
+            $(".chosewindow").hide();
+        }
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

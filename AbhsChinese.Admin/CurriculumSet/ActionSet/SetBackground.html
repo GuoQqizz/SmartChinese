@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>设置讲义背景</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <style>
+         .bg-type:before {
+             content: "背景类型";
+         }
+
+         .bg-type label {
+             margin: 10px;
+         }
+
+             .bg-type label input {
+                 margin-right: 2px;
+             }
+
+
+         .bg-color:before {
+             content: "背景色";
+         }
+
+         .bg-color li {
+             width: 20px;
+             height: 20px;
+             margin: 5px;
+             float: left;
+             box-sizing: border-box;
+             border: 1px solid #808080;
+         }
+
+        .bg-color .selected {
+             box-shadow: 3px 3px 5px #888888;
+             position: relative;
+             top: -2px;
+             left: -2px;
+         }
+
+         .bg-image:before {
+             content: "背景图片";
+         }
+
+         .bg-image input.form-control {
+             padding: 5px;
+         }
+
+         .bg-image .input-group-btn .btn {
+             padding: 3px 5px;
+         }
+
+         .bg-image .img-list {
+             height: 390px;
+             margin: 10px 0px 0px;
+             padding: 5px;
+             overflow: auto;
+         }
+
+             .bg-image .img-list li {
+                 margin-bottom: 10px;
+                 width: 100%;
+             }
+
+                 .bg-image .img-list li img {
+                     width: 100%;
+                     border: 1px solid #808080;
+                 }
+
+    </style>
+    <script>
+        $(function () {
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                var ChapterSet = CurriculumInfo.chapterSet;
+
+                //创建默认的动作
+                var action = new top.SetBackground({
+                    actionId: "setBackground" + randomString(20),
+                    bgType: "color",
+                    bg: "#ffffff"
+                });
+
+                var page = new Page(CurriculumInfo.selectPage);
+                page.selecter = "#InnerArea";
+                page.draw(CurriculumInfo.selectStep.stepNum);
+
+                //加载数据
+                if (CurriculumInfo.selectAction instanceof top.SetBackground) {//如果是修改的动作
+                    action = new top.SetBackground(CurriculumInfo.selectAction);
+                }
+                if (action.bgType == "color") {
+                    $("input[name='bgtype'][value='color']").attr('checked', true);
+                    $(".bg-color").css("display", "block");
+                    $(".bg-color li[bg='" + action.bg + "']").addClass("selected");
+                    $("#InnerArea").parent().css("background-color", action.bg);
+                    $("#InnerArea").parent().css("background-image", "");
+                }
+                else {
+                    $("input[name='bgtype'][value='image']").attr('checked', true);
+                    $(".bg-image").css("display", "block");
+                    $("#MediaList").html(`<li mediaid="${action.bg}" bg="${action.bgUrl}"><img src="${action.bgUrl}" /></li>`);
+                    $("#InnerArea").parent().css("background-image", "url(" + action.bgUrl + ")");
+                    $("#InnerArea").parent().css("background-color", "");
+                }
+                $("input[name='bgtype']").change(function () {
+                    if ($(this).val() == "color") {
+                        $(".bg-color").css("display", "block");
+                        $(".bg-image").css("display", "none");
+                        $(".bg-color li").removeClass("selected");
+                        $(".bg-color li[bg='#ffffff']").addClass("selected");
+                        $("#InnerArea").parent().css("background-color", "#ffffff");
+                        $("#InnerArea").parent().css("background-image", "");
+                    }
+                    else {
+                        $(".bg-color").css("display", "none");
+                        $(".bg-image").css("display", "block");
+                        $(".bg-image li").removeClass("selected");
+                        $("#InnerArea").parent().css("background-image", "");
+                        $("#InnerArea").parent().css("background-color", "#ffffff");
+                    }
+
+                });
+
+                $(".bg-color li").click(function () {
+                    $(".bg-color li").removeClass("selected");
+                    $(this).addClass("selected");
+                    var bg = $(this).attr("bg");
+                    action.bgType = "color";
+                    action.bg = bg;
+                    $("#InnerArea").parent().css("background-color", bg);
+                    $("#InnerArea").parent().css("background-image", "");
+                });
+
+                var index = 1, keywords = "", isLoading = false, isOver = false;
+                $("#SelectImgBtn").on("click", function () {
+                    index = 1;
+                    isOver = false;//没有结束
+                    keywords = $("#SelectImgInput").val();
+                    if (CurriculumInfo.selectAction instanceof top.SetBackground) {//如果是修改的动作
+                        action = new top.SetBackground(CurriculumInfo.selectAction);
+                        $("#MediaList").html(`<li mediaid="${action.bg}" title="${action.bgName}"  bg="${action.bgUrl}"><img src="${action.bgUrl}" /></li>`);
+                    }
+                    else {
+                        $("#MediaList").html("");
+                    }
+                    LoadList();
+                });
+                function LoadList() {
+                    if (!isLoading && !isOver) {//如果不是加载中,且数据没有加载完
+                        isLoading = true;
+                        $("#MediaList .loadMediaMsg").off("click");
+                        $("#MediaList .loadMediaMsg").remove();
+                        $("#MediaList").append("<p class='loadMediaMsg'>数据加载中...</p>")
+                        $.ajax({
+                            url: "/ResourceGroup/GetMediaToCourse",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                CourseId: ChapterSet.courseId,
+                                MediaType: 103,// 视频 = 101,音频 = 102,图片 = 103,小艾说 = 104,开场语 = 105,小艾变 = 106
+                                TextType: 0,
+                                NameOrKey: keywords,
+                                Pagination: {
+                                    PageIndex: index,
+                                    PageSize: 10,
+                                }
+                            },
+                            success: function (data) {
+                                if (data.Data.length > 0) {
+                                    $("#MediaList .loadMediaMsg").off("click");
+                                    $("#MediaList .loadMediaMsg").remove();
+                                    console.log("getImgData", data);
+                                    for (var i = 0; i < data.Data.length; i++) {
+                                        var d = data.Data[i];
+                                        $("#MediaList").append(`<li mediaid="${d.ObjectID}" title="${d.MediaName}" bg="${d.ObjectUrl}"><img src="${d.ObjectUrl}" /></li>`);
+                                    }
+
+                                    if (data.Data.length == 10) {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>点击加载更多...</p>");
+                                        $("#MediaList .loadMediaMsg").on("click", function () {
+                                            if (!isLoading) {
+                                                index++;
+                                                LoadList();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>没有数据了</p>");
+                                        isOver = true;
+                                    }
+
+                                    //图片的设置要修改
+                                    $(".bg-image li").click(function () {
+                                        $(".bg-image li").removeClass("selected");
+                                        $(this).addClass("selected");
+                                        var bg = $(this).attr("bg");
+                                        action.bgType = "image";
+                                        action.bg = $(this).attr("mediaid");
+                                        action.bgUrl = bg;
+                                        action.bgName = $(this).attr("title");
+                                        $("#InnerArea").parent().css("background-color", "");
+                                        $("#InnerArea").parent().css("background-image", "url(" + bg + ")");
+
+                                    });
+                                }
+                                else {
+                                    $("#MediaList .loadMediaMsg").html("没有数据了");
+                                    isOver = true;
+                                }
+                                isLoading = false;
+                            },
+                            error: function (e) {
+                                console.error("error", e);
+                                isLoading = false;
+                                index--;
+                            }
+                        });
+                    }
+                }
+                $("#MediaList").scroll(function () {
+                    if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+                        if (!isLoading) {
+                            index++;
+                            LoadList();
+                        }
+                    }
+                })
+
+                $("#OkBtn").click(function () {
+                    if (CurriculumInfo.selectAction instanceof top.SetBackground) {
+                        CurriculumInfo.SetAction(action);
+                    }
+                    else {
+                        CurriculumInfo.AddAction(action);
+                    }
+                    var frame = top.frames["ActionSet"];
+                    if (frame) {
+                        $(frame).hide();
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">设置讲义背景</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <div class="bg-type block-box">
+                    <label><input type="radio" name="bgtype" value="color" />纯颜色</label>
+                    <label><input type="radio" name="bgtype" value="image" />背景图</label>
+                </div>
+                <ul class="bg-color block-box" style="display:none;">
+                    <li bg="#ffffff" style="background:#ffffff;"></li>
+                    <li bg="#d2e3d6" style="background:#d2e3d6;"></li>
+                    <li bg="#c5d3d4" style="background:#c5d3d4;"></li>
+                    <li bg="#b1d3cf" style="background:#b1d3cf;"></li>
+                    <li bg="#d2dce4" style="background:#d2dce4;"></li>
+                    <li bg="#c3c6d2" style="background:#c3c6d2;"></li>
+                    <li bg="#a4bbda" style="background:#a4bbda;"></li>
+                    <li bg="#ecd1c3" style="background:#ecd1c3;"></li>
+                    <li bg="#eadcb5" style="background:#eadcb5;"></li>
+                </ul>
+                <div class="bg-image block-box" style="display:none;">
+                    <div class="input-group">
+                        <input id="SelectImgInput" type="text" class="form-control" placeholder="名称/编号/关键字搜索">
+                        <span class="input-group-btn">
+                            <button id="SelectImgBtn" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                    <ul id="MediaList" class="img-list"></ul>
+                </div>
+            </div>
+            <div class="SettingBtn">
+                <button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button>
+                <button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button>
+            </div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div class="ruler-x-box">
+                <div class="mouse-info"></div>
+                <div class="ruler-x"></div>
+            </div>
+            <div class="ruler-y-box">
+                <div class="ruler-y"></div>
+                <div class="plot-area">
+                    <div class="outer-area"></div>
+                    <div id="InnerArea" class="inner-area"></div>
+                    <div class="outer-area"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

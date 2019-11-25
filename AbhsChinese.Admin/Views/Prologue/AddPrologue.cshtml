@@ -1,0 +1,131 @@
+﻿@using System.Web.UI.WebControls
+@using AbhsChinese.Domain.Dto.Response
+@model DtoMediaResourceAndObject
+@{
+    ViewBag.PageTitle = "添加开场白";
+}
+@section Styles{
+    
+    <style>
+        .verifyTip {
+            color: red;
+        }
+
+        .wrapper-content {
+            padding: 20px 10px 0px;
+        }
+
+        .m-b {
+            margin-bottom: 1px;
+        }
+
+        .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+            .switchery > small {
+                width: 20px;
+                height: 20px;
+            }
+
+        .bootstrap-tagsinput {
+            display: block;
+            position: relative;
+        }
+
+            .bootstrap-tagsinput label {
+                position: absolute;
+                top: 30px;
+                left: 0px;
+            }
+    </style>
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox" style="margin-bottom: 0px;">
+                <div class="ibox-content" style="border:none">
+                    <form id="ajaxForm" method="post">
+                        <input type="hidden" name="Id" value="@(Model != null ? Model.Yme_Id : 0)" />
+                        <div class="form-group  row">
+                            <label class="col-lg-1 col-form-label text-right"><span class="verifyTip">*</span>开场白：</label>
+                            <div class="col-lg-11">
+                                @*<input type="text" name="Name" class="form-control" placeholder="请输入多媒体资源名称" value="@(Model != null ? Model.Yme_Description : "")" required>*@
+                                <textarea rows="5" cols="20" name="description" class="form-control" style="height: 200px; resize: none;" placeholder="请输入开场白" required>@(Model != null ? Model.Yme_Description : "")</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6 col-sm-offset-6"></div>
+                            <div class="col-sm-6 col-sm-offset-6">
+                                <button class="btn btn-primary btn-sm" type="button" id="btn_SignIn">保存</button>
+                                <button class="btn btn-white btn-sm" type="button" id="btn_Cancel" onclick="javascript: history.go(-1);">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    
+    <script>
+        $(function () {
+
+
+            $('#ajaxForm').validate({
+                rules: {
+                    description: {
+                        required: true,
+                        maxlength: 100
+                    }
+                },
+                messages: {
+                    description: {
+                        required: "请输入开场白",
+                        maxlength: "长度不能大于100个字符"
+                    }
+                },
+                submitHandler: function (form) {
+                    ajaxSubmit();
+                }
+            });
+
+            $("#btn_SignIn").click(function () {
+                ajaxSubmit();
+            });
+        });
+
+        function ajaxSubmit() {
+            if (!$("#ajaxForm").valid()) {
+                return false;
+            }
+          
+            $.ajax({
+                url: "/Prologue/AddPrologueDo",
+                type: "post",
+                data: $('#ajaxForm').serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.State) {
+                        layer.msg(data.ErrorMsg,
+                            { time: 500 },
+                            function () {
+                                location.href = '/Prologue/Index';
+                            });
+                    } else {
+                        top.window.layer.alert(data.ErrorMsg,
+                            { icon: 2 },
+                            function () { location.href = '/Prologue/Index'; });
+                    }
+                },
+                error: function (data) {
+                    top.window.layer.alert(data.ErrorMsg, { icon: 2 }, function () { location.href = '/Prologue/Index'; });
+                }
+            });
+        }
+
+    </script>
+}

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>课后练习</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/template-native.js"></script>
+		<script src="js/onLine.js"></script>
+		<script src="js/makeLine.js"></script>
+		<script src="js/jquery.raty.js"></script>
+		<script src="js/AfterClass.js"></script>
+	</head>
+
+	<body>
+		<div class="bodycontent">
+			<div class="backBtn"></div>
+			<div class="maincontent">
+				<div class="mainbjtop">
+					<img src="img/orderbodytop.png" />
+				</div>
+				<div class="maincenter">
+					<div class="contentTop">
+						<div class="contentTitle">
+							<p class="textName">七年级上作文培优课程-第2课时课后任务 （共25题）</p>
+						</div>
+						<div class="textOrder clearfloat">
+							<div class="tihao fl">题号：</div>
+						</div>
+					</div>
+					<div class="contentCenter">
+						
+					</div>
+				</div>
+				<div class="mainbjbottom">
+					<img src="img/orderbodybottom.png" />
+				</div>
+			</div>
+			<div class="pagebtnbox verticalcenter">
+				<a class="pagebtn preBtn">上一页</a>
+				<a class="pagebtn nextBtn">下一页</a>
+				<a class="pagebtn submitBtn">提交</a>
+			</div>
+		</div>
+		<div class="wrongQuestion">
+			<div class="backBtn"></div>
+			<div class="doQuestion">
+				
+			</div>
+		</div>
+		<div class="textMask">
+			<div class="textMaskContent">
+				<div class="textMaskCloseBtn">×</div>
+				<div class="resultState"></div>
+				<div class="resultStateTitle"></div>
+				<div class="textMaskContentSureBtn">确定</div>
+			</div>
+		</div>
+	</body>
+	<!--错题消除和课后练习结构-->
+	<script id="ScriptDiv" type="text/template">
+		<%for(var i=0;i<list.length;i++){%>
+			<%if(list[i].SubjectType==1){%>
+				<%if(list[i].StemType==1&&list[i].OptionType==1){%>
+					<div class="contentList" id="contentList_<%=list[i].id%>">
+						<div class="listTitle">
+							<span class="specialNum"><%=list[i].id%></span>
+							<span class="allNum">/<%=TotalRecord%></span>
+							<span class="textType">选择题</span>
+						</div>
+						<div class="textContent">
+							<div class="stem clearfloat">
+								<span class="stemJian fl"></span>
+								<div class="stemContent"><%=list[i].Stem%></div>
+							</div>
+							<div class="allOption1 allOption">
+								<%for(var j=0;j<list[i].Options.length;j++){%>
+									<div class="OptionList1 OptionList clearfloat" optionId="<%=list[i].Options[j].Key%>">
+										<%if(j==0){%>
+											<div class="OptionListNum fl">A.</div>
+										<%}else if(j==1){%>
+											<div class="OptionListNum fl">B.</div>
+										<%}else if(j==2){%>
+											<div class="OptionListNum fl">C.</div>
+										<%}else if(j==3){%>
+											<div class="OptionListNum fl">D.</div>
+										<%}%>
+										<div class="OptionListCont"><%=list[i].Options[j].Text%></div>
+									</div>
+								<%}%>
+							</div>
+						</div>
+					</div>
+				<%}else if(list[i].StemType==1&&list[i].OptionType==0){%>
+					<div class="contentList" id="contentList_<%=list[i].id%>">
+						<div class="listTitle">
+							<span class="specialNum"><%=list[i].id%></span>
+							<span class="allNum">/<%=TotalRecord%></span>
+							<span class="textType">选择题</span>
+						</div>
+						<div class="textContent">
+							<div class="stem clearfloat">
+								<span class="stemJian fl"></span>
+								<div class="stemContent"><%=list[i].Stem%></div>
+							</div>
+							<div class="allOption2 allOption verticalcenter">
+								<%for(var j=0;j<list[i].Options.length;j++){%>
+									<div class="OptionList2 OptionList" optionId="<%=list[i].Options[j].Key%>">
+										<img src="<%=list[i].Options[j].Text%>" alt="" />
+										<%if(j==0){%>
+											<span>A</span>
+										<%}else if(j==1){%>
+											<span>B</span>
+										<%}else if(j==2){%>
+											<span>C</span>
+										<%}else if(j==3){%>
+											<span>D</span>
+										<%}%>
+									</div>
+								<%}%>
+							</div>
+						</div>
+					</div>
+				<%}else if(list[i].StemType==0&&list[i].OptionType==1){%>
+					<div class="contentList" id="contentList_<%=list[i].id%>">
+						<div class="listTitle">
+							<span class="specialNum"><%=list[i].id%></span>
+							<span class="allNum">/<%=TotalRecord%></span>
+							<span class="textType">选择题</span>
+						</div>
+						<div class="textContent verticalcenter">
+							<div class="stem2">
+								<img src="<%=list[i].Stem%>"/>
+							</div>
+							<div class="allOption3 allOption">
+								<%for(var j=0;j<list[i].Options.length;j++){%>
+									<div class="OptionList1 OptionList clearfloat" optionId="<%=list[i].Options[j].Key%>">
+										<%if(j==0){%>
+											<div class="OptionListNum fl">A.</div>
+										<%}else if(j==1){%>
+											<div class="OptionListNum fl">B.</div>
+										<%}else if(j==2){%>
+											<div class="OptionListNum fl">C.</div>
+										<%}else if(j==3){%>
+											<div class="OptionListNum fl">D.</div>
+										<%}%>
+										<div class="OptionListCont"><%=list[i].Options[j].Text%></div>
+									</div>
+								<%}%>
+							</div>
+						</div>
+					</div>
+				<%}else if(list[i].StemType==0&&list[i].OptionType==0){%>
+					<div class="contentList" id="contentList_<%=list[i].id%>">
+						<div class="listTitle">
+							<span class="specialNum"><%=list[i].id%></span>
+							<span class="allNum">/<%=TotalRecord%></span>
+							<span class="textType">选择题</span>
+						</div>
+						<div class="textContent">
+							<div class="stem">
+								<img src="<%=list[i].Stem%>"/>
+							</div>
+							<div class="allOption2 allOption verticalcenter">
+								<%for(var j=0;j<list[i].Options.length;j++){%>
+									<div class="OptionList2 OptionList" optionId="<%=list[i].Options[j].Key%>">
+										<img src="<%=list[i].Options[j].Text%>" alt="" />
+										<%if(j==0){%>
+											<span>A</span>
+										<%}else if(j==1){%>
+											<span>B</span>
+										<%}else if(j==2){%>
+											<span>C</span>
+										<%}else if(j==3){%>
+											<span>D</span>
+										<%}%>
+									</div>
+								<%}%>
+							</div>
+						</div>
+					</div>
+				<%}%>
+			<%}%>
+			<%if(list[i].SubjectType==2){%>
+				<div class="contentList" id="contentList_<%=list[i].id%>">
+					<div class="listTitle">
+						<span class="specialNum"><%=list[i].id%></span>
+						<span class="allNum">/<%=TotalRecord%></span>
+						<span class="textType">判断题</span>
+					</div>
+					<div class="textContent">
+						<%if(list[i].StemType==1){%>
+							<div class="stem clearfloat">
+								<span class="stemJian fl"></span>
+								<div class="stemContent"><%=list[i].Stem%></div>
+							</div>
+						<%}else{%>
+							<div class="stem">
+								<img src="<%=list[i].Stem%>" alt="" />
+							</div>
+						<%}%>
+						<div class="judgmentOption">
+							<div class="judgmentOptions wrongOption verticalcenter fl">
+								<span class="sign"></span>
+								<span class="signCont">错误</span>
+							</div>
+							<div class="judgmentOptions rightOption verticalcenter fl">
+								<span class="sign"></span>
+								<span class="signCont">正确</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			<%}%>
+			<%if(list[i].SubjectType==3){%>
+				<div class="contentList" id="contentList_<%=list[i].id%>">
+					<div class="listTitle">
+						<span class="specialNum"><%=list[i].id%></span>
+						<span class="allNum">/<%=TotalRecord%></span>
+						<span class="textType">填空题</span>
+					</div>
+					<div class="textContent">
+						<div class="fillStem">
+							<%for(var j=0;j<list[i].StemArr.length;j++){%>
+								<%if(j==list[i].StemArr.length-1){%>
+									<%=list[i].StemArr[j]%>
+								<%}else{%>
+									<%=list[i].StemArr[j]%>（<input type="text" onpaste="return false" style="width: <%=list[i].lenArr[j]%>px;" />）
+								<%}%>
+							<%}%>
+						</div>
+					</div>
+				</div>
+			<%}%>
+			<%if(list[i].SubjectType==4){%>
+				<div class="contentList" id="contentList_<%=list[i].id%>">
+					<div class="listTitle">
+						<span class="specialNum"><%=list[i].id%></span>
+						<span class="allNum">/<%=TotalRecord%></span>
+						<span class="textType">选择填空</span>
+					</div>
+					<div class="textContent">
+						<div class="OptionFillStem clearfloat">
+							<%for(var j=0;j<list[i].StemArr.length;j++){%>
+		                        <div class="OptionFillStemText clearfloat fl"><%=list[i].StemArr[j]%></div>
+		                        <%if(j!=list[i].StemArr.length-1){%>
+		                        <div class="OptionFillStemList fl"></div>
+		                        <%}%>
+		                    <%}%>
+		                </div>
+		                <div class="optionFillOptionList">
+							<%for(var k=0;k<list[i].Options.length;k++){%>
+								<%if(list[i].OptionType==0){%>
+									<div class="FillOptionList" optionId="<%=list[i].Options[k].Key%>">
+										<img src="<%=list[i].Options[k].Text%>" alt="" />
+									</div>
+								<%}else{%>
+									<div class="FillOptionList" optionId="<%=list[i].Options[k].Key%>"><%=list[i].Options[k].Text%></div>
+								<%}%>
+							<%}%>
+						</div>
+					</div>
+				</div>
+			<%}%>
+			<%if(list[i].SubjectType==5){%>
+				<div class="contentList" id="contentList_<%=list[i].id%>">
+					<div class="listTitle" style="position: relative;">
+						<span class="specialNum"><%=list[i].id%></span>
+						<span class="allNum">/<%=TotalRecord%></span>
+						<span class="textType">连线题</span>
+						<span class="resetBtn"></span>
+					</div>
+					<div class="textContent">
+						<%if(list[i].StemType==1){%>
+							<div class="stem clearfloat">
+								<span class="stemJian fl"></span>
+								<div class="stemContent"><%=list[i].Stem%></div>
+							</div>
+						<%}else{%>
+							<div class="stem">
+								<img src="<%=list[i].Stem%>" alt="" />
+							</div>
+						<%}%>
+						<div class="linkingPart" data_pair="<%=list[i].LeftOptions.length%>">
+							<div class="show">
+								<div class="showleft">
+		                    		<%for (var j = 0; j < list[i].LeftOptions.length; j++) {%>
+				                        <%if (list[i].LeftOptionType == 0) {%>
+				                            <span class="showitem" thisId="<%=list[i].LeftOptions[j].Key%>">
+				                            	<img src="<%=list[i].LeftOptions[j].Text%>"/>
+				                            </span>
+				                        <%} else {%>
+				                           <span class="showitem" thisId="<%=list[i].LeftOptions[j].Key%>"><%=list[i].LeftOptions[j].Text%></span>
+				                        <%}%>
+				                    <%}%>
+		                  		</div>
+		                  		<div class="showright">
+		                  			<%for (var k = 0; k < list[i].RightOptions.length; k++) {%>
+				                        <%if (list[i].RightOptionType == 0) {%>
+				                            <span class="showitem" thisId="<%=list[i].RightOptions[k].Key%>">
+				                            	<img src="<%=list[i].RightOptions[k].Text%>"/>
+				                            </span>
+				                        <%} else {%>
+				                           <span class="showitem" thisId="<%=list[i].RightOptions[k].Key%>"><%=list[i].RightOptions[k].Text%></span>
+				                        <%}%>
+				                    <%}%>
+								</div>
+		                  		<canvas class="canvas"></canvas>
+		                  		<canvas class="backcanvas"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+			<%}%>
+			<%if(list[i].SubjectType==6){%>
+				<div class="contentList" id="contentList_<%=list[i].id%>">
+					<div class="listTitle">
+						<span class="specialNum"><%=list[i].id%></span>
+						<span class="allNum">/<%=TotalRecord%></span>
+						<span class="textType">主观题</span>
+					</div>
+					<div class="textContent">
+						<%if(list[i].StemType==1){%>
+							<div class="stem clearfloat">
+								<span class="stemJian fl"></span>
+								<div class="stemContent"><%=list[i].Stem%></div>
+							</div>
+						<%}else{%>
+							<div class="stem">
+								<img src="<%=list[i].Stem%>" alt="" />
+							</div>
+						<%}%>
+						<textarea name="" class="subjectiveTextarea" onpaste="return false" placeholder="请输入..."></textarea>
+					</div>
+				</div>
+			<%}%>
+			<%if(list[i].SubjectType==7){%>
+				<div class="contentList" id="contentList_<%=list[i].id%>">
+					<div class="listTitle" style="position: relative;">
+						<span class="specialNum"><%=list[i].id%></span>
+						<span class="allNum">/<%=TotalRecord%></span>
+						<span class="textType">圈点批注</span>
+						<span class="revokeBtn"></span>
+					</div>
+					<div class="textContent">
+						<%if(list[i].StemType==1){%>
+							<div class="stem clearfloat">
+								<span class="stemJian fl"></span>
+								<div class="stemContent"><%=list[i].Stem%></div>
+							</div>
+						<%}else{%>
+							<div class="stem">
+								<img src="<%=list[i].Stem%>" alt="" />
+							</div>
+						<%}%>
+						<div class="AnnotationContents">
+							<%for (var j = 0; j < list[i].Content.length; j++) {%>
+		                        <%if (/^\n$/.test(list[i].Content[j])) {%>
+		                           <br />
+		                        <%} else if (/ /.test(list[i].Content[j])) {%>
+		                            &nbsp;
+		                        <%} else {%>
+		                            <span class='normalText fl'><%=list[i].Content[j]%></span>
+		                        <%}%>
+		                    <%}%>
+						</div>
+					</div>
+				</div>
+			<%}%>
+			<%if(list[i].SubjectType==8){%>
+				<div class="contentList" id="contentList_<%=list[i].id%>">
+					<div class="listTitle" style="position: relative;">
+						<span class="specialNum"><%=list[i].id%></span>
+						<span class="allNum">/<%=TotalRecord%></span>
+						<span class="textType">圈点批注</span>
+						<span class="revokeBtn"></span>
+					</div>
+					<div class="textContent">
+						<%if(list[i].StemType==1){%>
+							<div class="stem clearfloat">
+								<span class="stemJian fl"></span>
+								<div class="stemContent"><%=list[i].Stem%></div>
+							</div>
+						<%}else{%>
+							<div class="stem">
+								<img src="<%=list[i].Stem%>" alt="" />
+							</div>
+						<%}%>
+						<div style="text-align: left;">
+							<div class="Annotation2Contents" style="text-align:<%=(list[i].Alignment==1?"left":(list[i].Alignment==2?"center":"right"))%>;">
+			                   	<%for (var j = 0; j < list[i].Content.length; j++) {%>
+			                    	<%if (/^\n$/.test(list[i].Content[j])) {%>
+			                    		<br />
+			                    		<span class='Annotation2NormalText' style="display:none;"></span>
+			                    	<%} else if (/\r/.test(list[i].Content[j])) {%>
+			                    		<span class='Annotation2NormalText' style="display:none;"></span>
+			                    	<%} else if (/ /.test(list[i].Content[j])) {%>
+			                    		<span class='Annotation2NormalText'>&nbsp;</span>
+			                    	<%} else {%>
+			                    		<span class='Annotation2NormalText'><%=list[i].Content[j]%></span>
+			                    	<%}%>
+			                    <%}%>
+			                </div>
+						</div>
+					</div>
+				</div>
+			<%}%>
+		<%}%>
+	</script>
+    
+    <!--------错题重做结构----------->	
+    <!--判断题结构-->
+   	<script id="wrongQuestion_Judgment" type="text/template">
+        <div class="wrongQuestionBox">
+			<img src="img/zhou.png" class="wrongQuestionBgImg" />
+			<div class="playBox">
+				<div class="baseTitle">判断题</div>
+	            <%if (list.StemType==0) {%>
+                <div class="wrongQuestionStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="wrongQuestionStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="wrongQuestion_judgmentOption wrongQuestion_doneJudgmentOption verticalcenter">
+                    <div class="wrongQuestion_judgmentOptions wrongQuestion_wrongOption verticalcenter">
+                        <span class="sign"></span>
+                        <span class="signCont">错误</span>
+                    </div>
+                    <div class="wrongQuestion_judgmentOptions wrongQuestion_rightOption verticalcenter">
+                        <span class="sign"></span>
+                        <span class="signCont">正确</span>
+                    </div>
+                </div>
+			</div>
+			<div class="subMit">提交</div>
+		</div>
+		<div class="checkAnswerBox">
+			<div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus honorStatus0"></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+            	<div class="answerShowPart">
+                    <div class="baseTitle">判断题</div>
+                    <%if (list.StemType==0) {%>
+	                <div class="wrongQuestionStem">
+	                    <img src="<%=list.Stem%>" alt="" />
+	                </div>
+	                <%}else{%>
+	                <div class="wrongQuestionStem clearfloat">
+	                    <span class="fl jian"></span>
+	                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+	                </div>
+	                <%}%>
+                    <div class="wrongQuestion_judgmentOption wrongQuestion_AnswerjudgmentOption verticalcenter" style="margin-top: 30px;">
+	                    <div class="wrongQuestion_judgmentOptions wrongQuestion_wrongOption verticalcenter">
+	                        <span class="sign"></span>
+	                        <span class="signCont">错误</span>
+	                    </div>
+	                    <div class="wrongQuestion_judgmentOptions wrongQuestion_rightOption verticalcenter">
+	                        <span class="sign"></span>
+	                        <span class="signCont">正确</span>
+	                    </div>
+	                </div>
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+		</div>
+    </script>
+    <!--选择题结构-->
+    <script id="wrongQuestion_Option" type="text/template">
+    	<div class="wrongQuestionBox">
+			<img src="img/zhou.png" class="wrongQuestionBgImg" />
+			<div class="playBox">
+				<div class="baseTitle">选择题</div>
+                <%if (list.StemType==0 && list.OptionType==0) {%>
+	                <div class="wrongQuestionStem">
+	                    <img src="<%=list.Stem%>" alt="" />
+	                </div>
+	                <div class="wrongQuestion_OptionOption1 wrongQuestion_OptionOption verticalcenter" style="margin-top:60px;">
+	                	<%for(var j=0;j<list.Options.length;j++){%>
+		                    <div class="wrongQuestion_OptionOptionList wrongQuestion_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+		                        <img src="<%=list.Options[j].Text%>" />
+		                        <span class="optionNum optionNum<%=j%>"></span>
+		                    </div>
+	                    <%}%>
+	                </div>
+                <%}else if(list.StemType==0 && list.OptionType==1){%>
+                	<div class="wrongQuestion_OptionContent verticalcenter">
+	                    <div class="wrongQuestion_OptionStem verticalcenter">
+	                        <img src="<%=list.Stem%>" alt="" />
+	                    </div>
+	                    <div class="wrongQuestion_OptionOption2 wrongQuestion_OptionOption">
+	                        <%for(var j=0;j<list.Options.length;j++){%>
+	                            <div class="wrongQuestion_OptionOptionList wrongQuestion_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+	                                <span class="optionNum optionNum<%=j%> fl"></span>
+	                                <span class="optionPont fl">·</span>
+	                                <span class="optionCon"><%=list.Options[j].Text%></span>
+	                            </div>
+	                        <%}%>
+	                    </div>
+	                </div>
+                <%}else if(list.StemType==1 && list.OptionType==0){%>
+                	<div class="wrongQuestionStem clearfloat">
+	                    <span class="fl jian"></span>
+	                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+	                </div>
+	                <div class="wrongQuestion_OptionOption1 wrongQuestion_OptionOption verticalcenter" style="margin-top:100px;">
+	                	<%for(var j=0;j<list.Options.length;j++){%>
+		                    <div class="wrongQuestion_OptionOptionList wrongQuestion_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+		                        <img src="<%=list.Options[j].Text%>" />
+		                        <span class="optionNum optionNum<%=j%>"></span>
+		                    </div>
+	                    <%}%>
+	                </div>
+                <%}else if(list.StemType==1 && list.OptionType==1){%>
+	                <div class="wrongQuestionStem clearfloat">
+	                    <span class="fl jian"></span>
+	                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+	                </div>
+	                <div class="wrongQuestion_OptionOption3 wrongQuestion_OptionOption fl">
+                        <%for(var j=0;j<list.Options.length;j++){%>
+                            <div class="wrongQuestion_OptionOptionList wrongQuestion_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+                                <span class="optionNum optionNum<%=j%> fl"></span>
+                                <span class="optionPont fl">·</span>
+                                <span class="optionCon"><%=list.Options[j].Text%></span>
+                            </div>
+                        <%}%>
+                    </div>              
+                <%}%>
+			</div>
+			<div class="subMit">提交</div>
+		</div>
+		<div class="checkAnswerBox">
+			<div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus honorStatus0"></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+            	<div class="answerShowPart">
+                    <div class="baseTitle">选择题</div>
+                    <%if (list.StemType==0 && list.OptionType==0) {%>
+		                <div class="wrongQuestionStem">
+		                    <img src="<%=list.Stem%>" alt="" />
+		                </div>
+		                <div class="wrongQuestion_OptionOption1 wrongQuestion_AnswerOptionOption verticalcenter">
+		                	<%for(var j=0;j<list.Options.length;j++){%>
+			                    <div class="wrongQuestion_OptionOptionList wrongQuestion_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+			                        <img src="<%=list.Options[j].Text%>" />
+			                        <span class="optionNum optionNum<%=j%>"></span>
+			                    </div>
+		                    <%}%>
+		                </div>
+	                <%}else if(list.StemType==0 && list.OptionType==1){%>
+	                	<div class="wrongQuestion_OptionContent clearfloat">
+		                    <div class="wrongQuestion_OptionStem verticalcenter fl" style="height: 100%;">
+		                        <img src="<%=list.Stem%>" alt="" />
+		                    </div>
+		                    <div class="wrongQuestion_OptionOption2 wrongQuestion_AnswerOptionOption fl">
+		                        <%for(var j=0;j<list.Options.length;j++){%>
+		                            <div class="wrongQuestion_OptionOptionList wrongQuestion_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+		                                <span class="optionNum optionNum<%=j%> fl"></span>
+		                                <span class="optionPont fl">·</span>
+		                                <span class="optionCon"><%=list.Options[j].Text%></span>
+		                            </div>
+		                        <%}%>
+		                    </div>
+		                </div>
+	                <%}else if(list.StemType==1 && list.OptionType==0){%>
+	                	<div class="wrongQuestionStem clearfloat">
+		                    <span class="fl jian"></span>
+		                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+		                </div>
+		                <div class="wrongQuestion_OptionOption1 wrongQuestion_AnswerOptionOption verticalcenter">
+		                	<%for(var j=0;j<list.Options.length;j++){%>
+			                    <div class="wrongQuestion_OptionOptionList wrongQuestion_OptionOptionList1" optionId="<%=list.Options[j].Key%>">
+			                        <img src="<%=list.Options[j].Text%>" />
+			                        <span class="optionNum optionNum<%=j%>"></span>
+			                    </div>
+		                    <%}%>
+		                </div>
+	                <%}else if(list.StemType==1 && list.OptionType==1){%>
+		                <div class="wrongQuestionStem clearfloat">
+		                    <span class="fl jian"></span>
+		                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+		                </div>
+		                <div class="wrongQuestion_OptionOption3 wrongQuestion_AnswerOptionOption">
+	                        <%for(var j=0;j<list.Options.length;j++){%>
+	                            <div class="wrongQuestion_OptionOptionList wrongQuestionr_OptionOptionList2 clearfloat" optionId="<%=list.Options[j].Key%>">
+	                                <span class="optionNum optionNum<%=j%> fl"></span>
+	                                <span class="optionPont fl">·</span>
+	                                <span class="optionCon"><%=list.Options[j].Text%></span>
+	                            </div>
+	                        <%}%>
+	                    </div>
+	                <%}%>
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+		</div>
+    </script>
+    <!--填空题结构-->
+    <script id="wrongQuestion_Fill" type="text/template">
+    	<div class="wrongQuestionBox">
+			<img src="img/zhou.png" class="wrongQuestionBgImg" />
+			<div class="playBox">
+				<div class="baseTitle">填空题</div>
+                <div class="wrongQuestion_fillStem">
+                    <div class="wrongQuestion_fillStemText">
+                        <%for(var i=0;i<list.StemArr.length;i++){%>
+                            <%if(i==list.StemArr.length-1){%>
+                            	<%=list.StemArr[i]%>
+                            <%}else{%>
+                            	<%=list.StemArr[i]%>（<input type="text" onpaste="return false" style="width: <%=lenArr[i]%>px;" />）
+                            <%}%>
+                        <%}%>
+                    </div>
+                </div>
+			</div>
+			<div class="subMit">提交</div>
+		</div>
+		<div class="checkAnswerBox">
+			<div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus honorStatus0"></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+            	<div class="answerShowPart">
+                    <div class="baseTitle">填空题</div>
+                   	<div class="wrongQuestion_fillAnswerStem">
+                        <div class="wrongQuestion_fillAnswerStemText">
+                            <%for(var i=0;i<list.StemArr.length;i++){%>
+                                <%if(i==list.StemArr.length-1){%>
+                                <%=list.StemArr[i]%>
+                                <%}else{%>
+                                <%=list.StemArr[i]%>（<input type="text" readonly value="" style="width: <%=lenArr[i]%>px;" />）
+                                <%}%>
+                                <%}%>
+                        </div>
+                    </div>
+                   
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+		</div>
+    </script>
+    <!--连线题结构-->
+    <script id="wrongQuestion_Linking" type="text/template">
+    	<div class="wrongQuestionBox">
+			<img src="img/zhou.png" class="wrongQuestionBgImg" />
+			<div class="playBox">
+				<div class="baseTitle">连线题</div>
+                <%if (list.StemType==0) {%>
+                <div class="wrongQuestionStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="wrongQuestionStem clearfloat">
+                    <span class="fl jian"></span>
+                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="wrongQuestion_linkingPart" data_pair="<%=list.LeftOptions.length%>">
+                    <div class="show">
+                        <div class="showleft">
+                            <%for (var i = 0; i < list.LeftOptions.length; i++) {%>
+                            <%if (list.LeftOptionType == 0) {%>
+                            <span class="showitem" thisId="<%=list.LeftOptions[i].Key%>">
+                                <img src="<%=list.LeftOptions[i].Text%>" />
+                            </span>
+                            <%} else {%>
+                            <span class="showitem" thisId="<%=list.LeftOptions[i].Key%>"><%=list.LeftOptions[i].Text%></span>
+                            <%}%>
+                            <%}%>
+                        </div>
+                        <div class="showright">
+                            <%for (var i = 0; i < list.RightOptions.length; i++) {%>
+                            <%if (list.RightOptionType == 0) {%>
+                            <span class="showitem" thisId="<%=list.RightOptions[i].Key%>">
+                                <img src="<%=list.RightOptions[i].Text%>" />
+                            </span>
+                            <%} else {%>
+                            <span class="showitem" thisId="<%=list.RightOptions[i].Key%>"><%=list.RightOptions[i].Text%></span>
+                            <%}%>
+                            <%}%>
+                        </div>
+                        <canvas class="canvas"></canvas>
+                        <canvas class="backcanvas"></canvas>
+                    </div>
+                </div>
+			</div>
+			<div class="Todos verticalcenter">
+                <div class="TodosRevoke">重置</div>
+                <div class="TodosSubmit">提交</div>
+            </div>
+		</div>
+		<div class="checkAnswerBox">
+			<div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus honorStatus0"></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+            	<div class="answerShowPart">
+                    <div class="baseTitle">连线题</div>
+                    <%if (list.StemType==0) {%>
+	                <div class="wrongQuestionStem">
+	                    <img src="<%=list.Stem%>" alt="" />
+	                </div>
+	                <%}else{%>
+	                <div class="wrongQuestionStem clearfloat">
+	                    <span class="fl jian"></span>
+	                    <span class="wrongQuestionStemContent"><%=list.Stem%></span>
+	                </div>
+	                <%}%>
+                    <div class="wrongQuestion_LinkingAnswer">
+                        <div class="contrast clearfloat">
+                            <div class="StandardPart clearfloat fl">
+                                <div class="StandardPartTitle fl">参考答案</div>
+                                <div class="StandardContent fl"></div>
+                            </div>
+                            <div class="mySubAnswer clearfloat fl">
+                                <div class="mySubAnswerTitle fl">你的作答</div>
+                                <div class="mySubAnswerContent fl"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+		</div>
+    </script>
+    <!--选择填空结构-->
+    <script id="wrongQuestion_FillOption" type="text/template">
+        <div class="wrongQuestionBox">
+			<img src="img/zhou.png" class="wrongQuestionBgImg" />
+			<div class="playBox">
+				<div class="baseTitle">选择填空</div>
+				<div class="verticalcenterWrap" style="width: 100%;height: 80%;">
+					<div class="wrongQuestion_OptionFillStem clearfloat">
+					    <%for(var i=0;i<list.StemArr.length;i++){%>
+					        <div class="wrongQuestion_OptionFillStemText fl"><%=list.StemArr[i]%></div>
+					        <%if(i!=list.StemArr.length-1){%>
+					        <div class="wrongQuestion_OptionFillStemList fl"></div>
+					        <%}%>
+					        <%}%>
+					</div>
+					<div class="wrongQuestion_OptionList">
+					    <%for(var k=0;k<list.Options.length;k++){%>
+					        <%if (list.OptionType == 0) {%>
+					        <div class="wrongQuestionr_FillOptionList" optionId="<%=list.Options[k].Key%>">
+					            <img src="<%=list.Options[k].Text%>" alt="" />
+					        </div>
+					        <%} else {%>
+					        <div class="wrongQuestion_FillOptionList" optionId="<%=list.Options[k].Key%>"><%=list.Options[k].Text%></div>
+					        <%}%>
+					    <%}%>
+					</div>
+				</div>
+			</div>
+			<div class="subMit">提交</div>
+		</div>
+		<div class="checkAnswerBox">
+			<div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus honorStatus0"></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+            	<div class="answerShowPart">
+                    <div class="baseTitle">选择填空</div>
+                   	<div class="fillAnswerBox">
+
+                    </div>
+                    <div class="trueAnswer clearfloat">
+                        <div class="trueAnswerTitle fl">参考答案</div>
+                        <div class="trueAnswerContent"></div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+		</div>
+    </script>
+    <!--主观题结构-->
+    <script id="wrongQuestion_Subjective" type="text/template">
+    	<div class="wrongQuestionBox">
+			<img src="img/zhou.png" class="wrongQuestionBgImg" />
+			<div class="playBox">
+				<div class="baseTitle">主观题</div>
+                <%if (list.StemType==0) {%>
+                <div class="wrongQuestionStem">
+                    <img src="<%=list.Stem%>" alt="" />
+                </div>
+                <%}else{%>
+                <div class="wrongQuestionStem clearfloat">
+                    <span class="wrongQuestionStemContent wrongQuestionStemSJContent"><span class="jian" style="display: inline-block; margin-right: 5px;"></span><%=list.Stem%></span>
+                </div>
+                <%}%>
+                <div class="textAreaBox">
+                	<textarea name=""  class="wrongQuestion_subjectiveTextarea" placeholder="请输入..."></textarea>
+                </div>
+                
+			</div>
+			<div class="subMit">提交</div>
+		</div>
+		<div class="StandardMask">
+            <div class="showStandard">
+                <img src="img/zhou.png" class="subjectiveBgImg" />
+                <div class="wrongQuestion_subjectiveAnswer">
+                    <div class="subjective_contrast clearfloat">
+                        <div class="StandardPart clearfloat fl">
+                            <div class="StandardPartTitle fl">评分标准</div>
+                            <div class="StandardContent fl"><%=list.Standard%></div>
+                        </div>
+                        <div class="mySubAnswer clearfloat fl">
+                            <div class="mySubAnswerTitle fl">你的作答</div>
+                            <div class="mySubAnswerContent fl"></div>
+                        </div>
+                    </div>
+                    <div class="starsScoreBox verticalcenter"></div>
+                    <p class="remindP">请仔细阅读评分标准，认为自己的作答能得几颗星？</p>
+                </div>
+                <div class="subjectiveSure"></div>
+            </div>
+        </div>
+		<div class="checkAnswerBox">
+			<div class="answerBoxBg"></div>
+            <div class="honor">
+                <div class="honorStatus honorStatus0"></div>
+                <div class="honorLight"></div>
+                <div class="allStars">
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                    <span class="_star"></span>
+                </div>
+            </div>
+            <div class="checkAnswerPlayBox">
+            	<div class="answerShowPart">
+                    <div class="wrongQuestion_LinkingAnswer wrongQuestion_subLinkingAnswer">
+                        <div class="contrast clearfloat">
+                            <div class="StandardPart clearfloat fl">
+                                <div class="StandardPartTitle fl">参考答案</div>
+                                <div class="StandardContent fl"><%=list.Answer%></div>
+                            </div>
+                            <div class="mySubAnswer clearfloat fl">
+                                <div class="mySubAnswerTitle fl">你的作答</div>
+                                <div class="mySubAnswerContent fl"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Analysis clearfloat">
+                        <div class="AnalysisTitle fl">题目解析</div>
+                        <div class="AnalysisContent"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sureBtn">确定</div>
+		</div>
+    </script>
+</html>

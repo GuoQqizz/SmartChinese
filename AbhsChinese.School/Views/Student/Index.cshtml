@@ -1,0 +1,464 @@
+﻿
+@model AbhsChinese.Domain.Dto.Request.School.DtoSchoolStudentSearch
+@{
+    ViewBag.PageTitle = "学生管理";
+    ViewBag.PageTitle = "学生列表";
+    ViewBag.HasReloadBtn = true;
+
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    <style>
+        #wrapper {
+            overflow-x: visible;
+        }
+
+        .text-danger {
+            margin-left: 15px;
+        }
+
+        .img-info {
+            width: 50px;
+            height: 50px;
+        }
+
+
+
+        .wrapper-content {
+            height: calc(100% - 80px);
+        }
+
+        #wrapper, .ibox, .table_container {
+            height: 100%;
+        }
+
+        .ibox-content {
+            /*height: calc(100% - 60px);*/
+            height: 100%;
+        }
+
+        #table_list {
+            height: calc(100% - 100px);
+        }
+
+        .spc-green {
+            color: #1ABC9C;
+        }
+
+        .spc-defaule {
+            color: #ccc;
+        }
+
+        .spc-red {
+            color: #D9001B;
+        }
+
+        .layui-layer-wrap {
+            overflow: hidden;
+        }
+
+        .assert-class-form {
+            margin-top: 30px;
+        }
+
+        #studentLayer {
+            display: none;
+        }
+
+         :root {
+            --sbheight: 80px;
+        }
+        .search-box {
+            height: var(--sbheight);
+        }
+         @@media screen and (max-width: 1350px) {
+            :root {
+                --sbheight: 130px;
+            }
+        }
+    </style>
+
+}
+
+<div class="ibox">
+    @*<div class="ibox-title">
+            <h5>
+                <i class="fa fa-table"></i>&nbsp;@ViewBag.ListTitle
+            </h5>
+            <div class="ibox-tools">
+
+            </div>
+        </div>*@
+    <div class="ibox-content">
+        <div class="row search-box"  >
+            <div class="col-10 btn-status-list" data-val="-1">
+            </div>
+            @Html.Partial("_SearchStudentList", Model)
+            <div class="col-2 col-md-3 search-form text-right align-self-center">
+                <button class="btn btn-white" type="button" onclick="addStudentShow()">
+                    <i class="fa fa-plus"></i>&nbsp;添加学生
+                </button>
+                <button class="btn btn-white" type="button" onclick="registerStudentShow()">
+                    <i class="fa fa-plus"></i>&nbsp;注册学生
+                </button>
+            </div>
+
+
+        </div>
+        <div class="row" style="height: calc(100% - 50px);">
+            <div class="col-12 table_container">
+                <div id="table_list"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="studentLayer">
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+
+    <script type="text/template" id="addStudentTmp">
+        <form id="addStudentForm" method="post" class="form-within">
+            <div class="form-group row assert-class-form">
+                <label class="col-form-label col-4 text-right required">手机号:</label>
+                <div class="col-6 text-left">
+                    <input type="text" name="phone" class="form-control sms-phone no-space-input" required maxlength="11" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-4 text-right required">验证码:</label>
+                <div class="col-6 text-left input-group input-form-addon">
+                    <input type="text" name="code" class="form-control no-space-input" required maxlength="4" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary send-sms" onclick="sendMsg(this,2)" data-from="sms-phone" type="button">发送验证码</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </script>
+    <script type="text/template" id="registStudentTmp">
+        <form id="registerStudentForm" method="post" class="form-within">
+            <div class="form-group row assert-class-form">
+                <label class="col-form-label col-4 text-right required">手机号:</label>
+                <div class="col-6 text-left">
+                    <input type="text" name="phone" class="form-control sms-phone no-space-input" required maxlength="11" />
+                </div>
+            </div>
+            <div class="form-group row ">
+                <label class="col-form-label col-4 text-right required">验证码:</label>
+                <div class="col-6 text-left input-group input-form-addon">
+                    <input type="text" name="code" class="form-control" required maxlength="4" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary send-sms no-space-input" onclick="sendMsg(this,1)" data-from="sms-phone" type="button">发送验证码</button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-4 text-right required">姓名:</label>
+                <div class="col-6 text-left">
+                    <input type="text" name="name" class="form-control" required maxlength="10" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-4 text-right required">年级:</label>
+                <div class="col-6 text-left">
+                    <select class="form-control m-b" name="grade" id="selectGrade"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-4 text-right required">密码:</label>
+                <div class="col-6 text-left">
+                    <input type="password" name="pwd" class="form-control no-space-input" required maxlength="20" />
+                </div>
+            </div>
+        </form>
+    </script>
+
+    <script>
+
+
+
+        $(function () {
+            renderSearch();
+            initTable();
+            registerEvent();
+        })
+
+        function renderSearch() {
+            //年级
+            $('.select2-grade').initSelectOption({
+                'source': gradeSourceArr,
+                'className': '',
+                'default': { key: '-1', value: '年级' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+            //学生状态
+            //$('.select2-status').initSelectOption({
+            //    'source': studentStatusArr,
+            //    'className': '',
+            //    'default': { key: '-1', value: '状态' },
+            //    'width': '200px',
+            //    'useSelect2': true,
+            //});
+            $('.btn-status-list').initBtns({
+                'source': studentStatusArr,
+                'className': 'status-item',
+                'name': 'Status',
+            });
+            //学生类型
+            $('.select2-account-type').initSelectOption({
+                'source': studentAccountTypeArr,
+                'className': '',
+                'default': { key: '-1', value: '账号类型' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+        }
+        function initTable() {
+            let columns = [
+                { label: '学号', name: 'Bst_No', align: 'center' },
+                { label: '账号', name: 'StudentAccount', align: 'center' },
+                { label: '昵称', name: 'Bst_NickName', align: 'center' },
+                {
+                    label: '姓名', name: 'Bst_Name', align: 'center'
+                },
+                { label: '性别', name: 'SexStr', align: 'center' },
+                { label: '年级', name: 'GradeStr', align: 'center' },
+                { label: '已购课程数', name: 'Sst_OwnCourseCount', align: 'center' },
+                { label: '所属校区', name: 'SchoolName', align: 'center' },
+                { label: '账号类型', name: 'AccountType', align: 'center' },
+                {
+                    //label: '当前状态', name: 'StatusStr', align: 'center'
+                    label: '状态',
+                    name: 'Bsl_Status',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        let statue = row['Bst_Status']
+                        //  已绑定校区 = 1, 在读 = 2, 不在读 = 3,
+                        let className = statue == 1 ? "spc-defaule" : statue == 2 ? "spc-green" : "spc-red";
+                        return `<span class="${className}">${row['StatusStr']}</span>`;
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        return "<a href='javascript:void(0)' class='text-info' onclick='showDetail(" + row.Bst_Id + ")'>查看</a>";
+                    }
+                }
+            ];
+            $('#table_list').table({
+                ajax: {
+                    url: '@Url.Action("GetStudentList", "Student")'
+                },
+                columns: columns,
+                current: PageBase.GetPageIndex(),
+                searchBox: '#form_search'
+            });
+        }
+        function registerEvent() {
+            //快速搜索事件
+            $('.status-item').on('click', function () {
+                //$('.status-item').removeClass('btn-primary')
+                //$('.status-item').map(function (i, v) {
+                //    $(v).removeClass('btn-primary');
+                //    if (!$(v).hasClass('btn-default')) {
+                //        $(this).addClass('btn-default');
+                //    }
+                //})
+                //$(this).addClass('btn-primary').removeClass('btn-default');
+
+                $(this).addClass('btn-primary').removeClass('btn-default');
+                $(this).siblings().removeClass("btn-primary").addClass("btn-default");
+                var name = $(this).data('for');
+                var item = $(`[name=${name}]`);
+                item.val($(this).data('val'));
+                $('.search').click();
+            })
+
+        }
+        function edit(id) {
+            window.location.href = '@Url.Action("StudentInfo", "Student")' + "?studentId=" + id;
+        }
+
+        function reload() {
+            window.location.reload();
+        }
+
+        function addStudentShow() {
+            var html = document.getElementById('addStudentTmp').innerHTML;
+            openLayer(html, '添加学生', ["30%", "35%"], submitAdd, function () {
+                ValidateAdd();
+            });
+        }
+        function registerStudentShow() {
+            var html = document.getElementById('registStudentTmp').innerHTML;
+            openLayer(html, '注册学生', ["30%", "60%"], submitRegister, function () {
+                $('#selectGrade').initSelectOption({
+                    'source': gradeSourceArr,
+                    'className': '',
+                    'default': { key: '-1', value: '请选择年级' },
+                    'width': '200px',
+                    'useSelect2': false,
+                });
+                ValidateRegister();
+            });
+        }
+
+        function openLayer(html, title, area, fnConfirm, fnBeforeOpen) {
+            var studentLayer = $('#studentLayer')
+            studentLayer.html(html);
+            if (fnBeforeOpen && typeof fnBeforeOpen === 'function') {
+                fnBeforeOpen();
+            }
+            window.layer.open({
+                type: 1,
+                title: title,
+                skin: 'layui-layer-rim',
+                //scrollbar: false,
+                area: area,
+                btn: ['确定', '关闭'],
+                yes: function (index, layero) {
+                    fnConfirm();
+                },
+                content: studentLayer
+            })
+        }
+
+        function ValidateAdd() {
+            $("#addStudentForm").validate({
+                onfocusin: false,
+                onkeyup: false,
+
+                rules: {
+                    code: {
+                        required: true,
+                    },
+                    phone: {
+                        required: true,
+                        isMobile: true,
+                        validStudentAccountRegistered: true,
+                    }
+                },
+                messages: {
+                    code: {
+                        required: "请输入验证码",
+                    },
+                    phone: {
+                        required: "请输入手机号",
+                        isMobile: "请输入正确手机号",
+                        validStudentAccountRegistered: "该手机号未注册",
+                    }
+                },
+
+                submitHandler: throttle(function (form) {
+                    submitAdd();
+                },1000)
+                //function (form) {
+                //        //提交
+                //        submitAdd();
+                //    }
+            });
+        }
+        function ValidateRegister() {
+            $("#registerStudentForm").validate({
+                onkeyup: false,
+                onkeyup: false,
+                rules: {
+                    code: {
+                        required: true,
+                    },
+                    phone: {
+                        required: true,
+                        isMobile: true,
+                        validStudentAccount: true,
+                    },
+                    name: {
+                        required: true,
+                    },
+                    grade: {
+                        required: true,
+                        min: 1,
+                    },
+                    pwd: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    code: {
+                        required: '请输入验证码',
+                    },
+                    phone: {
+                        required: "请输入手机号",
+                        isMobile: "请输入正确手机号",
+                        validStudentAccount: "该手机号已注册",
+                    },
+
+                    name: {
+                        required: "请输入姓名",
+                    },
+                    grade: {
+                        required: "请选择年级",
+                        min: "请选择年级",
+                    },
+                    pwd: {
+                        required: "请输入密码",
+                    }
+                },
+                //submitHandler: function (form) {
+                //    //提交
+                //    submitRegister();
+                //}
+                submitHandler: throttle(function (form) {
+                    submitRegister();
+                },1000)
+            });
+        }
+        function submitAdd() {
+            if (!$("#addStudentForm").valid()) {
+                return false;
+            }
+            $.ajax({
+                url: '@Url.Action("AddStudent", "Student")',
+                type: 'POST',
+                data: $('#addStudentForm').serialize(),
+                beforeSend: function () {
+                    loading.showLoading('正在添加，请稍候……');// showLoading();
+                },
+                success: generateSuccessFunc(function () {
+                    window.layer.closeAll();
+                }),
+                error: generateErrorFunc(),
+            })
+        }
+        function submitRegister() {
+            if (!$("#registerStudentForm").valid()) {
+                return false;
+            }
+            $.ajax({
+                url: '@Url.Action("RegistStudent", "Student")',
+                type: 'POST',
+                data: $('#registerStudentForm').serialize(),
+                beforeSend: function () {
+                    loading.showLoading('正在注册，请稍候……');// showLoading();
+                },
+                success: generateSuccessFunc(function () {
+                    window.layer.closeAll();
+                }),
+                error: generateErrorFunc(),
+            })
+        }
+
+        function showDetail(studentId) {
+            window.location.href = '@Url.Action("StudentInfo", "Student")' + '?studentId=' + studentId;
+        }
+
+    </script>
+}

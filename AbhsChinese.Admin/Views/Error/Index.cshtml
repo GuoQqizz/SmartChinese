@@ -1,0 +1,58 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>错误页面</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body, html {
+            height: 100%;
+        }
+
+        .pageerror {
+            overflow: auto;
+            margin: auto;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            height: 400px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .btns {
+            text-align: center;
+            padding-top: 30px;
+        }
+
+            .btns a {
+                background: url(/Images/btns.png) no-repeat center center;
+                display: inline-block;
+                height: 38px;
+                width: 106px;
+                text-align: center;
+                color: #fff;
+                text-decoration: none;
+                line-height: 38px;
+                background-size: 100% 100%;
+            }
+    </style>
+</head>
+<body>
+    <div class="pageerror">
+        <img src="~/Images/systemerror.png" />
+        <div class="btns"><a href="@Url.Action("","")">返回首页</a></div>
+    </div>
+</body>
+</html>

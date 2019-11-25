@@ -1,0 +1,323 @@
+﻿@using AbhsChinese.Code.Common
+@using AbhsChinese.Domain.Enum
+@{
+    //ViewBag.PageTitle = "现金券";
+    ViewBag.PageTitle = "现金券列表";
+    ViewBag.HasReloadBtn = true;
+    ViewBag.HasAddBtn = true;
+    ViewBag.AddBtnName = "添加现金券";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/abhsTableStyles")
+    @Styles.Render("~/bundles/css/switcheryStyles")
+    @Styles.Render("~/bundles/css/select2Styles")
+    <style>
+        /*添加多媒体资源下拉菜单*/
+        .dropdown-menu {
+            left: -45px !important;
+        }
+        /*switchery样式*/
+        .switchery {
+            width: 40px;
+            height: 20px;
+        }
+
+        .switchery-default {
+            cursor: pointer;
+        }
+
+        .switchery > small {
+            width: 20px;
+            height: 20px;
+        }
+
+
+
+        #wrapper, .ibox, .table_container, .ibox-content {
+            height: 100%;
+        }
+        /*abhsTable*/
+        #table_cash {
+            height: calc(100% - 40px);
+        }
+
+        .wrapper-content {
+            height: calc(100% - 100px);
+        }
+        /*.abhs_table_thead{
+            display: none;
+        }*/
+        .hidden {
+            display: none;
+        }
+
+        :root {
+            --sbheight: 50px;
+        }
+
+        .search-box {
+            height: var(--sbheight);
+        }
+
+        @@media screen and (max-width: 1350px) {
+            :root {
+                --sbheight: 100px;
+            }
+        }
+    </style>
+}
+
+<div class="ibox" style="height:100%;">
+    <div class="ibox-content" style="height:100%;">
+        <div class="row search-box">
+            @Html.Partial("_SearchCashVoucherList")
+            @Html.Partial("_PageControl")
+        </div>
+        <div class="row" style="height: calc(100% - 65px);">
+            <div class="col-12 table_container">
+                <div id="table_cash"></div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/abhsTable")
+    @Scripts.Render("~/bundles/js/switchery")
+    <script src="~/Scripts/PageScripts/abhschinese.common.js"></script>
+    <script>
+        //
+        $(function () {
+            renderSearch();
+            initTable();
+        });
+
+        function renderSearch() {
+            //优惠券状态
+            $('.select2-cash-status').initSelectOption({
+                'source': voucherStatusArr,
+                'className': '',
+                'default': { key: '-1', value: '现金券领取状态' },
+                'width': '200px',
+                'useSelect2': true,
+            });
+        }
+
+        function initTable() {
+            let columns = [
+                { label: '编号', name: 'Ycv_Id', align: 'center' },
+                { label: '现金券名称', name: 'Ycv_Name', align: 'center' },
+                {
+                    label: '适用课程', name: 'Ycv_CourseId', align: 'center', formatter: function (index, value, row) {
+                        //console.log(row.Ycs_Name);
+                        if (row.Ycv_ApplyScopeType == 3) {
+                            return "<span>" + row.Ycs_Name + "</span>"
+                        }
+                        return "全部课程";
+                    }
+                },
+                {
+                    label: '使用门槛', name: 'Ycv_OrderAmountLimit', align: 'center', formatter: function (index, value, row) {
+                        if (row.Ycv_OrderAmountLimit == 0) {
+                            return "无门槛";
+                        }
+                        return "<span>满￥" + row.Ycv_OrderAmountLimit + "可用</span>";
+                    }
+                },
+                {
+                    label: '面值', name: 'Ycv_Amount', align: 'center', formatter: function (index, value, row) {
+                        return "￥" + row.Ycv_Amount;
+                    }
+                },
+
+                {
+                    label: '有效期', name: 'Ycv_ExpireType', align: 'center', formatter: function (index, value, row) {
+                        if (row.Ycv_ExpireType == 1) {
+                            return "<span>" + row.ExpireDate + "</span>";
+                        }
+                        if (row.Ycv_ExpireType == 2) {
+                            return "<span>领取后" + row.Ycv_ExpireDayCount + "天有效</span>";
+                        }
+                        return "<span>长期有效</span>";
+                    }
+                },
+
+                {
+                    label: '领取状态', name: '', align: 'center',
+                    formatter: function (index, value, row) {
+                        var count = Number(row.Ycv_PublishCount) - Number(row.Ycv_TakenCount);
+                        if (count > 0) {
+                            return "未领完";
+                        }
+                        return "已领完";
+                    }
+                },
+                {
+                    label: '启用状态', name: '', align: 'center',
+                    formatter: function (index, value, row) {
+                        if (row['Ycv_Status'] == 1) {
+                            return "<span class='sp-status'>已启用</span>";
+                        }
+                        else if (row['Ycv_Status'] == 2) {
+                            return "<span class='sp-status'>未启用</span>";
+                        }
+                        else if (row['Ycv_Status'] == 3) {
+                            return "<span class='sp-status'>已关闭</span>";
+                        }
+                        return "";
+                    }
+                },
+                {
+                    label: '是否启用', name: 'Ycv_Status', align: 'center',
+                    formatter: function (index, value, row) {
+                        let checked = row['Ycv_Status'] == 1 ? 'checked' : '';
+                        let dataProp = `  data-id=${row['Ycv_Id']} `;
+                        return `   <input type="checkbox"  class="js-switch"   ${checked}  ${dataProp}/>`;
+                    }
+                },
+                {
+                    label: '操作',
+                    name: '',
+                    align: 'center',
+                    formatter: function (index, value, row) {
+                        var className = row['Ycv_Status'] == 1 ? "" : "hidden";
+                        return "<a href='javascript:void(0)' class='text-info' onclick='show(" + row.Ycv_Id + ")'>查看</a>&nbsp;&nbsp;<a href='javascript:void(0)' class='text-info  delete-btn " + className + "' onclick='deleteLocal(this," + row.Ycv_Id + ")'>删除</a>";
+                    }
+                }
+            ];
+
+            //js修改switch状态
+            function setSwitchery(switchElement, checkedBool) {
+                if ((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
+                    switchElement.setPosition(true);
+                }
+            }
+
+            //表格加载完成后回调
+            let loaded = function () {
+                //处理checkedbox
+                var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+                elems.forEach(function (ele) {
+                    let switchery = new Switchery(ele, { disabled: false });
+                    let id = $(ele).data('id');
+                    if (id > 0) {//可用
+                        switchery.enable();
+                        ele.onchange = function () {
+                            let $this = $(this);
+                            let toStatus = $this.is(':checked') ? 1 : 3;
+                            window.layer.confirm("确认修改启用状态?", function () {
+                                $.ajax({
+                                    url: '@Url.Action("UpdateStatus", "CashVoucher")',
+                                    type: 'POST',
+                                    data: { id: id, status: toStatus },
+                                    success: function (data) {
+                                        if (data.State) {
+                                            window.layer.msg(data.ErrorMsg,
+                                               { time: 500 },
+                                               function () {
+                                                   window.layer.closeAll();
+                                                   //PageBase.SetReload();
+                                                   //window.location.reload();
+                                                   let index = $this.parent().parent().index();
+                                                   let deleteBtn1 = $this.parent().parent().find('.delete-btn');
+                                                   let deleteBtn2 = $('.abhs_table_thead tbody tr:eq(' + index + ')').find('.delete-btn');
+                                                   let sp1 = $this.parent().parent().find('.sp-status');
+                                                   let sp2 = $('.abhs_table_thead tbody tr:eq(' + index + ')').find('.sp-status');
+                                                   if (toStatus == 1) {
+                                                       deleteBtn1.removeClass('hidden');
+                                                       deleteBtn2.removeClass('hidden');
+                                                       sp1.html('已启用');
+                                                       sp2.html('已启用');
+                                                   } else {
+                                                       deleteBtn1.addClass('hidden');
+                                                       deleteBtn2.addClass('hidden');
+                                                       sp1.html('已关闭');
+                                                       sp2.html('已关闭');
+                                                   }
+                                               });
+                                        } else {
+                                            window.layer.alert(data.ErrorMsg,
+                                               { icon: 2 },
+                                               function () {
+                                                   window.layer.closeAll();
+                                                   setSwitchery(switchery, toStatus != 1);
+                                               });
+                                        }
+                                    },
+                                    error: function (data) {
+                                        window.layer.alert(data.ErrorMsg, { icon: 2 }, function () {
+                                            window.layer.closeAll();
+                                            setSwitchery(switchery, toStatus != 1);
+                                        });
+                                    }
+                                })
+                            }, function (index, layero) {
+                                console.log(index, layero);
+                                setSwitchery(switchery, toStatus != 1);
+                            })
+                        };
+                    } else {//不可用
+                        switchery.disable();
+                    }
+                });
+            }
+
+            $('#table_cash').table({
+                ajax: {
+                    url: '@Url.Action("GetCashVoucheres", "CashVoucher")'
+                },
+                columns: columns,
+                loaded: loaded,
+                current: PageBase.GetPageIndex(),
+                searchBox: '#form_search'
+            });
+        }
+
+        function editLocal(id) {
+            window.location.href = '@Url.Action("Edit", "CashVoucher")' + '?id=' + id;
+        }
+
+        function show(id) {
+            location.href = '/CashVoucher/CashVoucherDetails?cashVoucherId=' + id;
+        }
+        function deleteLocal($this, id) {
+            $this = $($this);
+            window.layer.confirm("确认删除?", function () {
+                $.ajax({
+                    url: '@Url.Action("UpdateStatus", "CashVoucher")',
+                    type: 'POST',
+                    data: { id: id, status: 4 },
+                    success: function (data) {
+                        if (data.State) {
+                            window.layer.msg(data.ErrorMsg,
+                               { time: 500 },
+                               function () {
+                                   window.layer.closeAll();
+                                   //PageBase.SetReload();
+                                   //window.location.reload();
+                                   let index = $this.parent().parent().index();
+                                   let parent1 = $this.parent().parent();
+                                   let parent2 = $('.abhs_table_thead tbody tr:eq(' + index + ')');
+                                   parent1.remove();
+                                   parent2.remove();
+
+                               });
+                        } else {
+                            window.layer.alert(data.ErrorMsg,
+                               { icon: 2 },
+                               function () {
+                                   window.layer.closeAll();
+                               });
+                        }
+                    },
+                    error: function (data) {
+                        window.layer.alert(data.ErrorMsg, { icon: 2 }, function () {
+                            window.layer.closeAll();
+                        });
+                    }
+                })
+            })
+        }
+    </script>
+}

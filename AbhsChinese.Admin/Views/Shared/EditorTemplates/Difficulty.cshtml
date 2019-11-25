@@ -1,0 +1,9 @@
+﻿@model int?
+<div class="select-container">
+    <select class="select2" data-ajax--url="@Url.Action("GetDifficulties","Select2")"
+            data-ajax--cache="true"
+            data-placeholder="请选择难度" data-allow-clear="true">
+        <option></option>
+    </select>
+    @Html.HiddenFor(m => m)
+</div>

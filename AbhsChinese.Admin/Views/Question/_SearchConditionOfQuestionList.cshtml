@@ -1,0 +1,17 @@
+﻿<form role="form" class="form-inline search-form" id="form_search_question">
+    <input type="hidden" name="subjectStatus" value="" />
+    <input type="hidden" name="subjectType" value="0" />
+    <div class="form-group">
+        <input type="text" name="id" placeholder="请输入编号" class="form-control">
+    </div>
+    <div class="form-group">
+        <input type="text" name="keyword" placeholder="请输入关键字" class="form-control">
+    </div>
+    <div class="form-group">
+        <select class="select2 normal" data-ajax--url="@Url.Action("GetDifficulties","Select2")"
+                data-ajax--cache="true"
+                data-placeholder="请选择难度" data-allow-clear="true"
+                name="difficulty"></select>
+    </div>
+    <button class="btn btn-white search" type="button">搜索</button>
+</form>

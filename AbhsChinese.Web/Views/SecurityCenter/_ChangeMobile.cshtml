@@ -1,0 +1,24 @@
+﻿@using System.Text.RegularExpressions;
+<div class="itemlist" style="display: none;">
+    <div class="cbox changemobile_step1">
+        <div class="cllogin">更换手机号码</div>
+        <div class="username">账号：<span class="newphone">@Regex.Replace(ViewBag.Mobile, "(\\d{3})\\d{4}(\\d{4})", "$1****$2")</span></div>
+        <div class="inpbox"><input placeholder="请输入短信验证码" type="text" id="changeCode" /><span status="1" class="feachBtn" id="changebtn">发送验证码</span></div>
+        <div class="error changeolderror" style="display:none;"><span class="mobileerror changeolderror"><img src="~/Images/StudentInfo/error.png" /><span class="codemsg">验证码不正确</span></span></div>
+        <div class="inpbox1"><button type="button" class="mobilefun1">验证</button></div>
+    </div>
+    <div class="cbox changemobile_step2 changeother" style="display: none;">
+        <div class="cllogin">绑定新手机号</div>
+        <div class="inpbox"><input placeholder="请输入手机号" type="text" id="newPhoneNum" maxlength="11"/></div>
+        <div class="error changephoneerror" style="display:none;"><span class="mobileerror changephoneerror"><img src="~/Images/StudentInfo/error.png" /> <span id="phoneStr" class="changephoneerror">手机号不正确</span></span></div>
+        <div class="inpbox"><input placeholder="请输入短信验证码" type="text" id="newphonecode" maxlength="4"/><span status="1" class="feachBtn" id="newphonebtn">发送验证码</span></div>
+        <div class="error changenewerror" style="display:none;"><span class="mobileerror changenewerror"><img src="~/Images/StudentInfo/error.png" /> <span id="changeid" class="codemsg">验证码不正确</span></span></div>
+        <div class="inpbox1"><button type="button" class="mobilefun2">确定</button></div>
+    </div>
+    <div class="cbox changemobile_step3 changeother" style="display: none;">
+        <div class="cllogin"><img src="~/Images/StudentInfo/success1.png" /></div>
+        <div class="cllogin cllogin1">更换手机成功</div>
+        <div class="faceinfo textcenter" style="padding: 0;">新手机号：<span class="newphone"></span></div>
+        <div class="inpbox1"><button class="mobilefun3" type="button">确定</button></div>
+    </div>
+</div>

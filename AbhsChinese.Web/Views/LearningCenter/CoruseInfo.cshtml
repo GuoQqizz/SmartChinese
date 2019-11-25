@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "开始练习";
+    bool showStudied = Model.NotStudyLesson.Count == 0 && Model.StudiedLesson.Count > 0;//用于存储是否直接展示已学习的内容
+}
+
+@model AbhsChinese.Web.Models.LearningCenter.StudentCourseInfoViewModel
+@section Styles{
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #practicetab .tablist {
+            cursor: pointer;
+        }
+    </style>
+}
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="@Url.Action("Index","LearningCenter")">学习中心</a><em><img src="/Images/StudentInfo/back.png" /></em><a href="#">课程学习</a>
+        </div>
+        <!-- <div class="navigationr"><a href="#">< &nbsp;返回</a></div> -->
+    </div>
+    <div class="maincontent">
+        <div class="mainbjtop"><img src="/Images/StudentInfo/orderbodytop.png" /></div>
+        <div class="maincenter startpracticepage">
+            <div class="ptitle">
+                <div class="fl"><span class="label">@Model.CourseTypeStr</span><em>@Model.CourseName（共 @Model.LessonsNum 课时）</em></div>
+                <div class="info"><span>@Model.LessonsFinishedNum</span>/@Model.LessonsNum</div>
+            </div>
+            <div class="infotext"><span>适用年级：@Model.GradeStr</span><span>教材版本：部编版</span><span>校区班级：@Model.ClassName</span></div>
+            <div class="phimg">
+                @if (Model.TeacherID != 0)
+                {
+                    <img src="@Model.TeacherImg" /><span>@(Model.TeacherName)</span>&nbsp;<em>班主任</em>
+                }
+            </div>
+
+            <div class="tabbx">
+                <div class="tab" id="practicetab">
+                    <div class="tablist @(!showStudied?"active":"") fl">待学习（@Model.NotStudyLesson.Count 课时）</div>
+                    <div class="tablist @(showStudied?"active":"") fl">已学习（@Model.StudiedLesson.Count 课时）</div>
+                </div>
+            </div>
+            <div class="tabcontbox">
+                @if (Model.NotStudyLesson.Count > 0)
+                {
+                    <ul style="display:@(showStudied?"none":"block");">
+                        @for (int i = 0; i < Model.NotStudyLesson.Count; i++)
+                        {
+                            if (Model.NotStudyLesson[i].LessonIndex <= Model.NextLessonNum)
+                            {
+                        <li class="active">
+                            <div class="titl fl">【 第 @Model.NotStudyLesson[i].LessonIndex.ToString().PadLeft(2, '0') 课时 】@Model.NotStudyLesson[i].LessonName</div>
+                            <div class="operate"><a href="/LearningCenter/LessonStudy?courseId=@Model.CourseID&lessonId=@Model.NotStudyLesson[i].LessonId">开始学习</a></div>
+                        </li>
+                            }
+                            else
+                            {
+                        <li>
+                            <div class="titl fl">【 第 @Model.NotStudyLesson[i].LessonIndex.ToString().PadLeft(2, '0') 课时 】@Model.NotStudyLesson[i].LessonName</div>
+                            <div class="operate"></div>
+                        </li>
+
+                            }
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="pageimgerror" style="display:@(showStudied?"none":"block");">
+                        <img class="error-img" src="/Images/StudentInfo/nop.png" />
+                    </div>
+                }
+                @if (Model.StudiedLesson.Count > 0)
+                {
+                    <ul style="display:@(showStudied?"block":"none");">
+                        @for (int i = 0; i < Model.StudiedLesson.Count; i++)
+                        {
+                        <li class="active">
+                            <div class="titl fl">【 第 @Model.StudiedLesson[i].LessonIndex.ToString().PadLeft(2, '0') 课时 】@Model.StudiedLesson[i].LessonName</div>
+                            <div class="operate"><a href="/LearningCenter/LessonStudy?courseId=@Model.CourseID&lessonId=@Model.StudiedLesson[i].LessonId">开始学习</a></div>
+                        </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="pageimgerror" style="display:@(showStudied?"block":"none");">
+                        <img class="error-img" src="/Images/StudentInfo/nop.png" />
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="mainbjbottom"><img src="/Images/StudentInfo/orderbodybottom.png" /></div>
+    </div>
+
+</div>
+<div class="bodybjleft">
+    <img src="/Images/StudentInfo/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="/Images/StudentInfo/homeRight.png" />
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#practicetab .tablist').click(function () {
+                $(this).addClass('active').siblings().removeClass('active');
+                $('.tabcontbox').children().eq($(this).index()).show().siblings().hide();
+            })
+            function geth() {
+                var H = $(window).height() - $('.navigation').height() - 20 - ($('.mainbjtop').height() * 2) - 270;
+                $('.startpracticepage').css({
+                    'min-height': H
+                })
+            }
+            geth();
+            $(window).resize(function () {
+                geth()
+            });
+
+        })
+    </script>
+}

@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>填空题</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/animate.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/Content/custom.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <script src="/Scripts/PageScripts/subject.view.reload.js"></script>
+    <script src="/Scripts/PageScripts/subject.view.content.js"></script>
+    <style>
+        .question-block:before {
+            content: "选择题目";
+        }
+
+        .question-block input.form-control {
+            padding: 5px;
+        }
+
+        .question-block .input-group-btn .btn {
+            padding: 3px 5px;
+        }
+
+        .question-block .question-list {
+            height: 470px;
+            margin: 10px 0px 0px;
+            padding: 5px;
+            overflow: auto;
+        }
+
+            .question-block .question-list li {
+                margin-bottom: 10px;
+                width: 100%;
+                padding: 5px;
+                border: 1px solid #808080;
+            }
+
+        .MakeBox div {
+            margin: 10px;
+            min-height: 30px;
+            line-height: 30px;
+        }
+
+        .MakeBox .kcb-list {
+            width: calc(100% - 80px);
+            position: absolute;
+            top: 30px;
+            left: 80px;
+            min-height: 30px;
+            max-height: 200px;
+            background: #fff;
+            border: 1px solid #808080;
+            background:#fff;
+            overflow: auto;
+            display: none;
+        }
+
+        .MakeBox .control-label {
+            width: 120px;
+            text-align: right;
+            float: left;
+            padding: 0px 5px;
+        }
+
+        .MakeBox select.form-control {
+            padding: 0px 5px;
+        }
+
+        .MakeBox .form-control.sma {
+            width: calc(50% - 120px);
+            float: left;
+        }
+
+        .MakeBox .form-control.big {
+            width: calc(100% - 120px);
+            float: left;
+        }
+
+        .MakeBox #textbox {
+            height: 480px;
+            overflow: auto;
+        }
+
+            .MakeBox #textbox img {
+                display: block;
+                margin: 0 auto;
+            }
+    </style>
+
+    <script>
+        $(function () {
+
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                var ChapterSet = CurriculumInfo.chapterSet;
+                //创建默认的动作
+                var action = new top.StudyFill({
+                    actionId: "studyfill" + randomString(20),
+                    questionid: "",
+                    goldCoins: 0,
+                    usetime: 5 * 60 * 1000
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                //加载数据
+                (function LoadData() {
+                    if (CurriculumInfo.selectAction instanceof top.StudyFill) {//如果是修改的动作
+                        action = new top.StudyFill(CurriculumInfo.selectAction);
+                        $("#kcbInput").attr("mediaid", action.kcbid).val(action.kcbtext);
+                        $("#textbox").html("正在加载题目数据请稍后");
+                        $.get("/FillInBlank/GetQuestionInfo/0", function (data) {
+                            $("#textbox").html(data);
+                            loadData(action.questionid, 3);
+                        })
+                    }
+                    $("#goldsnum").val(action.goldCoins);
+                    $("#usetime").val(action.usetime / 60 / 1000);
+                })();
+                $("#kcbInput").focus(function () {
+                    LoadKCB($(this).val() || "");
+                    $(".kcb-list").show();
+                    return false;
+                });
+                $("#kcbInput").blur(function () {
+                    setTimeout(function () {
+                        $(".kcb-list").hide();
+                    }, 500);
+                    return false;
+                });
+                $("#kcbInput").keyup(function () {
+                    $(this).attr("mediaid", "");
+                    LoadKCB($(this).val());
+                    return false;
+                });
+
+                var oldstr = null;
+                function LoadKCB(str) {
+                    if (str == oldstr) {//防止相同的文字多次重复调用
+                        return;
+                    }
+                    oldstr = str;
+                    $(".kcb-list").html(`<li class="kcb-media" mediaid="" mediatext="${str}"><span class="kcb-system">自定义开场白:</span>${str}</li>`);
+                    $.ajax({
+                        url: "/ResourceGroup/GetPrologues",
+                        type: "post",
+                        data: { description: str },
+                        dataType: "json",
+                        success: function (data) {
+                            $(".kcb-list").html(`<li class="kcb-media" mediaid="" mediatext="${str}"><span class="kcb-system">自定义开场白:</span>${str}</li>`);
+                            var data = data.Data;
+                            for (var i = 0; i < data.length; i++) {
+                                var d = data[i];
+                                $(".kcb-list").append(`<li class="kcb-media" mediaid="${d.MediaID}" mediatext="${d.MediaName}"><span class="kcb-system">系统开场白:</span>${d.MediaName}</li>`);
+                            }
+                            $(".kcb-list li").click(function () {
+                                action.kcbtext = $(this).attr("mediatext");
+                                $("#kcbInput").val(action.kcbtext);
+                                action.kcbid = $(this).attr("mediaid");
+                                $("#kcbInput").attr("mediaid", action.kcbid);
+                                $(".kcb-list").hide();
+                            });
+                        },
+                        error: function (e) {
+                            $(".kcb-list").append(`<li class="kcb-media" mediaid="">数据加载失败</li>`);
+                        }
+                    })
+                }
+
+                //金币数量
+                $("#goldsnum").keyup(function () {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.goldCoins = val;
+                })
+                //学习时间
+                $("#usetime").keyup(function () {
+                    var val = parseInt($(this).val()) || 0;
+                    $(this).val(val);
+                    action.usetime = val * 60 * 1000;
+                })
+
+                var index = 1, keywords = "", isLoading = false, isOver = false;
+                $("#SelectQuestionBtn").on("click", function () {
+                    index = 1;//从第一页加载
+                    isOver = false;//没有结束
+                    keywords = $("#SelectQuestionInput").val();
+                    $("#QuestionList").html("");
+                    LoadList();
+                });
+                function LoadList() {
+                    if (!isLoading && !isOver) {//如果不是加载中,且数据没有加载完
+                        isLoading = true;
+                        $("#QuestionList .loadMediaMsg").off("click");
+                        $("#QuestionList .loadMediaMsg").remove();
+                        $("#QuestionList").append("<p class='loadMediaMsg'>数据加载中...</p>")
+                        $.ajax({
+                            url: "/ResourceGroup/GetSubjectToCourse",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                CourseId: ChapterSet.courseId,
+                                SubjectType: 3,// 选择题 = 1,判断题 = 2,填空题 = 3,选择填空 = 4,连线题 = 5,主观题 = 6,圈点批注标色 = 7,圈点批注断句 = 8
+                                NameOrKey: keywords,
+                                Pagination: {
+                                    PageIndex: index,
+                                    PageSize: 10,
+                                }
+                            },
+                            success: function (data) {
+                                if (data.Data.length > 0) {
+                                    $("#QuestionList .loadMediaMsg").off("click");
+                                    $("#QuestionList .loadMediaMsg").remove();
+                                    console.log("questionData", data);
+                                    for (var i = 0; i < data.Data.length; i++) {
+                                        var d = data.Data[i];
+                                        $("#QuestionList").append(`<li questionid="${d.MediaID}" ><span>${d.MediaName ? d.MediaName : d.MediaID}</span></li>`);
+                                    }
+
+                                    if (data.Data.length == 10) {
+                                        $("#QuestionList").append("<p class='loadMediaMsg'>点击加载更多...</p>");
+                                        $("#QuestionList .loadMediaMsg").on("click", function () {
+                                            if (!isLoading) {
+                                                index++;
+                                                LoadList();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#QuestionList").append("<p class='loadMediaMsg'>没有数据了</p>");
+                                        isOver = true;
+                                    }
+
+                                    $(".question-list li").off("click");
+                                    $(".question-list li").on("click", function () {
+                                        action.questionid = $(this).attr("questionid");
+                                        $("#textbox").html("正在加载题目数据请稍后");
+                                        $.get("/FillInBlank/GetQuestionInfo/0", function (data) {
+                                            $("#textbox").html(data);
+                                            loadData(action.questionid, 3);
+                                        })
+                                    });
+
+                                }
+                                else {
+                                    $("#QuestionList .loadMediaMsg").html("没有数据了");
+                                    isOver = true;
+                                }
+                                isLoading = false;
+                            },
+                            error: function (e) {
+                                console.error("error", e);
+                                isLoading = false;
+                                index--;
+                            }
+                        });
+                    }
+                }
+
+                $("#QuestionList").scroll(function () {
+                    if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+                        if (!isLoading) {
+                            index++;
+                            LoadList();
+                        }
+                    }
+                })
+
+
+                $("#OkBtn").click(function () {
+                    if (action.questionid != "") {
+
+                        action.kcbtext = $("#kcbInput").val();
+                        action.kcbid = $("#kcbInput").attr("mediaid");
+                        if (action.kcbid.trim() == "" && action.kcbtext.trim() != "") {
+                            var issuccess = false;
+                            $.ajax({
+                                url: "/ResourceGroup/AddPrologues",
+                                type: "post",
+                                dataType: "json",
+                                async: false,
+                                data: { description: action.kcbtext },
+                                success: function (data) {
+                                    issuccess = true;
+                                    action.kcbid = data.Data + "";
+                                },
+                                error: function (e) {
+                                }
+                            })
+                            if (!issuccess) { alert("开场白录入失败.请重试"); return; }
+                        }
+                        if (CurriculumInfo.selectAction instanceof top.StudyFill) {
+                            CurriculumInfo.SetAction(action);
+                        }
+                        else {
+                            CurriculumInfo.AddAction(action);
+                        }
+                        var frame = top.frames["ActionSet"];
+                        if (frame) {
+                            $(frame).hide();
+                        }
+                    }
+                    else {
+                        alert("请选择题题目");
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">填空题</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <div class="question-block block-box">
+                    <div class="input-group">
+                        <input id="SelectQuestionInput" type="text" class="form-control" placeholder="名称/编号/关键字搜索">
+                        <span class="input-group-btn">
+                            <button id="SelectQuestionBtn" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                    <ul id="QuestionList" class="question-list"></ul>
+                </div>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div style="position:relative;">
+                <label class="col2 control-label">开场白</label>
+                <input type="text" class="form-control big" id="kcbInput" mediaid="" placeholder="请输入开场白" autocomplete="off" />
+                <ul class="kcb-list"></ul>
+            </div>
+            <div>
+                <label class="col2 control-label">金币个数</label>
+                <input id="goldsnum" type="text" class="form-control sma" placeholder="请输入整数" />
+                <label class="col2 control-label">学习时间(分钟)</label>
+                <input id="usetime" type="text" class="form-control sma" placeholder="请输入整数(分钟)" />
+            </div>
+            <div>
+                <div id="textbox" class="ibox-content" style="height:500px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

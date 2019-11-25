@@ -1,0 +1,173 @@
+﻿<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <h3 class="text-white">艾上大语文管理后台</h3>
+            </li>
+            <li class="@Html.IsSelected(controller: "Product")" style="display:none;">
+                <a href="@Url.Action("Table", "Product")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Product</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Product", cssClass: "in")">
+                    <li class="@Html.IsSelected(action: "Table")"><a href="@Url.Action("Table", "Product")">Table</a></li>
+                    <li class="@Html.IsSelected(action: "Test")"><a href="@Url.Action("Test", "Product")">Test</a></li>
+                </ul>
+            </li>
+            <li class="@Html.IsSelected(controller: "User")" style="display:none;">
+                <a href="@Url.Action("Forms", "User")">
+                    <i class="fa fa-th-large"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">User</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
+                    <li class="@Html.IsSelected(action: "Forms")">
+                        <a href="@Url.Action("List", "User")">List</a>
+                    </li>
+                    <li class="@Html.IsSelected(action: "Forms")">
+                        <a href="@Url.Action("Forms", "User")">Forms</a>
+                    </li>
+                    <li class="@Html.IsSelected(action: "DialogForms")">
+                        <a href="@Url.Action("DialogForms", "User")">DialogForms</a>
+                    </li>
+                    <li class="@Html.IsSelected(action: "ShowUMEditor")">
+                        <a href="@Url.Action("ShowUMEditor", "User")">UMEditor</a>
+                    </li>
+                </ul>
+            </li>
+            <li  >
+                <a href="javascript:void(0);">
+                    <i class="fa fa-database"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">题库</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li class="@Html.IsSelected(action: "ListApprovedQuestions")">
+                        <a href="@Url.Action("ListApprovedQuestions", "Question")">题库管理</a>
+                    </li>
+                    <li  >
+                        <a href="@Url.Action("ListQuestions", "Question")">题目校对</a>
+                    </li>
+                </ul>
+            </li>
+            <li  >
+                <a href="javascript:void(0);">
+                    <i class="fa  fa-cubes"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">资源组</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse  ">
+                    <li class="@Html.IsSelected(action: "Index")">
+                        <a href="@Url.Action("Index", "ResourceGroup")">资源组管理</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="@Html.IsSelected(controller: "Resource")">
+                <a href="javascript:void(0);">
+                    <i class="fa fa-cloud"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">资源</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse  ">
+                    <li  >
+                        <a href="@Url.Action("TextResource", "Resource")">文本资源管理</a>
+                    </li>
+                    <li  >
+                        <a href="@Url.Action("MediaResource", "Resource")">多媒体资源管理</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="javascript:void(0);">
+                    <i class="fa fa-key"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">知识点</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li >
+                        <a href="@Url.Action("Index", "Knowledge")">知识点管理</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="javascript:void(0);">
+                    <i class="fa  fa-cogs"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">设置</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li >
+                        <a href="@Url.Action("Index", "Employee")">教师管理</a>
+                    </li>
+                    <li >
+                        <a href="@Url.Action("CategoryList", "Category")">分类设置</a>
+                    </li>
+                    <li >
+                        <a href="@Url.Action("XiaoAiList", "XiaoAi")">"小艾"管理</a>
+                    </li>
+                    <li >
+                        <a href="@Url.Action("Index", "Prologue")">开场语管理</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="javascript:void(0);">
+                    <i class="fa fa-th-large"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">运营活动</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li >
+                        <a href="@Url.Action("Index", "Advertising")">课程推荐</a>
+                    </li>
+                    <li >
+                        <a href="@Url.Action("CashVoucherList", "CashVoucher")">现金券</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="#">
+                    <i class="fa fa-book"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">课程</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li >
+                        <a href="@Url.Action("ListCurriculums", "Course")">课程管理</a>
+                    </li>
+                    <li >
+                        <a href="@Url.Action("Approve", "Curriculum")">课程审批</a>
+                    </li>
+                    <li >
+                        <a href="@Url.Action("Make", "Curriculum")">课程制作</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="#">
+                    <i class="fa fa-filter fa-bookmark "></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">选课管理</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse ">
+                    <li >
+                        <a href="@Url.Action("ListCourses", "CourseManage")">课程上下架</a>
+                    </li>
+                </ul>
+            </li>
+            <li >
+                <a href="javascript:void(0);">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span class="nav-label" data-i18n="nav.dashboard">校区</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li >
+                        <a href="@Url.Action("Index", "School")">校区管理</a>
+                    </li>
+                    <li >
+                        <a href="@Url.Action("LevelIndex", "School")">校区等级</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</nav>

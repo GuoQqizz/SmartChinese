@@ -1,0 +1,75 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "待校对-判断题";
+    string controller = "TrueFalse";
+    ViewBag.controller = controller;
+    ViewBag.action = "EditTrueFalseSubject";
+    ViewBag.id = Model;
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <form action="@Url.Action("Approve", controller)" method="post">
+            <input type="hidden" name="subjectId" value="@Model" />
+            <input type="hidden" name="nextStatus" />
+            @Html.Partial("GetQuestionInfo")
+            @Html.Partial("_SubjectBasicReadonly")
+            @Html.Partial("_SubjectViewButtons")
+        </form>
+    </div>
+</div>
+
+@section Styles{
+}
+
+@section Scripts{
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Scripts/PageScripts/subjectreadonly.js"></script>
+    <script src="~/Scripts/PageScripts/subject.view.mark.js"></script>
+    <script src="~/Scripts/PageScripts/subject.view.reload.js"></script>
+    <script src="~/Scripts/PageScripts/subjct.subjectbasic.js"></script>
+    <script>
+        $(function () {
+            let url = '@Url.Action("GetDetails",controller)';
+            let subjectId = $(':hidden[name="subjectId"]').val();
+            $.getJSON(url, { id: subjectId }, function (response) {
+                if (response.State) {
+                    let data = response.Data;
+                    
+                    renderSubjectBasicData(data);
+
+                    reloadTrueFalseSubjectData(data);
+
+                    //显示合格/不合格按钮或其他
+                    let status = data.SubjectStatus;
+                    registerEventForMark(status);
+                    $('#div_button_' + status).show();
+                }
+            });
+        });
+    </script>
+    <script>
+        function submitForm(button) {
+            let $form = $(button).parents('form');
+            console.log(button.value);
+            $form.find(':hidden[name="nextStatus"]').val(button.value);
+            let url = $form.attr('action');
+            let data = $form.serialize();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function (reponse) {
+                    layer.msg(reponse.ErrorMsg, { icon: reponse.State ? 1 : 5 });
+                    if (reponse.State) {
+                        setTimeout(function () {
+                            window.location.href = "/Question/ListQuestions";
+                        }, 2000);
+                    }
+                }
+            });
+        }
+    </script>
+}
+

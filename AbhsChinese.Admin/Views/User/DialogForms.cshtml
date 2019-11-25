@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "DialogForms";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!------------------------------------ Normal Form Start ---------------------------------->
+    <a data-toggle="modal"
+       class="btn btn-primary" href="#modal-form">Form in simple modal box</a>
+    <div id="modal-form" class="modal fade" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="m-t-none m-b">Sign in</h3>
+                    <form action="/User/Add" method="post">
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">ID</label>
+                            <div class="col-lg-10">
+                                <p class="form-control-plaintext">2</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Phone</label>
+                            <div class="col-lg-10">
+                                <input type="text"
+                                       disabled class="form-control" value="123456678">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Normal</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="userName"
+                                   class="col-lg-2 col-form-label">User Name</label>
+                            <div class="col-lg-10">
+                                <input name="userName"
+                                       required
+                                       maxlength="5"
+                                       value="sfsjlfjsljfls"
+                                       type="text" placeholder="User Name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Email</label>
+                            <div class="col-lg-10">
+                                <input name="email"
+                                       autocomplete="email"
+                                       type="email"
+                                       placeholder="Email" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Password</label>
+                            <div class="col-lg-10">
+                                <input id="cPassword"
+                                       name="password"
+                                       autocomplete="new-password"
+                                       type="password"
+                                       placeholder="Password" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Confirm Password</label>
+                            <div class="col-lg-10">
+                                <input equalTo="#cPassword"
+                                       autocomplete="new-password"
+                                       type="password"
+                                       placeholder="Confirm password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                Checkboxes &amp; radios
+                                <br><small class="text-navy">Custom elements</small>
+                            </label>
+                            <div class="col-sm-10">
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="checkbox" value=""> <i></i> Option one
+                                    </label>
+                                </div>
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="checkbox" value="" checked>
+                                        <i></i> Option two checked
+                                    </label>
+                                </div>
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="radio" value="" name="a" checked>
+                                        <i></i> Option three checked and disabled
+                                    </label>
+                                </div>
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="radio" name="a" value="">
+                                        <i></i> Option four disabled
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-sm btn-white" type="submit">Sign in</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------ Normal Form end ------------------------------------>
+
+    <!------------------------------------ Ajax Form Start ---------------------------------->
+    <a data-toggle="modal"
+       class="btn btn-primary" href="#modal-form-ajax">Ajax form in simple modal box</a>
+    <div id="modal-form-ajax" class="modal fade" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="m-t-none m-b">Sign in</h3>
+                    <form id="ajaxForm" action="/User/AjaxAdd" method="post">
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">ID</label>
+                            <div class="col-lg-10">
+                                <p class="form-control-plaintext">2</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Phone</label>
+                            <div class="col-lg-10">
+                                <input type="text"
+                                       disabled class="form-control" value="123456678">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Normal</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="userName" class="col-lg-2 col-form-label">User Name</label>
+                            <div class="col-lg-10">
+                                <input name="userName"
+                                       required
+                                       maxlength="5"
+                                       value="sfsjlfjsljfls"
+                                       type="text" placeholder="User Name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Email</label>
+                            <div class="col-lg-10">
+                                <input name="email"
+                                       autocomplete="email"
+                                       type="email"
+                                       placeholder="Email" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Password</label>
+                            <div class="col-lg-10">
+                                <input id="cPassword2"
+                                       name="password"
+                                       autocomplete="new-password"
+                                       type="password"
+                                       placeholder="Password" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Confirm Password</label>
+                            <div class="col-lg-10">
+                                <input equalTo="#cPassword2"
+                                       autocomplete="new-password"
+                                       type="password"
+                                       placeholder="Confirm password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Checkboxes &amp; radios <br><small class="text-navy">Custom elements</small></label>
+                            <div class="col-sm-10">
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="checkbox" value=""> <i></i> Option one
+                                    </label>
+                                </div>
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="checkbox" value="" checked>
+                                        <i></i> Option two checked
+                                    </label>
+                                </div>
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="radio" value="" name="a" checked>
+                                        <i></i> Option three checked and disabled
+                                    </label>
+                                </div>
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="radio" name="a" value="">
+                                        <i></i> Option four disabled
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input id="btn_SignIn"
+                                        class="btn btn-sm btn-white"
+                                        type="button" value="Sign in">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------ Ajax Form end ------------------------------------>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            var $form = $("#ajaxForm");
+            $form.on('submit', function () {
+                if ($form.valid()) {
+                    $form.ajaxSubmit(function (response) {
+                        alert("这" + (response ? "" : "不") + "是Ajax提交")
+                    });
+                    return false;
+                }
+            });
+        });
+        $(function () {
+            var $form = $("#btn_SignIn");
+            $form.on('click', function () {
+                var $form = $("#ajaxForm");
+                $form.submit();
+            });
+        });
+    </script>
+}

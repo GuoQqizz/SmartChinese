@@ -1,0 +1,7 @@
+1. 在php/sig.php 填写驰声授权评测的appkey,secretkey，
+   在index_AiPanel.html和 index_Recorder.html填写驰声授权评测的appkey。
+
+2. 将h5demo整个文件夹放置在Web服务器目录下，
+   需要https环境+php环境，或者根据当前开发者环境自行选择。
+
+3. 访问文件夹中的index_AiPanel.html或者 index_Recorder.html即可体验评分。

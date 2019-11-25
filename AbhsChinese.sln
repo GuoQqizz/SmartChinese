@@ -1,0 +1,141 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSite", "WebSite", "{8FE7FB77-B93A-4B47-BACD-5873BA3CBCCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.Web", "AbhsChinese.Web\AbhsChinese.Web.csproj", "{CFE1DED2-6385-41E1-A87D-FC2D5F29698B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C34C0849-8EBF-46A3-BDFC-212FB583D9F2} = {C34C0849-8EBF-46A3-BDFC-212FB583D9F2}
+		{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD} = {B36FBB5D-E076-4F6C-B35A-09B58AB28FDD}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C7E634B7-E6A3-4F49-8C2F-2E4D3E74847B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.Code", "AbhsChinese.Code\AbhsChinese.Code.csproj", "{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{F1CA042C-4CC9-4D4A-B774-D6D4E548E682}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.Bll", "AbhsChinese.Bll\AbhsChinese.Bll.csproj", "{C34C0849-8EBF-46A3-BDFC-212FB583D9F2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB} = {ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB}
+		{2EE0A1D9-478B-471A-8FE5-30143057A007} = {2EE0A1D9-478B-471A-8FE5-30143057A007}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.Domain", "AbhsChinese.Domain\AbhsChinese.Domain.csproj", "{2EE0A1D9-478B-471A-8FE5-30143057A007}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.Repository", "AbhsChinese.Repository\AbhsChinese.Repository.csproj", "{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ABB88B0C-1C2D-48E8-9880-88764136A8E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.Test", "AbhsChinese.Test\AbhsChinese.Test.csproj", "{F68B6C50-FC85-41DF-A9AA-56D072589743}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.School", "AbhsChinese.School\AbhsChinese.School.csproj", "{973CC3AD-1EDA-4303-86F0-2BA17009B93C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.Admin", "AbhsChinese.Admin\AbhsChinese.Admin.csproj", "{C098C351-D5B4-47EA-88EF-9CBC093D7EFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinService", "WinService", "{07581126-1555-49B1-8E5C-5770DCF36120}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbhsChinese.ReportService", "AbhsChinese.ReportService\AbhsChinese.ReportService.csproj", "{A86A0502-21F7-4CE6-B793-11F1ECC1160A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFE1DED2-6385-41E1-A87D-FC2D5F29698B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE1DED2-6385-41E1-A87D-FC2D5F29698B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE1DED2-6385-41E1-A87D-FC2D5F29698B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE1DED2-6385-41E1-A87D-FC2D5F29698B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C34C0849-8EBF-46A3-BDFC-212FB583D9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C34C0849-8EBF-46A3-BDFC-212FB583D9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C34C0849-8EBF-46A3-BDFC-212FB583D9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C34C0849-8EBF-46A3-BDFC-212FB583D9F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EE0A1D9-478B-471A-8FE5-30143057A007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE0A1D9-478B-471A-8FE5-30143057A007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE0A1D9-478B-471A-8FE5-30143057A007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE0A1D9-478B-471A-8FE5-30143057A007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F68B6C50-FC85-41DF-A9AA-56D072589743}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F68B6C50-FC85-41DF-A9AA-56D072589743}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F68B6C50-FC85-41DF-A9AA-56D072589743}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F68B6C50-FC85-41DF-A9AA-56D072589743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{973CC3AD-1EDA-4303-86F0-2BA17009B93C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{973CC3AD-1EDA-4303-86F0-2BA17009B93C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{973CC3AD-1EDA-4303-86F0-2BA17009B93C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{973CC3AD-1EDA-4303-86F0-2BA17009B93C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C098C351-D5B4-47EA-88EF-9CBC093D7EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C098C351-D5B4-47EA-88EF-9CBC093D7EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C098C351-D5B4-47EA-88EF-9CBC093D7EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C098C351-D5B4-47EA-88EF-9CBC093D7EFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A86A0502-21F7-4CE6-B793-11F1ECC1160A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A86A0502-21F7-4CE6-B793-11F1ECC1160A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A86A0502-21F7-4CE6-B793-11F1ECC1160A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A86A0502-21F7-4CE6-B793-11F1ECC1160A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CFE1DED2-6385-41E1-A87D-FC2D5F29698B} = {8FE7FB77-B93A-4B47-BACD-5873BA3CBCCA}
+		{B36FBB5D-E076-4F6C-B35A-09B58AB28FDD} = {C7E634B7-E6A3-4F49-8C2F-2E4D3E74847B}
+		{C34C0849-8EBF-46A3-BDFC-212FB583D9F2} = {F1CA042C-4CC9-4D4A-B774-D6D4E548E682}
+		{2EE0A1D9-478B-471A-8FE5-30143057A007} = {F1CA042C-4CC9-4D4A-B774-D6D4E548E682}
+		{ACF3D879-DA5B-470D-8A0A-DD7736B6C2FB} = {F1CA042C-4CC9-4D4A-B774-D6D4E548E682}
+		{F68B6C50-FC85-41DF-A9AA-56D072589743} = {ABB88B0C-1C2D-48E8-9880-88764136A8E5}
+		{973CC3AD-1EDA-4303-86F0-2BA17009B93C} = {8FE7FB77-B93A-4B47-BACD-5873BA3CBCCA}
+		{C098C351-D5B4-47EA-88EF-9CBC093D7EFC} = {8FE7FB77-B93A-4B47-BACD-5873BA3CBCCA}
+		{A86A0502-21F7-4CE6-B793-11F1ECC1160A} = {07581126-1555-49B1-8E5C-5770DCF36120}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 10
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://39.97.239.228:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AbhsChinese.Admin\\AbhsChinese.Admin.csproj
+		SccProjectTopLevelParentUniqueName1 = AbhsChinese.sln
+		SccProjectName1 = AbhsChinese.Admin
+		SccLocalPath1 = AbhsChinese.Admin
+		SccProjectUniqueName2 = AbhsChinese.Bll\\AbhsChinese.Bll.csproj
+		SccProjectTopLevelParentUniqueName2 = AbhsChinese.sln
+		SccProjectName2 = AbhsChinese.Bll
+		SccLocalPath2 = AbhsChinese.Bll
+		SccProjectUniqueName3 = AbhsChinese.Code\\AbhsChinese.Code.csproj
+		SccProjectTopLevelParentUniqueName3 = AbhsChinese.sln
+		SccProjectName3 = AbhsChinese.Code
+		SccLocalPath3 = AbhsChinese.Code
+		SccProjectUniqueName4 = AbhsChinese.Domain\\AbhsChinese.Domain.csproj
+		SccProjectTopLevelParentUniqueName4 = AbhsChinese.sln
+		SccProjectName4 = AbhsChinese.Domain
+		SccLocalPath4 = AbhsChinese.Domain
+		SccProjectUniqueName5 = AbhsChinese.Repository\\AbhsChinese.Repository.csproj
+		SccProjectTopLevelParentUniqueName5 = AbhsChinese.sln
+		SccProjectName5 = AbhsChinese.Repository
+		SccLocalPath5 = AbhsChinese.Repository
+		SccProjectUniqueName6 = AbhsChinese.School\\AbhsChinese.School.csproj
+		SccProjectTopLevelParentUniqueName6 = AbhsChinese.sln
+		SccProjectName6 = AbhsChinese.School
+		SccLocalPath6 = AbhsChinese.School
+		SccProjectUniqueName7 = AbhsChinese.Test\\AbhsChinese.Test.csproj
+		SccProjectTopLevelParentUniqueName7 = AbhsChinese.sln
+		SccProjectName7 = AbhsChinese.Test
+		SccLocalPath7 = AbhsChinese.Test
+		SccProjectUniqueName8 = AbhsChinese.Web\\AbhsChinese.Web.csproj
+		SccProjectTopLevelParentUniqueName8 = AbhsChinese.sln
+		SccProjectName8 = AbhsChinese.Web
+		SccLocalPath8 = AbhsChinese.Web
+		SccProjectUniqueName9 = AbhsChinese.ReportService\\AbhsChinese.ReportService.csproj
+		SccProjectTopLevelParentUniqueName9 = AbhsChinese.sln
+		SccProjectName9 = AbhsChinese.ReportService
+		SccLocalPath9 = AbhsChinese.ReportService
+	EndGlobalSection
+EndGlobal

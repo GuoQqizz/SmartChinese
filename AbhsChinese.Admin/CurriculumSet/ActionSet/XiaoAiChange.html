@@ -1,0 +1,353 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>小艾变</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="-1">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/CurriculumSet/ActionSet.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/CurriculumSet/CurriculumClass.js"></script>
+    <script src="/CurriculumSet/ActionSet.js"></script>
+    <style>
+        .image-block:before {
+            content: "选择图片";
+        }
+
+
+        .image-block input.form-control {
+            padding: 5px;
+        }
+
+        .image-block .input-group-btn .btn {
+            padding: 3px 5px;
+        }
+
+        .image-block .img-list {
+            height: 395px;
+            margin: 10px 0px 0px;
+            padding: 5px;
+            overflow: auto;
+        }
+
+            .image-block .img-list li {
+                margin-bottom: 10px;
+                height: 100px;
+                width: 100%;
+                border: 1px solid #808080;
+            }
+
+                .image-block .img-list li img {
+                    max-width: 100%;
+                    height: 100%;
+                    display: block;
+                    margin: 0 auto;
+                }
+
+        .image-box {
+            cursor: move;
+        }
+
+            .image-box p {
+                height: 100px;
+                width: 100px;
+                text-align: center;
+                font-size: 14px;
+                line-height: 20px;
+                background: #fff;
+                padding: 30px 0px;
+                margin: 0px;
+            }
+             
+        .img-position:before {
+            content: "定位位置";
+        }
+
+        .img-position li {
+            display: inline-block;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+            .img-position li input[type=text] {
+                width: 40px;
+                padding: 3px;
+                font-size: 12px;
+                margin-left: 5px;
+            }
+
+        #xiaoAiChangeImg {
+            cursor: move;
+            z-index: 999;
+        }
+    </style>
+    <script>
+        $(function () {
+            //如果父级有chapter 并且还是我们的章节对象才执行下面设置方法.
+            if (top.CurriculumInfo && top.CurriculumInfo.chapterSet instanceof top.ChapterSet) {
+                var CurriculumInfo = top.CurriculumInfo;
+                var ChapterSet = CurriculumInfo.chapterSet;
+                //创建默认的动作
+                var action = new top.XiaoAiChange({
+                    actionId: "xiaoaichange" + randomString(20),
+                    imgId: "",
+                    src: "",
+                    align: "left",
+                    valign: "top",
+                    x: 0,
+                    y: 0,
+                    intype: "none"
+                });
+                var page = new Page(CurriculumInfo.selectPage);
+                page.selecter = "#InnerArea";
+                page.draw(CurriculumInfo.selectStep.stepNum);
+                //加载数据
+                (function LoadData() {
+                    if (CurriculumInfo.selectAction instanceof top.XiaoAiChange) {//如果是修改的动作
+                        action = new top.XiaoAiChange(CurriculumInfo.selectAction);
+                        $(".img-list").prepend(`<li mediaid="${action.imgId}" title="${action.imgName}" bg="${action.src}"><img src="${action.src}" /></li>`);
+                    }
+                    else {
+                        if ($("#xiaoAiChangeImg").length == 0) {//如果没有这个东西则添加
+                            $("#InnerArea").append("<div id='xiaoAiChangeImg' class='image-box ImgBox animated'><p>请选择<br/>小艾的动作</p></div>");
+                        }
+                        else {//如果有,则获取宽高及位置信息
+                            var imgbox = $("#xiaoAiChangeImg");
+                            action.x = parseInt(imgbox.css("left")) || 0;
+                            action.y = parseInt(imgbox.css("top")) || 0;
+                            action.width = imgbox.width();
+                            action.height = imgbox.height();
+
+
+                        }
+                    }
+                    $("#x_position").val(action.x);
+                    $("#y_position").val(action.y);
+
+                })();
+
+
+                var down = false, x = 0, y = 0, position = { align: "left", top: 0, left: 0, right: 0 };
+                $("#xiaoAiChangeImg").on("mousedown", function (e) {
+                    position.top = parseInt($(this).css("top"));
+                    position.left = parseInt($(this).css("left"));
+                    x = e.pageX;
+                    y = e.pageY;
+                    down = true;
+                });
+                $("#InnerArea").on("mousemove", function (e) {
+                    if (down) {
+                        var top = position.top + e.pageY - y;
+                        var left = position.left + e.pageX - x;
+                        var imgbox = $("#xiaoAiChangeImg");
+                        if (top < 0) { top = 0; }
+                        else if (top > 600 - imgbox.height()) { top = 600 - imgbox.height(); }
+                        if (left < 0) { left = 0; }
+                        else if (left > 800 - imgbox.width()) { left = 800 - imgbox.width(); }
+                        imgbox.css({ "top": top + "px", "left": left + "px" });
+                        action.x = left;
+                        action.y = top;
+                        $("#x_position").val(action.x);
+                        $("#y_position").val(action.y);
+                    }
+                });
+
+                $(window).on("mouseup", function () {
+                    down = false;
+                });
+
+                $("#x_position").keyup(function () {
+                    var dombox = $("#xiaoAiChangeImg");
+                    var left = parseInt($(this).val());
+                    if (!left) { left = 0; }
+                    $(this).val(left);
+                    action.x = left;
+                    dombox.css({ "left": left + "px" });
+                });
+
+                $("#y_position").keyup(function () {
+                    var dombox = $("#xiaoAiChangeImg");
+                    var top = parseInt($(this).val());
+                    if (!top) { top = 0; }
+                    $(this).val(top);
+                    action.y = top;
+                    dombox.css({ "top": top + "px" });
+                });
+
+                var index = 1, keywords = "", isLoading = false, isOver = false;
+                $("#SelectImgBtn").on("click", function () {
+                    index = 1;//从第一页加载
+                    isOver = false;//没有结束
+                    keywords = $("#SelectImgInput").val();
+                    if (CurriculumInfo.selectAction instanceof top.XiaoAiChange) {//如果是修改的动作
+                        action = new top.XiaoAiChange(CurriculumInfo.selectAction);
+                        $("#MediaList").html(`<li mediaid="${action.imgId}" bg="${action.src}"><img src="${action.src}" /></li>`);
+                    }
+                    else {
+                        $("#MediaList").html("");
+                    }
+                    LoadList();
+                });
+
+                function LoadList() {
+                    if (!isLoading && !isOver) {//如果不是加载中,且数据没有加载完
+                        isLoading = true;
+                        $("#MediaList .loadMediaMsg").off("click");
+                        $("#MediaList .loadMediaMsg").remove();
+                        $("#MediaList").append("<p class='loadMediaMsg'>数据加载中...</p>")
+                        $.ajax({
+                            url: "/ResourceGroup/GetMediaToCourse",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                CourseId: ChapterSet.courseId,
+                                MediaType: 106,// 视频 = 101,音频 = 102,图片 = 103,小艾说 = 104,开场语 = 105,小艾变 = 106
+                                TextType: 0,
+                                NameOrKey: keywords,
+                                Pagination: {
+                                    PageIndex: index,
+                                    PageSize: 10,
+                                }
+                            },
+                            success: function (data) {
+                                if (data.Data.length > 0) {
+                                    $("#MediaList .loadMediaMsg").off("click");
+                                    $("#MediaList .loadMediaMsg").remove();
+                                    console.log("getImgData", data);
+                                    for (var i = 0; i < data.Data.length; i++) {
+                                        var d = data.Data[i];
+                                        $("#MediaList").append(`<li mediaid="${d.ObjectID}" title="${d.MediaName}" bg="${d.ObjectUrl}"><img src="${d.ObjectUrl}" /></li>`);
+                                    }
+                                    if (data.Data.length == 10) {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>点击加载更多...</p>");
+                                        $("#MediaList .loadMediaMsg").on("click", function () {
+                                            if (!isLoading) {
+                                                index++;
+                                                LoadList();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#MediaList").append("<p class='loadMediaMsg'>没有数据了</p>");
+                                        isOver = true;
+                                    }
+
+                                    $(".img-list li").off("click")
+                                    //图片的设置要修改
+                                    $(".img-list li").on("click", function () {
+                                        $(".img-list li").removeClass("selected");
+                                        $(this).addClass("selected");
+                                        var src = $(this).attr("bg");
+                                        var mediaid = $(this).attr("mediaid");
+                                        var medianame = $(this).attr("title");
+                                        var img = new Image();
+                                        img.src = src;
+                                        console.log("img.draggable", img.draggable);
+                                        img.draggable = false;
+                                        img.onload = function () {
+                                            var bili = 1.8;//按照比例进行缩放,背景设计分辨率为 1920*1080 编辑尺寸为 1066*600 所以比例应为1080/600=1.8
+                                            action.width = this.width / bili;
+                                            action.height = this.height / bili;
+                                            action.src = src;
+                                            action.imgId = mediaid;
+                                            action.mediaName = medianame;
+                                            $("#xiaoAiChangeImg").width(action.width).height(action.height).html(img);
+                                        }
+
+                                    });
+                                }
+                                else {
+                                    $("#MediaList .loadMediaMsg").html("没有数据了");
+                                    isOver = true;
+                                }
+                                isLoading = false;
+                            },
+                            error: function (e) {
+                                console.error("error", e);
+                                isLoading = false;
+                                index--;
+                            }
+                        });
+                    }
+                }
+
+                $("#MediaList").scroll(function () {
+                    if (this.offsetHeight + this.scrollTop >= this.scrollHeight) {
+                        if (!isLoading) {
+                            index++;
+                            LoadList();
+                        }
+                    }
+                })
+
+
+                $("#OkBtn").click(function () {
+                    if (action.src != "") {
+                        if (CurriculumInfo.selectAction instanceof top.XiaoAiChange) {
+                            CurriculumInfo.SetAction(action);
+                        }
+                        else {
+                            CurriculumInfo.AddAction(action);
+                        }
+                        var frame = top.frames["ActionSet"];
+                        if (frame) {
+                            $(frame).hide();
+                        }
+                    }
+                    else {
+                        alert("请选择小艾");
+                    }
+                })
+
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="NavBox">
+        <button id="backBtn" class="btn btn-info btn-back"><i class="glyphicon glyphicon-chevron-left"></i>返回</button>
+        <b class="Title">小艾变</b>
+        <button id="closeBtn" class="btn btn-info btn-close"><i class="glyphicon glyphicon-remove"></i>关闭</button>
+    </div>
+    <div class="SetBox">
+        <div class="SettingBox">
+            <div class="SettingInfo">
+                <div class="image-block block-box">
+                    <div class="input-group">
+                        <input id="SelectImgInput" type="text" class="form-control" placeholder="名称/编号/关键字搜索">
+                        <span class="input-group-btn">
+                            <button id="SelectImgBtn" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                    <ul id="MediaList" class="img-list"></ul>
+
+                </div>
+
+                <ul class="img-position block-box">
+                    <li>x<input type="text" id="x_position" value="" /></li>
+                    <li>y<input type="text" id="y_position" value="" /></li>
+                </ul>
+            </div>
+            <div class="SettingBtn"><button id="OkBtn" class="btn btn-info"><i class="glyphicon glyphicon-saved"></i>完成</button><button id="ShowBrn" class="btn btn-default"><i class="glyphicon glyphicon-play"></i>预览</button></div>
+        </div>
+        <div id="MakeBox" class="MakeBox">
+            <div class="ruler-x-box">
+                <div class="mouse-info"></div>
+                <div class="ruler-x"></div>
+            </div>
+            <div class="ruler-y-box">
+                <div class="ruler-y"></div>
+                <div id="OuterArea" class="plot-area">
+                    <div class="outer-area"></div>
+                    <div id="InnerArea" class="inner-area"></div>
+                    <div class="outer-area"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

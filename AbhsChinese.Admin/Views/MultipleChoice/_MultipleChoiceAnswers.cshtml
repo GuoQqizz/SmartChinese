@@ -1,0 +1,93 @@
+﻿<div class="row">
+    <div class="col-12">
+        <div class="switch pull-right">
+            <div class="onoffswitch">
+                <input type="checkbox" checked class="onoffswitch-checkbox" id="exampleAnswer">
+                <label class="onoffswitch-label" for="exampleAnswer" onclick="show('btn_show_answer')">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="collapse multi-collapse multi-collapse_answer show" id="multiCollapseExampleText">
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right required">A:</label>
+        <div class="col-11">
+            <textarea name="optionA" class="form-control rows-5"></textarea>
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right required">B:</label>
+        <div class="col-11">
+            <textarea name="optionB" class="form-control rows-5"></textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right">C:</label>
+        <div class="col-11">
+            <textarea name="optionC" class="form-control rows-5"></textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right">D:</label>
+        <div class="col-11">
+            <textarea name="optionD" class="form-control rows-5"></textarea>
+        </div>
+    </div>
+</div>
+<div class="collapse multi-collapse multi-collapse_answer" id="multiCollapseExampleImg">
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right required">A:</label>
+        <div class="col-11">
+            <div class="stem-img">
+                <input type="file" name="file" value="" style="display:none;" />
+                <img src="~/Images/5.png" style="height:80px;" alt="optionA" />
+                <button id="inpFile" class="btn btn-primary" type="button">浏览</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right required">B:</label>
+        <div class="col-11">
+            <div class="stem-img">
+                <input type="file" name="file" value="" style="display:none;" />
+                <img src="~/Images/5.png" style="height:80px;" alt="Alternate Text" />
+                <button id="inpFile" class="btn btn-primary" type="button">浏览</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right">C:</label>
+        <div class="col-11">
+            <div class="stem-img">
+                <input type="file" name="file" value="" style="display:none;" />
+                <img src="~/Images/5.png" style="height:80px;" alt="Alternate Text" />
+                <button id="inpFile" class="btn btn-primary" type="button">浏览</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-1 col-form-label text-right">D:</label>
+        <div class="col-11">
+            <div class="stem-img">
+                <input type="file" name="file" value="" style="display:none;" />
+                <img src="~/Images/5.png" style="height:80px;" alt="Alternate Text" />
+                <button id="inpFile" class="btn btn-primary" type="button">浏览</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-11 offset-1">
+            @Html.Partial("_ValidateMessage", "optionA")
+        </div>
+    </div>
+</div>
+<button name="btn_show_answer" class="btn btn-primary" type="button" data-toggle="collapse"
+        data-target=".multi-collapse_answer" aria-expanded="false"
+        aria-controls="multiCollapseExampleText multiCollapseExampleImg"
+        style="display:none;">
+    Toggle both elements
+</button>

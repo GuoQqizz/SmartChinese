@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "AddQuestion";
+    ViewBag.PageTitle = "题目录入-判断题";
+    var ajaxOptions = new AjaxOptions
+    {
+        OnComplete = "complete",
+        HttpMethod = "POST"
+    };
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        @using (Ajax.BeginForm("EditTrueFalseSubject", "TrueFalse", ajaxOptions))
+        {
+            <div class="form-group row">
+                <label class="col-2 col-form-label">题干</label>
+                <div class="col-10">
+                    <textarea name="name" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-2 col-form-label">答案</label>
+                <div class="col-2">
+                    <div class="i-checks">
+                        <div class="iradio_square-green"
+                             style="position: relative;">
+                            <input type="radio" value="1"
+                                   name="answer"
+                                   checked
+                                   style="position: absolute; opacity: 0;">
+                        </div>&nbsp;正确
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="i-checks">
+                        <div class="iradio_square-green"
+                             style="position: relative;">
+                            <input type="radio" value="0"
+                                   name="answer"
+                                   style="position: absolute; opacity: 0;">
+                        </div>&nbsp;错误
+                    </div>
+                </div>
+                <label for="checkIn" class="error"></label>
+            </div>
+            <div class="form-group row">
+                <label class="col-2 col-form-label">解析</label>
+                <div class="col-10">
+                    <textarea name="explain" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">年级</label>
+                <div class="col-sm-10">
+                    <select name="grade"
+                            class="select2"
+                            data-ajax--url="@Url.Action("GetGrades", "Select2")"
+                            data-ajax--cache="true"
+                            data-placeholder="请选择年级" data-allow-clear="true"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">难度</label>
+                <div class="col-sm-10">
+                    <select name="difficulty"
+                            class="select2"
+                            data-ajax--url="@Url.Action("GetDifficulties", "Select2")"
+                            data-ajax--cache="true"
+                            data-placeholder="请选择难度" data-allow-clear="true"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">关键字</label>
+                <div class="col-sm-10">
+                    <select name="keywords"
+                            class="select2"
+                            data-ajax--url="@Url.Action("GetKeywords", "Select2")"
+                            data-ajax--cache="true"
+                            data-placeholder="请选择关键字" data-allow-clear="true"
+                            multiple></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">主知识点</label>
+                <div class="col-sm-10">
+                    <select name="mainKnowledge"
+                            class="select2"
+                            data-ajax--url="@Url.Action("GetMainKeywords", "Select2")"
+                            data-ajax--cache="true"
+                            data-placeholder="请选择关键字" data-allow-clear="true"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">次知识点</label>
+                <div class="col-sm-10">
+                    <select name="knowledges"
+                            class="select2"
+                            data-ajax--url="@Url.Action("GetKnowledges", "Select2")"
+                            data-ajax--cache="true"
+                            data-placeholder="请选择关键字" data-allow-clear="true"
+                            multiple></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-white" type="submit">保存</button>
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $("#form").validate({
+                ignore: "",
+                rules: {
+                    name: {
+                        required: true
+                    }
+                }
+            });
+        });
+        function complete() {
+            alert(1);
+        }
+    </script>
+}

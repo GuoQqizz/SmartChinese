@@ -1,0 +1,494 @@
+﻿@using AbhsChinese.Code.Common;
+@using AbhsChinese.Domain.Dto.Response
+@model DtoCashVoucher
+@{
+    ViewBag.PageTitle = "现金券管理";
+    ViewBag.HasBackBtn = true;
+    ViewBag.ListTitle = Model != null && Model.Ycv_Id > 0 ? "编辑现金券" : "添加现金券";
+}
+
+@section Styles{
+    @Styles.Render("~/bundles/css/datePickerStyles")
+    @Styles.Render("~/bundles/css/wizardStepsStyles")
+    <style>
+        .wizard > .content > .body label.error {
+            margin-left: 0px;
+        }
+
+        .wizard > .content > .body input.error {
+            background: none !important;
+        }
+
+        .wizard > .content > .body {
+            position: static;
+        }
+
+            .wizard > .content > .body input {
+                border: 1px solid #e5e6e7;
+            }
+
+        .wizard > .content {
+            background: none;
+        }
+
+        .select2-search__field {
+            border: none !important;
+        }
+
+        /*.form-control.error {
+            border: 1px dotted #cc5965 !important;
+            background: none !important;
+            color: none !important;
+        }
+
+        label.error {
+            color: #cc5965 !important;
+            display: inline-block;
+            margin-left: 5px;
+        }*/
+        label.error {
+            color: #cc5965 !important;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .input-group-addon {
+            height: calc(2.25rem - 3px);
+        }
+
+        .amount-form-addon > label.error {
+            left: 14px !important;
+        }
+
+        /*.input-form-addon > label.error {
+            position: absolute;
+            top: 36px;
+            left: 60px;
+        }*/
+
+        .amountlimit {
+            display: flex;
+            align-items: center;
+        }
+
+        .wizard > .content {
+            min-height: 500px;
+        }
+
+        @@media (min-height:750px) {
+            .wizard > .content {
+                min-height: 600px;
+            }
+        }
+
+        .wizard .actions {
+            text-align: center !important;
+        }
+
+            .wizard .actions ul li:last-child a {
+                /*color: #aaa;
+                background: #eee;*/
+                background-color: #f8ac59;
+                border-color: #f8ac59;
+                color: #FFFFFF;
+            }
+    </style>
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <form id="edit_Form" method="post" style="height:100%;" class="">
+            <input type="hidden" name="Id" value="@Model.Ycv_Id" />
+            <h1>选择课程</h1>
+            <fieldset>
+                <div class="form-group row">
+                    <label class="col-form-label col-2 offset-1  text-right required">年级:</label>
+                    <div class="col-6">
+                        <select class="form-control m-b grade-select select2-default required" id="grade" name="Grade" data-val="@Model.Ycv_ApplyGrade" required></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-2 offset-1  text-right required">课程类型:</label>
+                    <div class="col-6">
+                        <select class="form-control m-b course-type-select select2-default" id="courseType" name="CourseType" data-val="@Model.Ycv_CourseType" required></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-2 offset-1  text-right required">课程:</label>
+                    <div class="col-6">
+                        <select class="form-control m-b course-select select2-default" name="CourseId" data-val="@Model.Ycv_CourseId" required></select>
+                    </div>
+                </div>
+            </fieldset>
+            <h1>设置现金券</h1>
+            <fieldset style="display:none;">
+                <div class="form-group row">
+                    <label class="col-2 offset-1 col-form-label text-right required">现金券名称：</label>
+                    <div class="col-6">
+                        <input type="text" name="Name" id="Name" class="form-control" value="@(Model.Ycv_Name)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 offset-1 col-form-label text-right required">总发行量：</label>
+                    <div class="col-6">
+                        <input type="text" name="PublishCount" id="PublishCount" class="form-control" placeholder="只能输入正整数，输入0为无限制" value="@(Model.Ycv_PublishCount!=0?Model.Ycv_PublishCount.ToString():"")" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 offset-1 col-form-label text-right required">面额：</label>
+                    <div class="col-6 input-group input-form-addon amount-form-addon">
+                        <input type="text" name="Amount" id="Amount" class="form-control" value="@(Model.Ycv_Amount!=0?Model.Ycv_Amount.ToString("0.00"):"")" />
+                        <span class="input-group-addon">元</span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-2 offset-1 col-form-label text-right required">每人限领：</label>
+                    <div class="col-6">
+                        <label style="line-height: 33px;">1张</label>
+                        <input hidden value="1" name="LimitByPerson" id="LimitByPerson" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 offset-1 col-form-label text-right required">使用门槛：</label>
+
+                    <div class="col-6">
+                        <label style="line-height: 33px;">无限制</label>
+                        <input hidden value="0" name="Ycv_OrderAmountLimit" />
+                    </div>
+                    @*<div class="col-2 i-checks amountlimit text-left">
+                            <div class="iradio_square-green" style="position: relative;">
+                                <input type="radio" value="0" name="rdoOrderAmountLimit" @(Model.Ycv_OrderAmountLimit == 0 ? "checked" : "")>
+                            </div>&nbsp;无限制
+                        </div>
+                        <div class="col-4 input-group i-checks amountlimit input-form-addon">
+                            <input type="radio" value="1" name="rdoOrderAmountLimit" @(Model.Ycv_OrderAmountLimit != 0 ? "checked" : "")>
+                            <span class="input-group-addon">满</span>
+                            <input type="text" name="OrderAmountLimit" id="OrderAmountLimit" value="@(Model.Ycv_OrderAmountLimit == 0?"":string.Format("{0:0.##}",Model.Ycv_OrderAmountLimit ))" class="form-control input_amount" @(Model.Ycv_OrderAmountLimit != 0 ? "" : "disabled") />
+                            <span class="input-group-addon">元可用</span>
+                        </div>*@
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-2 offset-1 col-form-label text-right required">有效期：</label>
+                    <div class="col-6 input-group date input-form-addon">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="datepicker1" class="form-control input_date" placeholder="请选择日期" value="@(Model.Ycv_ExpireDate.ToString("yyyy-MM-dd")=="1900-01-01"||Model.Ycv_ExpireDate==DateTime.MinValue?"":Model.Ycv_ExpireDate.ToString("yyyy-MM-dd"))" name="ExpireDate">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 offset-1 col-form-label text-right">备注：</label>
+                    <div class="col-6">
+                        <textarea rows="5" cols="20" name="remark" id="Remark" class="form-control" style="height: 200px; resize: none;" placeholder="请输入文本内容">@Model.Ycv_Remark</textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/datePicker")
+    @Scripts.Render("~/bundles/js/wizardSteps")
+    <script>
+        let stepStatus={0:true};
+        let cashVoucherLimit= @ViewBag.CashVoucherLimit;
+        let dividePercent = @ViewBag.DividePercent;
+        let grade = @Model.Ycv_ApplyGrade;
+        let courseType = @Model.Ycv_CourseType;
+
+        jQuery.validator.addMethod("voucherPriceLimit", function (value, element) {
+            return value-0<cashVoucherLimit;
+        }, "请输入合理的现金券金额");
+        $(function () {
+            setMinHeight('ibox-content',140);
+            $("#edit_Form").steps({
+                labels: {
+                    next: '下一步',
+                    previous: '上一步',
+                    finish: '完成',
+                    cancel:'取消'
+                },
+                enableCancelButton:true,
+                bodyTag: "fieldset",
+                onStepChanging: function (event, currentIndex, newIndex) {
+                    //始终允许后退，即使当前步骤包含无效字段!
+                    if (currentIndex > newIndex) {
+                        return true;
+                    }
+
+                    var form = $(this);
+
+                    //如果用户退回上一步骤了，清除验证信息
+                    if (currentIndex < newIndex) {
+                        // To remove error styles
+                        $(".body:eq(" + newIndex + ") label.error", form).remove();
+                        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                    }
+                    //对所有元素进行验证
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                    //进行验证
+                    let valid = form.valid();
+                    return valid;
+                },
+                onStepChanged:function(event, currentIndex){
+                    if(stepStatus[currentIndex]){
+                        renderHtml(currentIndex,false);
+                    }else{
+                        stepStatus[currentIndex]=true;
+                        renderHtml(currentIndex,true);
+                    }
+                },
+                onFinishing: function (event, currentIndex) {
+                    var form = $(this);
+                    //对所有元素进行验证
+                    //对所有元素进行验证
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                    //进行验证
+                    let valid = form.valid();
+                    return valid;
+                },
+                onFinished: throttle(function(event, currentIndex){
+                    ajaxSubmit()
+                },1000),
+                onCanceled:function(){
+                    backLocal();
+                }
+            }).validate({
+                rules: {
+                    Grade:{
+                        required: true,
+                        min:1,
+                    },
+                    CourseType:{
+                        required: true,
+                        min:1,
+                    },
+                    CourseId:{
+                        required: true,
+                        min:1,
+                    },
+                    Name: {
+                        required: true
+                    },
+                    PublishCount: {
+                        required: true,
+                        digits: true,
+                    },
+                    Amount: {
+                        required: true,
+                        digits: true,
+                        voucherPriceLimit:true,
+                        min:1,
+                        //range:[0,10000]
+                    },
+                    OrderAmountLimit: {
+                        //required: true,
+                        number: true,
+                    },
+                    ExpireDate: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    Grade:{
+                        required: "请选择年级",
+                        min:"请选择年级",
+                    },
+                    CourseType:{
+                        required: "请选择课程类型",
+                        min: "请选择课程类型",
+                    },
+                    CourseId:{
+                        required:  "请选择课程",
+                        min: "请选择课程",
+                    },
+                    Name: {
+                        required: "请输入现金券名称"
+                    },
+                    PublishCount: {
+                        required: "请输入发行量",
+                        digits: "请输入正整数",
+                    },
+                    Amount: {
+                        required: "请输入面额",
+                        digits: "请输入正整数",
+                        min:"请输入大于等于1的金额",
+                        voucherPriceLimit:"请输入合理的现金券金额",
+                    },
+                    OrderAmountLimit: {
+                        //required: "请输入使用门槛",
+                        digits: "请输入正整数",
+                    },
+                    ExpireDate: {
+                        required: "请选择有效期",
+                        //dtMinNow:"请输入",
+                    }
+                },
+            });
+            renderHtml(0,true);
+        });
+
+        function renderHtml(index,isFrist) {
+            if(isFrist){
+                if(index==0 ){
+                    //年级渲染
+                    $('.grade-select').initSelectOption({
+                        'source': gradeSourceArr,
+                        'className': '',
+                        'width': '100%',
+                        'useSelect2': true,
+                    });
+                    $('.grade-select').on('change', function (e) {
+                        var grade = e.target.value;
+                        var courseType = $('#courseType').val();
+                        renderCourse(grade, courseType);
+                    })
+                    //课程类型渲染
+                    $('.course-type-select').initSelectOption({
+                        'source': courseTypeArr,
+                        'className': '',
+                        'width': '100%',
+                        'useSelect2': true,
+                    });
+                    $('.course-type-select').on('change', function (e) {
+                        var courseType = e.target.value;
+                        var grade = $('#grade').val();
+                        renderCourse(grade, courseType);
+                    })
+                    //课程渲染
+                    renderCourse(grade,courseType);
+
+                    //获取课程价格
+                    $('.course-select').on('change', function (e) {
+                        var courseId = e.target.value;
+                        renderCoursePrice(courseId);
+                    })
+
+                }else if(index==1){
+                    //时间控件
+                    $(".input-group.date").datepicker
+                    ({
+                        autoclose: true,
+                        todayBtn: "linked",
+                        todayHighlight: true,
+                        /*汉化*/
+                        language: "cn",
+                        /*日期格式*/
+                        format: "yyyy-mm-dd",
+                        startDate:new Date(),
+                    });
+
+                    $('.i-checks').iCheck({
+                        checkboxClass: 'icheckbox_square-green',
+                        radioClass: 'iradio_square-green',
+                    });
+
+                    //使用门槛
+                    $(".iCheck-helper").click(function () {
+                        var amountlimit = $('input[name="rdoOrderAmountLimit"]:checked').val();
+                        //console.log(amountlimit);
+                        if (amountlimit == 1) {
+                            $(".input_amount").removeAttr("disabled");
+                        }
+                        else {
+                            $(".input_amount").attr("disabled", true);
+                            $(".input_amount").val("");
+                        }
+                    });
+
+                    //现金券金额
+                    renderAmountPlaceholder();
+                }
+            }
+        }
+
+        function renderAmountPlaceholder(){
+            let placeHolder = "面值只能是正整数，1-100之间";
+            if(cashVoucherLimit &&cashVoucherLimit>0){
+                placeHolder = `面值只能是正整数，1-${cashVoucherLimit}之间`;
+            }
+            $('[name="Amount"]').attr('placeholder',placeHolder);
+        }
+        //渲染课程
+        function renderCourse(grade, courseType) {
+            if (grade && grade > 0 && courseType && courseType > 0) {
+                $.ajax({
+                    url: '@Url.Action("GetCourse", "Select2")' + '?type=' + courseType + '&grade=' + grade,
+                    type: 'GET',
+                    success: function (res) {
+                        $('.course-select').initSelectOption({
+                            'source': res,
+                            'className': '',
+                            'width': '100%',
+                            'useSelect2': true,
+                        });
+                    }
+                });
+            } else {
+                $('.course-select').initSelectOption({
+                    'source': [],
+                    'className': '',
+                    'width': '100%',
+                    'useSelect2': true,
+                });
+            }
+        }
+        //渲染课程价格
+        function renderCoursePrice(courseId){
+            if(courseId<1){
+                return ;
+            }
+            $.ajax({
+                url: '@Url.Action("GetPrice", "Course")' + '?courseId=' +courseId,
+                type: 'GET',
+                async: false,
+                success: function (res) {
+                    if(res==0){
+                        var index = window.layer.alert("当前课程定价为0，请选择其他课程",
+                             { icon: 0,closeBtn:0,end:function(){$('.course-select').val(-1).trigger('change');}},//0 警告 1 成功 2 错误
+                             function(){
+                                 $('.course-select').val(-1).trigger('change');
+                                 window.layer.close(index);
+                             });
+                    }else{
+                        cashVoucherLimit=Math.floor( res*(100-dividePercent)/100);
+                        renderAmountPlaceholder();
+                    }
+
+                },
+                error:function(err){
+                    console.error(err);
+                    cashVoucherLimit=0;
+                }
+            })
+        }
+
+        //提交表单
+        function ajaxSubmit(){
+            if (!$("#edit_Form").valid()) {
+                return false;
+            }
+            $.ajax({
+                url: "/CashVoucher/Save",
+                type: "post",
+                data:  $("#edit_Form").serialize(),
+                dataType: "json",
+                beforeSend: function () {
+                    loading.showLoading('正在保存数据，请稍候……');// showLoading();
+                },
+                success: generateSuccessFunc(function () {
+                    window.layer.closeAll();
+                    backLocal();
+                }),
+                error: generateErrorFunc(),
+            });
+        }
+        function backLocal(){
+            PageBase.SetToPage('/CashVoucher/Index');
+            window.location.href = '@Url.Action("Index", "CashVoucher")';
+        }
+    </script>
+}

@@ -1,0 +1,183 @@
+﻿.wrapper-content {
+    padding: 0px 10px 25px;
+}
+
+.page-title {
+    margin: 10px 0px;
+    border-left: 5px solid #219d17;
+    padding-left: 10px;
+}
+
+.search-condition {
+    padding: 0px;
+    margin: 0px;
+}
+
+    .search-condition li {
+        list-style-type: none;
+        float: left;
+        margin-right: 10px;
+    }
+
+        .search-condition li label {
+            font-size: 14px !important;
+            padding: 6px 16px;
+        }
+
+        .search-condition li input[type="radio"] {
+            display: none;
+        }
+
+.nav-header {
+    padding: 14px 24px;
+}
+
+.row + .row {
+    margin-top: 0.5rem;
+}
+
+@media screen and (max-height: 300px) {
+    .ibox-content {
+        max-height: 500px;
+    }
+}
+
+.table_container .abhs_table_tbody {
+    position: relative;
+}
+
+.select2-selection--single .select2-selection__rendered {
+    line-height: calc(2.25rem - 3px) !important;
+}
+
+.select2-selection--single {
+    height: calc(2.25rem - 3px) !important;
+    border: 1px solid #e5e6e7 !important;
+    border-radius: 1px !important;
+}
+
+    .select2-selection--single:focus {
+        border-color: #1ab394 !important;
+    }
+
+.select2-selection__arrow {
+    height: calc(2.25rem - 6px) !important;
+}
+
+.select2-selection__placeholder {
+    height: calc(2.25rem - 6px) !important;
+}
+
+.search-form .form-group {
+    margin-right: 10px;
+}
+
+label.required::after {
+    content: '*';
+    position: absolute;
+    font-size: 18px;
+    color: red;
+    margin-left: 3px;
+}
+
+.form-group label.error {
+    display: none;
+}
+
+.select2-container--default .select2-selection--multiple {
+    border-radius: 1px !important;
+    border-color: #e5e6e7 !important;
+}
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: #ffffff !important;
+        float: right;
+        margin-left: 8px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #1ab394 !important;
+        border: 1px solid #1ab394 !important;
+        color: #ffffff;
+    }
+
+.bootstrap-tagsinput {
+    border-radius: 1px !important;
+    border-color: #e5e6e7 !important;
+    width: 100%;
+    box-shadow: none !important;
+}
+
+textarea.rows-5 {
+    height: 15rem;
+}
+
+.abhs-template {
+    display: none;
+}
+
+.onoffswitch-inner:before {
+    content: '文本';
+}
+
+.onoffswitch-inner:after {
+    content: '图片';
+}
+
+.abhs_upload {
+    margin-bottom: 33px;
+}
+
+.abhs-mark i {
+    font-size: 20px;
+}
+
+.abhs-warn {
+    color: red;
+}
+
+.table-nobordered td {
+    border-top: none !important;
+}
+
+#table_answers p {
+    display: inline-block;
+}
+
+.edui-default .edui-for-custombutton .edui-icon {
+    background-position: -1px -1px;
+    background-image: url('../Images/wakong.png') !important;
+    background-repeat: no-repeat;
+}
+
+.course-description {
+    width: 460px;
+    display: inline-block;
+}
+
+.ellipsis-text {
+    white-space: nowrap;
+    cursor: pointer;
+    max-width: 100%;
+    _width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.form-control-plaintext p img, #div_answers img {
+    height: 120px;
+}
+
+.short-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 99%;
+    /* height: 59px; */
+    display: inline-block;
+}
+
+.bootstrap-tagsinput input{
+    width:300px !important;
+}

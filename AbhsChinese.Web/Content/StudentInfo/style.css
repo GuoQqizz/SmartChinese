@@ -1,0 +1,6154 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	list-style: none;
+	text-decoration: none;
+	font-style: normal;
+	line-height: 1;
+	outline: none;
+	/* user-select: none; */
+}
+
+.nobackground {
+    background: none !important;
+}
+
+.co479e93 {
+    color: #479e93 !important;
+}
+
+.col808080 {
+    color: #808080 !important;
+}
+
+.colf47463 {
+    color: #f47463 !important;
+}
+
+.col50b6b0 {
+    color: #50b6b0 !important;
+}
+
+.cof47463 {
+    color: #f47463 !important;
+}
+
+.co8c601b {
+    color: #8c601b !important;
+}
+
+.bj35acff {
+    background: #35acff;
+    color: #fff;
+    display: inline-block;
+    line-height: 25px;
+}
+
+.bjf47463 {
+    background: #f47463;
+    color: #fff;
+    display: inline-block;
+    line-height: 25px;
+}
+
+.bodybj {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: url(../../Images/StudentInfo/loginbj.jpg) no-repeat center bottom;
+}
+
+.textleft {
+    text-align: left;
+}
+
+.textcenter {
+    text-align: center !important;
+}
+.pageimgerror{
+	padding-top: 150px;
+	padding-bottom: 100px;
+}
+.pageimgerror img.error-img{
+	display: block;
+	margin: 0 auto;
+	width: 110px;
+}
+.taskpage .pageimgerror img.error-img{
+	width: 100px;
+}
+.pageimgerror img.error-img
+.taskpage .pageimgerror{
+	padding-top: 278px !important;
+}
+.persontpage .pageimgerror img.error-img{
+	width: 150px;
+}
+.pageimgerror1 img.error-img{
+	width: 110px;
+}
+.pageimgerror a.errorback{
+	display: block;
+	margin: 0 auto;
+	margin-top: 40px;
+	background: url(../../Images/StudentInfo/btns.png) no-repeat center center;
+	height: 38px;
+	width: 106px;
+	font-size: 15px;
+	font-size: 15px;
+	text-align: center;
+	color: #fff;
+	text-decoration: none;
+	line-height: 38px;
+	background-size: 100% 100%;
+}
+.radio {
+    width: 14px;
+    height: 14px;
+    position: relative;
+}
+
+    .radio input {
+        width: 14px !important;
+        height: 14px;
+        position: absolute;
+        left: 0;
+        opacity: 0;
+        z-index: 1;
+        top: 0;
+    }
+
+    .radio .img1 {
+        display: none;
+    }
+
+    .radio .img2 {
+        display: inline-block;
+    }
+
+.radioboxsel .img1 {
+    display: inline-block;
+}
+
+.radioboxsel .img2 {
+    display: none;
+}
+
+body {
+    position: relative;
+    background: linear-gradient(#f6f7f9, #c7e7e5);
+    background-attachment: fixed;
+    /* overflow: hidden; */
+}
+
+html,
+body {
+    /* height: 100%; */
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.line1 {
+	overflow: hidden ;
+	white-space: nowrap ;
+	text-overflow: ellipsis ;
+	word-break: normal ;
+}
+
+.line2 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.line3 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.line4 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.itemcenter {
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.clear {
+    clear: both;
+}
+
+/* html{
+	background-image: linear-gradient(#f7f7f9, #c4e7e3);
+} */
+
+.bodycontent {
+	height: 100%;
+	overflow: auto;
+	margin:  0 auto;
+}
+
+.header {
+	background: #fff;
+	position: fixed;
+	width: 100%;
+	z-index: 5;
+	min-width: 1240px;
+	left: 0;
+}
+
+.headerbox {
+   /* overflow: hidden; */
+    background: url(../../Images/StudentInfo/headerbj.png) repeat-x left bottom;
+}
+
+.headercontent {
+	width: 1240px;
+	margin: 0 auto;
+}
+
+.header .hederl {
+    padding: 10px 0;
+}
+
+.header .navlist a {
+	height: 100%;
+	display: block;
+	line-height: 70px;
+	font-size: 16px;
+	float: left;
+	color: #737373;
+	min-width: 120px;
+	text-align: center;
+}
+
+    .header .navlist a span {
+        display: inline-block;
+        margin: 0 auto;
+        line-height: 70px;
+        border-bottom: 4px solid rgba(0, 0, 0, 0);
+    }
+
+    .header .navlist a.active span {
+        border-bottom: 4px solid #38b5af;
+    }
+
+
+
+.header .config {
+    text-align: right;
+    padding-top: 15px;
+}
+.header .config label{
+	display: inline-block;
+}
+.header .config .photo {
+	vertical-align: middle;
+	width: 43px;
+	height: 43px;
+	border-radius: 50%;
+	border: 1px solid #CCCCCC;
+}
+.header .config .name {
+	color: #737373;
+	display: inline-block;
+	padding-left: 10px;
+	font-size: 14px;
+	margin: 0 30px 0 0px;
+}
+.header .config .name img{
+	margin-left: 4px;
+}
+.header .config .name em{
+	position: relative;
+	display: inline-block;
+}
+.header .config .name .perinfobox{
+	position: absolute;
+	right: -170px;
+	width: 350px;
+	height: 170px;
+	top: 25px;
+	padding-top: 9px;
+	z-index: 10;
+}
+.header .config label .jt,.header .config label .perinfobox{
+	display: none;
+}
+.header .config label:hover .jt{
+	display: block;
+} 
+.header .config label:hover .jt{
+	display: block;
+}
+.header .config label:hover .perinfobox{
+	display: block;
+}
+.header .config .name .percontbox{
+	
+	position: absolute;
+}
+.header .config .name .jt{
+	text-align: center;
+	left: 0;
+	z-index: 11;
+	position: absolute;
+	width: 100%;
+	top: 23px;
+}
+.header .config .name .textbox{
+	text-align: left;
+	padding: 20px 13px;
+	border: 1px solid #49AEA8;
+	background: #fff;
+	width: 350px;
+	height: 165px;
+}
+.header .config .name .textbox .text1{
+	overflow: hidden;
+	font-size: 14px;
+	border-bottom: 2px solid #e4f4f3;
+	padding-bottom: 10px;
+}
+.header .config .name .textbox .text2{
+	color: #7f7f7f;
+	line-height: 25px;
+	font-size: 12px;
+}
+.header .config .name .textbox .text3{
+	padding-top: 6px;
+}
+.header .config .name .textbox .text1 .info{
+	text-align: right;
+	
+}
+.header .config .name .textbox .text1 .info a{
+	color: #31ada7;
+	font-size: 14px;
+}
+.pageimgerror{
+display: none;
+}
+
+    .pageimgerror img.error-img {
+        display: block;
+        margin: 0 auto;
+        /* margin-top: 150px; */
+    }
+
+.header .config .message {
+    position: relative;
+    vertical-align: middle;
+    display: inline-block;
+    height: 20px;
+    width: 21px;
+    padding-right: 30px;
+}
+.header .config .loginout{
+	position: relative;
+	    vertical-align: middle;
+	    display: inline-block;
+	    height: 20px;
+	    width: 21px;
+	    padding-right: 30px;
+}
+
+    .header .config .message em {
+        position: absolute;
+        right: 4px;
+        top: -3px;
+        border-radius: 50%;
+        height: 15px;
+        color: #fff;
+        font-size: 10px;
+        background: #ff0000;
+        width: 15px;
+    }
+
+.contentbox {
+    width: 70%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.navigation {
+	width: 1240px;
+	margin: 0 auto;
+	padding-top: 95px;
+	overflow: hidden;
+}
+
+.navigation .arrow-right {
+	width: 0;
+	display: inline-block;
+	box-sizing: border-box;
+	height: 0;
+	line-height: 26px;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	border-left: 8px solid #2ba49d;
+	vertical-align: middle;
+}
+.navigation em{
+	display: inline-block;
+	padding: 0 8px;
+}
+.navigation em img{
+	vertical-align: text-bottom;
+	width: 7px;
+}
+.navigation .navigationl a {
+	font-size: 14px;
+	color: #727270;
+	line-height: 26px;
+	vertical-align:middle;
+}
+
+    .navigation .navigationr {
+        text-align: right;
+    }
+
+        .navigation .navigationr a {
+            font-size: 14px;
+            color: #727270;
+            line-height: 26px;
+            display: inline-block;
+            padding: 0 10px;
+            border: 1px solid #38b5ae;
+            border-radius: 4px;
+            color: #38b5ae;
+        }
+
+.contentbox {
+	width: 1240px;
+	margin: 0 auto;
+	padding-top: 20px;
+}
+
+.contentleft {
+	border: 1px solid #b2e0de;
+	width: 250px;
+	background: #fff;
+}
+
+    .contentleft .contl {
+        border: 1px solid #7ececb;
+        height: 100%;
+    }
+
+.sculpture {
+	width: 80px;
+	height: 80px;
+	margin: 0 auto;
+	margin-top: 27px;
+	position: relative;
+}
+
+.sculpture img {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+}
+
+    .sculpture .username {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        left: 0;
+        bottom: -15px;
+    }
+
+        .sculpture .username span {
+            line-height: 20px;
+            width: 60px;
+            display: inline-block;
+            border-radius: 10px;
+            background: #31ada5;
+            color: #fff;
+            font-size: 13px;
+        }
+
+.leftnav {
+    padding-top: 37px;
+}
+
+    .leftnav a {
+        display: block;
+        padding-left: 20px;
+        line-height: 52px;
+        color: #737373;
+        /* margin: 2px 0; */
+        border-left: 4px solid #fff;
+    }
+
+        .leftnav a img {
+            vertical-align: middle;
+        }
+
+        .leftnav a .img2 {
+            display: none;
+        }
+
+.leftnav a span {
+	vertical-align: middle;
+	padding-left: 7%;
+	font-size: 14px;
+}
+
+    .leftnav .active .img1 {
+        display: none;
+    }
+
+    .leftnav .active .img2 {
+        display: inline-block;
+    }
+
+    .leftnav a:hover .img2 {
+        display: inline-block;
+    }
+
+    .leftnav a:hover .img1 {
+        display: none;
+    }
+
+    .leftnav a:hover {
+        background: #e2f0f0;
+        color: #31ada5;
+        border-left: 4px solid #31ada5;
+    }
+
+.leftnav .active {
+	color: #31ada5;
+	background: #e2f0f0;
+	font-weight: 600;
+	border-left: 4px solid #31ada5;
+}
+
+.contentright {
+	padding-left: 270px;
+}
+
+    .contentright .bjimg {
+        width: 100%;
+    }
+
+.bodybjleft {
+    display: none;
+}
+
+.bodybjright {
+    display: none;
+}
+
+.contrbox .conttitle {
+    font-size: 18px;
+    color: #727272;
+}
+
+    .contrbox .conttitle a {
+        font-size: 15px;
+        color: #32ada6;
+        display: inline-block;
+        padding-left: 10px;
+    }
+
+
+.contrbox {
+    width: 100%;
+    padding: 35px 4.5% 0;
+    min-height: 600px;
+    background: url(../../Images/StudentInfo/bodyl_center.png) center top;
+    background-size: 100% auto;
+}
+
+.conflist {
+	color: #626262;
+	font-size: 15px;
+	padding-top: 30px;
+}
+
+    .conflist em {
+        color: #38b5ae;
+        cursor: pointer;
+    }
+
+.conflist .fl {
+	display: block;
+	width: 82px;
+	font-size: 14px;
+	text-align: right;
+}
+
+.conflist li {
+	padding-bottom: 41px;
+	overflow: hidden;
+}
+
+.conflist .textcont {
+	padding-left: 25px;
+	font-size: 14px;
+}
+
+.ctrbox .topbj img {
+    width: 100%;
+    display: block;
+}
+
+.bindschoolbox {
+}
+.bindschoolbox .closepaydepop img {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    cursor: pointer;
+}
+.bindschoolbox .binbbox{
+	    position: fixed;
+	    margin: auto;
+	    left: 0;
+	    right: 0;
+	    bottom: 0;
+	    width: 465px;
+	    top: 0;
+	    height: 365px;
+	    z-index: 12;
+		background: url(../../Images/StudentInfo/paybj.png) no-repeat center center;
+	    background-size: cover;
+		
+}
+.bindschoolbox .closewindow {
+	text-align: right;
+	cursor: pointer;
+}
+.bindschoolbox .errormsg{
+	font-size: 12px;
+	color: #ff0000;
+	width: 240px;
+	margin: 0 auto;
+	padding-top: 5px;
+}
+.bindschoolbox .bindtitle {
+	font-size: 26px;
+	color: #49aea8;
+	padding-top: 40px;
+	text-align: center;
+}
+.bindschoolbox .list {
+	overflow: hidden;
+	width: 240px;
+	margin: 0 auto;
+	font-size: 17px;
+	padding-bottom: 15px;
+	color: #49aea8;
+}
+
+        .bindschoolbox .list img {
+            display: block;
+            margin: 0 auto;
+        }
+
+.bindschoolbox .list .fr {
+	color: #c2c2c2;
+}
+
+.bindschoolbox .bindcont {
+	padding-top: 30px;
+}
+.bindschoolbox1 .bindcont{
+	padding-top: 60px;
+}
+.bindschoolbox .listinp input {
+	width: 238px;
+	border-radius: 5px;
+	display: block;
+	margin: 0 auto;
+	padding-left: 15px;
+	line-height: 36px;
+	height: 34px;
+	border: 1px solid #e2e2e2;
+}
+
+    .bindschoolbox .listinp {
+        padding-top: 20px;
+    }
+
+.bindschoolbox .info {
+	font-size: 15px;
+	color: #c2c2c2;
+	text-align: center;
+	padding: 15px 0 25px;
+}
+.bindschoolbox .boxc{
+	position: relative;
+}
+.bindschoolbox .closepaydepop{
+	text-align: right;
+	    padding-top: 10px;
+	    position: absolute;
+	    right: 26px;
+	    top: -23px;
+	    padding-right: 20px;
+}
+.bindschoolbox .winsub {
+	width: 238px;
+	border-radius: 5px;
+	display: block;
+	margin: 0 auto;
+	cursor: pointer;
+	line-height: 36px;
+	margin-bottom: 60px;
+	font-size: 16px;
+	color: #fff;
+	background: #49aea8;
+	border: 1px solid #49aea8;
+}
+.bindschoolbox .winsub1 {
+	width: 238px;
+	border-radius: 5px;
+	display: block;
+	margin: 0 auto;
+	line-height: 36px;
+	margin-bottom: 60px;
+	font-size: 16px;
+	color: #fff;
+	background: #49aea8;
+	border: 1px solid #49aea8;
+}
+
+.contentright1 .portrait1 .textcont {
+    height: 90px;
+    width: 90px;
+    display: block;
+    background-color: rgba(0, 0, 0, .5);
+    overflow: hidden;
+    border-radius: 50%;
+    margin-left: 180px;
+    padding-left: 0;
+    position: relative;
+}
+
+.contentright1 .portrait1 img {
+	width: 100%;
+	height: 100%;
+}
+
+.contentright1 .portrait1 em {
+    height: 90px;
+    width: 90px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .4);
+}
+
+.contentright1 .portrait1 {
+    height: 90px;
+    padding-bottom: 0;
+}
+
+.contentright1 .textname {
+    padding-top: 6px;
+}
+
+.contentright1 .textcont {
+    padding-left: 85px;
+}
+
+.contentright1 li {
+	padding-bottom: 15px;
+}
+
+.contentright1 .portrait1 .textname {
+    margin-top: 33px;
+}
+
+.contentright1 .nicheng {
+	padding-top: 15px;
+}
+
+.contentright1 input {
+    line-height: 34px;
+    border-radius: 5px;
+    border: 1px solid #ededed;
+    width: 300px;
+    padding-left: 10px;
+}
+
+.contentright1 .subtns {
+    text-align: right;
+}
+
+    .contentright1 .subtns button {
+        width: 86px;
+        line-height: 38px;
+        text-align: center;
+        background: none;
+        border: 1px solid #51b6b0;
+        color: #51b6b0;
+    }
+
+    .contentright1 .subtns .submitbtn {
+        width: 86px;
+        line-height: 38px;
+        text-align: center;
+        border: 1px solid #51b6b0;
+        color: #fff;
+        background: #51b6b0;
+    }
+
+.contentright1 .address input {
+    width: 100%;
+}
+
+.contentright1 .address {
+	padding-bottom: 30px;
+}
+
+    .contentright1 .address .addreinp {
+        max-width: 630px;
+    }
+
+.contentright1 .subtns {
+    max-width: 630px;
+    display: block;
+}
+
+    .contentright1 .subtns button {
+        margin-left: 35px;
+        border-radius: 3px;
+    }
+
+.contentright1 .radiobox {
+    width: auto;
+    margin-right: 40px;
+}
+
+    .contentright1 .radiobox .radio {
+        padding-right: 5px;
+    }
+
+.contentright1 .sex .textname {
+    padding-top: 0;
+}
+
+.contentright1 .area .textcont {
+    max-width: 630px;
+    overflow: hidden;
+    padding-left: 4px;
+}
+
+.contentright1 .area .pbox {
+    display: inline-block;
+}
+
+.contentright1 .area input {
+    width: 192px;
+}
+
+.contentright1 .area .textcont .pbox:nth-child(2) {
+    margin: 0 20px;
+}
+
+.Cropperbox {
+    width: 800px;
+    height: 400px;
+    margin: 0 auto;
+    background: #fff;
+    position: relative;
+}
+
+    .Cropperbox .box {
+        margin: 0 auto;
+    }
+
+    .Cropperbox .fileimg {
+        width: 100px;
+        overflow: hidden;
+    }
+
+    .Cropperbox .fileimgbox {
+        position: relative;
+    }
+
+    .Cropperbox #inputImage {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        height: 45px;
+    }
+
+    .Cropperbox .jbtn {
+        background: #0099CC;
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 5px;
+        line-height: 45px;
+    }
+
+    .Cropperbox .btn-group {
+        padding-left: 185px;
+    }
+
+        .Cropperbox .btn-group button {
+            background: #e6e6e6;
+            /* width: 100px; */
+            padding: 0 10px;
+            line-height: 30px;
+            border: 1px solid #f6f6f6;
+        }
+
+    .Cropperbox .btn-primary {
+        background: #0099CC;
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-left: 24px;
+        margin-top: 30px;
+        line-height: 45px;
+    }
+
+.closeCropperbox {
+	text-align: right;
+	position: absolute;
+	right: -34px;
+	top: 10px;
+	cursor: pointer;
+}
+
+.contentright2 .tab {
+    overflow: hidden;
+    margin-bottom: 18px;
+    border-bottom: 4px solid #49aea8;
+}
+
+.contentright2 .contrbox {
+    padding-top: 20px;
+    position: relative;
+}
+
+    .contentright2 .contrbox .pagebox {
+        position: absolute;
+        left: 100%;
+        width: 100%;
+        left: 0;
+        bottom: -10px;
+    }
+
+.contentright2 .tab .tablist {
+    width: 118px;
+    cursor: pointer;
+    text-align: center;
+    color: #656565;
+    line-height: 32px;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
+.contentright2 .tab .active {
+    background: #49aea8;
+    color: #fff;
+}
+
+.contentright3 .tab {
+    overflow: hidden;
+    margin-bottom: 18px;
+    border-bottom: 4px solid #49aea8;
+}
+
+.contentright3 .contrbox {
+	padding-top: 20px;
+	position: relative;
+	padding-bottom: 60px;
+}
+
+    .contentright3 .contrbox .pagebox {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        bottom: -10px;
+    }
+
+.contentright3 .noposi .pagebox {
+    position: inherit;
+}
+
+.contentright3 .tab .tablist {
+    width: 118px;
+    cursor: pointer;
+    text-align: center;
+    color: #656565;
+    line-height: 32px;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
+.contentright3 .tab .active {
+    background: #49aea8;
+    color: #fff;
+}
+
+.contentright4 .tab {
+    overflow: hidden;
+    margin-bottom: 18px;
+    border-bottom: 4px solid #49aea8;
+}
+
+.contentright4 .contrbox {
+    padding-top: 20px;
+}
+
+.contentright4 .tab .tablist {
+    width: 10%;
+    cursor: pointer;
+    text-align: center;
+    color: #656565;
+    line-height: 32px;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
+.contentright4 .tab .active {
+    background: #49aea8;
+    color: #fff;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+    /*文本居中*/
+    border-collapse: collapse;
+    /*表格的边框合并，如果相邻，则共用一个边框*/
+    border-spacing: 0;
+    /*设置行与单元格边框的间距。当表格边框独立（即border-collapse:separate;）此属性才起作用*/
+}
+
+table td {
+	word-break: break-all;
+	/*允许在字内换行,即单词可分*/
+	word-wrap: break-word;
+	/*允许长单词或URL地址换行*/
+	border-right: 1px solid #939598;
+	border-bottom: 1px solid #939598;
+	font: 500 12px Arial;
+	color: #666666;
+}
+
+.ordertable td,
+.ordertable th {
+	border: 1px solid #e6e6e6;
+	line-height: 35px;
+}
+
+
+
+.ordertable thead {
+    background: #f4f4f4;
+    font-size: 14px;
+    color: #666666;
+}
+
+.ordertable .gopay {
+    color: #49aea8;
+}
+
+.pagebox {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.pagebox a,.pagebox span {
+	display: inline-block;
+		min-width: 32px;
+	background: #fff;
+	text-align: center;
+	line-height: 30px;
+	color: #808080;
+	margin: 0 3px;
+	box-shadow: 0 0 1px 1px #f1f1f1;
+}
+
+.pagebox a.active,.pagebox span.active {
+	background: #50b6b0;
+	color: #fff;
+	box-shadow: 0 0 1px 1px #50b6b0;
+}
+
+.contentright3 .conpouitem {
+	width: 33.33%;
+	float: left;
+	padding: 10px 5px;
+}
+
+.contentright3 .itembox {
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+    border-radius: 5px;
+    padding-left: 5px;
+    border-left: 5px solid #aaa;
+    /* background: #aaa; */
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+}
+
+.contentright3 .itembox1 {
+    border-left: 5px solid #ff7753;
+}
+.contentright3 .itembox2 {
+	border-left: 5px solid #ec5961;
+}
+.contentright3 .conpoulist {
+    overflow: hidden;
+    margin-left: -12px;
+    width: calc(100% + 24px);
+}
+
+.contentright3 .iteminfo {
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+}
+
+.contentright3 .iteminfo .status {
+	position: absolute;
+	right: -5px;
+	top: -2px;
+	border-radius: 0 5px 0 8px;
+	line-height: 18px;
+	font-size: 12px;
+	-webkit-transform: scale(0.8);
+	display: block;
+	background: #a9a9a9;
+	color: #fff;
+	padding: 0 8px;
+}
+.contentright3 .itembox1 .status{
+	background: #ff7753;
+}
+.contentright3 .itembox2 .status{
+	background: #ec5961;
+}
+
+.contentright3 .itembox .price span {
+    font-size: 10px;
+    color: #aaaaaa;
+}
+.contentright3 .itembox1 .price span {
+	color: #ff7753;
+
+}
+.contentright3 .itembox2 .price span {
+	color: #ec5961;
+
+}
+.contentright3 .itembox .price {
+    font-size: 20px;
+    color: #aaaaaa;
+    padding-left: 10px;
+    padding-top: 30px;
+}
+.contentright3 .itembox1 .price{
+	color: #ff7753;
+}
+.contentright3 .itembox2 .price{
+	color: #ec5961;
+}
+.contentright3 .itembox .price1 {
+    font-size: 12px;
+    color: #5c5c5c;
+    -webkit-transform: scale(0.8);
+    display: block;
+    padding-left: 5px;
+    padding-top: 5px;
+    margin-bottom: 30px;
+}
+
+
+
+.contentright3 .iteminforight {
+	font-size: 12px;
+	padding-left: 90px;
+}
+
+    .contentright3 .iteminforight .copupintitle {
+        color: #010101;
+        font-size: 12px;
+        padding-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .contentright3 .iteminforight .copupindate {
+        color: #858585;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .contentright3 .iteminforight .copupinarea {
+        color: #858585;
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+
+
+.contentright4 .cllogin {
+    font-size: 24px;
+    width: 350px;
+    margin: 0 auto;
+    color: #49aeaa;
+    text-align: center;
+    padding: 50px 0 50px;
+}
+
+.contentright4 .username {
+    width: 350px;
+    margin: 0 auto;
+    color: #656565;
+    font-size: 13px;
+}
+
+.contentright4 .inpbox {
+    width: 350px;
+    margin: 0 auto;
+    height: 47px;
+    position: relative;
+    border-radius: 5px;
+    padding: 0 2px;
+    margin-top: 23px;
+    border: 1px solid #dddddd;
+}
+
+.contentright4 .inpbox1 {
+    width: 350px;
+    margin: 0 auto;
+    height: 47px;
+    position: relative;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+
+.contentright4 .inpbox input {
+    height: 41px;
+    border: none;
+    padding-left: 10px;
+    width: 100%;
+    margin-top: 1px;
+}
+
+.contentright4 .inpbox span {
+    position: absolute;
+    right: 0;
+    top: 7px;
+    width: 108px;
+    background: none;
+    font-size: 13px;
+    text-align: center;
+    border: none;
+    border-left: 2px solid #ededed;
+    color: #48b0a7;
+    line-height: 30px;
+}
+
+.contentright4 .inpbox1 button {
+    width: 350px;
+    border-radius: 5px;
+    background: #49aea8;
+    font-size: 18px;
+    color: #fff;
+    line-height: 47px;
+    border: none;
+}
+
+.contentright4 .error {
+    color: #ff0000;
+    padding-top: 5px;
+    font-size: 10px;
+    width: 350px;
+    height: 20px;
+    margin: 0 auto;
+}
+
+    .contentright4 .error span {
+        display: none;
+    }
+
+.contentright4 .textinfo {
+	width: 350px;
+	margin: 0 auto;
+	font-size: 14px;
+	color: #818181;
+	line-height: normal;
+}
+
+    .contentright4 .textinfo span {
+        color: #48b0a7;
+    }
+
+.contentright4 .face {
+    width: 340px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.contentright4 .face {
+    width: 340px;
+    position: relative;
+    margin: 0 auto;
+    height: 255px;
+    padding: 2px;
+    background: url(../../Images/StudentInfo/facebj.png) center center no-repeat;
+}
+
+.contentright4 .facebox {
+    width: 339px;
+    height: 255px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.contentright4 .faceinfo img {
+    vertical-align: middle;
+}
+
+.contentright4 .faceinfo {
+    width: 340px;
+    margin: 0 auto;
+    padding: 25px 0;
+    font-size: 14px;
+    color: #818181;
+}
+
+.contentright4 .facecontent .inpbox1 {
+    margin-top: 0;
+}
+
+#face-box {
+    display: none;
+    width: 336px;
+    height: 251px;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999999;
+    overflow: hidden;
+}
+
+.contentright4 .bg,
+.contentright4 .pane {
+    width: 336px;
+    height: 251px;
+    overflow: hidden;
+}
+
+.contentright4 .bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 999999999;
+    /*  background: url(../../Images/StudentInfo/facebj.png) center center no-repeat; */
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+
+.contentright4 .pane {
+    position: absolute;
+    background: url(../../Images/StudentInfo/4.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.contentright4 .move {
+    z-index: 999999999;
+    animation: move 1.5s ease-in-out infinite;
+    -webkit-animation: move 1.5s ease-in-out infinite;
+}
+
+.contentright4 .step3 .faceimg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#my_camera {
+    position: absolute;
+}
+
+.contentright4 .clface {
+    position: absolute;
+    right: -5px;
+    top: -10px;
+}
+
+.contentright4 .step3 .inpbox1 {
+    margin-top: 0;
+}
+
+.contentright4 .step4 .cllogin {
+    padding: 50px 0 0;
+}
+
+.contentright4 .step4 .cllogin1 {
+    padding: 35px 0 25px;
+}
+
+.contentright4 .step4 .inpbox1 {
+    margin-top: 50px;
+}
+
+.contentright4 .step6 .cllogin {
+    padding-bottom: 35px;
+}
+
+.contentright4 .step6 .cllogin1 {
+    padding-top: 0;
+}
+
+.contentright4 .changemobile_step2 .cllogin {
+    padding-bottom: 15px;
+}
+
+.contentright4 .changemobile_step3 .cllogin {
+    padding-bottom: 35px;
+}
+
+.contentright4 .changemobile_step3 .cllogin1 {
+    padding: 0 0 25px;
+}
+
+.contentright4 .changemobile_step3 .inpbox1 {
+    margin-top: 50px;
+}
+
+.contentright4 .changepass_step1 .cllogin {
+    padding-bottom: 10px;
+}
+
+.contentright4 .logintypebox thead {
+    background: #f4f4f4;
+}
+
+.contentright4 .logintypebox th {
+	line-height: 56px;
+	border: 1px solid #dfdfdf;
+	color: #656565;
+	font-size: 14px;
+}
+
+.contentright4 .logintypebox td {
+    line-height: 56px;
+    border: 1px solid #dfdfdf;
+}
+
+.contentright4 .logintable {
+    padding: 0 15px;
+}
+
+.maincontent {
+	width: 1240px;
+	margin: 0 auto;
+	margin-top: 20px;
+	padding-bottom: 50px;
+}
+
+    .maincontent .mainbjtop img {
+        width: 100%;
+        display: block;
+    }
+
+    .maincontent .mainbjbottom img {
+        width: 100%;
+        display: block;
+    }
+
+    .maincontent .maincenter {
+        background: url(../../Images/StudentInfo/orderbodycenter.png) center top repeat-y;
+        background-size: 100% auto;
+        padding: 7px 33px;
+    }
+
+.orderpage .title {
+	font-size: 16px;
+	color: #555;
+	padding: 18px 0;
+	background: #f4f4f4;
+	overflow: hidden;
+	padding-right: 30px;
+}
+
+    .orderpage .title .fl {
+        padding-left: 18px;
+    }
+
+    .orderpage .title span {
+        color: #b7b7b7;
+        line-height: 30px;
+    }
+
+.orderpage .config {
+    text-align: right;
+}
+
+    .orderpage .config a {
+        display: inline-block;
+        line-height: 28px;
+        width: 87px;
+        text-align: center;
+        font-size: 15px;
+        border-radius: 5px;
+        color: #fff;
+        background: #fc9904;
+        border: 1px solid #fc9904;
+    }
+
+        .orderpage .config a.bill {
+            color: #727272;
+            background: none;
+            border: 1px solid #c6c6c6;
+        }
+
+        .orderpage .config a.refund {
+            color: #fff;
+            background: #38b5af;
+            border: 1px solid #38b5af;
+        }
+
+.orderpage .ordertitle {
+	font-size: 16px;
+	color: #555;
+	padding: 25px 15px 25px;
+}
+
+.orderpage .cheader {
+    overflow: hidden;
+}
+
+
+
+.orderpage .ordercontent {
+    padding: 0 15px;
+}
+
+.orderpage .cheader .goodsimg img {
+    width: 337px;
+    height: 230px;
+}
+
+.orderpage .goodsinfo {
+    overflow: hidden;
+}
+
+    .orderpage .goodsinfo .clas {
+        display: inline-block;
+        padding: 0 10px;
+        line-height: 23px;
+        border-radius: 5px;
+        background: #38b5ae;
+        color: #fff;
+        margin-right: 8px;
+        font-size: 12px;
+    }
+
+    .orderpage .goodsinfo .type {
+        display: inline-block;
+        padding: 0 10px;
+        line-height: 23px;
+        border-radius: 5px;
+        background: #dbae90;
+        color: #fff;
+        font-size: 12px;
+    }
+
+.orderpage .cheader_right {
+    padding-left: 360px;
+    padding-top: 10px;
+    position: relative;
+}
+
+.orderpage .goodsname {
+    line-height: 23px;
+    padding-left: 15px;
+    font-size: 18px;
+    color: #727272;
+    height: 23px;
+}
+
+.orderpage .goodsinfo1 {
+	font-size: 14px;
+	color: #727272;
+	letter-spacing: 1px;
+	padding-top: 10px;
+	line-height: 23px;
+}
+
+.orderpage .goodsinfo2 {
+	font-size: 14px;
+	color: #727272;
+	letter-spacing: 1px;
+	padding-top: 5px;
+	line-height: 23px;
+}
+
+.orderpage .goodsprice {
+    font-size: 34px;
+    color: #ee564f;
+    position: absolute;
+    left: 0;
+    bottom: 20px;
+}
+
+    .orderpage .goodsprice span {
+        font-size: 24px;
+    }
+
+.orderpage .lbox {
+    height: 222px;
+    position: relative;
+}
+
+.orderpage .orderinfotitle {
+	margin: 30px 10px 0;
+	border-top: 1px solid #e4e4e4;
+	padding: 25px 5px 20px;
+	font-size: 14px;
+	color: #555;
+}
+
+.orderpage .orderinfobox {
+    padding: 15px;
+}
+
+.orderpage .orderinfobox td,
+.orderpage .orderinfobox th {
+	border: 1px solid #e4e4e4;
+	line-height: 60px;
+	font-size: 14px;
+	color: #666;
+}
+.orderpage .orderconpoubox{
+	overflow: hidden;
+	padding-left: 10px;
+}
+
+    .orderpage .orderconpoubox .orconpouitem {
+        /* width: 33.33%; */
+        float: left;
+        width: 350px;
+        padding-right: 2%;
+    }
+
+        .orderpage .orderconpoubox .orconpouitem .selstatus {
+            position: absolute;
+            right: -1px;
+            bottom: -2px;
+        }
+
+
+    .orderpage .orderconpoubox .conpouitem {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #fc9904;
+        position: relative;
+    }
+
+    .orderpage .orderconpoubox .itembox {
+        -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+        position: relative;
+        border-radius: 5px;
+        border-left: 5px solid #ff7854;
+        /* background: #aaa; */
+        box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
+        border-radius: 5px;
+    }
+
+    .orderpage .orderconpoubox .itembox1 {
+        border-left: 5px solid #ec5961;
+    }
+
+    .orderpage .orderconpoubox .conpoulist {
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .orderpage .orderconpoubox .iteminfo {
+        background: #fff;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .orderpage .orderconpoubox .iteminfo .status {
+            position: absolute;
+            right: -5px;
+            top: -2px;
+            border-radius: 0 5px 0 8px;
+            line-height: 22px;
+            font-size: 13px;
+            -webkit-transform: scale(0.8);
+            display: block;
+            background: #ff7854;
+            color: #fff;
+            padding: 0 8px;
+        }
+
+        .orderpage .orderconpoubox .iteminfo .status1 {
+            background: #ec5961;
+        }
+
+    .orderpage .orderconpoubox .itembox .price span {
+        font-size: 10px;
+        color: #ff7854;
+    }
+
+.orderpage .getconputbox {
+    padding-top: 14px;
+}
+.orderpage .getconputbox .item{
+	max-width: 330px;
+	cursor: pointer;
+	min-width: 200px;
+	border: 1px solid #727272;
+	height: 120px;
+	font-size: 14px;
+	color: #555;
+}
+.orderpage .orderconpoubox .itembox .price {
+    font-size: 20px;
+    color: #ff7854;
+    padding-left: 10px;
+    padding-top: 30px;
+}
+
+.orderpage .orderconpoubox .itembox .pricet span {
+    font-size: 10px;
+    color: #ec5961;
+}
+
+.orderpage .orderconpoubox .itembox .pricet {
+    font-size: 20px;
+    color: #ec5961;
+    padding-left: 10px;
+    padding-top: 30px;
+}
+
+.orderpage .orderconpoubox .itembox .price1 {
+    font-size: 12px;
+    color: #5c5c5c;
+    -webkit-transform: scale(0.8);
+    display: block;
+    padding-left: 5px;
+    padding-top: 5px;
+    margin-bottom: 15px;
+}
+
+.orderpage .orderconpoubox .itembox .pirce2 {
+    color: #ec5961;
+}
+
+    .orderpage .orderconpoubox .itembox .pirce2 span {
+        color: #ec5961;
+    }
+
+.orderpage .orderconpoubox .iteminforight {
+    font-size: 12px;
+    padding-left: 100px;
+}
+
+    .orderpage .orderconpoubox .iteminforight .copupintitle {
+        color: #010101;
+        font-size: 12px;
+        padding-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .orderpage .orderconpoubox .iteminforight .copupindate {
+        color: #858585;
+        line-height: 14px;
+        margin-bottom: 10px;
+    }
+
+        .orderpage .orderconpoubox .iteminforight .copupindate span {
+            /* -webkit-transform:scale(0.8); */
+        }
+
+    .orderpage .orderconpoubox .iteminforight .copupinarea {
+        color: #858585;
+        font-size: 12px;
+        line-height: 14px;
+        margin-bottom: 15px;
+    }
+
+.orderpage .orderinfobox .hbj {
+    background: #f4f4f4;
+    width: 25%;
+}
+
+.orderpage .orderinfobox thead th {
+    background: #f4f4f4;
+    font-weight: normal;
+}
+
+.orderpage .paytypebox {
+    overflow: hidden;
+    padding: 15px 0 5px 5px;
+}
+
+.orderpage .paytypeitem {
+    height: 52px;
+    width: 220px;
+    position: relative;
+    float: left;
+    margin-right: 2%;
+    border: 1px solid #e6e6e6;
+}
+
+    .orderpage .paytypeitem .payt {
+        display: none;
+    }
+
+.orderpage .paytypebox .active {
+    border: 1px solid #fc9904;
+}
+
+.orderpage .suborder {
+    text-align: right;
+    padding: 15px 15px;
+}
+.orderpage .suborder button{
+	font-size: 18px;
+	width: 23%;
+	background: #fc9904;
+	line-height: 40px;
+	text-align: center;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;
+}
+.orderpage .paytypebox .paytypeitem .payt{
+	position: absolute;
+	right: -1px;
+	display: block;
+	bottom: -1px;
+}
+
+.orderpage .orderdatecou {
+    text-align: right;
+    color: #888;
+    padding: 0 15px 10px;
+}
+
+    .orderpage .orderdatecou span {
+        color: #3ba39d;
+        display: inline-block;
+        padding: 0 3px;
+        font-size: 22px;
+    }
+
+.loginpage {
+    padding-left: 15%;
+    position: relative;
+    z-index: 1;
+}
+
+    .loginpage img {
+        width: 100%;
+    }
+
+    .loginpage .loginbox {
+        padding-top: 10%;
+        width: 471px;
+        margin: 0 auto;
+    }
+
+    .loginpage .logintopboxb img {
+        width: 100%;
+        display: block;
+    }
+
+    .loginpage .logintopboxt img {
+        width: 100%;
+        display: block;
+    }
+
+    .loginpage .loginbox .logintopboxc {
+        background: url(../../Images/StudentInfo/loginpagecenter.png) repeat-y center top #ffffff;
+        background-size: 100% auto;
+    }
+
+.loginpage .loginbox .logo {
+	padding: 5px 0 30px;
+}
+
+.loginpage .loginbox .logo img {
+	width: 70%;
+	display: block;
+	margin: 0 auto;
+}
+
+.loginpage .logintext {
+	width: 346px;
+	padding: 0 5px 16px;
+	margin: 0 auto;
+	font-size: 18px;
+	color: #49aea8;
+}
+
+    .loginpage .logininp {
+        width: 346px;
+        position: relative;
+        margin: 0 auto;
+        height: 45px;
+        border-radius: 5px;
+        padding: 0 2px;
+        margin-top: 0;
+        border: 1px solid #dddddd;
+    }
+
+        .loginpage .logininp input {
+            height: 41px;
+            border: none;
+            padding-left: 10px;
+            width: 100%;
+            margin-top: 1px;
+        }
+
+    .loginpage .loginbtn {
+        width: 346px;
+        margin: 10px auto 0;
+    }
+
+        .loginpage .loginbtn button {
+            width: 100%;
+            border-radius: 5px;
+            background: #49aea8;
+            font-size: 18px;
+            color: #fff;
+            line-height: 47px;
+            border: none;
+        }
+
+    .loginpage .logintext1 {
+        text-align: right;
+        width: 346px;
+        margin: 15px auto 0;
+    }
+
+        .loginpage .logintext1 a {
+            color: #f8903f;
+            font-size: 15px;
+        }
+
+    .loginpage .loginp {
+        width: 346px;
+        margin: 20px auto 0;
+        font-size: 15px;
+        color: #818181;
+        background: url(../../Images/StudentInfo/d.png) repeat-x left center;
+        text-align: center;
+    }
+
+        .loginpage .loginp span {
+            display: inline-block;
+            background: #fff;
+            padding: 0 20px;
+        }
+
+    .loginpage .logintype {
+        width: 420px;
+        overflow: hidden;
+        margin: 0 auto;
+        font-size: 15px;
+        color: #818181;
+        text-align: center;
+        padding-top: 23px;
+    }
+
+        .loginpage .logintype img {
+            display: block;
+            width: 42px;
+            margin: 0 auto;
+        }
+
+.loginpage .logintype .typeitem {
+	width: 50%;
+	cursor: pointer;
+}
+
+        .loginpage .logintype .typetext {
+            padding-top: 8px;
+        }
+
+    .loginpage .logintext2 {
+        font-size: 15px;
+        color: #818181;
+        text-align: center;
+        padding: 30px 0 5px;
+    }
+
+        .loginpage .logintext2 a {
+            color: #49aea8;
+        }
+
+    .loginpage .errormsg div {
+        display: none;
+    }
+
+.loginpage .errormsg {
+	width: 346px;
+	margin: 0 auto;
+	height: 20px;
+	padding: 0 10px;
+	color: #ff0000;
+	font-size: 12px;
+	padding-top: 2px;
+}
+
+        .loginpage .errormsg img {
+            vertical-align: middle;
+            height: 16px;
+            width: 16px;
+        }
+
+    .loginpage .successtip {
+        position: absolute;
+        top: 0;
+        padding-top: 10px;
+        display: none;
+        right: -30px;
+        height: 100%;
+    }
+
+        .loginpage .successtip img {
+            width: 16px;
+            height: 16px;
+        }
+
+    .loginpage .logininp select {
+        cursor: pointer;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border: none;
+        height: 41px;
+        position: relative;
+        z-index: 1;
+        background: transparent;
+        background-image: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+    .loginpage .logininp .selectimg {
+        width: 19px;
+        height: 12px;
+        position: absolute;
+        right: 10px;
+        top: 15px;
+        z-index: 0;
+    }
+
+    .loginpage .logininp select:invalid {
+        color: gray;
+    }
+
+    .loginpage .logininp select:focus {
+        outline: none;
+    }
+
+    .loginpage .logininp span {
+        position: absolute;
+        right: 0;
+        top: 7px;
+        width: 108px;
+        background: none;
+        font-size: 13px;
+        text-align: center;
+        border: none;
+        border-left: 2px solid #ededed;
+        color: #48b0a7;
+        line-height: 30px;
+    }
+
+    .loginpage .textinfo {
+        font-size: 14px;
+        color: #808080;
+        text-align: center;
+        padding-bottom: 10px;
+        width: 346px;
+        margin: 0 auto;
+    }
+
+        .loginpage .textinfo a {
+            color: #49aea8;
+        }
+
+    .loginpage .textinfo1 {
+        padding-top: 15px;
+    }
+
+    .loginpage .face {
+        width: 340px;
+        height: 255px;
+        padding: 2px;
+        margin: 0 auto;
+        position: relative;
+        background: url(../../Images/StudentInfo/qtibj.png) no-repeat center center;
+        background-size: 100% 100%;
+    }
+
+    .loginpage .face1 {
+        width: 340px;
+        height: 255px;
+        padding: 2px;
+        padding-top: 3px;
+        padding-left: 3px;
+        margin: 0 auto;
+        position: relative;
+        background: url(../../Images/StudentInfo/qtibj.png) no-repeat center center;
+        background-size: 100% 100%;
+    }
+
+        .loginpage .face1 img {
+            display: block;
+            width: 335px;
+            height: 250px;
+        }
+
+    .loginpage .facebox {
+        width: 339px;
+        height: 255px;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .loginpage .faceinfo img {
+        vertical-align: middle;
+    }
+
+.loginpage .faceinfo {
+	width: 340px;
+	margin: 0 auto;
+	padding: 25px 0;
+	font-size: 14px;
+	color: #818181;
+}
+.loginpage .faceinfo a{
+	color: #49AEA8;
+}
+.loginpage .facecontent .inpbox1 {
+	margin-top: 0;
+}
+
+
+    .loginpage .bg,
+    .loginpage .pane {
+        width: 336px;
+        height: 251px;
+        overflow: hidden;
+    }
+
+#my_camera {
+    overflow: hidden;
+}
+
+.loginpage .bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 999999999;
+    /*  background: url(../../Images/StudentInfo/facebj.png) center center no-repeat; */
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+
+.loginpage .pane {
+    position: absolute;
+    background: url(../../Images/StudentInfo/4.png) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.loginpage .move {
+    z-index: 999999999;
+    animation: move 1.5s ease-in-out infinite;
+    -webkit-animation: move 1.5s ease-in-out infinite;
+}
+
+.loginpage .step3 .faceimg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.loginpage .clface {
+    position: absolute;
+    right: -5px;
+    top: -10px;
+}
+
+.loginpage .loadimg {
+    margin: 15px auto 0;
+    width: 29px;
+    height: 29px;
+    border-radius: 1px;
+    animation: loading 2s linear 0s infinite;
+    -webkit-animation: loading 2s linear 0s infinite;
+    -o-animation: loading 2s linear 0s infinite;
+    -moz-animation: loading 2s linear 0s infinite;
+}
+
+.loginpage .failface {
+    text-align: center;
+    color: #ff0000;
+    font-size: 12px;
+    padding-top: 25px;
+}
+
+    .loginpage .failface img {
+        width: 19px;
+        vertical-align: middle;
+        margin-right: 5px;
+        text-align: center;
+        height: 19px;
+    }
+
+.loginpage .failface1 {
+    text-align: center;
+    font-size: 12px;
+    color: #8b8b8b;
+    padding-bottom: 6px;
+    padding-top: 15px;
+}
+
+    .loginpage .failface1 span {
+        text-align: center;
+        font-size: 12px;
+        color: #48ada9;
+    }
+
+.loginpage #face-box {
+    width: 334px;
+    height: 250px;
+}
+
+.loginpage .face1 .clface {
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    width: 28px;
+    height: 28px;
+}
+
+.loginpage .lbox img {
+    display: block;
+    width: 98px;
+    height: 98px;
+    margin: 0 auto;
+}
+
+.loginpage .logintopboxc .lbox {
+    padding-top: 40px;
+}
+
+.loginpage .succinfo {
+    font-size: 24px;
+    width: 350px;
+    margin: 0 auto;
+    color: #49aeaa;
+    padding-top: 35px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+
+
+/* 新增 */
+.navigationr span {
+    color: #32ada6;
+    border: 1px solid #32ada6;
+    line-height: 26px;
+    display: inline-block;
+    border-radius: 3px;
+    padding: 0 10px;
+}
+
+    .navigationr span img {
+        width: 12px;
+        height: 12px;
+        /* vertical-align: middle; */
+        margin-right: 5px;
+    }
+
+.taskpage {
+	width: 1240px;
+	margin: 0 auto;
+	position: relative;
+}
+
+    .taskpage .selectbox {
+        padding-top: 25px;
+    }
+.taskpage .pagebox{
+	position: absolute;
+	left: 0;
+	bottom: -6px;
+	width: 100%;
+}
+.taskpage .selectbox a {
+	color: #32ada6;
+	border: 1px solid #32ada6;
+	line-height: 34px;
+	text-align: center;
+	width: 110px;
+	display: inline-block;
+	border-radius: 3px;
+	margin-right: 20px;
+	font-size: 14px;
+}
+
+        .taskpage .selectbox .active {
+            background: #32ada6;
+            color: #fff;
+        }
+
+    .taskpage .tablebox {
+        background: #fff;
+        margin-top: 15px;
+		position: relative;
+    }
+
+    .taskpage .selectbox a span {
+        color: #ff9561;
+    }
+
+    .taskpage .selectbox .active span {
+        color: #fff;
+    }
+
+
+.taskpage .tasktable td,
+.taskpage .tasktable th {
+	border: 1px solid #e6e6e6;
+	line-height: 40px;
+}
+
+.taskpage .tasktable .check {
+	font-size: 12px;
+	color: #32ada6;
+}
+
+    .taskpage .tasktable td {
+        background: #fff;
+    }
+
+    .taskpage .tasktable thead {
+        background: #f4f4f4;
+        font-size: 14px;
+        color: #666666;
+    }
+
+.taskmainpage {
+	position: relative;
+	display: none;
+	min-height: 700px;
+	/* overflow: hidden; */
+	min-width: 1240px;
+}
+
+.taskdetailpage .startbox {
+    position: relative;
+    transition: All 1s ease-in-out;
+    -webkit-transition: All 1s ease-in-out;
+    -moz-transition: All 1s ease-in-out;
+    -o-transition: All 1s ease-in-out;
+    /* background: #ff0000; */
+}
+
+.taskdetailpage .selstartbox {
+    opacity: 0;
+}
+
+.taskdetailpage .shapebox {
+    display: block;
+    width: 856px;
+    height: 737px;
+    margin: 0 auto;
+}
+
+.taskdetailpage .shapecont {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+    .taskdetailpage .shapecont img {
+        width: 320px;
+        height: 254px;
+        /* display: block;
+	margin: 0 auto; */
+        /* transition: All .6s ease-in-out;
+	-webkit-transition: All .6s ease-in-out;
+	-moz-transition: All .6s ease-in-out;
+	-o-transition: All .6s ease-in-out; */
+    }
+
+    .taskdetailpage .shapecont .seleimg {
+        -webkit-transform: rotate(720deg) scale(1);
+        -moz-transform: rotate(720deg) scale(1);
+        -o-transform: rotate(720deg) scale(1);
+        -ms-transform: rotate(720deg) scale(1);
+        transform: rotate(720deg) scale(1);
+        -webkit-transition: All 1s ease-in-out;
+        -moz-transition: All 1s ease-in-out;
+        -o-transition: All 1s ease-in-out;
+        transition: All 1s ease-in-out;
+    }
+
+
+
+/* .taskdetailpage .shapecont {
+    -webkit-transform: rotate(720deg) scale(1);
+    -moz-transform: rotate(720deg) scale(1);
+    -o-transform: rotate(720deg) scale(1);
+    -ms-transform: rotate(720deg) scale(1);
+    transform: rotate(720deg) scale(1);
+    -webkit-transition: All 1s ease-in-out;
+    -moz-transition: All 1s ease-in-out;
+    -o-transition: All 1s ease-in-out;
+    transition: All 1s ease-in-out;
+} */
+
+.taskdetailpage .btn {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 120px;
+    left: 0;
+}
+
+.taskmainpage .mainbox {
+    width: 77%;
+    height: 0;
+    margin: 0 auto;
+}
+
+.taskmainpage .maintop {
+    width:calc(85% - 30px);
+    margin: 0 auto;
+}
+
+    .taskmainpage .maintop img {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+.taskmainpage .mainbottom {
+    width:calc(85% - 30px);
+    margin: 0 auto;
+}
+
+    .taskmainpage .mainbottom img {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+.taskmainpage .boxbottom img {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.taskmainpage .boxtop img {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.taskmainpage .dz {
+    position: absolute;
+    right: 25px;
+    top: 30px;
+    width: 23%;
+}
+
+    .taskmainpage .dz img {
+        width: 100%;
+    }
+
+.taskmainpage .boxcenter {
+    background: url(../../Images/StudentInfo/portcenterimg.png) repeat-y center top;
+    background-size: 100% auto;
+}
+
+.practicepage .practicetitle {
+	font-size: 28px;
+	color: #2ba49d;
+	text-align: center;
+	padding-top: 53px;
+}
+
+.practicepage .practicebox {
+    background: #fffaee;
+    margin: 0 4.5%;
+    position: relative;
+}
+
+.practicepage .practinfo {
+	color: #727272;
+	padding-top: 33px;
+	text-align: center;
+	font-size: 16px;
+}
+
+.practicepage .practinfo1 {
+	color: #727272;
+	padding-top: 20px;
+	text-align: center;
+	font-size: 16px;
+}
+
+.practicepage .practx {
+    text-align: center;
+    padding-top: 50px;
+}
+
+    .practicepage .practx img {
+        margin: 0 3px;
+    }
+
+.practicepage .pracresbox {
+	max-width: 800px;
+	margin: 0 auto;
+	overflow: hidden;
+	padding-top: 53px;
+}
+ .practicepage .pracresbox .item{
+	 width: 25%;
+	 text-align: center;
+	 float: left;
+ }
+  .practicepage .pracresbox5 .item{
+	 width: 20%;
+	 text-align: center;
+	 float: left;
+ }
+ .practicepage .pracresbox .infox{
+	 font-size: 25px;
+	 color: #2ba49d;
+	 padding-top: 20px;
+ }
+ .practicepage .pracresbox .item img{
+	 display: block;
+	 margin: 0 auto;
+	 width: 45px;
+ }
+ .practicepage .pracresbox .infox span{
+	 font-size: 18px;
+	 color: #666666;
+ }
+.practicepage .pracresbox .infox1{
+	 font-size: 14px;
+	 padding-top: 20px;
+	 color: #666666;
+ }
+ .practicepage .practtable{
+	 margin: 54px 5% 0;
+ }
+.practicepage .practtable thead{
+	background: #e4ddcd;
+	font-size: 19px;
+	color: #666;
+	font-weight: normal;
+}
+
+.practicepage .practtable th {
+	line-height: 65px;
+	font-weight: 600;
+	font-size: 15px;
+	border: 1px solid #dddddd;
+}
+
+.practicepage .practtable td {
+	line-height: 65px;
+	border: 1px solid #dddddd;
+}
+.practicepage .practtable td img{
+	width: 24px;
+}
+.practicepage .practtable .textleft {
+	padding-left: 20px;
+	overflow: hidden;
+	font-weight: normal;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.practicepage .practtable tr th.textleft {
+	font-weight: 600;
+}
+    .practicepage .practtable table {
+        margin-top: 30px;
+    }
+
+.practsummarybox {
+    /* padding-top: 27px; */
+    padding-bottom: 78px;
+}
+
+.practicepage .practsummary {
+	margin: 27px 5% 0;
+	padding: 16px 20px 20px;
+	border: 1px solid #dddddd;
+	background: #f8f3e6;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.practicepage .linetext1 {
+	color: #666666;
+	font-size: 14px;
+	overflow: hidden;
+}
+
+.practicepage .col {
+    color: #2ba49d;
+}
+
+.practicepage .linetext1 span {
+    display: block;
+    line-height: 25px;
+}
+
+.taskdetailpage .questiontitle {
+    background: url(../../Images/StudentInfo/left.png) no-repeat left 10px;
+    		background-size:10px 11px; 
+    padding-left: 15px;
+    margin-bottom: 20px;
+    line-height: 30px;
+    font-size: 14px !important;
+	font-weight: 600;
+    color: #666666;
+}
+.taskdetailpage .nobackground{
+	padding-left: 0;
+}
+.taskdetailpage .questiontitle img{
+	display: inline-block;
+	max-height: 100%;
+	max-width: 100%;
+}
+.taskdetailpage .questiontitle *{
+	line-height:inherit;
+	font-weight: normal;
+}
+.taskdetailpage .questiontitle1 {
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+.taskdetailpage .questionmian {
+    width: 560px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.taskdetailpage .questitem {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 140px;
+    border: 1px solid #51a092;
+    line-height: 50px;
+    height: 52px;
+    color: #51a092;
+    text-align: center;
+}
+.taskdetailpage .choicequestion .questitem {
+    line-height:50px;
+}
+.taskdetailpage .questitem img{
+	width: 100%;
+	display: block;
+	margin: 0 auto;
+	height: 100%;
+	text-align: center;
+}
+.taskdetailpage .erroritem {
+    border: 1px solid #f47463;
+    color: #f47463;
+}
+
+.taskdetailpage .questionmian .questitem:nth-child(odd) {
+    left: 0;
+}
+
+.taskdetailpage .questionmian .questitem:nth-child(even) {
+    left: 420px;
+}
+
+.taskdetailpage .rotate {
+    height: 2px;
+    transform-origin: 0% 0%;
+    background: #ff0000;
+    position: absolute;
+}
+
+.taskdetailpage .questiontitle2 {
+    color: #666666;
+    overflow: hidden;
+    padding-top: 20px;
+}
+
+    .taskdetailpage .questiontitle2 * {
+        line-height: inherit;
+    }
+
+    .taskdetailpage .questiontitle2 .fl {
+        line-height: 25px;
+    }
+.taskdetailpage .choicequestion .questiontitle2 .fl img {
+    vertical-align: middle;
+}
+    .taskdetailpage .questiontitle2 .info .answerNormalText em {
+        color: #479e93 !important;
+	vertical-align: bottom;
+    }
+
+    .taskdetailpage .questiontitle2 .info {
+        line-height: 25px;
+    }
+     .taskdetailpage .questiontitle2 .info {
+        line-height: 25px;
+        padding-left:72px;
+    }
+    .taskdetailpage .questiontitle2 .sore {
+        margin-top: -5px;
+    }
+    .taskdetailpage .questiontitle2 .nosore {
+         margin-top: 2px;
+         line-height:25px;
+	     }
+.taskdetailpage .questiontitle2 .sore img {
+	vertical-align: middle;
+	height: 28px;
+	margin-right: 5px;
+}
+
+.taskdetailpage .questiontitle2 .answ {
+	padding-top: 30px;
+	padding-left: 0;
+}
+
+.taskdetailpage .questiontitle3 span {
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.taskdetailpage .quescont {
+    color: #666;
+}
+
+    .taskdetailpage .quescont .quescontlist {
+        padding: 5px 0;
+        letter-spacing: 8px;
+    }
+
+    .taskdetailpage .quescont .quescontlist1 {
+        color: #666;
+        line-height: 25px;
+    }
+
+.gobackpage {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.taskdetailpage .choicebox .choicelist {
+    color: #666;
+    line-height: 35px;
+    letter-spacing: 2px;
+}
+
+    .taskdetailpage .choicebox .choicelist p {
+        display: inline;
+    }
+
+.taskdetailpage .choiceboximg {
+    overflow: hidden;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.taskdetailpage .choicelistimg {
+    float: left;
+    text-align: center;
+    margin: 0 1.5%;
+}
+
+    .taskdetailpage .choicelistimg img {
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+.taskdetailpage .choiceboximg .choitem {
+    height: 99px;
+    border: 1px solid #666666;
+    width: 156px;
+}
+
+.taskdetailpage .choicelistimg .info {
+    padding-top: 15px;
+    color: #666;
+}
+
+.taskdetailpage .choiceboximg .errorselect .choitem {
+    border: 1px solid #e85743;
+}
+.loaddatapage{
+	text-align: center;
+	padding: 150px 0;
+}
+.loaddatapage .texterr{
+	font-size: 14px;
+	color: #727272;
+	padding-top: 10px;
+}
+.loaddatapage .loadimg{
+	-webkit-animation:haha1 2s linear infinite;
+	
+}
+@-webkit-keyframes haha1{
+	 
+			0%{-webkit-transform:rotate(0deg);}
+	 
+			25%{-webkit-transform:rotate(90deg);}
+	 
+			50%{-webkit-transform:rotate(180deg);}
+	 
+			75%{-webkit-transform:rotate(270deg);}
+	 
+			100%{-webkit-transform:rotate(360deg);}
+	 
+		}
+.taskdetailpage .choiceboximg .errorselect .info {
+    color: #e85743;
+}
+
+.taskdetailpage .choiceboximg .selectright .choitem {
+    border: 1px solid #51a092;
+}
+
+.taskdetailpage .choiceboximg .selectright .info {
+    color: #51a092;
+}
+
+.taskdetailpage .choicehasimg {
+    overflow: hidden;
+}
+
+.taskdetailpage .choiceimg {
+    padding-right: 30px;
+}
+.taskdetailpage .choiceimg  img{
+	width: 320px;
+	height: 150px;
+}
+.taskdetailpage .questiontitle1 img{
+	width: 320px;
+	height: 150px;
+}
+
+.taskdetailpage .questjudge {
+    overflow: hidden;
+}
+
+    .taskdetailpage .questjudge img {
+        vertical-align: middle;
+    }
+
+    .taskdetailpage .questjudge .judgelist {
+        padding-left: 45px;
+    }
+
+        .taskdetailpage .questjudge .judgelist span {
+            display: inline-block;
+            padding-left: 7px;
+        }
+
+.taskdetailpage .exercisebox .questiontitle .cof47463 {
+	border: 1px solid #f47463;
+	/* min-width: 98px; */
+	padding: 0 10px;
+	text-align: center;
+	margin: 5px 0;
+	display: inline-block;
+	line-height: 30px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+.taskdetailpage .exercisebox .questiontitle .co479e93 {
+	border: 1px solid #479e93;
+	/* min-width: 98px; */
+	text-align: center;
+	padding: 0 10px;
+	display: inline-block;
+	line-height: 30px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+.taskdetailpage .exercisebox .refanswer .co479e93 {
+	line-height: 30px;
+	/* padding: 0 10px; */
+	height: 32px;
+    margin:5px 0;
+	display: inline-block;
+	text-align: center;
+	border: 1px solid #479e93;
+	
+}
+.taskdetailpage .exercisebox .refanswer .info .cof47463{
+	line-height: 30px;
+	padding: 0 10px;
+	height: 32px;
+	display: inline-block;
+	text-align: center;
+	border: 1px solid #479e93;
+	color: #479e93 !important;
+}
+
+.taskdetailpage .exercisebox .refanswer .co8c601b {
+	line-height: 30px;
+	padding: 0 10px;
+	height: 32px;
+	display: inline-block;
+	text-align: center;
+	border: 1px solid #8c601b;
+}
+.taskdetailpage .exercisebox .refanswer2 .info .cof47463{
+	line-height: 30px;
+	padding: 0 10px;
+	height: 32px;
+	display: inline-block;
+	text-align: center;
+	border: 1px solid #479e93;
+	color: #8c601b !important;
+}
+
+.taskdetailpage .exercisebox .refanswer p {
+    display: inline;
+}
+
+.taskdetailpage .exercisebox .refanswer .fl {
+    line-height: 26px;
+    padding-top:5px;
+}
+
+.taskdetailpage .exercisebox .refanswer span {
+	vertical-align: middle;
+	height: 32px;
+	/* width: 82px; */
+	min-width: 60px;
+	line-height: 26px;
+}
+.taskdetailpage .exercisebox .refanswer2 span.co479e93,.taskdetailpage .exercisebox .refanswer2 span.co479e93 {
+	border: 1px solid #8c601b !important;
+	color: #8c601b !important;
+}
+
+.taskdetailpage .exercisebox .refanswer img {
+    max-height: 30px;
+    max-width: 82px;
+}
+
+.taskdetailpage .exercisebox .refanswer * {
+    font-weight: normal;
+}
+
+.taskdetailpage .exercisebox .refanswer span img {
+    max-height: 30px;
+    max-width: 82px;
+}
+.indexpage{
+	width: 1280px;
+	margin: 0 auto;
+}
+.indexpage .nogoods{
+	text-align: center;
+	padding-top: 100px;
+	padding-bottom: 200px;
+}
+.indexpage .banner {
+	width: 1240px;
+	margin: 0 auto;
+	padding-top: 95px;
+}
+
+    .indexpage .banner a {
+        display: block;
+        width: 100%;
+    }
+
+.indexpage .banner .swiper-slide {
+	opacity: 0 !important;
+}
+.indexpage .banner .swiper-slide-active{
+	opacity: 1 !important;
+}
+.indexpage .banner img {
+	display: block;
+	width: 100%;
+}
+
+.indexpage .seleciton {
+    width: 70%;
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    background: #fff;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.indexpage .selectbox {
+	overflow: hidden;
+	padding: 17px 0 0;
+	padding-left: 10px;
+}
+
+.indexpage .seleciton {
+	position: relative;
+	margin-top: 25px;
+	min-width: 1240px;
+}
+
+.indexpage .seleciton a {
+	color: #727272;
+	font-size: 14px;
+	display: inline-block;
+	min-width: 87px;
+	line-height: 26px;
+	border-radius: 3px;
+}
+
+    .indexpage .seleciton .active a {
+        background: #38b5ae;
+        color: #fff;
+    }
+
+.indexpage .selectbox .listitem {
+	float: left;
+	text-align: center;
+	margin: 0 5px 20px;
+	width: 8%;
+}
+.indexpage .selectbox .fl{
+	line-height: 26px;
+	color: #727272;
+	font-size: 14px;
+}
+.indexpage .selectbox .selectboxr{
+	overflow: hidden;
+	padding-right: 50px;
+}
+.indexpage .seleciton .showselect {
+    position: absolute;
+    right: 25px;
+    top: 17px;
+	cursor: pointer;
+    font-size: 13px;
+    width: 56px;
+    line-height: 22px;
+    text-align: center;
+    color: #38b5ae;
+    /* background: url(../../Images/StudentInfo/hide.png) no-repeat right center;
+	background-size: 14px 9px; */
+    /* padding-right: 10px; */
+    /* padding-left: 5px; */
+    border: 1px solid #38b5ae;
+}
+
+    .indexpage .seleciton .showselect img {
+        margin-left: 3px;
+    }
+
+.indexpage .goodslist {
+	/* width: calc(100% + 46px); */
+	overflow: hidden;
+	margin: 0 auto;
+	padding-top: 10px;
+}
+
+.indexpage .goodslist .goodsitem {
+	float: left;
+	width: 33.33%;
+	padding: 20px;
+}
+
+    .indexpage .goodslist .imgdiv img {
+        width: 100%;
+    }
+
+.indexpage .goodsinfo {
+    overflow: hidden;
+    padding-top: 10px;
+}
+
+    .indexpage .goodsinfo .fl {
+        overflow: hidden;
+    }
+
+.indexpage .goodsinfo .soldnum {
+	text-align: right;
+	font-size: 14px;
+	color: #727272;
+	padding-top: 6px;
+}
+
+.indexpage .goodsinfo .pirce {
+	font-size: 22px;
+	color: #ee564f;
+}
+.indexpage .goodsinfo .pirce1 {
+	color: #000;
+}
+.indexpage .goodsinfo .pirce em {
+	font-size: 22px;
+	color: #ee564f;
+}
+
+    .indexpage .goodsinfo .pirce1 img {
+        vertical-align: middle;
+    }
+
+.indexpage .goodslabel {
+    overflow: hidden;
+    padding-top: 20px;
+}
+
+.indexpage .goodslabel .clas {
+	color: #fff;
+	background: #38b5ae;
+	margin-right: 5px;
+	line-height: 24px;
+	display: inline-block;
+	border-radius: 3px;
+	font-size: 12px;
+	padding: 0 5px;
+}
+
+.indexpage .goodslabel .claty {
+	font-size: 12px;
+	padding: 0 5px;
+	color: #fff;
+	line-height: 24px;
+	background: #dbae90;
+	display: inline-block;
+	border-radius: 3px;
+}
+
+.indexpage .goodslabel .goodsname {
+	line-height: 24px;
+	color: #3d3d3d;
+	font-size: 14px;
+}
+
+.indexpage .conpouboxconfig {
+	overflow: hidden;
+	padding-top: 20px;
+	height: 45px;
+}
+
+    .indexpage .conpouboxconfig span {
+        display: inline-block;
+        background: url(../../Images/StudentInfo/conpouleft.png) no-repeat left center;
+        height: 25px;
+        background-size: 4px 25px;
+        padding-left: 4px;
+    }
+
+    .indexpage .conpouboxconfig label {
+        display: inline-block;
+        background: url(../../Images/StudentInfo/conpouright1.png) no-repeat right center;
+        height: 25px;
+        background-size: 4px 25px;
+        padding-right: 4px;
+    }
+
+    .indexpage .conpouboxconfig em {
+        display: inline-block;
+        background: url(../../Images/StudentInfo/conpoucenter.png) repeat-x left center;
+        height: 25px;
+        min-width: 92px;
+        text-align: center;
+        background-size: auto 25px;
+        line-height: 25px;
+        font-size: 12px;
+        color: #f74245;
+    }
+
+    .indexpage .conpouboxconfig .xqq {
+        background: url(../../Images/StudentInfo/xqle.png) no-repeat left center;
+    }
+
+        .indexpage .conpouboxconfig .xqq label {
+            background: url(../../Images/StudentInfo/xqri.png) no-repeat right center;
+        }
+
+        .indexpage .conpouboxconfig .xqq em {
+            background: url(../../Images/StudentInfo/xqcen.png) repeat-x left center;
+            color: #f7731a;
+        }
+
+.indexpage .swiper-pagination-bullet {
+    background: #dcdcdc;
+    border-radius: 3px;
+    opacity: 1;
+    -webkit-transition: All .3s ease-in-out;
+    -moz-transition: All .3s ease-in-out;
+    -o-transition: All .3s ease-in-out;
+    transition: All .3s ease-in-out;
+}
+
+.indexpage .swiper-button-next {
+    color: #dcdcdc;
+}
+
+.indexpage .swiper-button-prev {
+    color: #dcdcdc;
+}
+
+.indexpage .swiper-pagination-bullet-active {
+    width: 30px;
+}
+/*遮罩层*/
+.conpoupop {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 99999;
+    background-color: #000000;
+    background-color: rgba(0,0,0,0.5);
+}
+
+
+.conpoupop .box {
+	margin: 150px auto 0px;
+	width: 480px;
+	min-height: 290px;
+	position: relative;
+	background: url(../../Images/StudentInfo/couponbg2.png) no-repeat center bottom;
+	padding-bottom: 73px;
+	/*background-color: #ffffff;*/
+}
+.conpoupop .conpoubjbox{
+	position: fixed;
+	left: 0;
+	top: 20px;
+	width: 100%;
+	z-index: 1;
+}
+.conpoupop .conpoubjbox img{
+	display: block;
+	margin: 0 auto;
+}
+.conpoupop .box .coubj{
+	position: absolute;
+	bottom: -20px;
+	left: 0;
+	z-index: 2;
+	text-align: center;
+	color: #fff;
+	width: 100%;
+	height: 290px;
+	padding-top: 205px;
+	font-size: 20px;
+	background:url(../../Images/StudentInfo/couponbg3.png) no-repeat center bottom;
+}
+.conpoupop .box .coubj .info{
+	padding-bottom: 35px;
+}
+.conpoupop .box .coubj .bt{
+	background: url(../../Images/StudentInfo/couponbtn.png) no-repeat center center;
+	line-height: 58px;
+	color: #ff2b49;
+}
+.conpoupop .box .coubj .bt span{
+	cursor: pointer;
+}
+.conpoupop .box .coubj .bt1{
+	padding-top: 15px;
+}
+.conpoupop .box .coubj .bt1 img{
+	cursor: pointer;
+}
+.conpoupop .box .ticket{
+	text-align: center;
+	color: #ee6552;
+}
+.conpoupop .conputbox1{
+	width: 340px;
+	min-height: 220px;
+	background: #fff7d3;
+	border-radius: 15px;
+	font-size: 24px;
+	
+	/* padding-bottom: 15px; */
+	padding-top: 18px;
+	margin: 0 auto;
+}
+.conpoupop .itemlist{
+	width: 312px;
+	height: 86px;
+	padding: 10px 25px;
+	margin: 0 auto;
+	background: url(../../Images/StudentInfo/couponbg4.png) no-repeat center center;
+}
+.conpoupop .itemlist .tit{
+	color: #f96f65;
+	font-size: 16px;
+	width: 128px;
+	padding-top: 7px;
+}
+.conpoupop .itemlist .item{
+	position: relative;
+}
+.conpoupop .itemlist .money{
+	position: absolute;
+	right: 6px;
+	font-size: 26px;
+	color: #f96f65;
+	top: 8px;
+}
+.conpoupop .itemlist .money span{
+	
+	font-size: 40px;
+	color: #f96f65;
+}
+.conpoupop .itemlist .info{
+	color: #737373;
+	padding-top: 11px;
+	font-size: 14px;
+}
+.conpoupop .conputcnt{
+	padding-top: 18px;
+	padding-bottom: 35px;
+}
+.goodspage .cheader {
+    overflow: hidden;
+    background: #fff;
+    padding: 30px 3%;
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+    .goodspage .cheader .goodsimg {
+        width: 40%;
+    }
+
+        .goodspage .cheader .goodsimg img {
+            width: 100%;
+            /* height: 350px; */
+            border-radius: 5px;
+        }
+
+.goodspage .ordercontent {
+    padding: 0 15px;
+}
+
+
+.goodspage .goodsinfo {
+    overflow: hidden;
+}
+
+    .goodspage .goodsinfo .clas {
+        display: inline-block;
+        padding: 0 10px;
+        line-height: 23px;
+        border-radius: 5px;
+        background: #38b5ae;
+        color: #fff;
+        margin-right: 8px;
+        font-size: 12px;
+    }
+
+    .goodspage .goodsinfo .type {
+        display: inline-block;
+        padding: 0 10px;
+        line-height: 23px;
+        border-radius: 5px;
+        background: #dbae90;
+        color: #fff;
+        font-size: 12px;
+    }
+
+.goodspage .cheader_right {
+    padding-left: 42%;
+    padding-top: 10px;
+    position: relative;
+    height: 100%;
+}
+
+.goodspage .goodsname {
+    line-height: 23px;
+    padding-left: 15px;
+    font-size: 18px;
+    height: 23px;
+    color: #727272;
+}
+
+.goodspage .goodsinfo1 {
+    font-size: 15px;
+    color: #727272;
+    letter-spacing: 1px;
+    padding-top: 25px;
+    line-height: 23px;
+}
+
+.goodspage .goodsinfo2 {
+    font-size: 15px;
+    color: #727272;
+    letter-spacing: 1px;
+    padding-top: 15px;
+    line-height: 23px;
+}
+
+.goodspage .goodsprice {
+    font-size: 34px;
+    color: #ee564f;
+    padding-top: 45px;
+}
+
+    .goodspage .goodsprice span {
+        font-size: 24px;
+    }
+
+.goodspage .lbox {
+    position: relative;
+}
+
+.goodspage .orderinfotitle {
+    margin: 30px 10px 0;
+    border-top: 1px solid #e4e4e4;
+    padding: 25px 5px 20px;
+    font-size: 19px;
+    color: #555;
+}
+
+.goodspage .conpouboxconfig span {
+    display: inline-block;
+    background: url(../../Images/StudentInfo/conpouleft.png) no-repeat left center;
+    height: 25px;
+    background-size: 4px 25px;
+    padding-left: 4px;
+    cursor: pointer;
+}
+
+.goodspage .conpouboxconfig label {
+    display: inline-block;
+    cursor: pointer;
+    background: url(../../Images/StudentInfo/conpouright1.png) no-repeat right center;
+    height: 25px;
+    background-size: 4px 25px;
+    padding-right: 4px;
+    cursor: pointer;
+}
+
+.goodspage .conpouboxconfig em {
+    display: inline-block;
+    background: url(../../Images/StudentInfo/conpoucenter.png) repeat-x left center;
+    height: 25px;
+    min-width: 92px;
+    text-align: center;
+    background-size: auto 25px;
+    line-height: 25px;
+    font-size: 13px;
+    color: #f74245;
+}
+
+.goodspage .conpouboxconfig .xqq {
+    background: url(../../Images/StudentInfo/xqle.png) no-repeat left center;
+}
+
+    .goodspage .conpouboxconfig .xqq label {
+        background: url(../../Images/StudentInfo/xqri.png) no-repeat right center;
+    }
+
+    .goodspage .conpouboxconfig .xqq em {
+        background: url(../../Images/StudentInfo/xqcen.png) repeat-x left center;
+        color: #f7731a;
+    }
+
+.goodspage .goodsinfo3 {
+    overflow: hidden;
+    padding-top: 30px;
+}
+
+    .goodspage .goodsinfo3 .fl {
+        overflow: hidden;
+    }
+
+    .goodspage .goodsinfo3 .soldnum {
+        padding-left: 280px;
+        font-size: 15px;
+        color: #727272;
+        padding-top: 20px;
+    }
+
+    .goodspage .goodsinfo3 .pirce {
+        font-size: 37px;
+        color: #ee564f;
+    }
+
+        .goodspage .goodsinfo3 .pirce em {
+            font-size: 22px;
+            color: #ee564f;
+        }
+
+    .goodspage .goodsinfo3 .pirce1 img {
+        vertical-align: middle;
+    }
+
+.goodspage .goodsinfo4 {
+	padding-top: 20px;
+	overflow: hidden;
+}
+
+.goodspage .goodsinfo4 a {
+	border-radius: 5px;
+	display: block;
+	text-align: center;
+	padding: 0 50px;
+	line-height: 36px;
+	background: #fc9904;
+	color: #fdf5de;
+	font-size: 16px;
+	border: none;
+}
+.goodspage .goodsinfo4 .blue{
+	background: #38b5af;
+	cursor: pointer;
+	
+}
+.goodspage .goodsinfo4 .fl{
+	/* width: 35%; */
+	padding-top: 10px;
+}
+.goodspage .goodsinfo4_1 .fl{
+   /* width:37%; */
+}
+
+    .goodspage .goodsinfo4_1 .fl span {
+        color: #727272;
+        display:block;
+    }
+
+    .goodspage .goodsinfo4_1 .fl .blue {
+        margin-top: 18px;
+    }
+
+.goodspage .goodsinfo4 .paytype {
+    text-align: right;
+    font-size: 15px;
+    color: #666;
+    padding-top: 15px;
+}
+
+.goodspage .goodsinfo4 img {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.goodspage .goodsbottom {
+	background: #fff;
+	margin-top: 30px;
+	padding: 0 52px;
+	padding-top: 20px;
+	-webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.goodspage .goodsbottom .tab {
+	border-bottom: 5px solid #49aea8;
+	/* overflow: hidden; */
+	position: relative;
+	padding-top: 32px;
+	height: 77px;
+}
+
+.goodspage .goodsbottom .tab .btns {
+	position: absolute;
+	right: 0;
+	text-align: center;
+	display: none;
+	bottom: 10px;
+	border-radius: 5px;
+	width: 150px;
+	line-height: 36px;
+	background: #fc9904;
+	color: #fdf5de;
+	font-size: 16px;
+	border: none;
+}
+.goodspage .goodsbottom .tab .btns.blue {
+	position: absolute;
+	right: 0;
+	text-align: center;
+	display: none;
+	bottom: 10px;
+	border-radius: 5px;
+	width: 200px;
+	line-height: 36px;
+	background: #38b5af;
+	color: #fdf5de;
+	font-size: 16px;
+	border: none;
+}
+.goodspage .goodsbottom .tab .tablist{
+	line-height: 40px;
+	width: 126px;
+cursor: pointer;
+	font-size: 15px;
+	color: #666;
+	text-align: center;
+}
+
+.goodspage .goodsbottom .tab .active {
+	background: #49aea8;
+	color: #fff;
+}
+.goodspage .tabbx .tab {
+	position: relative;
+}
+.goodspage .tabbx .tab .gobuybox{
+	position: absolute;
+	right: 0;
+	padding: 10px;
+	bottom: -107px;
+	width: 370px;
+	overflow: hidden;
+	background: #fff;
+	border: 1px solid #dddddd;
+}
+.goodspage .tabbx .tab .gobuybox .fl{
+	padding-right: 10px;
+}
+.goodspage .goodsbottom .gobuybox .gobuyboxcont{
+	padding-top: 10px;
+}
+.goodspage .tabbx .tab .gobuybox img{
+	width: 120px;
+	height: 80px;
+}
+.goodspage .tabbx .tab .gobuybox .lab1{
+	display: inline-block;
+	background: #38b5ae;
+	margin-right: 12px;
+	color: #fff;
+	text-align: center;
+	line-height: 20px;
+	font-size: 14px;
+	border-radius: 3px;
+	padding: 0 5px;
+}
+.goodspage .tabbx .tab .gobuybox .label1{
+	color: #727272;
+	font-size: 14px;
+	padding-top: 15px;
+}
+.goodspage .tabbx .tab .gobuybox .lab2{
+	display: inline-block;
+	background: #fc9904;
+	margin-right: 12px;
+	color: #fff;
+	text-align: center;
+	line-height: 20px;
+	font-size: 14px;
+	border-radius: 3px;
+	padding: 0 5px;
+}
+.goodspage .tabcontbox {
+    padding-bottom: 20px;
+}
+.goodspage .tabcontbox img{
+	max-width: 100%;
+}
+.goodspage .tabcontbox li {
+	overflow: hidden;
+	line-height: 50px;
+	color: #a2a2a2;
+	font-size: 14px;
+	padding-right: 20px;
+}
+
+    .goodspage .tabcontbox ul li:nth-child(even) {
+        background: #eaf3f4;
+    }
+
+    .goodspage .tabcontbox .titl {
+        line-height: 50px;
+    }
+
+    .goodspage .tabcontbox .operate {
+        line-height: 50px;
+        text-align: right;
+    }
+
+        .goodspage .tabcontbox .operate a {
+            color: #a2a2a2;
+        }
+
+    .goodspage .tabcontbox li:hover {
+        color: #474747;
+    }
+
+        .goodspage .tabcontbox li:hover a {
+            color: #49aea8;
+        }
+
+.goodspage .pro-detail-hd-fixed {
+    position: fixed;
+    left: 0;
+    top: 73px;
+    width: 100%;
+}
+
+.goodspage .pro-detail-hd-fixed .tabbx {
+	width: 1240px;
+	margin: 0 auto;
+	padding: 0 52px;
+	background: #fff;
+}
+
+    .goodspage .pro-detail-hd-fixed .tab {
+        /* 	width: 100%; */
+        margin: 0 auto;
+        background: #fff;
+    }
+
+.goodspage .conpou {
+    overflow-y: scroll;
+}
+
+.conpoupage .conpouitem {
+    width: 100%;
+    padding: 10px;
+    position: relative;
+    border: 2px solid rgba(0,0,0,0);
+}
+
+    .conpoupage .conpouitem .selstatus {
+        position: absolute;
+        bottom: -2px;
+        right: -1px;
+        display: none;
+    }
+
+    .conpoupage .conpouitem.active {
+        border: 2px solid #fc9904;
+    }
+
+        .conpoupage .conpouitem.active .selstatus {
+            display: block;
+        }
+
+.conpoupage .itembox {
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+    border-radius: 5px;
+    border-left: 5px solid #aaa;
+    /* background: #aaa; */
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+}
+
+.conpoupage .itembox1 {
+    border-left: 5px solid #ec5961;
+}
+
+.conpoupage .conpoulist {
+    overflow: hidden;
+    width: 100%;
+}
+
+.conpoupage .iteminfo {
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+}
+
+    .conpoupage .iteminfo .status {
+        position: absolute;
+        right: -5px;
+        top: -2px;
+        border-radius: 0 5px 0 8px;
+        line-height: 22px;
+        font-size: 13px;
+        -webkit-transform: scale(0.8);
+        display: block;
+        background: #ff7854;
+        color: #fff;
+        padding: 0 8px;
+    }
+
+    .conpoupage .iteminfo .status1 {
+        background: #ec5961;
+    }
+
+.conpoupage .itembox .price span {
+    font-size: 10px;
+    color: #ff7854;
+}
+
+.conpoupage .itembox .price {
+    font-size: 20px;
+    color: #ff7854;
+    padding-left: 10px;
+    padding-top: 30px;
+}
+
+.conpoupage .itembox .price1 {
+    font-size: 12px;
+    color: #5c5c5c;
+    -webkit-transform: scale(0.8);
+    display: block;
+    padding-left: 5px;
+    padding-top: 5px;
+    margin-bottom: 15px;
+}
+
+.conpoupage .itembox .pirce2 {
+    color: #ec5961;
+}
+
+    .conpoupage .itembox .pirce2 span {
+        color: #ec5961;
+    }
+
+.conpoupage .iteminforight {
+    font-size: 12px;
+    padding-left: 100px;
+}
+
+    .conpoupage .iteminforight .copupintitle {
+        color: #010101;
+        font-size: 12px;
+        padding-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .conpoupage .iteminforight .copupindate {
+        color: #858585;
+        line-height: 14px;
+        margin-bottom: 10px;
+    }
+
+        .conpoupage .iteminforight .copupindate span {
+            /* -webkit-transform:scale(0.8); */
+        }
+
+    .conpoupage .iteminforight .copupinarea {
+        color: #858585;
+        font-size: 12px;
+        line-height: 13px;
+        line-height: 14px;
+        margin-bottom: 15px;
+    }
+
+.conpoupage {
+    width: 380px;
+    right: -398px;
+    top: 0;
+    border-left: 8px solid rgba(0,0,0,.3);
+    z-index: 10;
+    background: #eceaea;
+    position: fixed;
+    height: 100%;
+}
+
+    .conpoupage .conpou {
+        overflow-y: scroll;
+        height: 100%;
+        padding-top: 10px;
+      	padding: 40px 8px 0;
+    }
+
+    .conpoupage .couponbtn {
+        display: inline-block;
+        border: 1px solid #ff7854;
+        border-radius: 10px;
+        font-size: 12px;
+        padding: 0 10px;
+        -webkit-transform: scale(0.8);
+        line-height: 24px;
+        color: #ff7854;
+    }
+
+    .conpoupage .couponbtn1 {
+        display: inline-block;
+        border: 1px solid #ec5961;
+        border-radius: 10px;
+        font-size: 12px;
+        padding: 0 10px;
+        -webkit-transform: scale(0.8);
+        line-height: 24px;
+        color: #ec5961;
+    }
+
+    .conpoupage .coupontitle {
+        background: url(../../Images/StudentInfo/couponbj.png) no-repeat center center;
+        text-align: center;
+        color: #727272;
+        padding: 10px 0;
+        background-size: 290px auto;
+    }
+.conpoupage .coupontitle1{
+	height: 30px;
+	padding-left: 25px;
+	font-size: 15px;
+	color: #3d3d3d;
+}
+.conpoupage .coupontitle1 img{
+	vertical-align: middle;
+	margin-right: 20px;
+}
+.conpoupage .closeconpou{
+	position: absolute;
+	left: 0;
+	height: 40px;
+	padding-top: 10px;
+	z-index: 2;
+	padding-right: 40px;
+	background: #eceaea;
+	width: 100%;
+	text-align: right;
+	top: 0px;
+/* 	height: 100%; */
+}
+.conpoupage .closeconpou span{
+	cursor: pointer;
+	/* display: block;
+	height: 30px;
+	width: 10px;
+	background: #CCCCCC;
+	border-radius: 5px 0 0 5px; */
+}
+.conpoupage .selconpouimg{
+	position: absolute;
+	right: 3px;
+	bottom: 3px;
+}
+.conpoupage .couponbtnbox{
+	padding-left: 5px;
+	cursor: pointer;
+}
+
+* {
+    /*滚动条滑块按钮的颜色*/
+    scrollbar-face-color: rgba(255, 255, 255, 0);
+    /*滚动条整体颜色*/
+    scrollbar-highlight-color: rgba(255, 255, 255, 0);
+    /*滚动条轨道颜色*/
+    scrollbar-track-color: rgba(255, 255, 255, 0);
+    /*去除默认点击选中背景阴影*/
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+/*滚动条整体部分,必须要设置*/
+::-webkit-scrollbar {
+    background-color: rgba(255, 255, 255, 0);
+    width: 10px;
+    height: 10px;
+}
+/*滚动条的轨道*/
+::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 10px;
+}
+/*滚动条的滑块按钮*/
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(212, 208, 199, 0.8);
+}
+
+.moredata {
+    text-align: center;
+    padding-bottom: 15px;
+    color: #666;
+    clear: both;
+}
+/*支付*/
+.showwindow{
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	top: 0;
+	z-index: 11;
+	background-color: rgba(0,0,0,.5);
+}
+.paycodepop{
+	
+}
+.paycodepop .paycodetitle{
+	font-size: 17px;
+	text-align: center;
+	padding-top: 42px;
+}
+.paycodepop .paycodetitle span{
+	color: #ff0000;
+	font-weight: 600;
+}
+.paycodepop .paycodeinfo{
+	padding-top: 20px;
+	font-size: 12px;
+}
+.paycodepop .codeimg{
+	padding-top: 15px;
+}
+.paycodepop .codeimg img{
+	width: 150px;
+	height: 150px;
+	display: block;
+	margin: 0 auto;
+}
+.paycodepop .showwindowcontent{
+	position: fixed;
+	margin: auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 465px;
+	top: 0;
+	height: 365px;
+	z-index: 12;
+	
+	background: url(../../Images/StudentInfo/paybj.png) no-repeat center center;
+	background-size: cover;
+}
+.paycodepop .showwindowcontent .box{
+	position: relative;
+}
+.paycodepop .showwindowcontent .box{
+}
+.paycodepop .showwindowcontent .boxc{
+	position: relative;
+	color: #666;
+}
+.paycodepop .showwindowcontent .boxc .text{
+	padding-top: 40px;
+}
+.paycodepop .closepaydepop1{
+	text-align: right;
+	padding-top: 10px;
+	
+	position: absolute;
+	right:26px;
+	top: -23px;
+	padding-right: 20px;
+}
+.paycodepop .closepaydepop1 img{
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	cursor: pointer;
+}
+.paycodepop .payfailimg{
+	padding-top: 60px;
+}
+.paycodepop .payfailimg img{
+	width: 80px;
+	
+}
+.paycodepop .codebtn{
+	padding-top: 30px;
+}
+.paycodepop .codebtn a{
+	display: block;
+	width: 188px;
+	line-height: 35px;
+	color: #fff;
+	background: #49aea8;
+	font-size: 14px;
+	margin: 0 auto;
+	text-align: center;
+	border-radius: 5px;
+}
+/* 支付结果弹窗 */
+.showwindow{
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	top: 0;
+	z-index: 11;
+	background-color: rgba(0,0,0,.5);
+}
+.payfailpage{
+	
+}
+.payfailpage .showwindowcontent{
+	position: fixed;
+	margin: auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 465px;
+	top: 0;
+	height: 365px;
+	z-index: 12;
+	
+	background: url(../../Images/StudentInfo/paybj.png) no-repeat center center;
+	background-size: cover;
+}
+.payfailpage .showwindowcontent .box{
+	position: relative;
+}
+.payfailpage .showwindowcontent .box{
+}
+.payfailpage .showwindowcontent .boxc{
+	position: relative;
+	color: #666;
+}
+.payfailpage .showwindowcontent .boxc .text{
+	padding-top: 40px;
+}
+.payfailpage .closepaydepop{
+	text-align: right;
+	padding-top: 10px;
+	
+	position: absolute;
+	right:26px;
+	top: -23px;
+	padding-right: 20px;
+}
+.payfailpage .closepaydepop img{
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	cursor: pointer;
+}
+.payfailpage .payfailimg{
+	padding-top: 60px;
+}
+.payfailpage .payfailimg img{
+	width: 80px;
+	
+}
+.payfailpage .codebtn{
+	padding-top: 60px;
+}
+.payfailpage .codebtn a{
+	display: block;
+	width: 188px;
+	line-height: 35px;
+	color: #fff;
+	background: #49aea8;
+	font-size: 14px;
+	margin: 0 auto;
+	text-align: center;
+	border-radius: 5px;
+}
+/**/
+.buyrepeatpage{
+	
+}
+.buyrepeatpage .showwindowcontent{
+	position: fixed;
+	margin: auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 600px;
+	top: 0;
+	height: 210px;
+	z-index: 12;
+	
+	background: url(../../Images/StudentInfo/inquire.png) no-repeat center center;
+	background-size: cover;
+}
+.buyrepeatpage .showwindowcontent .box{
+	position: relative;
+	width: 386px;
+	height: 194px;
+	margin: 8px 0 0 126px;
+}
+.buyrepeatpage .showwindowcontent .box{
+}
+.buyrepeatpage .showwindowcontent .boxc{
+	position: relative;
+	color: #666;
+}
+.buyrepeatpage .showwindowcontent .boxc .text{
+	/* padding-top: 40px; */
+	line-height: 120px;
+}
+.buyrepeatpage .closepaydepop{
+	text-align: right;
+	padding-top: 10px;
+	
+	position: absolute;
+	right:26px;
+	top: -23px;
+	padding-right: 20px;
+}
+.buyrepeatpage .closepaydepop img{
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	cursor: pointer;
+}
+.buyrepeatpage .payfailimg{
+	padding-top: 60px;
+}
+.buyrepeatpage .payfailimg img{
+	width: 80px;
+	
+}
+.buyrepeatpage .codebtn{
+	/* padding-top: 60px; */
+}
+.buyrepeatpage .codebtn a{
+	display: block;
+	width: 188px;
+	line-height: 35px;
+	color: #fff;
+	background: #49aea8;
+	font-size: 14px;
+	margin: 0 auto;
+	text-align: center;
+	border-radius: 5px;
+}
+/**/
+.paycodepop{
+	
+}
+.codewindow .paycodetitle{
+	font-size: 17px;
+	text-align: center;
+	padding-top: 42px;
+}
+.codewindow .paycodetitle span{
+	color: #ff0000;
+	font-weight: 600;
+}
+.codewindow .paycodeinfo{
+	padding-top: 20px;
+	font-size: 12px;
+}
+.codewindow .codeimg{
+	padding-top: 15px;
+}
+.codewindow .codeimg img{
+	width: 150px;
+	height: 150px;
+	display: block;
+	margin: 0 auto;
+}
+.codewindow .showwindowcontent{
+	position: fixed;
+	margin: auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 442px;
+	top: 0;
+	height: 298px;
+	z-index: 12;
+	
+	background: url(../../Images/StudentInfo/codebj.png) no-repeat center center;
+	background-size: cover;
+}
+.codewindow .showwindowcontent .box{
+	position: relative;
+}
+.codewindow .showwindowcontent .box{
+}
+.codewindow .showwindowcontent .boxc{
+	position: relative;
+	color: #666;
+}
+.codewindow .showwindowcontent input{
+	width: 232px;
+	display: block;
+	margin: 0 auto;
+	line-height: 30px;
+	border: 1px solid #e2e2e2;
+	padding-left: 10px;
+	border-radius: 5px;
+}
+.codewindow .showwindowcontent .boxc .text{
+	padding-top: 40px;
+}
+.codewindow .closepaydepop{
+	text-align: right;
+	padding-top: 10px;
+	
+	position: absolute;
+	right:26px;
+	top: -23px;
+	padding-right: 20px;
+}
+.codewindow .closepaydepop img{
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	cursor: pointer;
+}
+.codewindow .textiinfo{
+	padding-top: 30px;
+	font-size: 17px;
+}
+.codewindow  .codepop{
+	padding-top: 40px;
+	width: 232px;
+	margin: 0 auto;
+}
+.codewindow  .codepop1{
+	padding-top: 13px;
+	width: 232px;
+	margin: 0 auto;
+}
+.codewindow  .codepop1 a{
+	color: #727274;
+	font-size: 14px;
+	display: inline-block;
+	padding-left: 10px;
+}
+.codewindow  .codepop1 img{
+	vertical-align: middle;
+	width: 80px;
+}
+.codewindow .codeerror{
+	width: 232px;
+	margin: 0 auto;
+	padding-top: 5px;
+	font-size: 12px;
+	color: #ff0000;
+}
+.codewindow .btn{
+	padding-top: 40px;
+}
+.codewindow .btn button{
+	display: block;
+	border: none;
+	width: 200px;
+	line-height: 35px;
+	color: #fff;
+	background: #49aea8;
+	font-size: 14px;
+	margin: 0 auto;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 5px;
+}
+/*确定弹窗*/
+.chosewindow .paycodetitle{
+	font-size: 17px;
+	text-align: center;
+	padding-top: 42px;
+}
+.chosewindow .paycodetitle span{
+	color: #ff0000;
+	font-weight: 600;
+}
+.chosewindow .paycodeinfo{
+	padding-top: 20px;
+	font-size: 12px;
+}
+.chosewindow .codeimg{
+	padding-top: 15px;
+}
+.chosewindow .codeimg img{
+	width: 150px;
+	height: 150px;
+	display: block;
+	margin: 0 auto;
+}
+.chosewindow .showwindowcontent{
+	position: fixed;
+	margin: auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 442px;
+	top: 0;
+	height: 210px;
+	z-index: 12;
+	
+	background: url(../../Images/StudentInfo/codebj1.png) no-repeat center center;
+	background-size: cover;
+}
+.chosewindow .showwindowcontent .box{
+	position: relative;
+}
+.chosewindow .showwindowcontent .box{
+}
+.chosewindow .showwindowcontent .boxc{
+	position: relative;
+	color: #666;
+}
+
+.chosewindow .closepaydepop1{
+	text-align: right;
+	padding-top: 10px;
+	
+	position: absolute;
+	right:26px;
+	top: -23px;
+	padding-right: 20px;
+}
+.chosewindow .closepaydepop1 img{
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	cursor: pointer;
+}
+.chosewindow .textiinfo{
+	padding-top: 30px;
+	font-size: 17px;
+}
+.chosewindow .textiinfo{
+	padding-top: 30px;
+	font-size: 17px;
+}
+.chosewindow .textinfo1{
+	padding-top: 30px;
+	font-size: 17px;
+	width: 200px;
+	margin: 0 auto;
+}
+
+.chosewindow .btn{
+	padding-top: 34px;
+	width: 200px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.chosewindow .btn button{
+	display: inline-block;
+	border: none;
+	float: left;
+	width: 90px;
+	line-height: 35px;
+	color: #fff;
+	background: #49aea8;
+	font-size: 14px;
+	margin: 0 auto;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 5px;
+}
+.chosewindow .btn .def{
+	float: right;
+	/* background: #f5f5f5; */
+	background: none;
+	color: #b3b2b2;
+	border: 1px solid #b7b6b6;
+}
+.answerNormalText{
+	line-height: 25px;
+	display: inline-block;
+	
+}
+.answerNormalText.falseans{
+	color: #fff;
+	background: #f47463;
+}
+.answerNormalText.trueans{
+	background: #35acff;
+	color: #fff;
+}
+.answerNormalText .transwer{
+	color: #479e93;
+	font-size: 24px;
+		vertical-align: bottom;
+}
+.answerNormalText .falseswer{
+	color: #f47463 ;
+	font-size: 24px;
+	vertical-align: bottom;
+}
+.contentbox1left{
+	width: 72%;
+}
+
+.contentbox1right {
+    float: right;
+    width: 25%;
+}
+
+.persontpage .contrbox {
+    padding: 10px 30px;
+}
+
+.persontpage .ptitle {
+    overflow: hidden;
+}
+
+    .persontpage .ptitle span {
+        border-left: 8px solid #32ada6;
+        line-height: 20px;
+        display: inline-block;
+        padding-left: 5px;
+        color: #666;
+        font-size: 16px;
+    }
+
+    .persontpage .ptitle .tab {
+        overflow: hidden;
+       
+        border-radius: 3px;
+    }
+
+        .persontpage .ptitle .tab a {
+            width: 64px;
+            display: block;
+            text-align: center;
+            line-height: 22px;
+            font-size: 12px;
+			 border: 1px solid #dfdfdf;
+            color: #818181;
+        }
+
+           
+        .persontpage .ptitle .tab .active {
+            background: #32ada6;
+            color: #fff;
+			border: 1px solid #32ada6;
+        }
+ .persontpage .ptitle .tab a:nth-child(1) {
+				border-left: none;
+            }
+ .persontpage .ptitle .tab a:nth-child(2) {
+				
+				border-right: none;
+            }
+.persontpage .listbox .item {
+    border: 1px solid #e2e2e2;
+    position: relative;
+    padding-left: 20px;
+    padding-right: 14px;
+    margin-top: 25px;
+    padding-bottom: 10px;
+}
+.persontpage .listbox .leb{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	border-radius: 0 14px 14px 0;
+	width: 80px;
+	line-height: 28px;
+	text-align: center;
+	background: #50b6b0;
+}
+
+.persontpage .listbox .leb1 {
+    background: #dbae90;
+}
+
+.persontpage .listbox .leb2 {
+    background: #e79796;
+}
+
+.persontpage .listbox .leb3 {
+    background: #cabe87;
+}
+.persontpage .itemttitle{
+	line-height: 28px;
+	color: #009688;
+	/* padding-top: 3px; */
+	font-size: 16px;
+	font-weight: 500;
+	padding-left: 65px;
+	overflow: hidden;
+}
+.persontpage .itemttitle .fl{
+	line-height: 28px;
+	font-size: 15px;
+	padding-top: 2px;
+	padding-left: 8px;
+	/* margin-top: -2px; */
+}
+.persontpage .itemttitle .info1{
+	line-height: 28px;
+	color: #009688;
+	font-size: 16px;
+	text-align: right;
+	padding-top: 2px;
+}
+.persontpage .itemttitle .info3{
+	line-height: 28px;
+	color: #ff9561;
+	font-size: 15px;
+	padding-top: 3px;
+	text-align: right;
+}
+.persontpage .item .infobox{
+	font-size: 14px;
+	color: #666;
+	padding: 25px 0;
+}
+
+.persontpage .item .infobox span{
+	display: inline-block;
+	padding-right: 20px;
+	font-size: 13px;
+}
+.persontpage .item .infobox span img{
+	vertical-align: bottom;
+}
+.persontpage .item .infobox span em{
+	display: inline-block;
+	width: 13px;
+	position: relative;
+	cursor: pointer;
+	margin-left: 3px;
+	height: 13px;
+}
+.persontpage .item .infobox span em .jt{
+	position: absolute;
+	left: 0;
+	width: 100%;
+	display: none;
+	text-align: center;
+	z-index: 1;
+}
+.persontpage .item .infobox span em .quesbox{
+	position: absolute;
+	width: 170px;
+	top: 24px;
+	color: #9b9b9b;
+	left: -81px;
+	display: none;
+	border: 1px solid #c6c6c6;
+	line-height: 35px;
+	border-radius: 2px;
+	text-align: center;
+}
+.persontpage .item .infobox span em:hover .quesbox,.persontpage .item .infobox span em:hover .jt{
+	display: block;
+}
+.persontpage .item .pinfo{
+	overflow: hidden;
+}
+
+    .persontpage .item .pinfo .fl img {
+        width: 40px;
+        vertical-align: middle;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #e5e5e5;
+    }
+
+    .persontpage .item .pinfo .fl span {
+        font-size: 14px;
+        color: #666;
+        display: inline-block;
+        padding-left: 3px;
+    }
+
+    .persontpage .item .pinfo .fl em {
+        display: inline-block;
+        line-height: 18px;
+        background: #8cc4e8;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 9px;
+        padding: 0 5px;
+    }
+
+    .persontpage .item .pinfo .pinfor {
+        text-align: right;
+        padding-top: 10px;
+    }
+
+        .persontpage .item .pinfo .pinfor a {
+            width: 80px;
+            color: #fff;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 3px;
+            background: #50b6b0;
+            display: inline-block;
+            font-size: 12px;
+        }
+.persontpage .item .pinfo .pinfor a.defaul{
+	background: #bbbbbb;
+}
+.contentbox1right .bjboxboxtop img {
+    width: 100%;
+    display: block;
+}
+
+.contentbox1right .bjboxboxcenter {
+    background: url(../../Images/StudentInfo/tbjcenter.png) center center;
+    background-size: 100% auto;
+}
+
+.contentbox1right .infoperson .photoimg img {
+    width: 90px;
+    height: 90px;
+    border-radius: 45px;
+    margin: 0 auto;
+    display: block;
+    border: 1px solid #e5e5e5;
+}
+
+.contentbox1right .infoperson .photoimg .usname {
+    width: 66px;
+    text-align: center;
+    line-height: 22px;
+    background: #32ada6;
+    color: #fff;
+    margin: 0 auto;
+    border-radius: 11px;
+    margin-top: -5px;
+    z-index: 2;
+    position: relative;
+    font-size: 13px;
+}
+
+.contentbox1right .infoperson .userinfo {
+    text-align: center;
+    color: #818181;
+    padding-top: 8px;
+}
+
+    .contentbox1right .infoperson .userinfo img {
+        vertical-align: middle;
+    }
+
+.contentbox1right .infoperson .userinfo1 {
+    font-size: 14px;
+    color: #818181;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.contentbox1right .infoperson .userinfo2 {
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+    .contentbox1right .infoperson .userinfo2 .usitem {
+        width: 33.33%;
+        float: left;
+	font-size: 15px;
+        color: #818181;
+        padding-top: 30px;
+        text-align: center;
+    }
+
+    .contentbox1right .infoperson .userinfo2 span {
+        font-size: 20px;
+        color: #49b0ff;
+    }
+
+        .contentbox1right .infoperson .userinfo2 span.label1 {
+            color: #32ada6;
+        }
+
+        .contentbox1right .infoperson .userinfo2 span.label2 {
+            color: #ff9561;
+        }
+
+    .contentbox1right .infoperson .userinfo2 .text1 {
+        padding-top: 15px;
+	font-size: 14px;
+    }
+
+.contentbox1right .infopersonconfig {
+    overflow: hidden;
+    padding-top: 10px;
+    padding-bottom: 50px;
+}
+
+    .contentbox1right .infopersonconfig .configitem {
+        display: block;
+        float: left;
+        padding-top: 30px;
+        color: #818181;
+        width: 50%;
+        text-align: center;
+    }
+.contentbox1right .infopersonconfig .configitem.disabled{
+	opacity: .4;
+}
+        .contentbox1right .infopersonconfig .configitem .text {
+            padding-top: 8px;
+	font-size: 14px;
+}
+.maincontent .startpracticepage{
+	padding: 0 60px;
+}
+.startpracticepage .pageimgerror img.error-img{
+	width: 120px;
+}
+.startpracticepage .ptitle {
+    overflow: hidden;
+}
+
+    .startpracticepage .ptitle .fl span {
+        line-height: 28px;
+        width: 66px;
+        display: inline-block;
+        background: #49aea8;
+        text-align: center;
+        color: #fff;
+        font-size: 15px;
+    }
+.startpracticepage .tabcontbox{
+	/* min-height: 560px; */
+}
+.startpracticepage .ptitle .fl em{
+	line-height: 28px;
+	padding-left: 15px;
+	display: inline-block;
+	color: #32ada6;
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 1px;
+}
+.startpracticepage .ptitle .info{
+	text-align: right;
+}
+.startpracticepage .ptitle .info span{
+	font-size: 26px;
+	color: #32ada6;
+}
+.startpracticepage .infotext{
+	padding: 25px 0;
+}
+
+    .startpracticepage .infotext span {
+        color: #666;
+        font-size: 14px;
+        display: inline-block;
+        padding-right: 25px;
+    }
+
+.startpracticepage .phimg {
+}
+.startpracticepage .phimg img{
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	vertical-align: middle;
+	border: 1px solid #e5e5e5;
+}
+.startpracticepage .phimg span{
+	font-size: 14px;
+	padding-left: 10px;
+	color: #666;
+}
+.startpracticepage .phimg em{
+	display: inline-block;
+	    line-height: 18px;
+	    background: #8cc4e8;
+	    color: #fff;
+	    font-size: 12px;
+	    border-radius: 9px;
+	    padding: 0 5px;
+}
+.startpracticepage .tab {
+    border-bottom: 5px solid #49aea8;
+    position: relative;
+    padding-top: 32px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.startpracticepage .tabbx {
+    background: #49aea8;
+}
+
+.startpracticepage .tab .tablist {
+    line-height: 30px;
+    padding: 0 10px;
+    font-size: 15px;
+    color: #666;
+    text-align: center;
+}
+
+.startpracticepage .tab .active {
+    background: #49aea8;
+    color: #fff;
+}
+
+.goodspage .tabcontbox {
+    padding-bottom: 20px;
+}
+
+.startpracticepage li {
+	overflow: hidden;
+	line-height: 50px;
+	color: #a2a2a2;
+	font-size: 14px;
+	padding-right: 20px;
+}
+
+    .startpracticepage li .titl {
+        line-height: 50px;
+    }
+
+.startpracticepage ul {
+    overflow: hidden;
+}
+
+    .startpracticepage ul li:nth-child(even) {
+        background: #eaf3f4;
+    }
+
+    .startpracticepage ul .operate {
+        line-height: 50px;
+        text-align: right;
+    }
+
+    .startpracticepage ul a {
+        color: #a2a2a2;
+    }
+
+.startpracticepage li.active {
+    color: #474747;
+}
+
+.startpracticepage .active a {
+    color: #49aea8;
+}
+.errorproblempage{
+	position: relative;
+	padding-bottom: 100px;
+	padding: 0 !important;
+	}
+.errorproblempage .pagebox{
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	width: 100%;
+}
+.errorproblempage .ertitle{
+	overflow: hidden;
+	padding: 0 30px;
+	margin: 0 auto;
+}
+.errorproblempage .ertitle input{
+	width: 238px;
+	border: 1px solid #e5e5e5;
+	line-height: 33px;
+	height: 33px;
+	position: relative;
+	background: none;
+	z-index: 2;
+	padding-left: 10px;
+}
+.errorproblempage .ertitle .datebox{
+	display: inline-block;
+	position: relative;
+	margin-right: 20px;
+}
+.errorproblempage .ertitle .datebox img{
+	position: absolute;
+	top: 7px;
+	right: 20px;
+}
+.errorproblempage .ertitle .fl a{
+	color: #666666;
+	line-height: 42px;
+	display: inline-block;
+	padding: 0 15px;
+	font-size: 14px;
+        }
+
+            .errorproblempage .ertitle .fl a.active {
+                color: #49aea8;
+            }
+
+    .errorproblempage .ertitler {
+        text-align: right;
+    }
+
+        .errorproblempage .ertitler a {
+            color: #49aea8;
+            line-height: 42px;
+	font-size: 14px;
+	display: inline-block;
+}
+.errorproblempage .errpbox{
+	overflow: hidden;
+	padding-top: 40px;
+	padding:40px 18px 40px;
+}
+.errorproblempage .errpbox .item{
+	width: 33.33%;
+	float: left;
+	padding: 0 20px;
+	display: block;
+	padding-bottom: 40px;
+}
+.errorproblempage .errpbox .list{
+	-webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+	position: relative;
+	border-radius: 5px;
+	border-left: 5px solid #38b5ae;
+	/* background: #aaa; */
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+	border-radius: 5px;
+	padding: 15px;
+}
+.errorproblempage .errpbox .list .newsinfoimg{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	display: none;
+}
+.errorproblempage .errpbox .list.active .newsinfoimg{
+	display: block;
+}
+.errorproblempage .errpbox .title{
+	color: #5b5b5b;
+	font-size: 15px;
+}
+.errorproblempage .errpbox .title1{
+	color: #a0a0a0;
+	font-size: 14px;
+	padding-top: 18px;
+}
+.errorproblempage .errpbox .ctbox{
+	overflow: hidden;
+	padding-top: 40px;
+}
+.errorproblempage .errpbox .ctbox .citem{
+	width: 33.33%;
+	float: left;
+	text-align: left;
+	font-size: 14px;
+	color: #8c8c8c;
+	overflow: hidden;
+}
+.errorproblempage .errpbox .ctbox .mm{
+	float: left;
+	font-size: 13px;
+}
+.errorproblempage .errpbox .ctbox .num{
+	padding-top: 15px;
+	color: #ef666b;
+	font-size: 24px;
+	text-align: center;
+}
+.errorproblempage .errpbox .ctbox .num1{
+	color: #38b5ae;
+}
+.practicelistpage{
+	width: 100%;
+	padding-left: 0;
+}
+
+.bodycontent {
+    height: auto;
+min-height: 100%;
+    padding-bottom: 70px;
+    background-image: url(../../Images/StudentInfo/homeLeft.png), url(../../Images/StudentInfo/homeRight.png);
+    background-repeat: no-repeat,no-repeat;
+    background-position: left bottom,right bottom;
+}
+
+.afterclasspage {
+    overflow: hidden;
+}
+.afterclasspage .item{
+	width: 50%;
+	padding: 20px;
+	float: left;
+}
+.afterclasspage .item .list img{
+	width: 100%;
+}
+.afterclasspage .item .list{
+	position: relative;
+	font-size: 18px;
+}
+.afterclasspage .item .contafbox{
+	position: absolute;
+	width: 100%;
+	padding: 6% 0 0;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	height: 100%;
+}
+.afterclasspage .item .contafbox .info{
+	padding: 0 20px;
+}
+.afterclasspage .item .infor{
+	text-align: right;
+	
+}
+.afterclasspage .item .info em{
+	color: #666;
+	font-size: 14px;
+	font-weight: 600;
+	display: inline-block;
+	padding-left: 15px;
+}
+.afterclasspage .item .info .fl span{
+	display: inline-block;
+	line-height: 24px;
+	min-width: 70px;
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+	background: #49aea8;
+}
+.afterclasspage .item .info .fl span.label2{
+	background: #dcaa88;
+}
+.afterclasspage .item .infor{
+	text-align: right;
+	line-height: 24px;
+	color: #666;
+	font-size: 14px;
+}
+.afterclasspage .item .info .fl{
+	margin-top: 3px;
+}
+.afterclasspage .item .infor span{
+	display: inline-block;
+	padding: 0 3px;
+	font-size: 19px;
+	color: #49aea8;
+	line-height: 30px;
+	
+}
+.afterclasspage .item .info1{
+	color: #666;
+	padding-top: 5%;
+	padding: 5% 25px 0;
+	font-size: 14px;
+}
+.afterclasspage .item .info1 span{
+	display: inline-block;
+	padding-right:3%;
+}
+.afterclasspage .item .info2{
+	overflow: hidden;
+	padding-top: 6%;
+	padding: 6% 10px;
+}
+.afterclasspage .item .info2 .itema{
+	width: 25%;
+	text-align: center;
+}
+.afterclasspage .item .info2 a{
+	display: inline-block;
+	background: #49aea8;
+	color: #fff;
+	padding: 0 10px;
+	line-height: 32px;
+	font-size: 14px;
+	border-radius: 3px;
+}
+.afterclasspage .item .info2 a.defaultbtn{
+	background: #ccc;
+}
+.errordetailpage .protitle{
+	color: #2ba49d;
+	text-align: center;
+	border-bottom: 2px solid #f4f4f4;
+	padding-bottom: 20px;
+	margin: 0 20px;
+	font-size: 22px;
+}
+
+    .errordetailpage .protitle .tittext1 {
+        color: #727272;
+        padding-top: 20px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+.errordetailpage .titlebj {
+    height: 38px;
+    margin-top: 10px;
+    width: 122px;
+    color: #666;
+	letter-spacing: 7px;
+    line-height: 36px;
+    padding-left: 20px;
+    background: url(../../Images/StudentInfo/titlebj.png) no-repeat left center;
+	background-size: cover;
+}
+.errordetailpage .typemultipleChoice .titlebj {
+   letter-spacing: 5px;
+}
+    .errordetailpage .titlebj span {
+        float: left;
+    }
+
+.errordetailpage .objtitle {
+    color: #666;
+font-size: 14px;
+	line-height: 20px;
+    background: url(../../Images/StudentInfo/left.png) no-repeat left 4px;
+    padding-left: 15px;
+    margin: 25px 30px 0;
+    overflow: hidden;
+}
+
+    .errordetailpage .objtitle span {
+        float: inherit;
+        display: block;
+        line-height: 20px;
+    }
+
+    .errordetailpage .objtitle em {
+        color: #8c601b;
+        display: block;
+        padding-left: 70px;
+        line-height: 20px;
+    }
+
+.errordetailpage .objtitle1 {
+    color: #666;
+    padding-left: 15px;
+    margin: 25px 30px 0;
+    background: url(../../Images/StudentInfo/left.png) no-repeat left 3px;
+    overflow: hidden;
+    }
+.errordetailpage .typeessayquestion #mactchboxtitle *{
+	line-height: normal;
+}
+.errordetailpage .noimg{
+	background: none;
+}
+.errordetailpage .noimg img{
+	display: block;
+	margin: 0 auto;
+}
+.errordetailpage .questiontitle1 img{
+	display: block;
+	margin: 0 auto;
+	width: 330px;
+	height: 160px;
+}
+.errordetailpage .mainobj{
+	position: relative;
+	margin: 30px auto;
+	width: 560px;
+}
+.errordetailpage .mainobj .questitem{
+	    position: absolute;
+	    left: 0;
+		overflow: hidden;
+	    top: 0;
+		font-size: 14px;
+	    width: 110px;
+	    border: 1px solid #676767;
+	    line-height: 50px;
+	    height: 52px;
+	    color: #676767;
+		/* padding: 1px; */
+	    text-align: center;
+}
+.errordetailpage .mainobj .erroritem{
+	 border: 1px solid #f47463;
+	 color: #f47463;
+}
+.errordetailpage .mainobj1 .questitem{
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	    width: 110px;
+	    border: 1px solid #2ba49d;
+	    line-height: 50px;
+	    height: 52px;
+	    color: #2ba49d;
+	    text-align: center;
+}
+
+.errordetailpage .mainobj .questitem:nth-child(even) {
+    left: 450px;
+}
+
+.errordetailpage .mainobj .questitem img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.errordetailpage .rotate {
+    height: 2px;
+    transform-origin: 0% 0%;
+    background: #f47463;
+    position: absolute;
+}
+
+    .errordetailpage .rotate.default {
+        background: #6d6d6d !important;
+    }
+
+.errordetailpage .mainobj1 .rotate {
+    height: 2px;
+    transform-origin: 0% 0%;
+    background: #2ba49d;
+    background: #2ba49d !important;
+    position: absolute;
+}
+.errordetailpage .videoimg{
+	width: 75%;
+	margin: 0 auto;
+	padding:30px 0;
+}
+.errordetailpage .audiobox{
+	width: 100%;
+	padding: 30px 20px;
+}
+.errordetailpage .videoimg audio{
+	margin: 0 auto;
+	display: block;
+}
+.errordetailpage .videoimg video{
+	width: 100%;
+}
+.errordetailpage .ptle{
+	line-height: 50px;
+	background: #f4f4f4;
+	overflow: hidden;
+	padding: 0 10px;
+	color: #666;
+	margin-top: 8px;
+}
+.errordetailpage .ptle .fl{
+	line-height: 50px;
+	font-size: 14px;
+	background: #f4f4f4;
+	overflow: hidden;
+}
+.errordetailpage .ptle a{
+	color: #49AEA8;
+	cursor: pointer;
+	font-size: 14px;
+}
+.errordetailpage .bjboxboxcenter{
+	padding: 8px 30px;
+	height: 680px;
+	position: relative;
+}
+.errordetailpage .ptle .text1{
+	text-align: right;
+	line-height: 50px;
+	font-size: 14px;
+}
+.errordetailpage .bjboxboxcenter .textbox{
+	background: #f4f4f4;
+	line-height: 20px;
+	padding: 0 10px 10px;
+	color: #666;
+		font-size: 13px;
+	letter-spacing: 1px;
+	
+}
+.errordetailpage .errdeconfig{
+	padding-top: 120px;
+	text-align: center;
+	padding-bottom: 50px;
+	width: 125px;
+	margin: 0 auto;
+	position: absolute;
+	width:calc(100% - 60px) ;
+	bottom: 30px;
+}
+
+    .errordetailpage .errdeconfig .btns {
+        border: 1px solid #e3e3e3;
+		width: 128px;
+		margin: 0 auto;
+        background: url(../../Images/StudentInfo/hg.png) no-repeat center center;
+    }
+
+        .errordetailpage .errdeconfig .btns a {
+            line-height: 50px;
+            color: #676767;
+            display: block;
+        }
+
+    .errordetailpage .errdeconfig .btns1 {
+        padding-top: 30px;
+    }
+
+    .errordetailpage .errdeconfig .btns .noprev {
+        color: #d7d7d7;
+    }
+
+    .errordetailpage .errdeconfig .btns1 a {
+        display: block;
+		margin: 0 auto;
+	border-radius: 3px;
+	background-size: 100% 100%;
+	width: 125px;
+        background: url(../../Images/StudentInfo/btns.png) no-repeat center center;
+        color: #fff;
+        	line-height: 48px;
+    }
+
+.errordetailpage .typechoicebox #mainobject, .errordetailpage .typechoicebox #mainobject1 {
+    overflow: hidden;
+}
+.errordetailpage .typechoicebox  .questiontitle{
+	font-size: 14px !important;
+	line-height: 20px;
+}
+.errordetailpage .typechoicebox .titlebj{
+/* 	letter-spacing: 5px; */
+}
+.errordetailpage .typechoicebox .choicelistimg{
+	width: 22%;
+	text-align: center;
+	padding-bottom: 10px;
+	float: left;
+}
+.errordetailpage .typechoicebox .questiontitle *{
+	line-height: inherit;
+}
+.errordetailpage .typechoicebox .step2 div.objtitle{
+	font-size: 14px;
+	line-height: 20px;
+}
+.errordetailpage .typechoicebox .step2 div.objtitle .fl{
+	float: inherit;
+	line-height: 20px;
+}
+ .errordetailpage .typechoicebox .step2 div.objtitle #mainobject1{
+	padding-top: 10px;
+}
+.errordetailpage .typechoicebox #mainobject .choitem {
+    border: 1px solid #666;
+	width: 100%;
+	display: block;
+}
+
+.errordetailpage .typechoicebox #mainobject .errorselect .choitem {
+    border: 1px solid #e85743;
+}
+
+.errordetailpage .typechoicebox #mainobject .errorselect .info {
+    color: #e85743;
+}
+
+.errordetailpage .typechoicebox #mainobject .selectright .choitem {
+    border: 1px solid #51a092;
+}
+.errordetailpage .typechoicebox #mainobject .choicelist{
+	color: #666;
+	line-height: 35px;
+}
+.errordetailpage .typechoicebox #mainobject1 .choitem{
+	  border: 1px solid #51a092 !important;
+}
+
+.errordetailpage .choicelistimg {
+    float: left;
+    text-align: center;
+    margin: 0 1.5%;
+}
+.errordetailpage .choicelistimg img{
+	max-width: 100%;
+	max-height: 100%;
+	display: block;
+}
+.errordetailpage .choicelistimg .info {
+    padding-top: 15px;
+    color: #666;
+}
+.errordetailpage .typechoicebox .objtitle i{
+	color: #49AEA8;
+	display: inline-block;
+	padding-left: 10px;
+}
+
+.errordetailpage .analysisbox .fl {
+    padding-right: 10px;
+}
+.errordetailpage .analysisbox .abaltext{
+	color: #8c601b;
+	margin-top: 0;
+	font-size: 14px;
+	padding-top: 10px;
+}
+.errordetailpage .typematchbox .abaltext{
+	color: #8c601b;
+}
+.errordetailpage .typematchbox .abaltext *{
+	line-height: normal;
+	font-size: 14px;
+}
+.errordetailpage .analysisbox .abaltext *{
+	line-height: normal;
+	font-size: 14px;
+}
+.errordetailpage .tsbox{
+	overflow: hidden;
+	padding-top: 30px;
+}
+
+    .errordetailpage .tsbox .choicelist {
+        line-height: 35px;
+        color: #666;
+    }
+
+    .errordetailpage .tsbox .fl {
+        padding-right: 30px;
+        height: 100%;
+    }
+
+.errordetailpage .contrbox {
+    height: 680px;
+}
+
+#objectbox {
+    height: 560px;
+    overflow-y: auto;
+}
+.errordetailpage .typemultipleChoice .noimg{
+	padding-left: 0;
+	font-size: 14px;
+	/* text-align: center; */
+}
+.errordetailpage .typemultipleChoice .noimg .objtitle1 .cof47463{
+	border: 1px solid #f47463;
+}
+.errordetailpage #mainobject1 span img{
+	vertical-align: middle;
+	width: 88px;
+	height: 38px;
+	display: inline-block;
+}
+.errordetailpage .typemultipleChoice #mactchboxtitle *,.errordetailpage .typemultipleChoice #mainobject1 *{
+	line-height: normal;
+}
+.errordetailpage .typemultipleChoice #mactchboxtitle .cof47463{
+	border: 1px solid #f47463;
+	min-width: 90px;
+	height:40px ;
+	margin: 5px 0;
+	text-align: center;
+	display: inline-table;
+	line-height: 40px;
+	vertical-align: middle;
+}
+.errordetailpage .typemultipleChoice #mainobject1{
+	/* margin-top: -3px; */
+}
+.errordetailpage .typemultipleChoice span img{
+	max-width: 90px;
+	height: 38px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.errordetailpage .typemultipleChoice .imgtype{
+	overflow: inherit !important;
+}
+.errordetailpage .typemultipleChoice .imgtype #mainobject1{
+	padding-top: 20px;
+}
+.errordetailpage .typemultipleChoice #mainobject1 .cof47463 {
+	min-width: 90px;
+	height:40px ;
+	line-height: 40px;
+	display: inline-block;
+	border: 1px solid #f47463;
+	margin: 10px 0;
+	vertical-align: middle;
+	display: inline-table;
+}
+.errordetailpage .typemultipleChoice #mactchboxtitle .co479e93{
+	border: 1px solid #479e93;
+	min-width: 90px;
+	text-align: center;
+	height: 40px;
+	vertical-align: middle;
+	line-height: 40px;
+	line-height: 40px;
+	margin: 10px 0;
+	display: inline-table;
+}
+.errordetailpage .typemultipleChoice #mactchboxtitle .co479e93 img{
+	width: 100%;
+} 
+.errordetailpage .typemultipleChoice .cof47463 img{
+	width: 100%;
+}
+.errordetailpage .typemultipleChoice .imgtype span img{
+	max-width: 92px;
+	max-height: 38px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.errordetailpage .typemultipleChoice .imgtype .co479e93{
+	border: 1px solid #479e93;
+	width: 100px;
+	text-align: center;
+	height: 36px;
+}
+.errordetailpage .typemultipleChoice #mainobject1{
+	color: #479e93 ;
+	float: normal;
+	margin-top: 0;
+}
+.errordetailpage .typemultipleChoice #mainobject1 span{
+	display: inline-table;
+	vertical-align: middle;
+	text-align: center;
+}
+.errordetailpage .typemultipleChoice #mainobject1{
+	padding-top: 10px;
+}
+.errordetailpage .typemultipleChoice #mainobject1 em{
+	color: #479e93 ;
+}
+.errordetailpage .typejudge1 .noimg{
+	padding-left: 0;
+}
+
+    .errordetailpage .typejudge1 .noimg img {
+        display: inline-block;
+    }
+
+.errordetailpage .typejudge1 .mainobj {
+    overflow: hidden;
+}
+
+.errordetailpage .typejudge1 .judgelist {
+    padding-right: 45px;
+}
+
+    .errordetailpage .typejudge1 .judgelist img {
+        vertical-align: middle;
+    }
+
+.errordetailpage .typeexercise #mainobject {
+    width: auto;
+}
+.errordetailpage .typeexercise .objtitle .fl{
+	padding-right: 10px;
+	float: inherit;
+	line-height: 20px;
+}
+
+.errordetailpage .typeexercise .objtitle i {
+    color: #49AEA8;
+}
+.errordetailpage .typemultipleChoice #mainobject1 *{
+	font-size: 14px;
+}
+.errordetailpage .typeexercise #mainobject1{
+	padding-top: 10px;
+}
+.errordetailpage .typemultipleChoice .objtitle span{
+	float: inherit;
+}
+.errordetailpage .typemultipleChoice .objtitle span.co479e93{
+	border: 1px solid #479e93;
+	margin: 5px 0;
+	display: inline-table;
+	min-width: 90px;
+	line-height: 38px !important;
+	height: 40px;
+}
+.errordetailpage .typemultipleChoice .objtitle em{
+	padding: 0;
+	font-size: 14px;
+}
+.errordetailpage .typemultipleChoice .objtitle .fl{
+	padding-right: 10px;
+	font-size: 14px;
+	float: inherit;
+	line-height: 20px;
+}
+.errordetailpage .typemultipleChoice .analysisbox .fl{
+	float: inherit;
+}
+
+.errordetailpage .typepunctuationMark .questiontitle1 img {
+    display: inline-block;
+}
+
+.errordetailpage .typepunctuationMark #mainobject1 {
+    margin-top: -2px;
+}
+.errordetailpage .typepunctuationMark #mainobject1 span{
+	float: inherit;
+	color: #479e93;
+	display: inline-block;
+}
+.errordetailpage .typepunctuationMark #mainobject1 .trueans{
+	color: #fff;
+}
+.errordetailpage .typepunctuationMark .objtitle .fl{
+	padding-right: 10px;
+}
+
+.errordetailpage .typepunctuationMark #mainobject {
+    color: #666;
+    width: auto;
+    padding: 0 30px;
+}
+.errordetailpage .typepausesReading #mainobject{
+	color: #666;
+	width: auto;
+	font-size: 14px;
+	letter-spacing: 1px;
+	padding: 0 30px;
+}
+.errordetailpage .typepausesReading .objtitle .fl{
+	line-height: 18px;
+	padding-right: 10px;
+	float: inherit;
+}
+.errordetailpage .typepausesReading #mainobject1{
+	line-height: 23px;
+	color: #479e93;
+	padding-top: 10px;
+}
+.errordetailpage .typepausesReading #mainobject1 span{
+	float: inherit;
+	display: inline;
+	line-height: 18px;
+	letter-spacing: 2px;
+}
+.errordetailpage .typepausesReading #mainobject1 em{
+	float: inherit;
+	padding: 0;
+	font-size: 22px;
+	vertical-align: text-bottom;
+	color: #479e93;
+	display: inline;
+	
+	vertical-align: bottom;
+}
+.errordetailpage .typeessayquestion .objtitle1.text .fl{
+	padding-right: 10px;
+	line-height:20px ;
+	color: #666;
+	font-size: 14px;
+	float: inherit;
+}
+
+.errordetailpage .typeessayquestion .objtitle1.text {
+    padding-right: 10px;
+    line-height: 22px;
+    color: #49AEA8;
+}
+.errordetailpage .typeessayquestion .objtitle1 .questiontext{
+	line-height: 25px;
+}
+.errordetailpage .typeessayquestion .objtitle1 .questiontext *{
+	line-height: normal;
+}
+.errordetailpage .typeexercise #mactchboxtitle {
+    line-height: 25px;
+	padding-left: 0;
+	/* background: url(../img/left.png) no-repeat left 8px; */
+} 
+.errordetailpage .typeexercise #mactchboxtitle *{
+	line-height: 25px;
+	font-size: 14px !important;
+} 
+.layui-laydate-main table th,.layui-laydate-main table td{
+	border: none;
+}
+.layui-laydate .layui-laydate-content td.laydate-selected{
+	background-color: #85dbd6;
+}
+
+
+
+
+@keyframes move {
+    from {
+        top: -251px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+
+@-webkit-keyframes move {
+    from {
+        top: -251px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+@-moz-keyframes move {
+    from {
+        top: -251px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+@-ms-keyframes move {
+    from {
+        top: -251px;
+    }
+
+    to {
+        top: 0;
+    }
+}
+
+@keyframes loading {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes loading {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes loading {
+    from {
+        -o-transform: rotate(0deg);
+    }
+
+    to {
+        -o-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes loading {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+ @media only screen and (min-width: 1280px) and (max-width:1366px){
+     .loginpage .loginbox{
+		  zoom: .71;
+		 
+	  }
+	  .conpoupop .conpoubjbox{
+	  	position: fixed;
+	  	left: 0;
+	  	top: 20px;
+	  	width: 100%;
+		zoom: .8;
+	  	z-index: 1;
+	  }
+	  .conpoupop .box{
+		  zoom: .8;
+	  }
+    .loginpage .loginbox {
+         padding-top: 83px;
+    }
+	  .loginpage .textinfo{
+		  width: 390px;
+	  }
+	  .loginpage .logininp{
+	  		  width: 390px;
+	  }
+	  .loginpage .errormsg{
+	  		  width: 390px;
+			  height: 26px;
+			  line-height: 26px;
+	  }
+   }
+  @media screen and (min-width: 1680px) {
+  	 .headercontent{
+		 width: 1672px;
+	 }
+  }
+@media screen and (max-width: 1050px) { /*当屏幕尺寸小于1050px时，应用下面的CSS样式*/
+      .bodycontent{
+		 /* width: 1024px; */
+		  margin: 0 auto;
+		  overflow: hidden;
+		  zoom: .99;
+	  } 
+	  .header .config .name .perinfobox{
+	  		  right: -21x;
+	  }
+	  .taskdetailpage{
+		  width: 1024px;
+	  }
+	  .indexpage .seleciton .showselect{
+		  right: 0;
+	  }
+	  .maincontent{
+		   width: 1024px;
+	  }
+	  .goodspage .pro-detail-hd-fixed .tabbx{
+		   width: 1024px;
+	  }
+	  .header{
+		  width: 100%;
+		  min-width:1024px;
+		}
+	.headercontent{
+		 width: 1024px;
+	}
+	.indexpage .banner,.indexpage{
+		 width: 1024px;
+	}
+	.indexpage .seleciton{
+		width: 1024px;
+		 min-width: 1024px;
+	}
+	.navigation{
+		width: 1024px;
+	}
+	.contentbox{
+		width: 1024px;
+	}
+	.taskmainpage{
+		width: 1024px;
+		min-width: 1024px;
+	}
+	.taskmainpage .maintop{
+		width: 100%;
+	}
+	.taskmainpage .mainbox{
+		width: 90%;
+	}
+	.taskmainpage .mainbottom{
+		width: 100%;
+	}
+	.taskpage{
+		width: 1024px;
+	}
+	.loginbox{
+		zoom: .8;
+	}
+  }
+  @media screen and (max-width: 1500px) {
+	  .header .config .name .perinfobox{
+		  right: -65px;
+	  }
+  }
+/* @media screen and (max-height: 768px) {
+	 .bodycontent{
+		zoom: .7;
+	 }
+  } */
+
+ /*确定弹窗*/
+    .chosewindow2 .paycodetitle {
+        font-size: 17px;
+        text-align: center;
+        padding-top: 42px;
+    }
+
+        .chosewindow2 .paycodetitle span {
+            color: #ff0000;
+            font-weight: 600;
+        }
+
+    .chosewindow2 .paycodeinfo {
+        padding-top: 20px;
+        font-size: 12px;
+    }
+
+    .chosewindow2 .codeimg {
+        padding-top: 15px;
+    }
+
+        .chosewindow2 .codeimg img {
+            width: 150px;
+            height: 150px;
+            display: block;
+            margin: 0 auto;
+        }
+
+    .chosewindow2 .showwindowcontent {
+        position: fixed;
+        margin: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 442px;
+        top: 0;
+        height: 210px;
+        z-index: 12;
+        background: url(../../Images/StudentInfo/codebj1.png) no-repeat center center;
+        background-size: cover;
+    }
+
+        .chosewindow2 .showwindowcontent .box {
+            position: relative;
+        }
+
+        .chosewindow2 .showwindowcontent .box {
+        }
+
+        .chosewindow2 .showwindowcontent .boxc {
+            position: relative;
+            color: #666;
+        }
+
+    .chosewindow2 .closepaydepop1 {
+        text-align: right;
+        padding-top: 10px;
+        position: absolute;
+        right: 26px;
+        top: -23px;
+        padding-right: 20px;
+    }
+
+        .chosewindow2 .closepaydepop1 img {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+    .chosewindow2 .textiinfo {
+        padding-top: 30px;
+        font-size: 17px;
+    }
+
+    .chosewindow2 .textiinfo {
+        padding-top: 30px;
+        font-size: 17px;
+    }
+
+    .chosewindow2 .textinfo1 {
+        padding-top: 30px;
+        font-size: 17px;
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    .chosewindow2 .btn {
+        padding-top: 34px;
+        width: 200px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+        .chosewindow2 .btn button {
+            display: inline-block;
+            border: none;
+            float: left;
+            width: 90px;
+            line-height: 35px;
+            color: #fff;
+            background: #49aea8;
+            font-size: 14px;
+            margin: 0 auto;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .chosewindow2 .btn .def {
+            float: right;
+            /* background: #f5f5f5; */
+            background: none;
+            color: #b3b2b2;
+            border: 1px solid #b7b6b6;
+        }

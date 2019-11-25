@@ -1,0 +1,723 @@
+﻿@model int?
+
+@{
+    ViewBag.PageTitle = "题目录入-选择填空";
+    string controller = "MultipleChoiceFillInBlank";
+    string action = "EditMultipleChoiceFillInBlankSubject";
+}
+
+<div class="ibox">
+    @Html.Partial("_ReturnButton")
+    <div class="ibox-content">
+        @using (Ajax.BeginForm(action, controller, new AjaxOptions
+        {
+            OnComplete = "complete"
+        }, new { id = "form", role = "form" }))
+        {
+            <input type="text" name="nextStatus" value="2" style="display:none;" />
+            <input type="hidden" id="subjectId" name="id" value="@Model" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="switch pull-right">
+                        <div class="onoffswitch">
+                            <input type="checkbox" checked class="onoffswitch-checkbox"
+                                   name="contentType"
+                                   onchange="changContentType(this)"
+                                   value="1"
+                                   id="switch_name_answer">
+                            <label class="onoffswitch-label" for="switch_name_answer">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pull-right" style="display:inline-block;">答案的类型：</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right required">题干</label>
+                <div class="col-11" id="col_name">
+                    <textarea id="name" name="name" style="width:100%;"></textarea>
+                    <input type="hidden" id="plainName" name="plainName" />
+                </div>
+            </div>
+            <div id="div_answers"></div>
+            <div class="hr-line-dashed"></div>
+            <div id="div_wrongAnswers"></div>
+            <div class="form-group row">
+                <div class="col-11 offset-1">
+                    <button class="btn btn-default" type="button"
+                            onclick="addWrongAnswer()">
+                        添加干扰项
+                    </button>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+                <label class="col-1 col-form-label text-right">解析</label>
+                <div class="col-11">
+                    <textarea id="explain" name="explain" style="width:100%;"></textarea>
+                </div>
+            </div>
+            @Html.Partial("_SubjectBasic")
+            <div class="form-group row">
+                <div class="col-12 text-center">
+                    @*该隐藏域用于记录是想要做保存操作还是提交操作,默认是保存操作*@
+                    <input type="hidden" name="button" value="0" />
+                    <button class="btn btn-white"
+                            type="button" onclick="submitFormWithoutValiedate()">
+                        保存
+                    </button>
+                    <button class="btn btn-primary"
+                            type="button" onclick="submitForm2(true)">
+                        提交
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">编辑答案</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs" id="ul_nav"></ul>
+                    <div class="tab-content" id="div_tab_contents"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="displayAnswers()" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;" id="div_tagsinput_template">
+    <textarea id="$id" name="$name"></textarea>
+</div>
+
+<div style="display:none">
+    <textarea id="factory" name="factory"></textarea>
+</div>
+
+<script type="text/template" id="div-answerTemplate">
+    <div class="form-group row">
+        <label class="col-1 col-form-label">空{{blankIndex}}</label>
+        <div class="col-11">
+            <input id="h_{{id}}" name="options" type="hidden" />
+            <label style="color:#cc5965;display:none;margin-top:7px;">这是必填字段</label>
+            <div id="div_{{id}}" class="form-control-plaintext"></div>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="div-wrongAnswerTemplate">
+    <div class="form-group row">
+        <label class="col-1 col-form-label">干扰项{{blankIndex}}</label>
+        <div class="col-10">
+            <textarea id="textarea_{{id}}">{{content}}</textarea>
+            <input type="hidden" id="h_{{id}}" name="goptions" />
+        </div><div class="col-1 align-self-center">
+            <button class="btn btn-danger" type="button"
+                    onclick="deleteWrongAnswer('{{id}}')">
+                删除
+            </button>
+        </div>
+    </div>
+</script>
+
+@section Styles{
+    @Styles.Render("~/bundles/css/tagInputsStyles")
+    <link href="~/Content/selectPage/selectpage.css" rel="stylesheet" />
+    <style>
+        .table-nobordered td {
+            border-top: none !important;
+        }
+
+        .col-form-label {
+            text-align: right;
+        }
+    </style>
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/js/tagInputs")
+    <script src="~/Content/selectPage/selectpage.js"></script>
+    <script src="~/Scripts/common/guid.js"></script>
+    <script src="~/Scripts/common/ueditor.config.subject.js"></script>
+    <script src="~/Content/ueditor/ueditor.config.js"></script>
+    <script src="~/Content/ueditor/ueditor.all.js"></script>
+    <script src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.js"></script>
+    <script src="~/Scripts/PageScripts/menu.patch.js"></script>
+    <script src="~/Scripts/PageScripts/subject.edit.subjectbasic.js"></script>
+    <script>
+        $(function () {
+            initUeditor();
+            initSelect2();
+            registerDialogEvent();
+            loadData();
+
+            enableValidate();
+
+            registerTabsEvent();
+        });
+    </script>
+    <!-- 文本/图片切换 -->
+    <script>
+        let dialogUeditorCollection = {};
+        function registerTabsEvent() {
+            //标签页显示时，为标签页生成显示的内容
+            $('#exampleModal').on('show.bs.tab', 'a[data-toggle="tab"]', function () {
+                let idSelecter = $(this).attr('href');
+                let $tabBody = $(idSelecter + ' .panel-body');
+                if ($tabBody.html()) {
+                    return;
+                }
+                let html = $('#div_tagsinput_template').html();
+
+                //idSelecter格式tabPane_d6ffd107-401e-1da0-9243-5071b65efff6
+                let textareaId = idSelecter.replace('#tabPane', 'textarea');
+                html = html.replace('$id', textareaId);
+                $tabBody.html(html);
+
+                let chkState = $('#switch_name_answer')[0].checked;
+                UE.getEditor(textareaId, ueConfigWithUpload).ready(function () {
+                    initUeditorType(this.key, chkState);
+
+                    let v = getBlankContent(textareaId.replace('textarea_', ''));
+                    if (v) {
+                        this.setContent(v);
+                    }
+
+                    this.addListener('blur', function () {
+                        let content = this.getContent();
+                        setBlankContent(textareaId.replace('textarea_', ''), content);
+                    });
+                    dialogUeditorCollection[textareaId.replace('textarea_', '')] = this;
+                });
+            });
+        }
+
+        function getBlankContent(id) {
+            return blankCollection[id].content;
+        }
+        function setBlankContent(id, content) {
+            blankCollection[id].content = content;
+        }
+
+        function getEBlankContent(id) {
+            return eBlankCollection[id].content;
+        }
+        function setEBlankContent(id, content) {
+            eBlankCollection[id].content = content;
+        }
+
+        //点击切换文本/图片按钮时，批量切换ueditor的type
+        function changContentType(checkbox) {
+            layer.confirm('切换模式会清空编过得答案和干扰项，确定要切换吗？', {
+                title: '提示',
+                yes: function (index) {
+                    $.each(blankCollection, function (i, o) {
+                        o.content = '';
+                    });
+                    refreshAnswerHtml();
+
+                    $.each(eBlankCollection, function (i, o) {
+                        o.content = '';
+                    });
+                    $.each(eBlankCollection, function (n, v) {
+                        let ueditorId = generateUeditorId(n);
+                        ueditorCollection[ueditorId].setContent('');
+                        toggleWrongAnswersUeditorType(checkbox.checked);
+                    });
+
+                    layer.close(index);
+                },
+                cancel: function (index) {
+                    layer.close(index);
+                }
+            });
+        }
+
+        //切换ueditor的样式
+        //让ueditor仅上传图片或者仅编辑文本
+        function toggleWrongAnswersUeditorType(isText) {
+            let parentDiv = $('div#div_wrongAnswers');
+            if (isText) {//文本模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', '');
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+            } else {//图片模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', 'display:none !important;');
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', '');
+            }
+        }
+        function initUeditorType(ueditorId, isText) {
+            let parentDiv = $('#' + ueditorId);
+            if (isText) {//文本模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', '');
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', 'display:none !important;');
+            } else {//图片模式
+                $.each(classesOfTextUeditor, function (index, className) {
+                    parentDiv.find('div.' + className).attr('style', 'display:none !important;');
+                });
+                parentDiv.find('div.' + classOfImageUeditor).attr('style', '');
+            }
+        }
+    </script>
+    <!-- 编辑答案 -->
+    <script>
+        //默认显示tab
+        function activeTab(blank) {
+            $(`a[href="#tabPane_${blank.id}"]`).tab('show');
+        }
+        function getCurrentObjByButton(idOfButton, useFullObjs) {
+            //根据点击的按钮找到按钮对应的对象
+            let filteredObjs = $.grep(useFullObjs, function (item, index) {
+                return item.id === idOfButton;
+            });
+            let currentObj = filteredObjs[0];
+            return currentObj;
+        }
+        //显示编辑答案的弹框
+        function showDialog(element) {
+            createTabsByBlankCollection(blankCollection);
+
+            let currentBlank = blankCollection[element.dataset.num];
+            activeTab(currentBlank);
+
+            let $dialog = $('#exampleModal');
+            $dialog.modal('show');
+        }
+
+        //创建tabs组件，追加到modal中
+        function createTabsByBlankCollection(blanks) {
+            let htmlOfLi = '',
+                htmlOfTabBody = '';
+
+            let blankIndex = 1;
+            $.each(blanks, function (n, v) {
+                let tagPaneId = 'tabPane_' + n;
+                htmlOfLi += `<li><a class="nav-link" data-toggle="tab" href="#${tagPaneId}">空${blankIndex}</a></li>`;
+                htmlOfTabBody += `<div id="${tagPaneId}" class="tab-pane"><div class="panel-body"></div></div>`;
+                blankIndex++;
+            });
+            $('#ul_nav').html(htmlOfLi);
+            $('#div_tab_contents').html(htmlOfTabBody);
+        }
+
+        //显示用户编辑的答案
+        function displayAnswers() {
+            let chkStatus = $('#switch_name_answer')[0].checked;
+            $.each(blankCollection, function (n, v) {
+                let id = n;
+                let blank = v;
+                let content = blank.content;
+                content = formatContent(content, chkStatus);
+
+                let hiddenIdSelector = '#h_' + id;
+                $(hiddenIdSelector).val(content);
+                let divIdSelector = '#div_' + id;
+                $(divIdSelector).html(content);
+            });
+
+            $('#exampleModal').modal('hide');
+        }
+    </script>
+    <script>
+        let answerObjs = [];
+
+        function getAnswersTemplate() {
+            return document.getElementById('div-answerTemplate').innerHTML;
+        }
+    </script>
+    <!-- 干扰项 -->
+    <script>
+        let eBlankCollection = {};
+        let wrongAnswers = [];
+
+        //点击添加干扰项按钮
+        //在页面添加干扰项
+        function addWrongAnswer() {
+            createAndStorageEBlank(newGuid(), '');
+            refreshWrongAnswerHtml();
+            createUeditors(eBlankCollection);
+        }
+
+
+        //把干扰项的对象，初始化成ueditor
+        function createUeditor(id) {
+            let ueditor = UE.getEditor(id, ueConfigWithUpload);
+            ueditor.ready(function () {
+                let v = getEBlankContent(id.replace('textarea_', ''));
+                if (v) {
+                    this.setContent(v);
+                }
+                this.addListener('blur', function () {
+                    let content = this.getContent();
+                    setEBlankContent(id.replace('textarea_', ''), content);
+                });
+                let type = $('#switch_name_answer')[0].checked;
+                toggleWrongAnswersUeditorType(type);
+                ueditorCollection[id] = this;
+            });
+        }
+
+        //删除干扰项
+        function deleteWrongAnswer(id) {
+            if (!id) {
+                throw new Error('id不能为空');
+            }
+
+            delete eBlankCollection[id];
+
+            refreshWrongAnswerHtml();
+
+            createUeditors(eBlankCollection);
+        }
+        let ueditorCollection = {};
+        function createUeditors(eBlanks) {
+            $.each(eBlanks, function (n, v) {
+                let ueditorId = generateUeditorId(n);
+                destroyUeditor(ueditorId);
+                createUeditor(ueditorId);
+            });
+        }
+
+        function generateUeditorId(blankId) {
+            return 'textarea_' + blankId;
+        }
+
+        //销毁ueditor
+        function destroyUeditor(ueditorId) {
+            let ueditor = ueditorCollection[ueditorId];
+            if (ueditor) {
+                ueditor.destroy();
+                delete ueditorCollection[ueditorId];
+            }
+        }
+
+    </script>
+    <script>
+        let blankCollection = {}
+
+        /*创建一个对象，该对象可以存储挖空的数据
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         *@@param{String}id guid
+         *@@param{content}id 挖空的答案等内容
+         */
+        function createBlank(id, content) {
+            if (!id) {
+                throw new Error('id不能为空');
+            }
+            content = content ? content : '';
+            return {
+                id: id,
+                content: content
+            };
+        }
+
+        function orderObjsByContent(content) {
+            let ids = fetchGuids(content);
+            let orderedObj = {};
+            $.each(ids, function (ii, io) {
+                $.each(blankCollection, function (bn, bv) {
+                    if (io == bn) {
+                        orderedObj[bn] = bv;
+                    }
+                });
+            });
+
+            blankCollection = orderedObj;
+        }
+        let ueditorName = null;
+        let ueditorExplain = null;
+        function initUeditor() {
+            ueditorName = UE.getEditor('name', ueConfigForTitle);
+            ueditorName.ready(function () {
+                this.addListener('afterinsertbland', function (eventName, btnId) {
+                    createAndStorageBlank(btnId);
+                    let content = this.getContent();
+                    orderObjsByContent(content);
+                    refreshAnswerHtml();
+                });
+                //this.addListener('delkeyup', function () {
+                //    let content = this.getContent();
+                //    removeBlank(content);
+                //    refreshAnswerHtml();
+                //});
+                this.addListener('keyup', function () {
+                    let content = this.getContent();
+                    removeBlank(content);
+                    orderObjsByContent(content);
+                    refreshAnswerHtml();
+                });
+                replaceFormat(this);
+            });
+            ueditorExplain = UE.getEditor('explain', ueConfigOfExplain);
+        }
+
+        /*刷新显示的答案
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         *@@param{String}id guid
+         */
+        function refreshAnswerHtml() {
+            let template = getAnswersTemplate();
+            let result = '';
+            let blankIndex = 1;
+            let regOfBlankIndex = getRegExpByPropertyName('blankIndex');
+            let regOfId = getRegExpByPropertyName('id');
+            $.each(blankCollection, function (n, v) {
+                let r = '';
+                r = template.replace(regOfBlankIndex, blankIndex);
+                r = r.replace(regOfId, n);
+                result += r;
+                blankIndex++;
+            });
+            $('#div_answers').html(result);
+            //用隐藏域存值
+            $.each(blankCollection, function (n, v) {
+                $('#h_' + n).val(v.content);
+                $('#div_' + n).html(v.content);
+            });
+        }
+
+        /*刷新干扰项
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         *@@param{String}id guid
+         */
+        function refreshWrongAnswerHtml() {
+            let template = getWrongAnswersTemplate();
+            let result = '';
+            let blankIndex = 1;
+            let regOfBlankIndex = getRegExpByPropertyName('blankIndex');
+            $.each(eBlankCollection, function (n, v) {
+                let r = '';
+                r = template.replace(regOfBlankIndex, blankIndex);
+                $.each(v, function (vn, vv) {
+                    let regOfPropertyName = getRegExpByPropertyName(vn)
+                    r = r.replace(regOfPropertyName, vv);
+                });
+                result += r;
+                blankIndex++;
+            });
+            $('#div_wrongAnswers').html(result);
+        }
+
+        /*获取干扰项html模板
+        *@@author zhangchunyu
+        *@@date 2019-11-8
+        */
+        function getWrongAnswersTemplate() {
+            return document.getElementById('div-wrongAnswerTemplate').innerHTML;
+        }
+
+        /*根据id创建blank对象,并存储
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         *@@param{String}id guid
+         */
+        function createAndStorageBlank(id, content) {
+            let blank = createBlank(id, content);
+            blankCollection[id] = blank;
+        }
+
+        /*根据id创建eBlank对象,用于存储干扰项的数据
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         *@@param{String}id guid
+         */
+        function createAndStorageEBlank(id, content) {
+            let eBlank = createBlank(id, content);
+            eBlankCollection[id] = eBlank;
+        }
+
+        /*删除存储的某个blank对象
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         *@@param{String}id guid
+         */
+        function removeBlank(content) {
+            //let ids = fetchGuids(content);
+            //let newBlankCollection = {};
+            //$.each(ids, function (i, o) {
+            //    newBlankCollection[o] = blankCollection[o];
+            //});
+            //blankCollection = newBlankCollection;
+            let ids = fetchGuids(content);
+            let newBlankCollection = {};
+            let hidtoryIds = [];
+            $.each(blankCollection, function (bn, bv) {
+                hidtoryIds.push(bn);
+            });
+
+            $.each(ids, function (i, o) {
+                if ($.inArray(o, hidtoryIds) !== -1) {
+                    newBlankCollection[o] = blankCollection[o];
+                } else {
+                    newBlankCollection[o] = createBlank(o, '');
+                }
+            });
+            blankCollection = newBlankCollection;
+        }
+    </script>
+    <script>
+        function initSelect2() {
+            $('.select2.form-control').select2({
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: Infinity
+            }).on('change', function (e) {
+                $(this).valid();
+            });
+        }
+    </script>
+    <script>
+        function loadData() {
+            if ($('#subjectId').val() !== '0') {
+                $.getJSON('@Url.Action("GetDetails",controller)', { id: $('#subjectId').val() },
+                    function (response) {
+                        if (response.State) {
+                            let data = response.Data;
+                            console.log(data);
+                            //图片模式
+                            $('#switch_name_answer').prop('checked', data.ContentType !== 0);
+
+                            if (data.Name) {
+                                ueditorName.ready(function () {
+                                    this.setContent(data.Name);
+                                    let ids = fetchGuids(data.Name);
+                                    $.each(ids, function (i, o) {
+                                        let id = o;
+                                        let content = data.Options[i];
+                                        createAndStorageBlank(id, content);
+                                    });
+                                    refreshAnswerHtml();
+                                });
+                            }
+                            if (data.Goptions) {
+                                $.each(data.Goptions, function (i, o) {
+                                    let content = o;
+                                    createAndStorageEBlank(newGuid(), content);
+                                });
+                                refreshWrongAnswerHtml();
+                                createUeditors(eBlankCollection);
+                            }
+
+                            setBasicData(data);
+
+                            setPlainNameData(data);
+
+                            setContent(ueditorExplain, data.Explain);
+                        }
+                    });
+            } else {
+                initSelectPageComponent();
+            }
+        }
+
+        //为弹框注册事件
+        function registerDialogEvent() {
+            //弹框隐藏时，清楚内容
+            $('#exampleModal').on('hidden.bs.modal', function () {
+                $.each(blankCollection, function (n, v) {
+                    let id = n;
+                    if (dialogUeditorCollection[id]) {
+                        dialogUeditorCollection[id].destroy();
+                        delete dialogUeditorCollection[id];
+                    }
+                });
+
+            });
+        }
+    </script>
+    <script>
+        /*对最佳答案进行数据验证
+        *@@author zhangchunyu
+        *@@date 2019-11-8
+        */
+        function validatePerfect() {
+            let es = [];
+            //验证最佳答案不能为空
+            let $hiddens = $(':hidden[name^="options"]')
+            $.each($hiddens, function (i, o) {
+                if (!o.value) {
+                    $(o).next().show();
+                    es.push(o);
+                }
+            });
+            return es.length === 0;
+        }
+    </script>
+    <!-- 提交表单 -->
+    <script>
+        /*数据验证完成后，直接提交表单
+        *@@author zhangchunyu
+        *@@date 2019-11-8
+        */
+        function submitForm2(needValid) {
+            formatSubmitData();
+            let $form = $('#form');
+            //通知后台点击的是submit按钮
+            let $hidden = $form.find(':hidden[name="button"]');
+            $hidden.val(2);
+            let vr = validatePerfect();
+            if (!$form.valid()) {//但是校验没通过
+                return false;
+            }
+            if (!vr) {
+                return vr;
+            }
+            $form.submit();
+        }
+
+        /*直接提交表单，不进行数据验证
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         */
+        function submitFormWithoutValiedate() {
+            formatSubmitData();
+            let $form = $('#form');
+            //通知后台点击的是save按钮
+            let $hidden = $form.find(':hidden[name="button"]');
+            $hidden.val(1);
+            $form.submit();
+        }
+
+        /*提交的数据，有些需要去掉标签
+         *@@author zhangchunyu
+         *@@date 2019-11-8
+         */
+        function formatSubmitData() {
+            let isText = $('#switch_name_answer')[0].checked;
+            $.each(eBlankCollection, function (n, v) {
+                let id = n;
+                let content = formatContent(v.content, isText);
+                $('#h_' + id).val(content);
+            });
+            $.each(blankCollection, function (n, v) {
+                let id = n;
+                let content = formatContent(v.content, isText);
+                $('#h_' + id).val(content);
+            });
+        }
+    </script>
+}

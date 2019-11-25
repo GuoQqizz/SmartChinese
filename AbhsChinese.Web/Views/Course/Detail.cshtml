@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewBag.Title = "课程详情";
+}
+@model AbhsChinese.Web.Models.Course.CourseDetailViewModel
+
+@section Styles{
+    <style>
+        body, html {
+            height: auto;
+            overflow: auto;
+        }
+
+        body {
+            height: auto;
+            position: inherit;
+        }
+    </style>
+}
+
+<div class="bodycontent">
+    @Html.Partial("_NavBar")
+    <div class="navigation">
+        <div class="navigationl fl">
+            <span class="arrow-right"></span>
+            <a href="#">课程详情</a>
+        </div>
+    </div>
+    <div class="maincontent goodspage">
+        <div class="cheader">
+            <div class="goodsimg fl"><img src="@Model.CourseImage" /></div>
+            <div class="cheader_right">
+                <div class="lbox">
+                    <div class="goodsinfo">
+                        <div class="goodslabel fl">
+                            <span class="clas">@Model.GradeName</span>
+                            <span class="type">@Model.CourseTypeName</span>
+                        </div>
+                        <div class="goodsname line1">@Html.Raw(string.Format("{0}(共{1}课时)", Model.CourseName, Model.LessonCount))</div>
+                    </div>
+                    <div class="goodsinfo1">@Model.Description</div>
+                    <div class="goodsinfo2">教材版本：@Model.TextbookVersion</div>
+                    @if (Model.IsBindSchool)
+                    {
+                    <div class="conpouboxconfig goodsinfo2" id="voucherPart" style="display:none;">
+                        现金券：<span class="zbq" id="baseVoucherPart" style="display:none;"><label><em>总部券￥0</em></label></span>&nbsp;&nbsp;
+                        <span class="xqq" id="schoolVoucherPart" style="display:none;"><label><em>校区券￥0</em></label></span>
+                    </div>
+                    <div class="goodsinfo3">
+                        <div class="fl">
+                            <span class="pirce"><em>￥</em>@Model.CoursePrice.ToString("0")</span>
+                            <span class="pirce1" id="courseWaitPayMoney" style="display:none;">&nbsp;&nbsp;&nbsp;￥@Model.CoursePrice.ToString("0")<img src="~/Images/Course/zh.png" /></span>
+                        </div>
+                        <div class="soldnum">已售:@Model.SellCount</div>
+                    </div>
+                    <div class="goodsinfo4">
+                        <div class="fl">
+                            @if (!Model.IsHaveThisCourse)
+                                {
+                                <a class="gobuy" href="@Url.Action("MakeOrder","OwnOrder",new { id = Model.CourseId, aid = Model.Ad_Id })" target="_self">立即购买</a>
+                                }
+                                else
+                                {
+                                <a class="gobuy" href="javascript:void(0)">你已购买</a>
+                                }
+                        </div>
+                        <div class="paytype">
+                            支持<img src="/Images/wx.png" />
+                        </div>
+                    </div>
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(Model.StudentApplySchoolName) && Model.StudentApplySchoolStatus == (int)AbhsChinese.Domain.Enum.ApplyStatusEnum.申请)
+                        {
+                    <div class="goodsinfo4 goodsinfo4_1">
+                        <div class="fl">
+                            <span id="applyBindSchoolTip">@string.Format("已申请{0}，等待校长审批", Model.StudentApplySchoolName)</span>
+                            <a class="bindschool blue">重新申请查看价格</a>
+                        </div>
+                    </div>
+                        }
+                        else
+                        {
+                    <div class="goodsinfo4 goodsinfo4_1">
+                        <div class="fl">
+                            <span id="applyBindSchoolTip"></span>
+                            <a class="bindschool blue">绑定校区查看价格</a>
+                        </div>
+                    </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="goodsbottom" id="goodsbottom">
+            <div class="tabbox" id="tabbox">
+                <div class="tabbx">
+                    <div class="tab">
+                        <div class="tablist active fl courseIntroduction">课程详情</div>
+                        <div class="tablist fl courseArrange">课程安排</div>
+                        @if (Model.IsBindSchool)
+                        {
+                            if (Model.IsHaveThisCourse)
+                            {
+                        <a class="btns" id="gobuybtn" href="javascript:void(0);">你已购买</a>
+                            }
+                            else
+                            {
+                        <a class="btns" id="gobuybtn" href="@Url.Action("MakeOrder","OwnOrder",new { id = Model.CourseId, aid = Model.Ad_Id })" target="_self">立即购买</a>
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(Model.StudentApplySchoolName) && Model.StudentApplySchoolStatus == (int)AbhsChinese.Domain.Enum.ApplyStatusEnum.申请)
+                        {
+                        <a class="btns bindschool blue" href="javascript:void(0);" id="gobuybtn">重新申请查看价格</a>
+                        }
+                        else
+                        {
+                        <a class="btns bindschool blue" href="javascript:void(0);" id="gobuybtn">绑定校区查看价格</a>
+                        }
+                        <div class="gobuybox" id="gobuybox" style="display:none;">
+                            <div class="fl">
+                                <img src="@Model.CourseImage" />
+                            </div>
+                            <div class="gobuyboxcont">
+                                <div class="label"><label class="lab1">@Model.GradeName</label><label class="lab2">@Model.CourseTypeName</label></div>
+                                <div class="label1">@Html.Raw(string.Format("{0}(共{1}课时)", Model.CourseName, Model.LessonCount))</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tabcontbox" id="courseIntroductionPanel">
+                @Html.Raw(Model.Introduction)
+            </div>
+            <div class="tabcontbox" id="courseArrangePanel" style="display:none;">
+                @Html.Raw(Model.Arrange)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bodybjleft">
+    <img src="~/Images/Course/homeLeft.png" />
+</div>
+<div class="bodybjright">
+    <img src="~/Images/Course/homeRight.png" />
+</div>
+
+@if (!Model.IsBindSchool)
+{
+    <div class="bindschoolbox" style="display: none;" id="bindSchoolPanel">
+        <div class="showwindow"></div>
+        <div class="binbbox">
+            <div class="boxc">
+                <div class="closepaydepop">
+                    <img class="closepaydepopimg" src="/Images/StudentInfo/c1.png" />
+                </div>
+                <div class="bindtitle">绑定校区</div>
+                <div class="bindcont">
+                    <div class="list">
+                        <img src="/Images/bindd.png" />
+                    </div>
+                    <div class="list">
+                        <span class="fl">申请绑定</span>
+                        <span class="fr">校长审批</span>
+                    </div>
+                    <div class="listinp">
+                        <input type="text" id="txtBindSchoolPhone" placeholder="请输入校长或老师手机号" />
+                    </div>
+                    <div class="errormsg"><span id="bindSchoolErrorTip"></span></div>
+                    <div class="info" id="bindSchoolName"></div>
+                    <button class="winsub" id="btnBindSchool">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bindschoolbox bindschoolbox1" style="display: none;" id="bindSchoolResultPanel">
+        <div class="showwindow"></div>
+        <div class="binbbox">
+            <div class="boxc">
+                <div class="closepaydepop">
+                    <img class="closepaydepopimg" src="/Images/StudentInfo/c1.png" />
+                </div>
+                <div class="bindcont">
+                    <div class="list">
+                        <img src="/Images/StudentInfo/success1.png" />
+                    </div>
+                    <div class="list">
+                        <div class="info">校长第一时间会处理您的申请</div>
+                    </div>
+                    <button class="winsub" id="btnCloseBindSchool">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!--优惠券列表-->
+    @Html.Partial("_PartialVoucherList")
+}
+<input type="hidden" id="studentId" value="@Model.StudentId">
+<input type="hidden" id="courseInfo" value='@Html.Raw(string.Format("{{\"CourseId\": {0}, \"CoursePrice\": {1}, \"Grade\": {2}, \"CourseType\": {3}}}",Model.CourseId,Model.CoursePrice,Model.Grade,Model.CourseType))'>
+
+@section scripts{
+    @Scripts.Render("~/bundles/courseDetail")
+}
