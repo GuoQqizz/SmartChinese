@@ -58,18 +58,18 @@ namespace AbhsChinese.Web.Controllers
                 }
             }
 
-            LogonUserAccessCheckPolicy checkPolicy = new LogonUserAccessCheckPolicy(
-                AccessCheckKeyEnum.Chinese_StudentLoginCode_Check,
-                inputModel.PassportKey,
-                60,
-                3);
-            var status = checkPolicy.CheckAdvanced();
+            //LogonUserAccessCheckPolicy checkPolicy = new LogonUserAccessCheckPolicy(
+            //    AccessCheckKeyEnum.Chinese_StudentLoginCode_Check,
+            //    inputModel.PassportKey,
+            //    60,
+            //    3);
+            //var status = checkPolicy.CheckAdvanced();
 
             int code = 0;
-            if (status >= AccessCheckEnum.PreLimited)
-            {
-                code = (int)AccessCheckEnum.Limited;
-            }
+            //if (status >= AccessCheckEnum.PreLimited)
+            //{
+            //    code = (int)AccessCheckEnum.Limited;
+            //}
             
             StudentInfoBll studentInfoBll = new StudentInfoBll();
             inputModel.Password = Encrypt.GetMD5Pwd(inputModel.Password);
